@@ -20,7 +20,7 @@ def main():
     fail = 0
     for file in files:
         try:
-            sys.stdout.write(f"{file:<64}...")
+            sys.stdout.write(f"{file:<84}...")
             sys.stdout.flush()
             gen_resource(file, sys.argv[2])
             sys.stdout.write(" OK\n")

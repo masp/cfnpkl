@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+import re
+import string
 from typing import Any, NotRequired, Self, TypedDict
 from gen import pkl
 
@@ -87,7 +89,10 @@ def parse_type(ctx: Context, name: str, schema: Schema) -> pkl.TypeConstr:
             if "minLength" in schema:
                 type.add_constranint(f"length >= {schema["minLength"]}")
             if "pattern" in schema:
-                type.add_constranint(f'matches(Regex(#"{schema["pattern"]}"#))')
+                if '\n' in schema["pattern"]:
+                    type.add_constranint(f'matches(Regex(#"""\n{schema["pattern"]}\n"""#))')
+                else:
+                    type.add_constranint(f'matches(Regex(#"{schema["pattern"]}"#))')
             return type
         case "number":
             return pkl.TypeConstr(pkl.FLOAT)

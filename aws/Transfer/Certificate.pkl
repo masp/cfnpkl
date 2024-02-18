@@ -6,14 +6,20 @@ class Props {
     /// Specifies the usage type for the certificate.
     Usage: "SIGNING" | "ENCRYPTION" | *Null
     /// Specifies the certificate body to be imported.
-    Certificate: String(length <= 16384 && length >= 1 && matches(Regex(#"^[	
- -ÿ]*"#)))?
+    Certificate: String(length <= 16384 && length >= 1 && matches(Regex(#"""
+^[	
+ -ÿ]*
+"""#)))?
     /// Specifies the certificate chain to be imported.
-    CertificateChain: String(length <= 2097152 && length >= 1 && matches(Regex(#"^[	
- -ÿ]*"#)))?
+    CertificateChain: String(length <= 2097152 && length >= 1 && matches(Regex(#"""
+^[	
+ -ÿ]*
+"""#)))?
     /// Specifies the private key for the certificate.
-    PrivateKey: String(length <= 16384 && length >= 1 && matches(Regex(#"^[	
- -ÿ]*"#)))?
+    PrivateKey: String(length <= 16384 && length >= 1 && matches(Regex(#"""
+^[	
+ -ÿ]*
+"""#)))?
     /// Specifies the active date for the certificate.
     ActiveDate: String?
     /// Specifies the inactive date for the certificate.

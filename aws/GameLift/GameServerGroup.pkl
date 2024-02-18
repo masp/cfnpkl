@@ -6,8 +6,10 @@ Properties: Props?
 class Props {
     /// A generated unique ID for the EC2 Auto Scaling group that is
     /// associated with this game server group.
-    AutoScalingGroupArn: String(length <= 256 && length >= 0 && matches(Regex(#"[ -퟿-�𐀀-􏿿
-	]*"#)))?
+    AutoScalingGroupArn: String(length <= 256 && length >= 0 && matches(Regex(#"""
+[ -퟿-�𐀀-􏿿
+	]*
+"""#)))?
     /// Configuration settings to define a scaling policy for the Auto Scaling
     /// group that is optimized for game hosting
     AutoScalingPolicy: AutoScalingPolicy?
