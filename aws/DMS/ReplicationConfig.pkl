@@ -1,0 +1,56 @@
+/// A replication configuration that you later provide to configure and
+/// start a AWS DMS Serverless replication
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DMS::ReplicationConfig"
+Properties: Props?
+class Props {
+    /// A unique identifier of replication configuration
+    ReplicationConfigIdentifier: String?
+    /// The Amazon Resource Name (ARN) of the Replication Config
+    ReplicationConfigArn: String?
+    /// The Amazon Resource Name (ARN) of the source endpoint for this AWS DMS
+    /// Serverless replication configuration
+    SourceEndpointArn: String?
+    /// The Amazon Resource Name (ARN) of the target endpoint for this AWS DMS
+    /// Serverless replication configuration
+    TargetEndpointArn: String?
+    /// The type of AWS DMS Serverless replication to provision using this
+    /// replication configuration
+    ReplicationType: "full-load" | "full-load-and-cdc" | "cdc" | *Null
+    ComputeConfig: ComputeConfig?
+    /// JSON settings for Servereless replications that are provisioned using
+    /// this replication configuration
+    ReplicationSettings: Mapping?
+    /// JSON settings for specifying supplemental data
+    SupplementalSettings: Mapping?
+    /// A unique value or name that you get set for a given resource that can
+    /// be used to construct an Amazon Resource Name (ARN) for that resource
+    ResourceIdentifier: String?
+    /// JSON table mappings for AWS DMS Serverless replications that are
+    /// provisioned using this replication configuration
+    TableMappings: Mapping?
+    /// <p>Contains a map of the key-value pairs for the resource tag or tags
+    /// assigned to the dataset.</p>
+    Tags: Listing<Tag>?
+}
+/// Configuration parameters for provisioning a AWS DMS Serverless
+/// replication
+class ComputeConfig {
+    AvailabilityZone: String?
+    DnsNameServers: String?
+    KmsKeyId: String?
+    MaxCapacityUnits: Int
+    MinCapacityUnits: Int?
+    MultiAZ: Boolean?
+    PreferredMaintenanceWindow: String?
+    ReplicationSubnetGroupId: String?
+    VpcSecurityGroupIds: Listing<String>?
+}
+/// <p>The key or keys of the key-value pairs for the resource tag or tags
+/// assigned to the             resource.</p>
+class Tag {
+    /// <p>Tag key.</p>
+    Key: String(length <= 128 && length >= 1)
+    /// <p>Tag value.</p>
+    Value: String(length <= 256 && length >= 1)
+}

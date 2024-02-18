@@ -1,0 +1,41 @@
+/// Resource Schema of AWS::EMRContainers::VirtualCluster Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EMRContainers::VirtualCluster"
+Properties: Props?
+class Props {
+    Arn: String?
+    /// Container provider of the virtual cluster.
+    ContainerProvider: ContainerProvider?
+    /// Id of the virtual cluster.
+    Id: String(length <= 64 && length >= 1)?
+    /// Name of the virtual cluster.
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"[\.\-_/#A-Za-z0-9]+"#)))?
+    /// An array of key-value pairs to apply to this virtual cluster.
+    Tags: Listing<Tag>?
+}
+class ContainerProvider {
+    /// The type of the container provider
+    Type: String
+    /// The ID of the container cluster
+    Id: String(length <= 100 && length >= 1 && matches(Regex(#"^[0-9A-Za-z][A-Za-z0-9\-_]*"#)))
+    Info: ContainerInfo
+}
+class ContainerInfo {
+    EksInfo: EksInfo
+}
+class EksInfo {
+    Namespace: String(length <= 63 && length >= 1 && matches(Regex(#"[a-z0-9]([-a-z0-9]*[a-z0-9])?"#)))
+}
+/// An arbitrary set of tags (key-value pairs) for this virtual cluster.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String
+}

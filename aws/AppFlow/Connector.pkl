@@ -1,0 +1,33 @@
+/// Resource schema for AWS::AppFlow::Connector
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppFlow::Connector"
+Properties: Props?
+class Props {
+    ///  The name of the connector. The name is unique for each
+    /// ConnectorRegistration in your AWS account.
+    ConnectorLabel: String(length <= 512 && matches(Regex(#"[a-zA-Z0-9][\w!@#.-]+"#)))?
+    ///  The arn of the connector. The arn is unique for each
+    /// ConnectorRegistration in your AWS account.
+    ConnectorArn: String(length <= 512 && matches(Regex(#"arn:*:appflow:.*:[0-9]+:.*"#)))?
+    /// The provisioning type of the connector. Currently the only supported
+    /// value is LAMBDA.
+    ConnectorProvisioningType: String(length <= 256 && length >= 1 && matches(Regex(#"[a-zA-Z0-9][\w!@#.-]+"#)))?
+    /// Contains information about the configuration of the connector being
+    /// registered.
+    ConnectorProvisioningConfig: ConnectorProvisioningConfig?
+    /// A description about the connector that's being registered.
+    Description: String(length <= 2048 && matches(Regex(#"[\s\w/!@#+=.-]*"#)))?
+}
+/// Contains information about the configuration of the connector being
+/// registered.
+class ConnectorProvisioningConfig {
+    /// Contains information about the configuration of the lambda which is
+    /// being registered as the connector.
+    Lambda: LambdaConnectorProvisioningConfig?
+}
+/// Contains information about the configuration of the lambda which is
+/// being registered as the connector.
+class LambdaConnectorProvisioningConfig {
+    /// Lambda ARN of the connector being registered.
+    LambdaArn: String(length <= 512 && matches(Regex(#"arn:*:.*:.*:[0-9]+:.*"#)))
+}

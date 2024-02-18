@@ -1,0 +1,152 @@
+/// Resource Type definition for AWS::Events::Rule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Events::Rule"
+Properties: Props?
+class Props {
+    /// The name or ARN of the event bus associated with the rule. If you omit
+    /// this, the default event bus is used.
+    EventBusName: String?
+    /// The event pattern of the rule. For more information, see Events and
+    /// Event Patterns in the Amazon EventBridge User Guide.
+    EventPattern: String | Mapping | *Null
+    /// The scheduling expression. For example, "cron(0 20 * * ? *)", "rate(5
+    /// minutes)". For more information, see Creating an Amazon EventBridge
+    /// rule that runs on a schedule.
+    ScheduleExpression: String?
+    /// The description of the rule.
+    Description: String?
+    /// The state of the rule.
+    State: "DISABLED" | "ENABLED" | "ENABLED_WITH_ALL_CLOUDTRAIL_MANAGEMENT_EVENTS" | *Null
+    /// Adds the specified targets to the specified rule, or updates the
+    /// targets if they are already associated with the rule. Targets are the
+    /// resources that are invoked when a rule is triggered.
+    Targets: Listing<Target>?
+    /// The ARN of the rule, such as arn:aws:events:us-
+    /// east-2:123456789012:rule/example.
+    Arn: String?
+    /// The Amazon Resource Name (ARN) of the role that is used for target
+    /// invocation.
+    RoleArn: String?
+    /// The name of the rule.
+    Name: String?
+}
+class Target {
+    InputPath: String?
+    HttpParameters: HttpParameters?
+    DeadLetterConfig: DeadLetterConfig?
+    RunCommandParameters: RunCommandParameters?
+    InputTransformer: InputTransformer?
+    KinesisParameters: KinesisParameters?
+    RoleArn: String?
+    RedshiftDataParameters: RedshiftDataParameters?
+    AppSyncParameters: AppSyncParameters?
+    Input: String?
+    SqsParameters: SqsParameters?
+    EcsParameters: EcsParameters?
+    BatchParameters: BatchParameters?
+    Id: String
+    Arn: String
+    SageMakerPipelineParameters: SageMakerPipelineParameters?
+    RetryPolicy: RetryPolicy?
+}
+class HttpParameters {
+    PathParameterValues: Listing<String>?
+    HeaderParameters: Mapping?
+    QueryStringParameters: Mapping?
+}
+class DeadLetterConfig {
+    Arn: String?
+}
+class RunCommandParameters {
+    RunCommandTargets: Listing<RunCommandTarget>
+}
+class RunCommandTarget {
+    Values: Listing<String>
+    Key: String
+}
+class InputTransformer {
+    InputPathsMap: Mapping?
+    InputTemplate: String
+}
+class KinesisParameters {
+    PartitionKeyPath: String
+}
+class RedshiftDataParameters {
+    StatementName: String?
+    Sqls: Listing<String>?
+    Database: String
+    SecretManagerArn: String?
+    DbUser: String?
+    Sql: String?
+    WithEvent: Boolean?
+}
+class AppSyncParameters {
+    GraphQLOperation: String
+}
+class SqsParameters {
+    MessageGroupId: String
+}
+class EcsParameters {
+    PlatformVersion: String?
+    Group: String?
+    EnableECSManagedTags: Boolean?
+    EnableExecuteCommand: Boolean?
+    PlacementConstraints: Listing<PlacementConstraint>?
+    PropagateTags: String?
+    TaskCount: Int?
+    PlacementStrategies: Listing<PlacementStrategy>?
+    CapacityProviderStrategy: Listing<CapacityProviderStrategyItem>?
+    LaunchType: String?
+    ReferenceId: String?
+    TagList: Listing<Tag>?
+    NetworkConfiguration: NetworkConfiguration?
+    TaskDefinitionArn: String
+}
+class PlacementConstraint {
+    Type: String?
+    Expression: String?
+}
+class PlacementStrategy {
+    Field: String?
+    Type: String?
+}
+class CapacityProviderStrategyItem {
+    CapacityProvider: String
+    Base: Int?
+    Weight: Int?
+}
+class Tag {
+    Value: String?
+    Key: String?
+}
+class NetworkConfiguration {
+    AwsVpcConfiguration: AwsVpcConfiguration?
+}
+class AwsVpcConfiguration {
+    SecurityGroups: Listing<String>?
+    Subnets: Listing<String>
+    AssignPublicIp: String?
+}
+class BatchParameters {
+    ArrayProperties: BatchArrayProperties?
+    JobName: String
+    RetryStrategy: BatchRetryStrategy?
+    JobDefinition: String
+}
+class BatchArrayProperties {
+    Size: Int?
+}
+class BatchRetryStrategy {
+    Attempts: Int?
+}
+class SageMakerPipelineParameters {
+    PipelineParameterList: Listing<SageMakerPipelineParameter>?
+}
+class SageMakerPipelineParameter {
+    Value: String
+    Name: String
+}
+class RetryPolicy {
+    MaximumRetryAttempts: Int?
+    MaximumEventAgeInSeconds: Int?
+}

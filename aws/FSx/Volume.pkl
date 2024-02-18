@@ -1,0 +1,92 @@
+/// Resource Type definition for AWS::FSx::Volume
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FSx::Volume"
+Properties: Props?
+class Props {
+    OpenZFSConfiguration: OpenZFSConfiguration?
+    ResourceARN: String?
+    VolumeId: String?
+    VolumeType: String?
+    BackupId: String?
+    OntapConfiguration: OntapConfiguration?
+    UUID: String?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class OpenZFSConfiguration {
+    ReadOnly: Boolean?
+    Options: Listing<String>?
+    DataCompressionType: String?
+    NfsExports: Listing<NfsExports>?
+    StorageCapacityQuotaGiB: Int?
+    CopyTagsToSnapshots: Boolean?
+    ParentVolumeId: String
+    StorageCapacityReservationGiB: Int?
+    RecordSizeKiB: Int?
+    OriginSnapshot: OriginSnapshot?
+    UserAndGroupQuotas: Listing<UserAndGroupQuotas>?
+}
+class NfsExports {
+    ClientConfigurations: Listing<ClientConfigurations>
+}
+class ClientConfigurations {
+    Clients: String
+    Options: Listing<String>
+}
+class OriginSnapshot {
+    SnapshotARN: String
+    CopyStrategy: String
+}
+class UserAndGroupQuotas {
+    Type: String
+    Id: Int
+    StorageCapacityQuotaGiB: Int
+}
+class OntapConfiguration {
+    JunctionPath: String?
+    StorageVirtualMachineId: String
+    TieringPolicy: TieringPolicy?
+    SizeInMegabytes: String?
+    VolumeStyle: String?
+    SizeInBytes: String?
+    SecurityStyle: String?
+    SnaplockConfiguration: SnaplockConfiguration?
+    AggregateConfiguration: AggregateConfiguration?
+    SnapshotPolicy: String?
+    StorageEfficiencyEnabled: String?
+    CopyTagsToBackups: String?
+    OntapVolumeType: String?
+}
+class TieringPolicy {
+    CoolingPeriod: Int?
+    Name: String?
+}
+class SnaplockConfiguration {
+    AuditLogVolume: String?
+    VolumeAppendModeEnabled: String?
+    AutocommitPeriod: AutocommitPeriod?
+    RetentionPeriod: SnaplockRetentionPeriod?
+    PrivilegedDelete: String?
+    SnaplockType: String
+}
+class AutocommitPeriod {
+    Value: Int?
+    Type: String
+}
+class SnaplockRetentionPeriod {
+    MinimumRetention: RetentionPeriod
+    DefaultRetention: RetentionPeriod
+    MaximumRetention: RetentionPeriod
+}
+class RetentionPeriod {
+    Value: Int?
+    Type: String
+}
+class AggregateConfiguration {
+    Aggregates: Listing<String>?
+    ConstituentsPerAggregate: Int?
+}
+class Tag {
+    Value: String
+    Key: String
+}

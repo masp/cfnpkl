@@ -1,0 +1,19 @@
+/// Resource Type definition for AWS::EC2::TransitGatewayRouteTable
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::TransitGatewayRouteTable"
+Properties: Props?
+class Props {
+    /// Transit Gateway Route Table primary identifier
+    TransitGatewayRouteTableId: String?
+    /// The ID of the transit gateway.
+    TransitGatewayId: String?
+    /// Tags are composed of a Key/Value pair. You can use tags to categorize
+    /// and track each parameter group. The tag value null is permitted.
+    Tags: Listing<Tag>?
+}
+class Tag {
+    /// The key of the associated tag key-value pair
+    Key: String
+    /// The value of the associated tag key-value pair
+    Value: String
+}

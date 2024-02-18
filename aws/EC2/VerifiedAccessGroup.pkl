@@ -1,0 +1,50 @@
+/// The AWS::EC2::VerifiedAccessGroup resource creates an AWS EC2 Verified
+/// Access Group.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VerifiedAccessGroup"
+Properties: Props?
+class Props {
+    /// The ID of the AWS Verified Access group.
+    VerifiedAccessGroupId: String?
+    /// The ID of the AWS Verified Access instance.
+    VerifiedAccessInstanceId: String?
+    /// The ARN of the Verified Access group.
+    VerifiedAccessGroupArn: String?
+    /// The AWS account number that owns the group.
+    Owner: String?
+    /// Time this Verified Access Group was created.
+    CreationTime: String?
+    /// Time this Verified Access Group was last updated.
+    LastUpdatedTime: String?
+    /// A description for the AWS Verified Access group.
+    Description: String?
+    /// The AWS Verified Access policy document.
+    PolicyDocument: String?
+    /// The status of the Verified Access policy.
+    PolicyEnabled: Boolean?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The configuration options for customer provided KMS encryption.
+    SseSpecification: SseSpecification?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}
+/// The configuration options for customer provided KMS encryption.
+class SseSpecification {
+    /// KMS Key Arn used to encrypt the group policy
+    KmsKeyArn: String?
+    /// Whether to encrypt the policy with the provided key or disable
+    /// encryption
+    CustomerManagedKeyEnabled: Boolean?
+}

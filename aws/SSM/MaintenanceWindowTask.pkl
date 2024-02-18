@@ -1,0 +1,71 @@
+/// Resource Type definition for AWS::SSM::MaintenanceWindowTask
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSM::MaintenanceWindowTask"
+Properties: Props?
+class Props {
+    MaxErrors: String?
+    Description: String?
+    ServiceRoleArn: String?
+    Priority: Int?
+    MaxConcurrency: String?
+    Targets: Listing<Target>?
+    Name: String?
+    TaskArn: String?
+    TaskInvocationParameters: TaskInvocationParameters?
+    WindowId: String?
+    TaskParameters: Mapping?
+    TaskType: String?
+    CutoffBehavior: String?
+    Id: String?
+    LoggingInfo: LoggingInfo?
+}
+class Target {
+    Values: Listing<String>
+    Key: String
+}
+class TaskInvocationParameters {
+    MaintenanceWindowStepFunctionsParameters: MaintenanceWindowStepFunctionsParameters?
+    MaintenanceWindowRunCommandParameters: MaintenanceWindowRunCommandParameters?
+    MaintenanceWindowLambdaParameters: MaintenanceWindowLambdaParameters?
+    MaintenanceWindowAutomationParameters: MaintenanceWindowAutomationParameters?
+}
+class MaintenanceWindowStepFunctionsParameters {
+    Input: String?
+    Name: String?
+}
+class MaintenanceWindowRunCommandParameters {
+    TimeoutSeconds: Int?
+    Comment: String?
+    OutputS3KeyPrefix: String?
+    Parameters: Mapping?
+    CloudWatchOutputConfig: CloudWatchOutputConfig?
+    DocumentHashType: String?
+    ServiceRoleArn: String?
+    NotificationConfig: NotificationConfig?
+    DocumentVersion: String?
+    OutputS3BucketName: String?
+    DocumentHash: String?
+}
+class CloudWatchOutputConfig {
+    CloudWatchOutputEnabled: Boolean?
+    CloudWatchLogGroupName: String?
+}
+class NotificationConfig {
+    NotificationEvents: Listing<String>?
+    NotificationArn: String
+    NotificationType: String?
+}
+class MaintenanceWindowLambdaParameters {
+    Qualifier: String?
+    Payload: String?
+    ClientContext: String?
+}
+class MaintenanceWindowAutomationParameters {
+    Parameters: Mapping?
+    DocumentVersion: String?
+}
+class LoggingInfo {
+    Region: String
+    S3Prefix: String?
+    S3Bucket: String
+}

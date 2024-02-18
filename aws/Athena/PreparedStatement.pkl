@@ -1,0 +1,14 @@
+/// Resource schema for AWS::Athena::PreparedStatement
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Athena::PreparedStatement"
+Properties: Props?
+class Props {
+    /// The name of the prepared statement.
+    StatementName: String(length <= 256 && length >= 1)?
+    /// The name of the workgroup to which the prepared statement belongs.
+    WorkGroup: String(length <= 128 && length >= 1)?
+    /// The description of the prepared statement.
+    Description: String(length <= 1024 && length >= 1)?
+    /// The query string for the prepared statement.
+    QueryStatement: String(length <= 262144 && length >= 1)?
+}

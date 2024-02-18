@@ -1,0 +1,16 @@
+/// Enables a control on a specified target.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ControlTower::EnabledControl"
+Properties: Props?
+class Props {
+    /// Arn of the control.
+    ControlIdentifier: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:aws[0-9a-zA-Z_\-:\/]+$"#)))?
+    /// Arn for Organizational unit to which the control needs to be applied
+    TargetIdentifier: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:aws[0-9a-zA-Z_\-:\/]+$"#)))?
+    /// Parameters to configure the enabled control behavior.
+    Parameters: Listing<EnabledControlParameter>?
+}
+class EnabledControlParameter {
+    Value: Mapping
+    Key: String
+}

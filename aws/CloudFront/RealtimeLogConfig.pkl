@@ -1,0 +1,19 @@
+/// Resource Type definition for AWS::CloudFront::RealtimeLogConfig
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::RealtimeLogConfig"
+Properties: Props?
+class Props {
+    Arn: String?
+    EndPoints: Listing<EndPoint>?
+    Fields: Listing<String>?
+    Name: String?
+    SamplingRate: Float?
+}
+class EndPoint {
+    KinesisStreamConfig: KinesisStreamConfig
+    StreamType: String
+}
+class KinesisStreamConfig {
+    RoleArn: String
+    StreamArn: String
+}

@@ -1,0 +1,30 @@
+/// Resource Type definition for AWS::ApiGatewayV2::Stage
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGatewayV2::Stage"
+Properties: Props?
+class Props {
+    DeploymentId: String?
+    Description: String?
+    AutoDeploy: Boolean?
+    RouteSettings: Mapping?
+    StageName: String?
+    StageVariables: Mapping?
+    AccessPolicyId: String?
+    ClientCertificateId: String?
+    AccessLogSettings: AccessLogSettings?
+    Id: String?
+    ApiId: String?
+    DefaultRouteSettings: RouteSettings?
+    Tags: Mapping?
+}
+class AccessLogSettings {
+    DestinationArn: String?
+    Format: String?
+}
+class RouteSettings {
+    DetailedMetricsEnabled: Boolean?
+    LoggingLevel: String?
+    DataTraceEnabled: Boolean?
+    ThrottlingBurstLimit: Int?
+    ThrottlingRateLimit: Float?
+}

@@ -1,0 +1,85 @@
+/// Resource schema for AWS::ImageBuilder::Image
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ImageBuilder::Image"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the image.
+    Arn: String?
+    /// The name of the image.
+    Name: String?
+    /// The image tests configuration used when creating this image.
+    ImageTestsConfiguration: ImageTestsConfiguration?
+    /// The Amazon Resource Name (ARN) of the image recipe that defines how
+    /// images are configured, tested, and assessed.
+    ImageRecipeArn: String?
+    /// The Amazon Resource Name (ARN) of the container recipe that defines
+    /// how images are configured and tested.
+    ContainerRecipeArn: String?
+    /// The Amazon Resource Name (ARN) of the distribution configuration.
+    DistributionConfigurationArn: String?
+    /// The Amazon Resource Name (ARN) of the infrastructure configuration.
+    InfrastructureConfigurationArn: String?
+    /// Workflows to define the image build process
+    Workflows: Listing<WorkflowConfiguration>?
+    /// The AMI ID of the EC2 AMI in current region.
+    ImageId: String?
+    /// URI for containers created in current Region with default ECR image
+    /// tag
+    ImageUri: String?
+    /// Collects additional information about the image being created,
+    /// including the operating system (OS) version and package list.
+    EnhancedImageMetadataEnabled: Boolean?
+    /// Contains settings for vulnerability scans.
+    ImageScanningConfiguration: ImageScanningConfiguration?
+    /// The execution role name/ARN for the image build, if provided
+    ExecutionRole: String?
+    /// The tags associated with the image.
+    Tags: Mapping?
+}
+/// The image tests configuration used when creating this image.
+class ImageTestsConfiguration {
+    /// ImageTestsEnabled
+    ImageTestsEnabled: Boolean?
+    /// TimeoutMinutes
+    TimeoutMinutes: Int?
+}
+/// The workflow configuration of the image
+class WorkflowConfiguration {
+    /// The Amazon Resource Name (ARN) of the workflow
+    WorkflowArn: String?
+    /// The parameters associated with the workflow
+    Parameters: Listing<WorkflowParameter>?
+    /// The parallel group name
+    ParallelGroup: String?
+    /// Define execution decision in case of workflow failure
+    OnFailure: "CONTINUE" | "ABORT" | *Null
+}
+/// A parameter associated with the workflow
+class WorkflowParameter {
+    Name: String?
+    Value: Listing<String>?
+}
+/// Contains settings for Image Builder image resource and container image
+/// scans.
+class ImageScanningConfiguration {
+    /// Contains ECR settings for vulnerability scans.
+    EcrConfiguration: EcrConfiguration?
+    /// This sets whether Image Builder keeps a snapshot of the vulnerability
+    /// scans that Amazon Inspector runs against the build instance when you
+    /// create a new image.
+    ImageScanningEnabled: Boolean?
+}
+/// Settings for Image Builder to configure the ECR repository and output
+/// container images that are scanned.
+class EcrConfiguration {
+    /// Tags for Image Builder to apply the output container image that is
+    /// scanned. Tags can help you identify and manage your scanned images.
+    ContainerTags: Listing<String>?
+    /// The name of the container repository that Amazon Inspector scans to
+    /// identify findings for your container images. The name includes the
+    /// path for the repository location. If you don’t provide this
+    /// information, Image Builder creates a repository in your account named
+    /// image-builder-image-scanning-repository to use for vulnerability scans
+    /// for your output container images.
+    RepositoryName: String?
+}

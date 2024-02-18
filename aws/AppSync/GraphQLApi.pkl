@@ -1,0 +1,67 @@
+/// Resource Type definition for AWS::AppSync::GraphQLApi
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppSync::GraphQLApi"
+Properties: Props?
+class Props {
+    QueryDepthLimit: Int?
+    OpenIDConnectConfig: OpenIDConnectConfig?
+    IntrospectionConfig: String?
+    MergedApiExecutionRoleArn: String?
+    RealtimeDns: String?
+    OwnerContact: String?
+    ResolverCountLimit: Int?
+    Name: String?
+    AdditionalAuthenticationProviders: Listing<AdditionalAuthenticationProvider>?
+    RealtimeUrl: String?
+    GraphQLUrl: String?
+    GraphQLDns: String?
+    ApiType: String?
+    LambdaAuthorizerConfig: LambdaAuthorizerConfig?
+    XrayEnabled: Boolean?
+    Visibility: String?
+    Id: String?
+    Arn: String?
+    UserPoolConfig: UserPoolConfig?
+    ApiId: String?
+    Tags: Listing<Tag>?
+    GraphQLEndpointArn: String?
+    AuthenticationType: String?
+    LogConfig: LogConfig?
+}
+class OpenIDConnectConfig {
+    ClientId: String?
+    AuthTTL: Float?
+    Issuer: String?
+    IatTTL: Float?
+}
+class AdditionalAuthenticationProvider {
+    LambdaAuthorizerConfig: LambdaAuthorizerConfig?
+    OpenIDConnectConfig: OpenIDConnectConfig?
+    UserPoolConfig: CognitoUserPoolConfig?
+    AuthenticationType: String
+}
+class LambdaAuthorizerConfig {
+    IdentityValidationExpression: String?
+    AuthorizerUri: String?
+    AuthorizerResultTtlInSeconds: Float?
+}
+class CognitoUserPoolConfig {
+    AppIdClientRegex: String?
+    UserPoolId: String?
+    AwsRegion: String?
+}
+class UserPoolConfig {
+    AppIdClientRegex: String?
+    UserPoolId: String?
+    AwsRegion: String?
+    DefaultAction: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class LogConfig {
+    ExcludeVerboseContent: Boolean?
+    FieldLogLevel: String?
+    CloudWatchLogsRoleArn: String?
+}

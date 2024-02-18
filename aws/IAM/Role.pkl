@@ -1,0 +1,54 @@
+/// Resource Type definition for AWS::IAM::Role
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IAM::Role"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) for the role.
+    Arn: String?
+    /// The trust policy that is associated with this role.
+    AssumeRolePolicyDocument: Mapping | String | *Null
+    /// A description of the role that you provide.
+    Description: String?
+    /// A list of Amazon Resource Names (ARNs) of the IAM managed policies
+    /// that you want to attach to the role.
+    ManagedPolicyArns: Listing<String>?
+    /// The maximum session duration (in seconds) that you want to set for the
+    /// specified role. If you do not specify a value for this setting, the
+    /// default maximum of one hour is applied. This setting can have a value
+    /// from 1 hour to 12 hours.
+    MaxSessionDuration: Int?
+    /// The path to the role.
+    Path: String?
+    /// The ARN of the policy used to set the permissions boundary for the
+    /// role.
+    PermissionsBoundary: String?
+    /// Adds or updates an inline policy document that is embedded in the
+    /// specified IAM role.
+    Policies: Listing<Policy>?
+    /// The stable and unique string identifying the role.
+    RoleId: String?
+    /// A name for the IAM role, up to 64 characters in length.
+    RoleName: String?
+    /// A list of tags that are attached to the role.
+    Tags: Listing<Tag>?
+}
+/// The inline policy document that is embedded in the specified IAM role.
+class Policy {
+    /// The policy document.
+    PolicyDocument: String | Mapping
+    /// The friendly name (not ARN) identifying the policy.
+    PolicyName: String
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String
+}

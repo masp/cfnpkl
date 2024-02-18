@@ -1,0 +1,54 @@
+/// Definition of AWS::AmplifyUIBuilder::Form Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AmplifyUIBuilder::Form"
+Properties: Props?
+class Props {
+    AppId: String?
+    Cta: FormCTA?
+    DataType: FormDataTypeConfig?
+    EnvironmentName: String?
+    Fields: Mapping?
+    FormActionType: "create" | "update" | *Null
+    Id: String?
+    LabelDecorator: "required" | "optional" | "none" | *Null
+    Name: String(length <= 255 && length >= 1)?
+    SchemaVersion: String?
+    SectionalElements: Mapping?
+    Style: FormStyle?
+    Tags: Mapping?
+}
+class FormCTA {
+    Position: "top" | "bottom" | "top_and_bottom" | *Null
+    Clear: FormButton?
+    Cancel: FormButton?
+    Submit: FormButton?
+}
+class FormButton {
+    Excluded: Boolean?
+    Children: String?
+    Position: FieldPosition0 | FieldPosition1 | FieldPosition2 | *Null
+}
+class FieldPosition0 {
+    Fixed: "first"
+}
+class FieldPosition1 {
+    RightOf: String
+}
+class FieldPosition2 {
+    Below: String
+}
+class FormDataTypeConfig {
+    DataSourceType: "DataStore" | "Custom"
+    DataTypeName: String
+}
+class FormStyle {
+    HorizontalGap: FormStyleConfig0 | FormStyleConfig1 | *Null
+    VerticalGap: FormStyleConfig0 | FormStyleConfig1 | *Null
+    OuterPadding: FormStyleConfig0 | FormStyleConfig1 | *Null
+}
+class FormStyleConfig0 {
+    TokenReference: String
+}
+class FormStyleConfig1 {
+    Value: String
+}

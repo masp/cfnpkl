@@ -1,0 +1,14 @@
+/// Definition of AWS::PCAConnectorAD::Connector Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::PCAConnectorAD::Connector"
+Properties: Props?
+class Props {
+    CertificateAuthorityArn: String(length <= 200 && length >= 5 && matches(Regex(#"^arn:[\w-]+:acm-pca:[\w-]+:[0-9]+:certificate-authority(\/[\w-]+)$"#)))?
+    ConnectorArn: String(length <= 200 && length >= 5 && matches(Regex(#"^arn:[\w-]+:pca-connector-ad:[\w-]+:[0-9]+:connector(\/[\w-]+)$"#)))?
+    DirectoryId: String(matches(Regex(#"^d-[0-9a-f]{10}$"#)))?
+    Tags: Mapping?
+    VpcInformation: VpcInformation?
+}
+class VpcInformation {
+    SecurityGroupIds: Listing<String(length <= 20 && length >= 11 && matches(Regex(#"^(?:sg-[0-9a-f]{8}|sg-[0-9a-f]{17})$"#)))>
+}

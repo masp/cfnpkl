@@ -1,0 +1,20 @@
+/// The AWS::EC2::SubnetCidrBlock resource creates association between
+/// subnet and IPv6 CIDR
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::SubnetCidrBlock"
+Properties: Props?
+class Props {
+    /// Information about the IPv6 association.
+    Id: String?
+    /// The IPv6 network range for the subnet, in CIDR notation. The subnet
+    /// size must use a /64 prefix length
+    Ipv6CidrBlock: String(length <= 42)?
+    /// The ID of an IPv6 Amazon VPC IP Address Manager (IPAM) pool from which
+    /// to allocate, to get the subnet's CIDR
+    Ipv6IpamPoolId: String?
+    /// The netmask length of the IPv6 CIDR to allocate to the subnet from an
+    /// IPAM pool
+    Ipv6NetmaskLength: Int?
+    /// The ID of the subnet
+    SubnetId: String?
+}

@@ -1,0 +1,14 @@
+/// Resource Type definition for AWS::SSM::ResourcePolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSM::ResourcePolicy"
+Properties: Props?
+class Props {
+    /// Arn of OpsItemGroup etc.
+    ResourceArn: String?
+    /// Actual policy statement.
+    Policy: Mapping | String | *Null
+    /// An unique identifier within the policies of a resource.
+    PolicyId: String?
+    /// A snapshot identifier for the policy over time.
+    PolicyHash: String?
+}

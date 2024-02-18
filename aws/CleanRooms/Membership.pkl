@@ -1,0 +1,39 @@
+/// Represents an AWS account that is a part of a collaboration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CleanRooms::Membership"
+Properties: Props?
+class Props {
+    Arn: String(length <= 100)?
+    /// An arbitrary set of tags (key-value pairs) for this cleanrooms
+    /// membership.
+    Tags: Listing<Tag>?
+    CollaborationArn: String(length <= 100)?
+    CollaborationCreatorAccountId: String(length <= 12 && length >= 12 && matches(Regex(#"^\d+$"#)))?
+    CollaborationIdentifier: String(length <= 36 && length >= 36 && matches(Regex(#"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"#)))?
+    MembershipIdentifier: String(length <= 36 && length >= 36 && matches(Regex(#"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"#)))?
+    QueryLogStatus: "ENABLED" | "DISABLED" | *Null
+    DefaultResultConfiguration: MembershipProtectedQueryResultConfiguration?
+    PaymentConfiguration: MembershipPaymentConfiguration?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}
+class MembershipProtectedQueryResultConfiguration {
+    OutputConfiguration: MembershipProtectedQueryOutputConfiguration
+    RoleArn: String(length <= 512 && length >= 32)?
+}
+class MembershipProtectedQueryOutputConfiguration {
+    S3: ProtectedQueryS3OutputConfiguration
+}
+class ProtectedQueryS3OutputConfiguration {
+    ResultFormat: "CSV" | "PARQUET"
+    Bucket: String(length <= 63 && length >= 3)
+    KeyPrefix: String?
+}
+class MembershipPaymentConfiguration {
+    QueryCompute: MembershipQueryComputePaymentConfig
+}
+class MembershipQueryComputePaymentConfig {
+    IsResponsible: Boolean
+}

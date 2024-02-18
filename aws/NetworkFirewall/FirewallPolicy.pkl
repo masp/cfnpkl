@@ -1,0 +1,59 @@
+/// Resource type definition for AWS::NetworkFirewall::FirewallPolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkFirewall::FirewallPolicy"
+Properties: Props?
+class Props {
+    FirewallPolicyName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]+$"#)))?
+    FirewallPolicyArn: String(length <= 256 && length >= 1 && matches(Regex(#"^(arn:aws.*)$"#)))?
+    FirewallPolicy: FirewallPolicy?
+    FirewallPolicyId: String(length <= 36 && length >= 36 && matches(Regex(#"^([0-9a-f]{8})-([0-9a-f]{4}-){3}([0-9a-f]{12})$"#)))?
+    Description: String(length <= 512 && length >= 1 && matches(Regex(#"^.*$"#)))?
+    Tags: Listing<Tag>?
+}
+class FirewallPolicy {
+    StatelessDefaultActions: Listing<String>
+    StatelessFragmentDefaultActions: Listing<String>
+    StatelessCustomActions: Listing<CustomAction>?
+    StatelessRuleGroupReferences: Listing<StatelessRuleGroupReference>?
+    StatefulRuleGroupReferences: Listing<StatefulRuleGroupReference>?
+    StatefulDefaultActions: Listing<String>?
+    StatefulEngineOptions: StatefulEngineOptions?
+    PolicyVariables: PolicyVariables?
+    TLSInspectionConfigurationArn: String(length <= 256 && length >= 1 && matches(Regex(#"^(arn:aws.*)$"#)))?
+}
+class CustomAction {
+    ActionName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    ActionDefinition: ActionDefinition
+}
+class ActionDefinition {
+    PublishMetricAction: PublishMetricAction?
+}
+class PublishMetricAction {
+    Dimensions: Listing<Dimension>
+}
+class Dimension {
+    Value: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-_ ]+$"#)))
+}
+class StatelessRuleGroupReference {
+    ResourceArn: String(length <= 256 && length >= 1 && matches(Regex(#"^(arn:aws.*)$"#)))
+    Priority: Int
+}
+class StatefulRuleGroupReference {
+    ResourceArn: String(length <= 256 && length >= 1 && matches(Regex(#"^(arn:aws.*)$"#)))
+    Priority: Int?
+    Override: StatefulRuleGroupOverride?
+}
+class StatefulRuleGroupOverride {
+    Action: "DROP_TO_ALERT" | *Null
+}
+class StatefulEngineOptions {
+    RuleOrder: "DEFAULT_ACTION_ORDER" | "STRICT_ORDER" | *Null
+    StreamExceptionPolicy: "DROP" | "CONTINUE" | "REJECT" | *Null
+}
+class PolicyVariables {
+    RuleVariables: Mapping?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^.*$"#)))
+    Value: String(length <= 255 && length >= 0 && matches(Regex(#"^.*$"#)))
+}

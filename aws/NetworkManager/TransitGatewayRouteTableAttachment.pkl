@@ -1,0 +1,62 @@
+/// AWS::NetworkManager::TransitGatewayRouteTableAttachment Resource Type
+/// definition.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkManager::TransitGatewayRouteTableAttachment"
+Properties: Props?
+class Props {
+    /// The Id of peering between transit gateway and core network.
+    PeeringId: String?
+    /// The Arn of transit gateway route table.
+    TransitGatewayRouteTableArn: String?
+    /// The ID of a core network where you're creating a site-to-site VPN
+    /// attachment.
+    CoreNetworkId: String?
+    /// The ARN of a core network for the VPC attachment.
+    CoreNetworkArn: String?
+    /// The ID of the attachment.
+    AttachmentId: String?
+    /// Owner account of the attachment.
+    OwnerAccountId: String?
+    /// The type of attachment.
+    AttachmentType: String?
+    /// The state of the attachment.
+    State: String?
+    /// The Region where the edge is located.
+    EdgeLocation: String?
+    /// The ARN of the Resource.
+    ResourceArn: String?
+    /// The policy rule number associated with the attachment.
+    AttachmentPolicyRuleNumber: Int?
+    /// The name of the segment that attachment is in.
+    SegmentName: String?
+    /// The attachment to move from one segment to another.
+    ProposedSegmentChange: ProposedSegmentChange?
+    /// Creation time of the attachment.
+    CreatedAt: String?
+    /// Last update time of the attachment.
+    UpdatedAt: String?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// The attachment to move from one segment to another.
+class ProposedSegmentChange {
+    /// The key-value tags that changed for the segment.
+    Tags: Listing<Tag>?
+    /// The rule number in the policy document that applies to this change.
+    AttachmentPolicyRuleNumber: Int?
+    /// The name of the segment to change.
+    SegmentName: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String
+}

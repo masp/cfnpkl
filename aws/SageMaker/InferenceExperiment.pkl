@@ -1,0 +1,140 @@
+/// Resource Type definition for AWS::SageMaker::InferenceExperiment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::InferenceExperiment"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the inference experiment.
+    Arn: String(length <= 256 && length >= 20 && matches(Regex(#"^arn:aws[a-z\-]*:sagemaker:[a-z0-9\-]*:[0-9]{12}:inference-experiment/[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    /// The name for the inference experiment.
+    Name: String(length <= 120 && length >= 1)?
+    /// The type of the inference experiment that you want to run.
+    Type: "ShadowMode" | *Null
+    /// The description of the inference experiment.
+    Description: String(length <= 1024 && length >= 1 && matches(Regex(#".*"#)))?
+    /// The Amazon Resource Name (ARN) of an IAM role that Amazon SageMaker
+    /// can assume to access model artifacts and container images, and manage
+    /// Amazon SageMaker Inference endpoints for model deployment.
+    RoleArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:aws[a-z\-]*:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    EndpointName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*"#)))?
+    EndpointMetadata: EndpointMetadata?
+    Schedule: InferenceExperimentSchedule?
+    /// The AWS Key Management Service (AWS KMS) key that Amazon SageMaker
+    /// uses to encrypt data on the storage volume attached to the ML compute
+    /// instance that hosts the endpoint.
+    KmsKey: String(length <= 2048 && matches(Regex(#".*"#)))?
+    DataStorageConfig: DataStorageConfig?
+    /// An array of ModelVariantConfig objects. Each ModelVariantConfig object
+    /// in the array describes the infrastructure configuration for the
+    /// corresponding variant.
+    ModelVariants: Listing<ModelVariantConfig>?
+    ShadowModeConfig: ShadowModeConfig?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The timestamp at which you created the inference experiment.
+    CreationTime: String?
+    /// The timestamp at which you last modified the inference experiment.
+    LastModifiedTime: String?
+    /// The status of the inference experiment.
+    Status: "Creating" | "Created" | "Updating" | "Starting" | "Stopping" | "Running" | "Completed" | "Cancelled" | *Null
+    /// The error message or client-specified reason from the
+    /// StopInferenceExperiment API, that explains the status of the inference
+    /// experiment.
+    StatusReason: String(length <= 1024 && length >= 1 && matches(Regex(#".*"#)))?
+    /// The desired state of the experiment after starting or stopping
+    /// operation.
+    DesiredState: "Running" | "Completed" | "Cancelled" | *Null
+}
+/// The metadata of the endpoint on which the inference experiment ran.
+class EndpointMetadata {
+    EndpointName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*"#)))
+    /// The name of the endpoint configuration.
+    EndpointConfigName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*"#)))?
+    /// The status of the endpoint. For possible values of the status of an
+    /// endpoint.
+    EndpointStatus: "Creating" | "Updating" | "SystemUpdating" | "RollingBack" | "InService" | "OutOfService" | "Deleting" | "Failed"(matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*"#))) | *Null
+}
+/// The duration for which you want the inference experiment to run.
+class InferenceExperimentSchedule {
+    /// The timestamp at which the inference experiment started or will start.
+    StartTime: String?
+    /// The timestamp at which the inference experiment ended or will end.
+    EndTime: String?
+}
+/// The Amazon S3 location and configuration for storing inference request
+/// and response data.
+class DataStorageConfig {
+    /// The Amazon S3 bucket where the inference request and response data is
+    /// stored.
+    Destination: String(length <= 512 && matches(Regex(#"^(https|s3)://([^/])/?(.*)$"#)))
+    /// The AWS Key Management Service key that Amazon SageMaker uses to
+    /// encrypt captured data at rest using Amazon S3 server-side encryption.
+    KmsKey: String(length <= 2048 && matches(Regex(#".*"#)))?
+    ContentType: CaptureContentTypeHeader?
+}
+/// Configuration specifying how to treat different headers. If no headers
+/// are specified SageMaker will by default base64 encode when capturing
+/// the data.
+class CaptureContentTypeHeader {
+    /// The list of all content type headers that SageMaker will treat as CSV
+    /// and capture accordingly.
+    CsvContentTypes: Listing<String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*/[a-zA-Z0-9](-*[a-zA-Z0-9.])*"#)))>?
+    /// The list of all content type headers that SageMaker will treat as JSON
+    /// and capture accordingly.
+    JsonContentTypes: Listing<String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*/[a-zA-Z0-9](-*[a-zA-Z0-9.])*"#)))>?
+}
+/// Contains information about the deployment options of a model.
+class ModelVariantConfig {
+    /// The name of the Amazon SageMaker Model entity.
+    ModelName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*"#)))
+    /// The name of the variant.
+    VariantName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9]([\-a-zA-Z0-9]*[a-zA-Z0-9])?"#)))
+    InfrastructureConfig: ModelInfrastructureConfig
+}
+/// The configuration for the infrastructure that the model will be
+/// deployed to.
+class ModelInfrastructureConfig {
+    /// The type of the inference experiment that you want to run.
+    InfrastructureType: "RealTimeInference"
+    RealTimeInferenceConfig: RealTimeInferenceConfig
+}
+/// The infrastructure configuration for deploying the model to a real-
+/// time inference endpoint.
+class RealTimeInferenceConfig {
+    /// The instance type the model is deployed to.
+    InstanceType: String
+    /// The number of instances of the type specified by InstanceType.
+    InstanceCount: Int
+}
+/// The configuration of ShadowMode inference experiment type. Use this
+/// field to specify a production variant which takes all the inference
+/// requests, and a shadow variant to which Amazon SageMaker replicates a
+/// percentage of the inference requests. For the shadow variant also
+/// specify the percentage of requests that Amazon SageMaker replicates.
+class ShadowModeConfig {
+    /// The name of the production variant, which takes all the inference
+    /// requests.
+    SourceModelVariantName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9]([\-a-zA-Z0-9]*[a-zA-Z0-9])?"#)))
+    /// List of shadow variant configurations.
+    ShadowModelVariants: Listing<ShadowModelVariantConfig>
+}
+/// The name and sampling percentage of a shadow variant.
+class ShadowModelVariantConfig {
+    /// The name of the shadow variant.
+    ShadowModelVariantName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9]([\-a-zA-Z0-9]*[a-zA-Z0-9])?"#)))
+    /// The percentage of inference requests that Amazon SageMaker replicates
+    /// from the production variant to the shadow variant.
+    SamplingPercentage: Int
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+}

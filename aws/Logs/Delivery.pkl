@@ -1,0 +1,33 @@
+/// This structure contains information about one delivery in your
+/// account.  A delivery is a connection between a logical delivery source
+/// and a logical delivery destination.  For more information, see [Create
+/// Delivery](https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIR
+/// eference/API_CreateDelivery.html).
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Logs::Delivery"
+Properties: Props?
+class Props {
+    /// The unique ID that identifies this delivery in your account.
+    DeliveryId: String(length <= 64 && length >= 1 && matches(Regex(#"^[0-9A-Za-z]+$"#)))?
+    /// The Amazon Resource Name (ARN) that uniquely identifies this delivery.
+    Arn: String(length <= 2048 && length >= 16 && matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))?
+    /// The name of the delivery source that is associated with this delivery.
+    DeliverySourceName: String(length <= 60 && length >= 1 && matches(Regex(#"[\w-]*$"#)))?
+    /// The ARN of the delivery destination that is associated with this
+    /// delivery.
+    DeliveryDestinationArn: String(length <= 2048 && length >= 16 && matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))?
+    /// Displays whether the delivery destination associated with this
+    /// delivery is CloudWatch Logs, Amazon S3, or Kinesis Data Firehose.
+    DeliveryDestinationType: String(length <= 12 && length >= 1 && matches(Regex(#"^[0-9A-Za-z]+$"#)))?
+    /// The tags that have been assigned to this delivery.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode
+    Value: String(length <= 256 && length >= 0)
+}

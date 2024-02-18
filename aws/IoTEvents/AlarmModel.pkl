@@ -1,0 +1,295 @@
+/// The AWS::IoTEvents::AlarmModel resource creates a alarm model. AWS IoT
+/// Events alarms help you monitor your data for changes. The data can be
+/// metrics that you measure for your equipment and processes. You can
+/// create alarms that send notifications when a threshold is breached.
+/// Alarms help you detect issues, streamline maintenance, and optimize
+/// performance of your equipment and processes.  Alarms are instances of
+/// alarm models. The alarm model specifies what to detect, when to send
+/// notifications, who gets notified, and more. You can also specify one
+/// or more supported actions that occur when the alarm state changes. AWS
+/// IoT Events routes input attributes derived from your data to the
+/// appropriate alarms. If the data that you're monitoring is outside the
+/// specified range, the alarm is invoked. You can also acknowledge the
+/// alarms or set them to the snooze mode.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTEvents::AlarmModel"
+Properties: Props?
+class Props {
+    /// The name of the alarm model.
+    AlarmModelName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    /// A brief description of the alarm model.
+    AlarmModelDescription: String(length <= 128)?
+    /// The ARN of the role that grants permission to AWS IoT Events to
+    /// perform its operations.
+    RoleArn: String(length <= 2048 && length >= 1)?
+    /// The value used to identify a alarm instance. When a device or system
+    /// sends input, a new alarm instance with a unique key value is created.
+    /// AWS IoT Events can continue to route input to its corresponding alarm
+    /// instance based on this identifying information.  This parameter uses a
+    /// JSON-path expression to select the attribute-value pair in the message
+    /// payload that is used for identification. To route the message to the
+    /// correct alarm instance, the device must send a message payload that
+    /// contains the same attribute-value.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^((`[\w\- ]+`)|([\w\-]+))(\.((`[\w\- ]+`)|([\w\-]+)))*$"#)))?
+    /// A non-negative integer that reflects the severity level of the alarm.
+    Severity: Int?
+    AlarmRule: AlarmRule?
+    AlarmEventActions: AlarmEventActions?
+    AlarmCapabilities: AlarmCapabilities?
+    /// An array of key-value pairs to apply to this resource.  For more
+    /// information, see [Tag](https://docs.aws.amazon.com/AWSCloudFormation/l
+    /// atest/UserGuide/aws-properties-resource-tags.html).
+    Tags: Listing<Tag>?
+}
+/// Defines when your alarm is invoked.
+class AlarmRule {
+    SimpleRule: SimpleRule?
+}
+/// A rule that compares an input property value to a threshold value with
+/// a comparison operator.
+class SimpleRule {
+    /// The value on the left side of the comparison operator. You can specify
+    /// an AWS IoT Events input attribute as an input property.
+    InputProperty: String(length <= 512 && length >= 1)
+    /// The comparison operator.
+    ComparisonOperator: "GREATER" | "GREATER_OR_EQUAL" | "LESS" | "LESS_OR_EQUAL" | "EQUAL" | "NOT_EQUAL"
+    /// The value on the right side of the comparison operator. You can enter
+    /// a number or specify an AWS IoT Events input attribute.
+    Threshold: String(length <= 512 && length >= 1)
+}
+/// Contains information about one or more alarm actions.
+class AlarmEventActions {
+    AlarmActions: Listing<AlarmAction>?
+}
+/// The actions to be performed.
+class AlarmAction {
+    DynamoDB: DynamoDB?
+    DynamoDBv2: DynamoDBv2?
+    Firehose: Firehose?
+    IotEvents: IotEvents?
+    IotSiteWise: IotSiteWise?
+    IotTopicPublish: IotTopicPublish?
+    Lambda: Lambda?
+    Sns: Sns?
+    Sqs: Sqs?
+}
+/// Writes to the DynamoDB table that you created. The default action
+/// payload contains all attribute-value pairs that have the information
+/// about the alarm model instance and the event that triggered the
+/// action. You can also customize the [payload](https://docs.aws.amazon.c
+/// om/iotevents/latest/apireference/API_Payload.html). One column of the
+/// DynamoDB table receives all attribute-value pairs in the payload that
+/// you specify. For more information, see [Actions](https://docs.aws.amaz
+/// on.com/iotevents/latest/developerguide/iotevents-event-actions.html)
+/// in *AWS IoT Events Developer Guide*.
+class DynamoDB {
+    /// The name of the hash key (also called the partition key).
+    HashKeyField: String
+    /// The data type for the hash key (also called the partition key). You
+    /// can specify the following values:  * `STRING` - The hash key is a
+    /// string.  * `NUMBER` - The hash key is a number.  If you don't specify
+    /// `hashKeyType`, the default value is `STRING`.
+    HashKeyType: String?
+    /// The value of the hash key (also called the partition key).
+    HashKeyValue: String
+    /// The type of operation to perform. You can specify the following
+    /// values:  * `INSERT` - Insert data as a new item into the DynamoDB
+    /// table. This item uses the specified hash key as a partition key. If
+    /// you specified a range key, the item uses the range key as a sort key.
+    /// * `UPDATE` - Update an existing item of the DynamoDB table with new
+    /// data. This item's partition key must match the specified hash key. If
+    /// you specified a range key, the range key must match the item's sort
+    /// key.  * `DELETE` - Delete an existing item of the DynamoDB table. This
+    /// item's partition key must match the specified hash key. If you
+    /// specified a range key, the range key must match the item's sort key.
+    /// If you don't specify this parameter, AWS IoT Events triggers the
+    /// `INSERT` operation.
+    Operation: String?
+    Payload: Payload?
+    /// The name of the DynamoDB column that receives the action payload.  If
+    /// you don't specify this parameter, the name of the DynamoDB column is
+    /// `payload`.
+    PayloadField: String?
+    /// The name of the range key (also called the sort key).
+    RangeKeyField: String?
+    /// The data type for the range key (also called the sort key), You can
+    /// specify the following values:  * `STRING` - The range key is a string.
+    /// * `NUMBER` - The range key is number.  If you don't specify
+    /// `rangeKeyField`, the default value is `STRING`.
+    RangeKeyType: String?
+    /// The value of the range key (also called the sort key).
+    RangeKeyValue: String?
+    /// The name of the DynamoDB table.
+    TableName: String
+}
+/// Information needed to configure the payload.  By default, AWS IoT
+/// Events generates a standard payload in JSON for any action. This
+/// action payload contains all attribute-value pairs that have the
+/// information about the alarm model instance and the event triggered the
+/// action. To configure the action payload, you can use
+/// `contentExpression`.
+class Payload {
+    /// The content of the payload. You can use a string expression that
+    /// includes quoted strings (`'<string>'`), variables
+    /// (`$variable.<variable-name>`), input values (`$input.<input-
+    /// name>.<path-to-datum>`), string concatenations, and quoted strings
+    /// that contain `${}` as the content. The recommended maximum size of a
+    /// content expression is 1 KB.
+    ContentExpression: String(length >= 1)
+    /// The value of the payload type can be either `STRING` or `JSON`.
+    Type: String
+}
+/// Defines an action to write to the Amazon DynamoDB table that you
+/// created. The default action payload contains all attribute-value pairs
+/// that have the information about the alarm model instance and the event
+/// that triggered the action. You can also customize the [payload](https:
+/// //docs.aws.amazon.com/iotevents/latest/apireference/API_Payload.html).
+/// A separate column of the DynamoDB table receives one attribute-value
+/// pair in the payload that you specify.  You can use expressions for
+/// parameters that are strings. For more information, see [Expressions](h
+/// ttps://docs.aws.amazon.com/iotevents/latest/developerguide/iotevents-
+/// expressions.html) in the *AWS IoT Events Developer Guide*.
+class DynamoDBv2 {
+    Payload: Payload?
+    /// The name of the DynamoDB table.
+    TableName: String
+}
+/// Sends information about the alarm model instance and the event that
+/// triggered the action to an Amazon Kinesis Data Firehose delivery
+/// stream.
+class Firehose {
+    /// The name of the Kinesis Data Firehose delivery stream where the data
+    /// is written.
+    DeliveryStreamName: String
+    Payload: Payload?
+    /// A character separator that is used to separate records written to the
+    /// Kinesis Data Firehose delivery stream. Valid values are: '\n'
+    /// (newline), '\t' (tab), '\r\n' (Windows newline), ',' (comma).
+    Separator: String(matches(Regex(#"([\n\t])|(\r\n)|(,)"#)))?
+}
+/// Sends an AWS IoT Events input, passing in information about the alarm
+/// model instance and the event that triggered the action.
+class IotEvents {
+    /// The name of the AWS IoT Events input where the data is sent.
+    InputName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z][a-zA-Z0-9_]*$"#)))
+    Payload: Payload?
+}
+/// Sends information about the alarm model instance and the event that
+/// triggered the action to a specified asset property in AWS IoT
+/// SiteWise.
+class IotSiteWise {
+    /// The ID of the asset that has the specified property. You can specify
+    /// an expression.
+    AssetId: String?
+    /// A unique identifier for this entry. You can use the entry ID to track
+    /// which data entry causes an error in case of failure. The default is a
+    /// new unique identifier. You can also specify an expression.
+    EntryId: String?
+    /// The alias of the asset property. You can also specify an expression.
+    PropertyAlias: String?
+    /// The ID of the asset property. You can specify an expression.
+    PropertyId: String?
+    PropertyValue: AssetPropertyValue?
+}
+/// A structure that contains value information. For more information, see
+/// [AssetPropertyValue](https://docs.aws.amazon.com/iot-
+/// sitewise/latest/APIReference/API_AssetPropertyValue.html) in the *AWS
+/// IoT SiteWise API Reference*.
+class AssetPropertyValue {
+    /// The quality of the asset property value. The value must be `GOOD`,
+    /// `BAD`, or `UNCERTAIN`. You can also specify an expression.
+    Quality: String?
+    Timestamp: AssetPropertyTimestamp?
+    Value: AssetPropertyVariant
+}
+/// A structure that contains timestamp information. For more information,
+/// see [TimeInNanos](https://docs.aws.amazon.com/iot-
+/// sitewise/latest/APIReference/API_TimeInNanos.html) in the *AWS IoT
+/// SiteWise API Reference*.
+class AssetPropertyTimestamp {
+    /// The timestamp, in seconds, in the Unix epoch format. The valid range
+    /// is between `1-31556889864403199`. You can also specify an expression.
+    OffsetInNanos: String?
+    /// The nanosecond offset converted from `timeInSeconds`. The valid range
+    /// is between `0-999999999`. You can also specify an expression.
+    TimeInSeconds: String
+}
+/// A structure that contains an asset property value. For more
+/// information, see [Variant](https://docs.aws.amazon.com/iot-
+/// sitewise/latest/APIReference/API_Variant.html) in the *AWS IoT
+/// SiteWise API Reference*.
+class AssetPropertyVariant {
+    /// The asset property value is a Boolean value that must be `TRUE` or
+    /// `FALSE`. You can also specify an expression. If you use an expression,
+    /// the evaluated result should be a Boolean value.
+    BooleanValue: String?
+    /// The asset property value is a double. You can also specify an
+    /// expression. If you use an expression, the evaluated result should be a
+    /// double.
+    DoubleValue: String?
+    /// The asset property value is an integer. You can also specify an
+    /// expression. If you use an expression, the evaluated result should be
+    /// an integer.
+    IntegerValue: String?
+    /// The asset property value is a string. You can also specify an
+    /// expression. If you use an expression, the evaluated result should be a
+    /// string.
+    StringValue: String?
+}
+/// Information required to publish the MQTT message through the AWS IoT
+/// message broker.
+class IotTopicPublish {
+    /// The MQTT topic of the message. You can use a string expression that
+    /// includes variables (`$variable.<variable-name>`) and input values
+    /// (`$input.<input-name>.<path-to-datum>`) as the topic string.
+    MqttTopic: String(length <= 128 && length >= 1)
+    Payload: Payload?
+}
+class Lambda {
+    /// The ARN of the Lambda function that is executed.
+    FunctionArn: String(length <= 2048 && length >= 1)
+    Payload: Payload?
+}
+/// Information required to publish the Amazon SNS message.
+class Sns {
+    Payload: Payload?
+    /// The ARN of the Amazon SNS target where the message is sent.
+    TargetArn: String(length <= 2048 && length >= 1)
+}
+class Sqs {
+    Payload: Payload?
+    /// The URL of the SQS queue where the data is written.
+    QueueUrl: String
+    /// Set this to `TRUE` if you want the data to be base-64 encoded before
+    /// it is written to the queue. Otherwise, set this to `FALSE`.
+    UseBase64: Boolean?
+}
+/// Contains the configuration information of alarm state changes
+class AlarmCapabilities {
+    InitializationConfiguration: InitializationConfiguration?
+    AcknowledgeFlow: AcknowledgeFlow?
+}
+/// Specifies the default alarm state. The configuration applies to all
+/// alarms that were created based on this alarm model.
+class InitializationConfiguration {
+    /// The value must be TRUE or FALSE. If FALSE, all alarm instances created
+    /// based on the alarm model are activated. The default value is TRUE.
+    DisabledOnInitialization: Boolean
+}
+/// Specifies whether to get notified for alarm state changes.
+class AcknowledgeFlow {
+    /// The value must be TRUE or FALSE. If TRUE, you receive a notification
+    /// when the alarm state changes. You must choose to acknowledge the
+    /// notification before the alarm state can return to NORMAL. If FALSE,
+    /// you won't receive notifications. The alarm automatically changes to
+    /// the NORMAL state when the input property value returns to the
+    /// specified range.
+    Enabled: Boolean?
+}
+/// Tags to be applied to Input.
+class Tag {
+    /// Key of the Tag.
+    Key: String
+    /// Value of the Tag.
+    Value: String
+}

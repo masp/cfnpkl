@@ -1,0 +1,54 @@
+/// Resource Type definition for AWS::Route53Resolver::ResolverRule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53Resolver::ResolverRule"
+Properties: Props?
+class Props {
+    /// The ID of the endpoint that the rule is associated with.
+    ResolverEndpointId: String(length <= 64 && length >= 1)?
+    /// DNS queries for this domain name are forwarded to the IP addresses
+    /// that are specified in TargetIps
+    DomainName: String(length <= 256 && length >= 1)?
+    /// The name for the Resolver rule
+    Name: String(length <= 64 && length >= 0)?
+    /// When you want to forward DNS queries for specified domain name to
+    /// resolvers on your network, specify FORWARD. When you have a forwarding
+    /// rule to forward DNS queries for a domain to your network and you want
+    /// Resolver to process queries for a subdomain of that domain, specify
+    /// SYSTEM.
+    RuleType: "FORWARD" | "SYSTEM" | "RECURSIVE" | *Null
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// An array that contains the IP addresses and ports that an outbound
+    /// endpoint forwards DNS queries to. Typically, these are the IP
+    /// addresses of DNS resolvers on your network. Specify IPv4 addresses.
+    /// IPv6 is not supported.
+    TargetIps: Listing<TargetAddress>?
+    /// The Amazon Resource Name (ARN) of the resolver rule.
+    Arn: String?
+    /// The ID of the endpoint that the rule is associated with.
+    ResolverRuleId: String?
+}
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}
+class TargetAddress {
+    /// One IP address that you want to forward DNS queries to. You can
+    /// specify only IPv4 addresses.
+    Ip: String?
+    /// One IPv6 address that you want to forward DNS queries to. You can
+    /// specify only IPv6 addresses.
+    Ipv6: String?
+    /// The port at Ip that you want to forward DNS queries to.
+    Port: String(length <= 65535 && length >= 0)?
+    /// The protocol that you want to use to forward DNS queries.
+    Protocol: "Do53" | "DoH" | *Null
+}

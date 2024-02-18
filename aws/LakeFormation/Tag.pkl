@@ -1,0 +1,15 @@
+/// A resource schema representing a Lake Formation Tag.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LakeFormation::Tag"
+Properties: Props?
+class Props {
+    /// The identifier for the Data Catalog. By default, the account ID. The
+    /// Data Catalog is the persistent metadata store. It contains database
+    /// definitions, table definitions, and other control information to
+    /// manage your Lake Formation environment.
+    CatalogId: String(length <= 12 && length >= 12)?
+    /// The key-name for the LF-tag.
+    TagKey: String(length <= 128 && length >= 1 && matches(Regex(#"^([{a-zA-Z}{\s}{0-9}_.:\/=+\-@%]*)$"#)))?
+    /// A list of possible values an attribute can take.
+    TagValues: Listing<String(length <= 256 && length >= 0 && matches(Regex(#"^([{a-zA-Z}{\s}{0-9}_.:\*\/=+\-@%]*)$"#)))>?
+}

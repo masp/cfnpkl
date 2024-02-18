@@ -1,0 +1,61 @@
+/// Resource Type definition for AWS::Evidently::Experiment.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Evidently::Experiment"
+Properties: Props?
+class Props {
+    Arn: String(matches(Regex(#"arn:[^:]*:[^:]*:[^:]*:[^:]*:project/[-a-zA-Z0-9._]*/experiment/[-a-zA-Z0-9._]*"#)))?
+    Name: String(length <= 127 && length >= 1 && matches(Regex(#"[-a-zA-Z0-9._]*"#)))?
+    Project: String(length <= 2048 && length >= 0 && matches(Regex(#"([-a-zA-Z0-9._]*)|(arn:[^:]*:[^:]*:[^:]*:[^:]*:project/[-a-zA-Z0-9._]*)"#)))?
+    Description: String(length <= 160 && length >= 0)?
+    /// Start Experiment. Default is False
+    RunningStatus: Mapping | Mapping | *Null
+    RandomizationSalt: String(length <= 127 && length >= 0 && matches(Regex(#".*"#)))?
+    Treatments: Listing<TreatmentObject>?
+    MetricGoals: Listing<MetricGoalObject>?
+    SamplingRate: Int?
+    OnlineAbConfig: OnlineAbConfigObject?
+    Segment: String(length <= 2048 && length >= 0 && matches(Regex(#"([-a-zA-Z0-9._]*)|(arn:[^:]*:[^:]*:[^:]*:[^:]*:segment/[-a-zA-Z0-9._]*)"#)))?
+    RemoveSegment: Boolean?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+class TreatmentObject {
+    TreatmentName: String(length <= 127 && length >= 1 && matches(Regex(#"[-a-zA-Z0-9._]*"#)))
+    Description: String?
+    Feature: String(matches(Regex(#"([-a-zA-Z0-9._]*)|(arn:[^:]*:[^:]*:[^:]*:[^:]*:.*)"#)))
+    Variation: String(length <= 255 && length >= 1 && matches(Regex(#"[-a-zA-Z0-9._]*"#)))
+}
+class MetricGoalObject {
+    MetricName: String(length <= 255 && length >= 1 && matches(Regex(#"^[\S]+$"#)))
+    /// The JSON path to reference the entity id in the event.
+    EntityIdKey: String
+    /// The JSON path to reference the numerical metric value in the event.
+    ValueKey: String
+    /// Event patterns have the same structure as the events they match. Rules
+    /// use event patterns to select events. An event pattern either matches
+    /// an event or it doesn't.
+    EventPattern: String?
+    UnitLabel: String(length <= 256 && length >= 1 && matches(Regex(#".*"#)))?
+    DesiredChange: "INCREASE" | "DECREASE"
+}
+class OnlineAbConfigObject {
+    ControlTreatmentName: String(length <= 127 && length >= 1 && matches(Regex(#"[-a-zA-Z0-9._]*"#)))?
+    TreatmentWeights: Listing<TreatmentToWeight>?
+}
+class TreatmentToWeight {
+    Treatment: String(length <= 127 && length >= 1 && matches(Regex(#"[-a-zA-Z0-9._]*"#)))
+    SplitWeight: Int
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z+-=._:/]+$"#)))
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

@@ -1,0 +1,26 @@
+/// Resource Type definition for AWS::MediaConvert::JobTemplate
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaConvert::JobTemplate"
+Properties: Props?
+class Props {
+    Category: String?
+    Description: String?
+    AccelerationSettings: AccelerationSettings?
+    Priority: Int?
+    StatusUpdateInterval: String?
+    SettingsJson: Mapping?
+    Id: String?
+    Arn: String?
+    Queue: String?
+    HopDestinations: Listing<HopDestination>?
+    Tags: Mapping?
+    Name: String?
+}
+class AccelerationSettings {
+    Mode: String
+}
+class HopDestination {
+    WaitMinutes: Int?
+    Queue: String?
+    Priority: Int?
+}

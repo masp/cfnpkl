@@ -1,0 +1,65 @@
+/// Resource Type definition for AWS::SageMaker::InferenceComponent
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::InferenceComponent"
+Properties: Props?
+class Props {
+    InferenceComponentArn: String(length <= 256 && length >= 1)?
+    InferenceComponentName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*$"#)))?
+    EndpointArn: String(length <= 256 && length >= 1)?
+    EndpointName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*$"#)))?
+    VariantName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*$"#)))?
+    FailureReason: String(length <= 63)?
+    Specification: InferenceComponentSpecification?
+    RuntimeConfig: InferenceComponentRuntimeConfig?
+    InferenceComponentStatus: "InService" | "Creating" | "Updating" | "Failed" | "Deleting" | *Null
+    CreationTime: String?
+    LastModifiedTime: String?
+    Tags: Listing<Tag>?
+}
+/// The specification for the inference component
+class InferenceComponentSpecification {
+    ModelName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*$"#)))?
+    Container: InferenceComponentContainerSpecification?
+    StartupParameters: InferenceComponentStartupParameters?
+    ComputeResourceRequirements: InferenceComponentComputeResourceRequirements
+}
+class InferenceComponentContainerSpecification {
+    DeployedImage: DeployedImage?
+    Image: String(length <= 255 && matches(Regex(#"[\S]+"#)))?
+    ArtifactUrl: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))?
+    Environment: Mapping?
+}
+class DeployedImage {
+    SpecifiedImage: String(length <= 255 && matches(Regex(#"[\S]+"#)))?
+    ResolvedImage: String(length <= 255 && matches(Regex(#"[\S]+"#)))?
+    ResolutionTime: String?
+}
+class InferenceComponentStartupParameters {
+    ModelDataDownloadTimeoutInSeconds: Int?
+    ContainerStartupHealthCheckTimeoutInSeconds: Int?
+}
+class InferenceComponentComputeResourceRequirements {
+    NumberOfCpuCoresRequired: Float?
+    NumberOfAcceleratorDevicesRequired: Float?
+    MinMemoryRequiredInMb: Int?
+    MaxMemoryRequiredInMb: Int?
+}
+/// The runtime config for the inference component
+class InferenceComponentRuntimeConfig {
+    CopyCount: Int?
+    DesiredCopyCount: Int?
+    CurrentCopyCount: Int?
+}
+/// A tag in the form of a key-value pair to associate with the resource
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -
+    Value: String(length <= 256 && length >= 1)
+}

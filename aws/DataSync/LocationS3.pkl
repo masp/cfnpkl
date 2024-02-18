@@ -1,0 +1,35 @@
+/// Resource schema for AWS::DataSync::LocationS3
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataSync::LocationS3"
+Properties: Props?
+class Props {
+    S3Config: S3Config?
+    /// The Amazon Resource Name (ARN) of the Amazon S3 bucket.
+    S3BucketArn: String(length <= 156 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):s3:[a-z\-0-9]*:[0-9]*:.*$"#)))?
+    /// A subdirectory in the Amazon S3 bucket. This subdirectory in Amazon S3
+    /// is used to read data from the S3 source location or write data to the
+    /// S3 destination.
+    Subdirectory: String(length <= 1024 && matches(Regex(#"^[\p{L}\p{M}\p{Z}\p{S}\p{N}\p{P}\p{C}]*$"#)))?
+    /// The Amazon S3 storage class you want to store your files in when this
+    /// location is used as a task destination.
+    S3StorageClass: "STANDARD" | "STANDARD_IA" | "ONEZONE_IA" | "INTELLIGENT_TIERING" | "GLACIER" | "GLACIER_INSTANT_RETRIEVAL" | "DEEP_ARCHIVE" | *Null
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the Amazon S3 bucket location.
+    LocationArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:location/loc-[0-9a-z]{17}$"#)))?
+    /// The URL of the S3 location that was described.
+    LocationUri: String(length <= 4356 && matches(Regex(#"^(efs|nfs|s3|smb|fsxw)://[a-zA-Z0-9.\-/]+$"#)))?
+}
+/// The Amazon Resource Name (ARN) of the AWS IAM role that is used to
+/// access an Amazon S3 bucket.
+class S3Config {
+    /// The ARN of the IAM role of the Amazon S3 bucket.
+    BucketAccessRoleArn: String(length <= 2048 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):iam::[0-9]{12}:role/.*$"#)))
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for an AWS resource tag.
+    Key: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:/-]+$"#)))
+    /// The value for an AWS resource tag.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))
+}

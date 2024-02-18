@@ -1,0 +1,23 @@
+/// Definition of AWS::AmplifyUIBuilder::Theme Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AmplifyUIBuilder::Theme"
+Properties: Props?
+class Props {
+    AppId: String?
+    CreatedAt: String?
+    EnvironmentName: String?
+    Id: String?
+    ModifiedAt: String?
+    Name: String(length <= 255 && length >= 1)?
+    Overrides: Listing<ThemeValues>?
+    Tags: Mapping?
+    Values: Listing<ThemeValues>?
+}
+class ThemeValues {
+    Key: String?
+    Value: ThemeValue?
+}
+class ThemeValue {
+    Value: String?
+    Children: Listing<ThemeValues>?
+}

@@ -1,0 +1,20 @@
+/// Resource Type definition for AWS::DirectoryService::MicrosoftAD
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DirectoryService::MicrosoftAD"
+Properties: Props?
+class Props {
+    Id: String?
+    Alias: String?
+    DnsIpAddresses: Listing<String>?
+    CreateAlias: Boolean?
+    Edition: String?
+    EnableSso: Boolean?
+    Name: String?
+    Password: String?
+    ShortName: String?
+    VpcSettings: VpcSettings?
+}
+class VpcSettings {
+    SubnetIds: Listing<String>
+    VpcId: String
+}

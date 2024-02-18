@@ -1,0 +1,26 @@
+/// Resource schema for AWS::IoTSiteWise::Project
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTSiteWise::Project"
+Properties: Props?
+class Props {
+    /// The ID of the portal in which to create the project.
+    PortalId: String?
+    /// The ID of the project.
+    ProjectId: String?
+    /// A friendly name for the project.
+    ProjectName: String?
+    /// A description for the project.
+    ProjectDescription: String?
+    /// The ARN of the project.
+    ProjectArn: String?
+    /// The IDs of the assets to be associated to the project.
+    AssetIds: Listing<String>?
+    /// A list of key-value pairs that contain metadata for the project.
+    Tags: Listing<Tag>?
+}
+/// To add or update tag, provide both key and value. To delete tag,
+/// provide only tag key to be deleted
+class Tag {
+    Key: String
+    Value: String
+}

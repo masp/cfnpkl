@@ -1,0 +1,20 @@
+/// An example resource schema demonstrating some basic constructs and
+/// validation rules.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LicenseManager::Grant"
+Properties: Props?
+class Props {
+    /// Arn of the grant.
+    GrantArn: String(length <= 2048)?
+    /// Name for the created Grant.
+    GrantName: String?
+    /// License Arn for the grant.
+    LicenseArn: String(length <= 2048)?
+    /// Home region for the created grant.
+    HomeRegion: String?
+    /// The version of the grant.
+    Version: String?
+    AllowedOperations: Listing<String>?
+    Principals: Listing<String(length <= 2048)>?
+    Status: String?
+}

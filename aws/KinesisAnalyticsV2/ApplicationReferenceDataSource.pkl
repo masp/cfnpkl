@@ -1,0 +1,44 @@
+/// Resource Type definition for
+/// AWS::KinesisAnalyticsV2::ApplicationReferenceDataSource
+extends ".../AWS/Resource.pkl"
+Type = "AWS::KinesisAnalyticsV2::ApplicationReferenceDataSource"
+Properties: Props?
+class Props {
+    Id: String?
+    ApplicationName: String?
+    ReferenceDataSource: ReferenceDataSource?
+}
+class ReferenceDataSource {
+    ReferenceSchema: ReferenceSchema
+    TableName: String?
+    S3ReferenceDataSource: S3ReferenceDataSource?
+}
+class ReferenceSchema {
+    RecordEncoding: String?
+    RecordColumns: Listing<RecordColumn>
+    RecordFormat: RecordFormat
+}
+class RecordColumn {
+    Mapping: String?
+    SqlType: String
+    Name: String
+}
+class RecordFormat {
+    MappingParameters: MappingParameters?
+    RecordFormatType: String
+}
+class MappingParameters {
+    JSONMappingParameters: JSONMappingParameters?
+    CSVMappingParameters: CSVMappingParameters?
+}
+class JSONMappingParameters {
+    RecordRowPath: String
+}
+class CSVMappingParameters {
+    RecordRowDelimiter: String
+    RecordColumnDelimiter: String
+}
+class S3ReferenceDataSource {
+    BucketARN: String
+    FileKey: String
+}

@@ -1,0 +1,56 @@
+/// Resource Type definition for AWS::ElastiCache::CacheCluster
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElastiCache::CacheCluster"
+Properties: Props?
+class Props {
+    CacheSecurityGroupNames: Listing<String>?
+    SnapshotArns: Listing<String>?
+    Port: Int?
+    ConfigurationEndpointAddress: String?
+    NotificationTopicArn: String?
+    NumCacheNodes: Int?
+    SnapshotName: String?
+    TransitEncryptionEnabled: Boolean?
+    NetworkType: String?
+    PreferredAvailabilityZones: Listing<String>?
+    VpcSecurityGroupIds: Listing<String>?
+    ClusterName: String?
+    RedisEndpointAddress: String?
+    Engine: String?
+    Tags: Listing<Tag>?
+    EngineVersion: String?
+    RedisEndpointPort: String?
+    CacheSubnetGroupName: String?
+    CacheParameterGroupName: String?
+    PreferredMaintenanceWindow: String?
+    AutoMinorVersionUpgrade: Boolean?
+    PreferredAvailabilityZone: String?
+    SnapshotWindow: String?
+    CacheNodeType: String?
+    SnapshotRetentionLimit: Int?
+    ConfigurationEndpointPort: String?
+    IpDiscovery: String?
+    LogDeliveryConfigurations: Listing<LogDeliveryConfigurationRequest>?
+    Id: String?
+    AZMode: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class LogDeliveryConfigurationRequest {
+    LogType: String
+    LogFormat: String
+    DestinationType: String
+    DestinationDetails: DestinationDetails
+}
+class DestinationDetails {
+    CloudWatchLogsDetails: CloudWatchLogsDestinationDetails?
+    KinesisFirehoseDetails: KinesisFirehoseDestinationDetails?
+}
+class CloudWatchLogsDestinationDetails {
+    LogGroup: String
+}
+class KinesisFirehoseDestinationDetails {
+    DeliveryStream: String
+}

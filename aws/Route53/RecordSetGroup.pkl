@@ -1,0 +1,42 @@
+/// Resource Type definition for AWS::Route53::RecordSetGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53::RecordSetGroup"
+Properties: Props?
+class Props {
+    Comment: String?
+    Id: String?
+    HostedZoneName: String?
+    RecordSets: Listing<RecordSet>?
+    HostedZoneId: String?
+}
+class RecordSet {
+    HealthCheckId: String?
+    AliasTarget: AliasTarget?
+    HostedZoneName: String?
+    ResourceRecords: Listing<String>?
+    HostedZoneId: String?
+    SetIdentifier: String?
+    TTL: String?
+    Weight: Int?
+    Name: String
+    Type: String
+    CidrRoutingConfig: CidrRoutingConfig?
+    Failover: String?
+    Region: String?
+    GeoLocation: GeoLocation?
+    MultiValueAnswer: Boolean?
+}
+class AliasTarget {
+    DNSName: String
+    HostedZoneId: String
+    EvaluateTargetHealth: Boolean?
+}
+class CidrRoutingConfig {
+    CollectionId: String
+    LocationName: String
+}
+class GeoLocation {
+    ContinentCode: String?
+    CountryCode: String?
+    SubdivisionCode: String?
+}

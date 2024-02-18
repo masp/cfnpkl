@@ -1,0 +1,37 @@
+/// Resource Type definition for AWS::OpsWorksCM::Server
+extends ".../AWS/Resource.pkl"
+Type = "AWS::OpsWorksCM::Server"
+Properties: Props?
+class Props {
+    KeyPair: String(length <= 10000 && matches(Regex(#".*"#)))?
+    EngineVersion: String(length <= 10000)?
+    ServiceRoleArn: String(length <= 10000 && matches(Regex(#"arn:aws:iam::[0-9]{12}:role/.*"#)))?
+    DisableAutomatedBackup: Boolean?
+    BackupId: String(length <= 79 && matches(Regex(#"[a-zA-Z][a-zA-Z0-9\-\.\:]*"#)))?
+    EngineModel: String(length <= 10000)?
+    PreferredMaintenanceWindow: String(length <= 10000 && matches(Regex(#"^((Mon|Tue|Wed|Thu|Fri|Sat|Sun):)?([0-1][0-9]|2[0-3]):[0-5][0-9]$"#)))?
+    AssociatePublicIpAddress: Boolean?
+    InstanceProfileArn: String(length <= 10000 && matches(Regex(#"arn:aws:iam::[0-9]{12}:instance-profile/.*"#)))?
+    CustomCertificate: String(length <= 2097152 && matches(Regex(#"(?s)\s*-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----\s*"#)))?
+    PreferredBackupWindow: String(length <= 10000 && matches(Regex(#"^((Mon|Tue|Wed|Thu|Fri|Sat|Sun):)?([0-1][0-9]|2[0-3]):[0-5][0-9]$"#)))?
+    SecurityGroupIds: Listing<String(length <= 10000)>?
+    SubnetIds: Listing<String(length <= 10000)>?
+    CustomDomain: String(length <= 253 && matches(Regex(#"^(((?!-)[A-Za-z0-9-]{0,62}[A-Za-z0-9])\.)+((?!-)[A-Za-z0-9-]{1,62}[A-Za-z0-9])$"#)))?
+    Endpoint: String(length <= 10000)?
+    CustomPrivateKey: String(length <= 4096 && matches(Regex(#"(?ms)\s*^-----BEGIN (?-s:.*)PRIVATE KEY-----$.*?^-----END (?-s:.*)PRIVATE KEY-----$\s*"#)))?
+    ServerName: String(length <= 40 && length >= 1 && matches(Regex(#"[a-zA-Z][a-zA-Z0-9\-]*"#)))?
+    EngineAttributes: Listing<EngineAttribute>?
+    BackupRetentionCount: Int?
+    Arn: String(length <= 10000)?
+    InstanceType: String(length <= 10000)?
+    Tags: Listing<Tag>?
+    Engine: String(length <= 10000)?
+}
+class EngineAttribute {
+    Value: String(length <= 10000 && matches(Regex(#"(?s).*"#)))?
+    Name: String(length <= 10000 && matches(Regex(#"(?s).*"#)))?
+}
+class Tag {
+    Value: String(length <= 256 && length >= 0 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+}

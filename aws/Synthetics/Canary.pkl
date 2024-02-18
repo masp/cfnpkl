@@ -1,0 +1,97 @@
+/// Resource Type definition for AWS::Synthetics::Canary
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Synthetics::Canary"
+Properties: Props?
+class Props {
+    /// Name of the canary.
+    Name: String(matches(Regex(#"^[0-9a-z_\-]{1,21}$"#)))?
+    /// Id of the canary
+    Id: String?
+    /// State of the canary
+    State: String?
+    /// Provide the canary script source
+    Code: Mapping | Mapping | *Null
+    /// Provide the s3 bucket output location for test results
+    ArtifactS3Location: String(matches(Regex(#"^(s3|S3)://"#)))?
+    /// Provide artifact configuration
+    ArtifactConfig: ArtifactConfig?
+    /// Frequency to run your canaries
+    Schedule: Schedule?
+    /// Lambda Execution role used to run your canaries
+    ExecutionRoleArn: String?
+    /// Runtime version of Synthetics Library
+    RuntimeVersion: String?
+    /// Retention period of successful canary runs represented in number of
+    /// days
+    SuccessRetentionPeriod: Int?
+    /// Retention period of failed canary runs represented in number of days
+    FailureRetentionPeriod: Int?
+    Tags: Listing<Tag>?
+    /// Provide VPC Configuration if enabled.
+    VPCConfig: VPCConfig?
+    /// Provide canary run configuration
+    RunConfig: RunConfig?
+    /// Runs canary if set to True. Default is False
+    StartCanaryAfterCreation: Boolean?
+    /// Visual reference configuration for visual testing
+    VisualReference: VisualReference?
+    /// Deletes associated lambda resources created by Synthetics if set to
+    /// True. Default is False
+    DeleteLambdaResourcesOnCanaryDeletion: Boolean?
+}
+class ArtifactConfig {
+    /// Encryption configuration for uploading artifacts to S3
+    S3Encryption: S3Encryption?
+}
+class S3Encryption {
+    /// Encryption mode for encrypting artifacts when uploading to S3. Valid
+    /// values: SSE_S3 and SSE_KMS.
+    EncryptionMode: String?
+    /// KMS key Arn for encrypting artifacts when uploading to S3. You must
+    /// specify KMS key Arn for SSE_KMS encryption mode only.
+    KmsKeyArn: String?
+}
+class Schedule {
+    Expression: String
+    DurationInSeconds: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}
+class VPCConfig {
+    VpcId: String?
+    SubnetIds: Listing<String>
+    SecurityGroupIds: Listing<String>
+}
+class RunConfig {
+    /// Provide maximum canary timeout per run in seconds
+    TimeoutInSeconds: Int?
+    /// Provide maximum memory available for canary in MB
+    MemoryInMB: Int?
+    /// Enable active tracing if set to true
+    ActiveTracing: Boolean?
+    /// Environment variable key-value pairs.
+    EnvironmentVariables: Mapping?
+}
+class VisualReference {
+    /// Canary run id to be used as base reference for visual testing
+    BaseCanaryRunId: String
+    /// List of screenshots used as base reference for visual testing
+    BaseScreenshots: Listing<BaseScreenshot>?
+}
+class BaseScreenshot {
+    /// Name of the screenshot to be used as base reference for visual testing
+    ScreenshotName: String
+    /// List of coordinates of rectangles to be ignored during visual testing
+    IgnoreCoordinates: Listing<String>?
+}

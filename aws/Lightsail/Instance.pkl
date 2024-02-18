@@ -1,0 +1,149 @@
+/// Resource Type definition for AWS::Lightsail::Instance
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lightsail::Instance"
+Properties: Props?
+class Props {
+    /// Support code to help identify any issues
+    SupportCode: String?
+    /// Resource type of Lightsail instance.
+    ResourceType: String?
+    /// Is the IP Address of the Instance is the static IP
+    IsStaticIp: Boolean?
+    /// Private IP Address of the Instance
+    PrivateIpAddress: String?
+    /// Public IP Address of the Instance
+    PublicIpAddress: String?
+    Location: Location?
+    Hardware: Hardware?
+    State: State?
+    Networking: Networking?
+    /// Username of the  Lightsail instance.
+    UserName: String?
+    /// SSH Key Name of the  Lightsail instance.
+    SshKeyName: String?
+    /// The names to use for your new Lightsail instance.
+    InstanceName: String(length <= 254 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][\w\-.]*[a-zA-Z0-9]$"#)))?
+    /// The Availability Zone in which to create your instance. Use the
+    /// following format: us-east-2a (case sensitive). Be sure to add the
+    /// include Availability Zones parameter to your request.
+    AvailabilityZone: String(length <= 255 && length >= 1)?
+    /// The bundle of specification information for your virtual private
+    /// server (or instance ), including the pricing plan (e.g., micro_1_0 ).
+    BundleId: String(length <= 255 && length >= 1)?
+    /// The ID for a virtual private server image (e.g., app_wordpress_4_4 or
+    /// app_lamp_7_0 ). Use the get blueprints operation to return a list of
+    /// available images (or blueprints ).
+    BlueprintId: String(length <= 255 && length >= 1)?
+    /// An array of objects representing the add-ons to enable for the new
+    /// instance.
+    AddOns: Listing<AddOn>?
+    /// A launch script you can create that configures a server with
+    /// additional user data. For example, you might want to run apt-get -y
+    /// update.
+    UserData: String?
+    /// The name of your key pair.
+    KeyPairName: String?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    InstanceArn: String?
+}
+/// Location of a resource.
+class Location {
+    /// The Availability Zone in which to create your instance. Use the
+    /// following format: us-east-2a (case sensitive). Be sure to add the
+    /// include Availability Zones parameter to your request.
+    AvailabilityZone: String?
+    /// The Region Name in which to create your instance.
+    RegionName: String?
+}
+/// Hardware of the Instance.
+class Hardware {
+    /// CPU count of the Instance.
+    CpuCount: Int?
+    /// RAM Size of the Instance.
+    RamSizeInGb: Int?
+    /// Disks attached to the Instance.
+    Disks: Listing<Disk>?
+}
+/// Disk associated with the Instance.
+class Disk {
+    /// The names to use for your new Lightsail disk.
+    DiskName: String(length <= 254 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][\w\-.]*[a-zA-Z0-9]$"#)))
+    /// Size of the disk attached to the Instance.
+    SizeInGb: String?
+    /// Is the Attached disk is the system disk of the Instance.
+    IsSystemDisk: Boolean?
+    /// IOPS of disk.
+    IOPS: Int?
+    /// Path of the disk attached to the instance.
+    Path: String
+    /// Instance attached to the disk.
+    AttachedTo: String?
+    /// Attachment state of the disk.
+    AttachmentState: String?
+}
+/// Current State of the Instance.
+class State {
+    /// Status code of the Instance.
+    Code: Int?
+    /// Status code of the Instance.
+    Name: String?
+}
+/// Networking of the Instance.
+class Networking {
+    /// Ports to the Instance.
+    Ports: Listing<Port>
+    MonthlyTransfer: MonthlyTransfer?
+}
+/// Port of the Instance.
+class Port {
+    /// From Port of the Instance.
+    FromPort: Int?
+    /// To Port of the Instance.
+    ToPort: Int?
+    /// Port Protocol of the Instance.
+    Protocol: String?
+    /// Access From Protocol of the Instance.
+    AccessFrom: String?
+    /// Access Type Protocol of the Instance.
+    AccessType: String?
+    /// CommonName for Protocol of the Instance.
+    CommonName: String?
+    /// Access Direction for Protocol of the Instance(inbound/outbound).
+    AccessDirection: String?
+    Ipv6Cidrs: Listing<String>?
+    CidrListAliases: Listing<String>?
+    Cidrs: Listing<String>?
+}
+/// Monthly Transfer of the Instance.
+class MonthlyTransfer {
+    /// GbPerMonthAllocated of the Instance.
+    GbPerMonthAllocated: String?
+}
+/// A addon associate with a resource.
+class AddOn {
+    /// The add-on type
+    AddOnType: String(length <= 128 && length >= 1)
+    /// Status of the Addon
+    Status: "Enabling" | "Disabling" | "Enabled" | "Terminating" | "Terminated" | "Disabled" | "Failed" | *Null
+    AutoSnapshotAddOnRequest: AutoSnapshotAddOn?
+}
+/// An object that represents additional parameters when enabling or
+/// modifying the automatic snapshot add-on
+class AutoSnapshotAddOn {
+    /// The daily time when an automatic snapshot will be created.
+    SnapshotTimeOfDay: String(matches(Regex(#"^[0-9]{2}:00$"#)))?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)?
+}

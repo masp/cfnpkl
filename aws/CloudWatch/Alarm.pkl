@@ -1,0 +1,115 @@
+/// Resource Type definition for AWS::CloudWatch::Alarm
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudWatch::Alarm"
+Properties: Props?
+class Props {
+    /// In an alarm based on an anomaly detection model, this is the ID of the
+    /// ANOMALY_DETECTION_BAND function used as the threshold for the alarm.
+    ThresholdMetricId: String?
+    /// Used only for alarms based on percentiles.
+    EvaluateLowSampleCountPercentile: String?
+    /// The percentile statistic for the metric associated with the alarm.
+    /// Specify a value between p0.0 and p100.
+    ExtendedStatistic: String?
+    /// The arithmetic operation to use when comparing the specified statistic
+    /// and threshold.
+    ComparisonOperator: String?
+    /// Sets how this alarm is to handle missing data points. Valid values are
+    /// breaching, notBreaching, ignore, and missing.
+    TreatMissingData: String?
+    /// The dimensions for the metric associated with the alarm. For an alarm
+    /// based on a math expression, you can't specify Dimensions. Instead, you
+    /// use Metrics.
+    Dimensions: Listing<Dimension>?
+    /// The period in seconds, over which the statistic is applied.
+    Period: Int?
+    /// The number of periods over which data is compared to the specified
+    /// threshold.
+    EvaluationPeriods: Int?
+    /// The unit of the metric associated with the alarm.
+    Unit: String?
+    /// The namespace of the metric associated with the alarm.
+    Namespace: String?
+    /// The actions to execute when this alarm transitions to the OK state
+    /// from any other state.
+    OKActions: Listing<String>?
+    /// The list of actions to execute when this alarm transitions into an
+    /// ALARM state from any other state.
+    AlarmActions: Listing<String>?
+    /// The name of the metric associated with the alarm.
+    MetricName: String?
+    /// Indicates whether actions should be executed during any changes to the
+    /// alarm state. The default is TRUE.
+    ActionsEnabled: Boolean?
+    /// An array that enables you to create an alarm based on the result of a
+    /// metric math expression.
+    Metrics: Listing<MetricDataQuery>?
+    /// The description of the alarm.
+    AlarmDescription: String?
+    /// The name of the alarm.
+    AlarmName: String?
+    /// The statistic for the metric associated with the alarm, other than
+    /// percentile.
+    Statistic: String?
+    /// The actions to execute when this alarm transitions to the
+    /// INSUFFICIENT_DATA state from any other state.
+    InsufficientDataActions: Listing<String>?
+    /// Amazon Resource Name is a unique name for each resource.
+    Arn: String?
+    /// The number of datapoints that must be breaching to trigger the alarm.
+    DatapointsToAlarm: Int?
+    /// In an alarm based on an anomaly detection model, this is the ID of the
+    /// ANOMALY_DETECTION_BAND function used as the threshold for the alarm.
+    Threshold: Float?
+}
+/// Dimensions are arbitrary name/value pairs that can be associated with
+/// a CloudWatch metric.
+class Dimension {
+    /// The value for the dimension.
+    Value: String
+    /// The name of the dimension.
+    Name: String
+}
+/// This property type specifies the metric data to return, and whether
+/// this call is just retrieving a batch set of data for one metric, or is
+/// performing a math expression on metric data.
+class MetricDataQuery {
+    /// A human-readable label for this metric or expression.
+    Label: String?
+    /// The metric to be returned, along with statistics, period, and units.
+    MetricStat: MetricStat?
+    /// A short name used to tie this object to the results in the response.
+    Id: String
+    /// This option indicates whether to return the timestamps and raw data
+    /// values of this metric.
+    ReturnData: Boolean?
+    /// The math expression to be performed on the returned data.
+    Expression: String?
+    /// The period in seconds, over which the statistic is applied.
+    Period: Int?
+    /// The ID of the account where the metrics are located, if this is a
+    /// cross-account alarm.
+    AccountId: String?
+}
+/// This structure defines the metric to be returned, along with the
+/// statistics, period, and units.
+class MetricStat {
+    /// The granularity, in seconds, of the returned data points.
+    Period: Int
+    /// The metric to return, including the metric name, namespace, and
+    /// dimensions.
+    Metric: Metric
+    /// The statistic to return.
+    Stat: String
+    /// The unit to use for the returned data points.
+    Unit: String?
+}
+/// The Metric property type represents a specific metric.
+class Metric {
+    /// The name of the metric.
+    MetricName: String?
+    /// The dimensions for the metric.
+    Dimensions: Listing<Dimension>?
+    /// The namespace of the metric.
+    Namespace: String?
+}

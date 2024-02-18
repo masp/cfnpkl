@@ -1,0 +1,12 @@
+/// Associates a set of DHCP options with a VPC, or associates no DHCP
+/// options with the VPC.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VPCDHCPOptionsAssociation"
+Properties: Props?
+class Props {
+    /// The ID of the DHCP options set, or default to associate no DHCP
+    /// options with the VPC.
+    DhcpOptionsId: String?
+    /// The ID of the VPC.
+    VpcId: String?
+}

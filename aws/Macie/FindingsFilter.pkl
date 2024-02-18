@@ -1,0 +1,32 @@
+/// Macie FindingsFilter resource schema.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Macie::FindingsFilter"
+Properties: Props?
+class Props {
+    /// Findings filter name
+    Name: String?
+    /// Findings filter description
+    Description: String?
+    /// Findings filter criteria.
+    FindingCriteria: FindingCriteria?
+    /// Findings filter action.
+    Action: "ARCHIVE" | "NOOP" | *Null
+    /// Findings filter position.
+    Position: Int?
+    /// Findings filter ID.
+    Id: String?
+    /// Findings filter ARN.
+    Arn: String?
+    /// A collection of tags associated with a resource
+    Tags: Listing<Tag>?
+}
+class FindingCriteria {
+    Criterion: Mapping?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The tag's key.
+    Key: String
+    /// The tag's value.
+    Value: String
+}

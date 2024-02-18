@@ -1,0 +1,51 @@
+/// Resource schema for AWS::DataBrew::Ruleset.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataBrew::Ruleset"
+Properties: Props?
+class Props {
+    /// Name of the Ruleset
+    Name: String(length <= 255 && length >= 1)?
+    /// Description of the Ruleset
+    Description: String(length <= 1024)?
+    /// Arn of the target resource (dataset) to apply the ruleset to
+    TargetArn: String(length <= 2048 && length >= 20)?
+    /// List of the data quality rules in the ruleset
+    Rules: Listing<Rule>?
+    Tags: Listing<Tag>?
+}
+/// Data quality rule for a target resource (dataset)
+class Rule {
+    /// Name of the rule
+    Name: String(length <= 128 && length >= 1)
+    Disabled: Boolean?
+    CheckExpression: String(length <= 1024 && length >= 4 && matches(Regex(#"^[><0-9A-Za-z_.,:)(!= ]+$"#)))
+    SubstitutionMap: Listing<SubstitutionValue>?
+    Threshold: Threshold?
+    ColumnSelectors: Listing<ColumnSelector>?
+}
+/// A key-value pair to associate expression's substitution variable names
+/// with their values
+class SubstitutionValue {
+    /// Variable name
+    ValueReference: String(length <= 128 && length >= 2 && matches(Regex(#"^:[A-Za-z0-9_]+$"#)))
+    /// Value or column name
+    Value: String(length <= 1024 && length >= 0)
+}
+class Threshold {
+    Value: Float
+    Type: "GREATER_THAN_OR_EQUAL" | "LESS_THAN_OR_EQUAL" | "GREATER_THAN" | "LESS_THAN" | *Null
+    Unit: "COUNT" | "PERCENTAGE" | *Null
+}
+/// Selector of a column from a dataset for profile job configuration. One
+/// selector includes either a column name or a regular expression
+class ColumnSelector {
+    /// A regular expression for selecting a column from a dataset
+    Regex: String(length <= 255 && length >= 1)?
+    /// The name of a column from a dataset
+    Name: String(length <= 255 && length >= 1)?
+}
+/// A key-value pair to associate with a resource
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

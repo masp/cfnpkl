@@ -1,0 +1,26 @@
+/// Resource schema for AWS::IoTSiteWise::Dashboard
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTSiteWise::Dashboard"
+Properties: Props?
+class Props {
+    /// The ID of the project in which to create the dashboard.
+    ProjectId: String?
+    /// The ID of the dashboard.
+    DashboardId: String?
+    /// A friendly name for the dashboard.
+    DashboardName: String?
+    /// A description for the dashboard.
+    DashboardDescription: String?
+    /// The dashboard definition specified in a JSON literal.
+    DashboardDefinition: String?
+    /// The ARN of the dashboard.
+    DashboardArn: String?
+    /// A list of key-value pairs that contain metadata for the dashboard.
+    Tags: Listing<Tag>?
+}
+/// To add or update tag, provide both key and value. To delete tag,
+/// provide only tag key to be deleted
+class Tag {
+    Key: String
+    Value: String
+}

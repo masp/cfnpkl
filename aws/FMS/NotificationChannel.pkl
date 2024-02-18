@@ -1,0 +1,9 @@
+/// Designates the IAM role and Amazon Simple Notification Service (SNS)
+/// topic that AWS Firewall Manager uses to record SNS logs.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FMS::NotificationChannel"
+Properties: Props?
+class Props {
+    SnsRoleName: String(length <= 1024 && length >= 1 && matches(Regex(#"^([^\s]+)$"#)))?
+    SnsTopicArn: String(length <= 1024 && length >= 1 && matches(Regex(#"^([^\s]+)$"#)))?
+}

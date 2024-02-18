@@ -1,0 +1,40 @@
+/// Resource Type definition for AWS::EC2::SecurityGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::SecurityGroup"
+Properties: Props?
+class Props {
+    GroupDescription: String?
+    GroupName: String?
+    VpcId: String?
+    Id: String?
+    SecurityGroupIngress: Listing<Ingress>?
+    SecurityGroupEgress: Listing<Egress>?
+    Tags: Listing<Tag>?
+    GroupId: String?
+}
+class Ingress {
+    CidrIp: String?
+    CidrIpv6: String?
+    Description: String?
+    FromPort: Int?
+    SourceSecurityGroupName: String?
+    ToPort: Int?
+    SourceSecurityGroupOwnerId: String?
+    IpProtocol: String
+    SourceSecurityGroupId: String?
+    SourcePrefixListId: String?
+}
+class Egress {
+    CidrIp: String?
+    CidrIpv6: String?
+    Description: String?
+    FromPort: Int?
+    ToPort: Int?
+    IpProtocol: String
+    DestinationSecurityGroupId: String?
+    DestinationPrefixListId: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

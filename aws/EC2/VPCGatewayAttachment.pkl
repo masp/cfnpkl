@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::EC2::VPCGatewayAttachment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VPCGatewayAttachment"
+Properties: Props?
+class Props {
+    /// Used to identify if this resource is an Internet Gateway or Vpn
+    /// Gateway Attachment
+    AttachmentType: String?
+    /// The ID of the internet gateway. You must specify either
+    /// InternetGatewayId or VpnGatewayId, but not both.
+    InternetGatewayId: String?
+    /// The ID of the VPC.
+    VpcId: String?
+    /// The ID of the virtual private gateway. You must specify either
+    /// InternetGatewayId or VpnGatewayId, but not both.
+    VpnGatewayId: String?
+}

@@ -1,0 +1,27 @@
+/// Register as a publisher in the CloudFormation Registry.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFormation::Publisher"
+Properties: Props?
+class Props {
+    /// Whether you accept the terms and conditions for publishing extensions
+    /// in the CloudFormation registry. You must accept the terms and
+    /// conditions in order to publish public extensions to the CloudFormation
+    /// registry. The terms and conditions can be found at
+    /// https://cloudformation-registry-documents.s3.amazonaws.com/Terms_and_C
+    /// onditions_for_AWS_CloudFormation_Registry_Publishers.pdf
+    AcceptTermsAndConditions: Boolean?
+    /// The publisher id assigned by CloudFormation for publishing in this
+    /// region.
+    PublisherId: String(length <= 40 && length >= 1 && matches(Regex(#"[0-9a-zA-Z]{40}"#)))?
+    /// If you are using a Bitbucket or GitHub account for identity
+    /// verification, the Amazon Resource Name (ARN) for your connection to
+    /// that account.
+    ConnectionArn: String(matches(Regex(#"arn:aws(-[w]+)*:.+:.+:[0-9]{12}:.+"#)))?
+    /// Whether the publisher is verified.
+    PublisherStatus: "VERIFIED" | "UNVERIFIED" | *Null
+    /// The URL to the publisher's profile with the identity provider.
+    PublisherProfile: String(length <= 1024 && matches(Regex(#"(http:|https:)+[^s]+[w]"#)))?
+    /// The type of account used as the identity provider when registering
+    /// this publisher with CloudFormation.
+    IdentityProvider: "AWS_Marketplace" | "GitHub" | "Bitbucket" | *Null
+}

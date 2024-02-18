@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::CloudFront::OriginAccessControl
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::OriginAccessControl"
+Properties: Props?
+class Props {
+    Id: String?
+    OriginAccessControlConfig: OriginAccessControlConfig?
+}
+class OriginAccessControlConfig {
+    Description: String?
+    Name: String
+    OriginAccessControlOriginType: String(matches(Regex(#"^(s3|mediastore)$"#)))
+    SigningBehavior: String(matches(Regex(#"^(never|no-override|always)$"#)))
+    SigningProtocol: String(matches(Regex(#"^(sigv4)$"#)))
+}

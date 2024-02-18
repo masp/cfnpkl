@@ -1,0 +1,10 @@
+/// Resource Type definition for AWS::DAX::ParameterGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DAX::ParameterGroup"
+Properties: Props?
+class Props {
+    ParameterNameValues: Mapping?
+    Description: String?
+    Id: String?
+    ParameterGroupName: String?
+}

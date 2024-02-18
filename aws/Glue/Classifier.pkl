@@ -1,0 +1,37 @@
+/// Resource Type definition for AWS::Glue::Classifier
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::Classifier"
+Properties: Props?
+class Props {
+    XMLClassifier: XMLClassifier?
+    CsvClassifier: CsvClassifier?
+    Id: String?
+    GrokClassifier: GrokClassifier?
+    JsonClassifier: JsonClassifier?
+}
+class XMLClassifier {
+    RowTag: String
+    Classification: String
+    Name: String?
+}
+class CsvClassifier {
+    ContainsCustomDatatype: Listing<String>?
+    QuoteSymbol: String?
+    ContainsHeader: String?
+    Delimiter: String?
+    Header: Listing<String>?
+    AllowSingleColumn: Boolean?
+    CustomDatatypeConfigured: Boolean?
+    DisableValueTrimming: Boolean?
+    Name: String?
+}
+class GrokClassifier {
+    CustomPatterns: String?
+    GrokPattern: String
+    Classification: String
+    Name: String?
+}
+class JsonClassifier {
+    JsonPath: String
+    Name: String?
+}

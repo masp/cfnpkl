@@ -1,0 +1,69 @@
+/// Resource Type definition for AWS::SageMaker::FeatureGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::FeatureGroup"
+Properties: Props?
+class Props {
+    /// The Name of the FeatureGroup.
+    FeatureGroupName: String(length <= 64 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,63}"#)))?
+    /// The Record Identifier Feature Name.
+    RecordIdentifierFeatureName: String(length <= 64 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,63}"#)))?
+    /// The Event Time Feature Name.
+    EventTimeFeatureName: String(length <= 64 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,63}"#)))?
+    /// An Array of Feature Definition
+    FeatureDefinitions: Listing<FeatureDefinition>?
+    OnlineStoreConfig: OnlineStoreConfig?
+    OfflineStoreConfig: OfflineStoreConfig?
+    ThroughputConfig: ThroughputConfig?
+    /// Role Arn
+    RoleArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:aws[a-z\-]*:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    /// Description about the FeatureGroup.
+    Description: String(length <= 128)?
+    /// A timestamp of FeatureGroup creation time.
+    CreationTime: String?
+    /// The status of the feature group.
+    FeatureGroupStatus: String?
+    /// An array of key-value pair to apply to this resource.
+    Tags: Listing<Tag>?
+}
+class FeatureDefinition {
+    FeatureName: String(length <= 64 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,63}"#)))
+    FeatureType: "Integral" | "Fractional" | "String"
+}
+class OnlineStoreConfig {
+    SecurityConfig: OnlineStoreSecurityConfig?
+    EnableOnlineStore: Boolean?
+    StorageType: "Standard" | "InMemory" | *Null
+}
+class OnlineStoreSecurityConfig {
+    KmsKeyId: String(length <= 2048)?
+}
+class OfflineStoreConfig {
+    S3StorageConfig: S3StorageConfig
+    DisableGlueTableCreation: Boolean?
+    DataCatalogConfig: DataCatalogConfig?
+    TableFormat: "Iceberg" | "Glue" | *Null
+}
+class S3StorageConfig {
+    S3Uri: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))
+    KmsKeyId: String(length <= 2048)?
+}
+class DataCatalogConfig {
+    TableName: String(length <= 255 && length >= 1 && matches(Regex(#"[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF	]*"#)))
+    Catalog: String(length <= 255 && length >= 1 && matches(Regex(#"[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF	]*"#)))
+    Database: String(length <= 255 && length >= 1 && matches(Regex(#"[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF	]*"#)))
+}
+class ThroughputConfig {
+    ThroughputMode: "OnDemand" | "Provisioned"
+    /// For provisioned feature groups with online store enabled, this
+    /// indicates the read throughput you are billed for and can consume
+    /// without throttling.
+    ProvisionedReadCapacityUnits: Int?
+    /// For provisioned feature groups, this indicates the write throughput
+    /// you are billed for and can consume without throttling.
+    ProvisionedWriteCapacityUnits: Int?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    Value: String
+    Key: String
+}

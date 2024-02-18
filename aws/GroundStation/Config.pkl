@@ -1,0 +1,81 @@
+/// AWS Ground Station config resource type for CloudFormation.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GroundStation::Config"
+Properties: Props?
+class Props {
+    Name: String(matches(Regex(#"^[ a-zA-Z0-9_:-]{1,256}$"#)))?
+    Tags: Listing<Tag>?
+    Type: String?
+    ConfigData: ConfigData?
+    Arn: String?
+    Id: String?
+}
+class Tag {
+    Key: String(matches(Regex(#"^[ a-zA-Z0-9\+\-=._:/@]{1,128}$"#)))?
+    Value: String(matches(Regex(#"^[ a-zA-Z0-9\+\-=._:/@]{1,256}$"#)))?
+}
+class ConfigData {
+    AntennaDownlinkConfig: AntennaDownlinkConfig?
+    TrackingConfig: TrackingConfig?
+    DataflowEndpointConfig: DataflowEndpointConfig?
+    AntennaDownlinkDemodDecodeConfig: AntennaDownlinkDemodDecodeConfig?
+    AntennaUplinkConfig: AntennaUplinkConfig?
+    UplinkEchoConfig: UplinkEchoConfig?
+    S3RecordingConfig: S3RecordingConfig?
+}
+class AntennaDownlinkConfig {
+    SpectrumConfig: SpectrumConfig?
+}
+class SpectrumConfig {
+    CenterFrequency: Frequency?
+    Bandwidth: FrequencyBandwidth?
+    Polarization: "LEFT_HAND" | "RIGHT_HAND" | "NONE" | *Null
+}
+class Frequency {
+    Value: Float?
+    Units: "GHz" | "MHz" | "kHz" | *Null
+}
+class FrequencyBandwidth {
+    Value: Float?
+    Units: "GHz" | "MHz" | "kHz" | *Null
+}
+class TrackingConfig {
+    Autotrack: "REQUIRED" | "PREFERRED" | "REMOVED" | *Null
+}
+class DataflowEndpointConfig {
+    DataflowEndpointName: String?
+    DataflowEndpointRegion: String?
+}
+class AntennaDownlinkDemodDecodeConfig {
+    SpectrumConfig: SpectrumConfig?
+    DemodulationConfig: DemodulationConfig?
+    DecodeConfig: DecodeConfig?
+}
+class DemodulationConfig {
+    UnvalidatedJSON: String(matches(Regex(#"^[{}\[\]:.,"0-9A-z\-_\s]{1,8192}$"#)))?
+}
+class DecodeConfig {
+    UnvalidatedJSON: String(matches(Regex(#"^[{}\[\]:.,"0-9A-z\-_\s]{1,8192}$"#)))?
+}
+class AntennaUplinkConfig {
+    SpectrumConfig: UplinkSpectrumConfig?
+    TargetEirp: Eirp?
+    TransmitDisabled: Boolean?
+}
+class UplinkSpectrumConfig {
+    CenterFrequency: Frequency?
+    Polarization: "LEFT_HAND" | "RIGHT_HAND" | "NONE" | *Null
+}
+class Eirp {
+    Value: Float?
+    Units: "dBW" | *Null
+}
+class UplinkEchoConfig {
+    Enabled: Boolean?
+    AntennaUplinkConfigArn: String?
+}
+class S3RecordingConfig {
+    BucketArn: String?
+    RoleArn: String?
+    Prefix: String(matches(Regex(#"^([a-zA-Z0-9_\-=/]|\{satellite_id\}|\{config\-name}|\{s3\-config-id}|\{year\}|\{month\}|\{day\}){1,900}$"#)))?
+}

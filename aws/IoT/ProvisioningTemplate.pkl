@@ -1,0 +1,23 @@
+/// Creates a fleet provisioning template.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::ProvisioningTemplate"
+Properties: Props?
+class Props {
+    TemplateArn: String?
+    TemplateName: String(length <= 36 && length >= 1 && matches(Regex(#"^[0-9A-Za-z_-]+$"#)))?
+    Description: String(length <= 500)?
+    Enabled: Boolean?
+    ProvisioningRoleArn: String?
+    TemplateBody: String?
+    TemplateType: "FLEET_PROVISIONING" | "JITP" | *Null
+    PreProvisioningHook: ProvisioningHook?
+    Tags: Listing<Tag>?
+}
+class ProvisioningHook {
+    TargetArn: String?
+    PayloadVersion: String?
+}
+class Tag {
+    Key: String
+    Value: String
+}

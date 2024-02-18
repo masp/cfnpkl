@@ -1,0 +1,18 @@
+/// Resource Schema of AWS::EC2::IPAMPoolCidr Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::IPAMPoolCidr"
+Properties: Props?
+class Props {
+    /// Id of the IPAM Pool Cidr.
+    IpamPoolCidrId: String?
+    /// Id of the IPAM Pool.
+    IpamPoolId: String?
+    /// Represents a single IPv4 or IPv6 CIDR
+    Cidr: String?
+    /// The desired netmask length of the provision. If set, IPAM will choose
+    /// a block of free space with this size and return the CIDR representing
+    /// it.
+    NetmaskLength: Int?
+    /// Provisioned state of the cidr.
+    State: String?
+}

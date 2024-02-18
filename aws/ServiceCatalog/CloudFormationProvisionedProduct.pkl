@@ -1,0 +1,41 @@
+/// Resource Schema for
+/// AWS::ServiceCatalog::CloudFormationProvisionedProduct
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceCatalog::CloudFormationProvisionedProduct"
+Properties: Props?
+class Props {
+    AcceptLanguage: "en" | "jp" | "zh" | *Null
+    NotificationArns: Listing<String>?
+    PathId: String(length <= 100 && length >= 1)?
+    PathName: String(length <= 100 && length >= 1)?
+    ProductId: String(length <= 100 && length >= 1)?
+    ProductName: String(length <= 128 && length >= 1)?
+    ProvisionedProductName: String(length <= 128 && length >= 1)?
+    ProvisioningArtifactId: String(length <= 100 && length >= 1)?
+    ProvisioningArtifactName: String?
+    ProvisioningParameters: Listing<ProvisioningParameter>?
+    ProvisioningPreferences: ProvisioningPreferences?
+    Tags: Listing<Tag>?
+    ProvisionedProductId: String(length <= 50 && length >= 1)?
+    RecordId: String(length <= 50 && length >= 1)?
+    CloudformationStackArn: String(length <= 256 && length >= 1)?
+    /// List of key-value pair outputs.
+    Outputs: Mapping?
+}
+class ProvisioningParameter {
+    Key: String(length <= 1000 && length >= 1)
+    Value: String(length <= 4096)
+}
+class ProvisioningPreferences {
+    StackSetAccounts: Listing<String(matches(Regex(#"^[0-9]{12}$"#)))>?
+    StackSetFailureToleranceCount: Int?
+    StackSetFailureTolerancePercentage: Int?
+    StackSetMaxConcurrencyCount: Int?
+    StackSetMaxConcurrencyPercentage: Int?
+    StackSetOperationType: "CREATE" | "UPDATE" | "DELETE" | *Null
+    StackSetRegions: Listing<String(matches(Regex(#"^[a-z]{2}-([a-z]+-)+[1-9]"#)))>?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+}

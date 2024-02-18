@@ -1,0 +1,33 @@
+/// Resource Type definition for AWS::EC2::CapacityReservationFleet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::CapacityReservationFleet"
+Properties: Props?
+class Props {
+    AllocationStrategy: String?
+    TagSpecifications: Listing<TagSpecification>?
+    InstanceTypeSpecifications: Listing<InstanceTypeSpecification>?
+    TotalTargetCapacity: Int?
+    EndDate: String?
+    InstanceMatchCriteria: "open" | *Null
+    CapacityReservationFleetId: String?
+    Tenancy: "default" | *Null
+    RemoveEndDate: Boolean?
+    NoRemoveEndDate: Boolean?
+}
+class TagSpecification {
+    ResourceType: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class InstanceTypeSpecification {
+    InstanceType: String?
+    InstancePlatform: String?
+    Weight: Float?
+    AvailabilityZone: String?
+    AvailabilityZoneId: String?
+    EbsOptimized: Boolean?
+    Priority: Int?
+}

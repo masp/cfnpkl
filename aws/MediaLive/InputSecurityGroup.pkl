@@ -1,0 +1,13 @@
+/// Resource Type definition for AWS::MediaLive::InputSecurityGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaLive::InputSecurityGroup"
+Properties: Props?
+class Props {
+    Id: String?
+    Arn: String?
+    WhitelistRules: Listing<InputWhitelistRuleCidr>?
+    Tags: Mapping?
+}
+class InputWhitelistRuleCidr {
+    Cidr: String?
+}

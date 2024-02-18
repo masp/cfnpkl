@@ -1,0 +1,37 @@
+/// Resource schema for AWS::FIS::ExperimentTemplate
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FIS::ExperimentTemplate"
+Properties: Props?
+class Props {
+    Id: String?
+    Description: String(length <= 512)?
+    Targets: Mapping?
+    Actions: Mapping?
+    StopConditions: Listing<ExperimentTemplateStopCondition>?
+    LogConfiguration: ExperimentTemplateLogConfiguration?
+    RoleArn: String(length <= 1224)?
+    Tags: Mapping?
+    ExperimentOptions: ExperimentTemplateExperimentOptions?
+}
+class ExperimentTemplateStopCondition {
+    Source: String(length <= 64)
+    Value: String(length <= 2048 && length >= 20)?
+}
+class ExperimentTemplateLogConfiguration {
+    CloudWatchLogsConfiguration: CloudWatchLogsConfiguration?
+    S3Configuration: S3Configuration?
+    LogSchemaVersion: Int
+}
+class CloudWatchLogsConfiguration {
+    LogGroupArn: String(length <= 2048 && length >= 20)
+}
+class S3Configuration {
+    BucketName: String(length <= 63 && length >= 3)
+    Prefix: String(length <= 1024 && length >= 1)?
+}
+class ExperimentTemplateExperimentOptions {
+    /// The account targeting setting for the experiment template.
+    AccountTargeting: "multi-account" | "single-account" | *Null
+    /// The target resolution failure mode for the experiment template.
+    EmptyTargetResolutionMode: "fail" | "skip" | *Null
+}

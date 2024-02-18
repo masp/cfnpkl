@@ -1,0 +1,33 @@
+/// Resource schema for AWS::ImageBuilder::Component
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ImageBuilder::Component"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the component.
+    Arn: String?
+    /// The name of the component.
+    Name: String?
+    /// The version of the component.
+    Version: String?
+    /// The description of the component.
+    Description: String?
+    /// The change description of the component.
+    ChangeDescription: String?
+    /// The type of the component denotes whether the component is used to
+    /// build the image or only to test it.
+    Type: "BUILD" | "TEST" | *Null
+    /// The platform of the component.
+    Platform: "Windows" | "Linux" | *Null
+    /// The data of the component.
+    Data: String(length <= 16000 && length >= 1)?
+    /// The KMS key identifier used to encrypt the component.
+    KmsKeyId: String?
+    /// The encryption status of the component.
+    Encrypted: Boolean?
+    /// The tags associated with the component.
+    Tags: Mapping?
+    /// The uri of the component.
+    Uri: String?
+    /// The operating system (OS) version supported by the component.
+    SupportedOsVersions: Listing<String>?
+}

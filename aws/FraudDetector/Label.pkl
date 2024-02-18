@@ -1,0 +1,22 @@
+/// An label for fraud detector.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FraudDetector::Label"
+Properties: Props?
+class Props {
+    /// The name of the label.
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[0-9a-z_-]+$"#)))?
+    /// Tags associated with this label.
+    Tags: Listing<Tag>?
+    /// The label description.
+    Description: String(length <= 128 && length >= 1)?
+    /// The label ARN.
+    Arn: String?
+    /// The timestamp when the label was created.
+    CreatedTime: String?
+    /// The timestamp when the label was last updated.
+    LastUpdatedTime: String?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

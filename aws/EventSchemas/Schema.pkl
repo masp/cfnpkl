@@ -1,0 +1,30 @@
+/// Resource Type definition for AWS::EventSchemas::Schema
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EventSchemas::Schema"
+Properties: Props?
+class Props {
+    /// The type of schema. Valid types include OpenApi3 and JSONSchemaDraft4.
+    Type: String?
+    /// A description of the schema.
+    Description: String?
+    /// The version number of the schema.
+    SchemaVersion: String?
+    /// The source of the schema definition.
+    Content: String?
+    /// The name of the schema registry.
+    RegistryName: String?
+    /// The ARN of the schema.
+    SchemaArn: String?
+    /// The name of the schema.
+    SchemaName: String?
+    /// The last modified time of the schema.
+    LastModified: String?
+    /// The date the schema version was created.
+    VersionCreatedDate: String?
+    /// Tags associated with the resource.
+    Tags: Listing<TagsEntry>?
+}
+class TagsEntry {
+    Value: String
+    Key: String
+}

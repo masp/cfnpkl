@@ -1,0 +1,29 @@
+/// Definition of AWS::VerifiedPermissions::Policy Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::VerifiedPermissions::Policy"
+Properties: Props?
+class Props {
+    Definition: PolicyDefinition0 | PolicyDefinition1 | *Null
+    PolicyId: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]*$"#)))?
+    PolicyStoreId: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]*$"#)))?
+    PolicyType: "STATIC" | "TEMPLATE_LINKED" | *Null
+}
+class PolicyDefinition0 {
+    Static: StaticPolicyDefinition
+}
+class StaticPolicyDefinition {
+    Description: String(length <= 150 && length >= 0)?
+    Statement: String(length <= 10000 && length >= 1)
+}
+class PolicyDefinition1 {
+    TemplateLinked: TemplateLinkedPolicyDefinition
+}
+class TemplateLinkedPolicyDefinition {
+    PolicyTemplateId: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]*$"#)))
+    Principal: EntityIdentifier?
+    Resource: EntityIdentifier?
+}
+class EntityIdentifier {
+    EntityType: String(length <= 200 && length >= 1 && matches(Regex(#"^.*$"#)))
+    EntityId: String(length <= 200 && length >= 1 && matches(Regex(#"^.*$"#)))
+}

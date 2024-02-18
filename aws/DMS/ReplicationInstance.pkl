@@ -1,0 +1,28 @@
+/// Resource Type definition for AWS::DMS::ReplicationInstance
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DMS::ReplicationInstance"
+Properties: Props?
+class Props {
+    ReplicationInstanceIdentifier: String?
+    EngineVersion: String?
+    KmsKeyId: String?
+    AvailabilityZone: String?
+    PreferredMaintenanceWindow: String?
+    AutoMinorVersionUpgrade: Boolean?
+    ReplicationSubnetGroupIdentifier: String?
+    ReplicationInstancePrivateIpAddresses: String?
+    AllocatedStorage: Int?
+    ResourceIdentifier: String?
+    VpcSecurityGroupIds: Listing<String>?
+    AllowMajorVersionUpgrade: Boolean?
+    ReplicationInstanceClass: String?
+    PubliclyAccessible: Boolean?
+    Id: String?
+    MultiAZ: Boolean?
+    ReplicationInstancePublicIpAddresses: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String
+    Key: String
+}

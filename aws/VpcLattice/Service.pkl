@@ -1,0 +1,27 @@
+/// A service is any software application that can run on instances
+/// containers, or serverless functions within an account or virtual
+/// private cloud (VPC).
+extends ".../AWS/Resource.pkl"
+Type = "AWS::VpcLattice::Service"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:service/svc-[0-9a-z]{17}$"#)))?
+    AuthType: "NONE" | "AWS_IAM" | *Null
+    CreatedAt: String?
+    DnsEntry: DnsEntry?
+    Id: String(length <= 21 && length >= 21 && matches(Regex(#"^svc-[0-9a-z]{17}$"#)))?
+    LastUpdatedAt: String?
+    Name: String(length <= 40 && length >= 3 && matches(Regex(#"^(?!svc-)(?![-])(?!.*[-]$)(?!.*[-]{2})[a-z0-9-]+$"#)))?
+    Status: "ACTIVE" | "CREATE_IN_PROGRESS" | "DELETE_IN_PROGRESS" | "CREATE_FAILED" | "DELETE_FAILED" | *Null
+    CertificateArn: String(length <= 2048 && matches(Regex(#"^(arn(:[a-z0-9]+([.-][a-z0-9]+)*){2}(:([a-z0-9]+([.-][a-z0-9]+)*)?){2}:certificate/[0-9a-z-]+)?$"#)))?
+    CustomDomainName: String(length <= 255 && length >= 3)?
+    Tags: Listing<Tag>?
+}
+class DnsEntry {
+    DomainName: String?
+    HostedZoneId: String?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

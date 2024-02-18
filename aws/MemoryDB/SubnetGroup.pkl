@@ -1,0 +1,25 @@
+/// The AWS::MemoryDB::SubnetGroup resource creates an Amazon MemoryDB
+/// Subnet Group.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MemoryDB::SubnetGroup"
+Properties: Props?
+class Props {
+    /// The name of the subnet group. This value must be unique as it also
+    /// serves as the subnet group identifier.
+    SubnetGroupName: String(matches(Regex(#"[a-z][a-z0-9\-]*"#)))?
+    /// An optional description of the subnet group.
+    Description: String?
+    /// A list of VPC subnet IDs for the subnet group.
+    SubnetIds: Listing<String>?
+    /// An array of key-value pairs to apply to this subnet group.
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the subnet group.
+    ARN: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for the tag. May not be null.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)(?!memorydb:)[a-zA-Z0-9 _\.\/=+:\-@]{1,128}$"#)))
+    /// The tag's value. May be null.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^(?!aws:)(?!memorydb:)[a-zA-Z0-9 _\.\/=+:\-@]{1,256}$"#)))
+}

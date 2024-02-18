@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::ElastiCache::ParameterGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElastiCache::ParameterGroup"
+Properties: Props?
+class Props {
+    Description: String?
+    Id: String?
+    Properties: Mapping?
+    Tags: Listing<Tag>?
+    CacheParameterGroupFamily: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

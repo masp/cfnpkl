@@ -1,0 +1,78 @@
+/// The AWS::Timestream::Table resource creates a Timestream Table.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Timestream::Table"
+Properties: Props?
+class Props {
+    Arn: String?
+    /// The table name exposed as a read-only attribute.
+    Name: String?
+    /// The name for the database which the table to be created belongs to.
+    DatabaseName: String(matches(Regex(#"^[a-zA-Z0-9_.-]{3,256}$"#)))?
+    /// The name for the table. If you don't specify a name, AWS
+    /// CloudFormation generates a unique physical ID and uses that ID for the
+    /// table name.
+    TableName: String(matches(Regex(#"^[a-zA-Z0-9_.-]{3,256}$"#)))?
+    /// The retention duration of the memory store and the magnetic store.
+    RetentionProperties: RetentionProperties?
+    /// A Schema specifies the expected data model of the table.
+    Schema: Schema?
+    /// The properties that determine whether magnetic store writes are
+    /// enabled.
+    MagneticStoreWriteProperties: MagneticStoreWriteProperties?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// The retention duration of the memory store and the magnetic store.
+class RetentionProperties {
+    /// The duration for which data must be stored in the memory store.
+    MemoryStoreRetentionPeriodInHours: String?
+    /// The duration for which data must be stored in the magnetic store.
+    MagneticStoreRetentionPeriodInDays: String?
+}
+/// A Schema specifies the expected data model of the table.
+class Schema {
+    CompositePartitionKey: Listing<PartitionKey>?
+}
+/// An attribute used in partitioning data in a table. There are two types
+/// of partition keys: dimension keys and measure keys. A dimension key
+/// partitions data on a dimension name, while a measure key partitions
+/// data on the measure name.
+class PartitionKey {
+    Type: "DIMENSION" | "MEASURE"
+    Name: String(length <= 2048 && length >= 1)?
+    EnforcementInRecord: "REQUIRED" | "OPTIONAL" | *Null
+}
+/// The properties that determine whether magnetic store writes are
+/// enabled.
+class MagneticStoreWriteProperties {
+    /// Boolean flag indicating whether magnetic store writes are enabled.
+    EnableMagneticStoreWrites: Boolean
+    /// Location to store information about records that were asynchronously
+    /// rejected during magnetic store writes.
+    MagneticStoreRejectedDataLocation: MagneticStoreRejectedDataLocation?
+}
+/// Location to store information about records that were asynchronously
+/// rejected during magnetic store writes.
+class MagneticStoreRejectedDataLocation {
+    /// S3 configuration for location to store rejections from magnetic store
+    /// writes
+    S3Configuration: S3Configuration?
+}
+/// S3 configuration for location to store rejections from magnetic store
+/// writes
+class S3Configuration {
+    /// The bucket name used to store the data.
+    BucketName: String
+    /// String used to prefix all data in the bucket.
+    ObjectKeyPrefix: String?
+    /// Either SSE_KMS or SSE_S3.
+    EncryptionOption: String
+    /// Must be provided if SSE_KMS is specified as the encryption option
+    KmsKeyId: String?
+}
+/// You can use the Resource Tags property to apply tags to resources,
+/// which can help you identify and categorize those resources.
+class Tag {
+    Key: String(length <= 128 && length >= 1)?
+    Value: String(length <= 256 && length >= 0)?
+}

@@ -1,0 +1,22 @@
+/// Resource Type definition for AWS::GlobalAccelerator::Listener
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GlobalAccelerator::Listener"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the listener.
+    ListenerArn: String?
+    /// The Amazon Resource Name (ARN) of the accelerator.
+    AcceleratorArn: String?
+    PortRanges: Listing<PortRange>?
+    /// The protocol for the listener.
+    Protocol: "TCP" | "UDP" | *Null
+    /// Client affinity lets you direct all requests from a user to the same
+    /// endpoint.
+    ClientAffinity: "NONE" | "SOURCE_IP" | *Null
+}
+/// A port range to support for connections from  clients to your
+/// accelerator.
+class PortRange {
+    FromPort: Int
+    ToPort: Int
+}

@@ -1,0 +1,18 @@
+/// Definition of AWS::ControlTower::LandingZone Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ControlTower::LandingZone"
+Properties: Props?
+class Props {
+    LandingZoneIdentifier: String?
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:aws[0-9a-zA-Z_\-:\/]+$"#)))?
+    Status: "ACTIVE" | "PROCESSING" | "FAILED" | *Null
+    LatestAvailableVersion: String(length <= 10 && length >= 3 && matches(Regex(#"\d+.\d+"#)))?
+    DriftStatus: "DRIFTED" | "IN_SYNC" | *Null
+    Manifest: Mapping?
+    Version: String(length <= 10 && length >= 3 && matches(Regex(#"\d+.\d+"#)))?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 256 && length >= 1)?
+    Value: String(length <= 256 && length >= 0)?
+}

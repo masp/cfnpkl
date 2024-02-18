@@ -1,0 +1,247 @@
+/// Resource Type definition for AWS::SageMaker::ModelCard.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::ModelCard"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the successfully created model card.
+    ModelCardArn: String(length <= 256 && length >= 1 && matches(Regex(#"^arn:aws[a-z\-]*:sagemaker:[a-z0-9\-]{9,16}:[0-9]{12}:model-card/[a-zA-Z0-9](-*[a-zA-Z0-9]){0,62}$"#)))?
+    /// A version of the model card.
+    ModelCardVersion: Int?
+    /// The unique name of the model card.
+    ModelCardName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,62}$"#)))?
+    SecurityConfig: SecurityConfig?
+    /// The approval status of the model card within your organization.
+    /// Different organizations might have different criteria for model card
+    /// review and approval.
+    ModelCardStatus: "Draft" | "PendingReview" | "Approved" | "Archived" | *Null
+    Content: Content?
+    /// The date and time the model card was created.
+    CreationTime: String?
+    /// Information about the user who created or modified an experiment,
+    /// trial, trial component, lineage group, project, or model card.
+    CreatedBy: UserContext?
+    /// The date and time the model card was last modified.
+    LastModifiedTime: String?
+    /// Information about the user who created or modified an experiment,
+    /// trial, trial component, lineage group, project, or model card.
+    LastModifiedBy: UserContext?
+    /// The processing status of model card deletion. The
+    /// ModelCardProcessingStatus updates throughout the different deletion
+    /// steps.
+    ModelCardProcessingStatus: "UnsetValue" | "DeleteInProgress" | "DeletePending" | "ContentDeleted" | "ExportJobsDeleted" | "DeleteCompleted" | "DeleteFailed" | *Null
+    /// Key-value pairs used to manage metadata for model cards.
+    Tags: Listing<Tag>?
+}
+/// An optional Key Management Service key to encrypt, decrypt, and re-
+/// encrypt model card content for regulated workloads with highly
+/// sensitive data.
+class SecurityConfig {
+    /// A Key Management Service key ID to use for encrypting a model card.
+    KmsKeyId: String(length <= 2048 && matches(Regex(#".*"#)))?
+}
+/// The content of the model card.
+class Content {
+    ModelOverview: ModelOverview?
+    ModelPackageDetails: ModelPackageDetails?
+    IntendedUses: IntendedUses?
+    BusinessDetails: BusinessDetails?
+    TrainingDetails: TrainingDetails?
+    EvaluationDetails: Listing<EvaluationDetail>?
+    AdditionalInformation: AdditionalInformation?
+}
+/// Overview about the model.
+class ModelOverview {
+    /// description of model.
+    ModelDescription: String(length <= 1024)?
+    /// Owner of model.
+    ModelOwner: String(length <= 1024)?
+    /// Creator of model.
+    ModelCreator: String(length <= 1024)?
+    /// Problem being solved with the model.
+    ProblemType: String(length <= 1024)?
+    /// Algorithm used to solve the problem.
+    AlgorithmType: String(length <= 1024)?
+    /// SageMaker Model Arn or Non SageMaker Model id.
+    ModelId: String(length <= 1024)?
+    /// Location of the model artifact.
+    ModelArtifact: Listing<String(length <= 1024)>?
+    /// Name of the model.
+    ModelName: String(length <= 1024)?
+    /// Version of the model.
+    ModelVersion: Float?
+    /// Overview about the inference.
+    InferenceEnvironment: InferenceEnvironment?
+}
+/// Overview about the inference.
+class InferenceEnvironment {
+    /// SageMaker inference image uri.
+    ContainerImage: Listing<String(length <= 1024)>?
+}
+/// Metadata information related to model package version
+class ModelPackageDetails {
+    /// A brief summary of the model package
+    ModelPackageDescription: String(length <= 1024)?
+    /// The Amazon Resource Name (ARN) of the model package
+    ModelPackageArn: String(length <= 2048 && length >= 1)?
+    /// Information about the user who created model package.
+    CreatedBy: ModelPackageCreator?
+    /// Current status of model package
+    ModelPackageStatus: "Pending" | "InProgress" | "Completed" | "Failed" | "Deleting" | *Null
+    /// Current approval status of model package
+    ModelApprovalStatus: "Approved" | "Rejected" | "PendingManualApproval" | *Null
+    /// A description provided for the model approval
+    ApprovalDescription: String(length <= 1024)?
+    /// If the model is a versioned model, the name of the model group that
+    /// the versioned model belongs to.
+    ModelPackageGroupName: String(length <= 63 && length >= 1)?
+    /// Name of the model package
+    ModelPackageName: String(length <= 63 && length >= 1)?
+    /// Version of the model package
+    ModelPackageVersion: Float?
+    /// The machine learning domain of the model package you specified. Common
+    /// machine learning domains include computer vision and natural language
+    /// processing.
+    Domain: String?
+    /// The machine learning task you specified that your model package
+    /// accomplishes. Common machine learning tasks include object detection
+    /// and image classification.
+    Task: String?
+    /// A list of algorithms that were used to create a model package.
+    SourceAlgorithms: Listing<SourceAlgorithm>?
+    /// Details about inference jobs that can be run with models based on this
+    /// model package.
+    InferenceSpecification: InferenceSpecification?
+}
+class ModelPackageCreator {
+    /// The name of the user's profile in Studio
+    UserProfileName: String(length <= 63)?
+}
+class SourceAlgorithm {
+    /// The name of an algorithm that was used to create the model package.
+    /// The algorithm must be either an algorithm resource in your SageMaker
+    /// account or an algorithm in AWS Marketplace that you are subscribed to.
+    AlgorithmName: String(length <= 170)
+    /// The Amazon S3 path where the model artifacts, which result from model
+    /// training, are stored.
+    ModelDataUrl: String(length <= 1024)?
+}
+class InferenceSpecification {
+    /// Contains inference related information which were used to create model
+    /// package.
+    Containers: Listing<Container>
+}
+class Container {
+    /// The Amazon S3 path where the model artifacts, which result from model
+    /// training, are stored.
+    ModelDataUrl: String(length <= 1024)?
+    /// Inference environment path. The Amazon EC2 Container Registry (Amazon
+    /// ECR) path where inference code is stored.
+    Image: String(length <= 255)
+    /// The name of a pre-trained machine learning benchmarked by Amazon
+    /// SageMaker Inference Recommender model that matches your model.
+    NearestModelName: String?
+}
+/// Intended usage of model.
+class IntendedUses {
+    /// Why the model was developed?
+    PurposeOfModel: String(length <= 2048)?
+    /// intended use cases.
+    IntendedUses: String(length <= 2048)?
+    FactorsAffectingModelEfficiency: String(length <= 2048)?
+    RiskRating: "High" | "Medium" | "Low" | "Unknown" | *Null
+    ExplanationsForRiskRating: String(length <= 2048)?
+}
+/// Business details.
+class BusinessDetails {
+    /// What business problem does the model solve?
+    BusinessProblem: String(length <= 2048)?
+    /// Business stakeholders.
+    BusinessStakeholders: String(length <= 2048)?
+    /// Line of business.
+    LineOfBusiness: String(length <= 2048)?
+}
+/// Overview about the training.
+class TrainingDetails {
+    ObjectiveFunction: ObjectiveFunction?
+    TrainingObservations: String(length <= 1024)?
+    TrainingJobDetails: TrainingJobDetails?
+}
+/// the objective function the model will optimize for.
+class ObjectiveFunction {
+    /// objective function that training job is optimized for.
+    Function: Function?
+    Notes: String(length <= 1024)?
+}
+/// objective function that training job is optimized for.
+class Function {
+    Function: "Maximize" | "Minimize" | *Null
+    Facet: String(length <= 63)?
+    Condition: String(length <= 63)?
+}
+class TrainingJobDetails {
+    /// SageMaker Training job arn.
+    TrainingArn: String(length <= 1024)?
+    /// Location of the model datasets.
+    TrainingDatasets: Listing<String(length <= 1024)>?
+    TrainingEnvironment: TrainingEnvironment?
+    TrainingMetrics: Listing<TrainingMetric>?
+    UserProvidedTrainingMetrics: Listing<TrainingMetric>?
+    HyperParameters: Listing<TrainingHyperParameter>?
+    UserProvidedHyperParameters: Listing<TrainingHyperParameter>?
+}
+class TrainingEnvironment {
+    /// SageMaker training image uri.
+    ContainerImage: Listing<String(length <= 1024)>?
+}
+/// training metric data.
+class TrainingMetric {
+    Name: String(matches(Regex(#".{1,255}"#)))
+    Notes: String(length <= 1024)?
+    Value: Float
+}
+/// training hyper parameter
+class TrainingHyperParameter {
+    Name: String(matches(Regex(#".{1,255}"#)))
+    Value: String(matches(Regex(#".{1,255}"#)))
+}
+/// item of evaluation details
+class EvaluationDetail {
+    Name: String(matches(Regex(#".{1,63}"#)))
+    EvaluationObservation: String(length <= 2096)?
+    EvaluationJobArn: String(length <= 256)?
+    Datasets: Listing<String(length <= 1024)>?
+    /// additional attributes associated with the evaluation results.
+    Metadata: Mapping?
+    MetricGroups: Listing<MetricGroup>?
+}
+/// item in metric groups
+class MetricGroup {
+    Name: String(matches(Regex(#".{1,63}"#)))
+    MetricData: Listing<Mapping>
+}
+class AdditionalInformation {
+    /// Any ethical considerations that the author wants to provide.
+    EthicalConsiderations: String(length <= 2048)?
+    /// Caveats and recommendations for people who might use this model in
+    /// their applications.
+    CaveatsAndRecommendations: String(length <= 2048)?
+    /// customer details.
+    CustomDetails: Mapping?
+}
+/// Information about the user who created or modified an experiment,
+/// trial, trial component, lineage group, project, or model card.
+class UserContext {
+    /// The Amazon Resource Name (ARN) of the user's profile.
+    UserProfileArn: String?
+    /// The name of the user's profile.
+    UserProfileName: String?
+    /// The domain associated with the user.
+    DomainId: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The tag key. Tag keys must be unique per resource.
+    Key: String(length <= 128 && length >= 1)
+    /// The tag value.
+    Value: String(length <= 256)
+}

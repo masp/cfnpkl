@@ -1,0 +1,20 @@
+/// Resource Type definition for AWS::AmazonMQ::Configuration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AmazonMQ::Configuration"
+Properties: Props?
+class Props {
+    EngineVersion: String?
+    Description: String?
+    Revision: Int?
+    AuthenticationStrategy: String?
+    EngineType: String?
+    Data: String?
+    Id: String?
+    Arn: String?
+    Tags: Listing<TagsEntry>?
+    Name: String?
+}
+class TagsEntry {
+    Value: String
+    Key: String
+}

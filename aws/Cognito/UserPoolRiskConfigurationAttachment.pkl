@@ -1,0 +1,50 @@
+/// Resource Type definition for
+/// AWS::Cognito::UserPoolRiskConfigurationAttachment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cognito::UserPoolRiskConfigurationAttachment"
+Properties: Props?
+class Props {
+    Id: String?
+    CompromisedCredentialsRiskConfiguration: CompromisedCredentialsRiskConfigurationType?
+    UserPoolId: String?
+    ClientId: String?
+    AccountTakeoverRiskConfiguration: AccountTakeoverRiskConfigurationType?
+    RiskExceptionConfiguration: RiskExceptionConfigurationType?
+}
+class CompromisedCredentialsRiskConfigurationType {
+    Actions: CompromisedCredentialsActionsType
+    EventFilter: Listing<String>?
+}
+class CompromisedCredentialsActionsType {
+    EventAction: String
+}
+class AccountTakeoverRiskConfigurationType {
+    Actions: AccountTakeoverActionsType
+    NotifyConfiguration: NotifyConfigurationType?
+}
+class AccountTakeoverActionsType {
+    HighAction: AccountTakeoverActionType?
+    LowAction: AccountTakeoverActionType?
+    MediumAction: AccountTakeoverActionType?
+}
+class AccountTakeoverActionType {
+    Notify: Boolean
+    EventAction: String
+}
+class NotifyConfigurationType {
+    BlockEmail: NotifyEmailType?
+    ReplyTo: String?
+    SourceArn: String
+    NoActionEmail: NotifyEmailType?
+    From: String?
+    MfaEmail: NotifyEmailType?
+}
+class NotifyEmailType {
+    TextBody: String?
+    HtmlBody: String?
+    Subject: String
+}
+class RiskExceptionConfigurationType {
+    BlockedIPRangeList: Listing<String>?
+    SkippedIPRangeList: Listing<String>?
+}

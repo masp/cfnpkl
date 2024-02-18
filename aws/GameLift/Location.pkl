@@ -1,0 +1,20 @@
+/// The AWS::GameLift::Location resource creates an Amazon GameLift
+/// (GameLift) custom location.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GameLift::Location"
+Properties: Props?
+class Props {
+    LocationName: String(length <= 64 && length >= 8 && matches(Regex(#"^custom-[A-Za-z0-9\-]+"#)))?
+    LocationArn: String(matches(Regex(#"^arn:.*:location/custom-\S+"#)))?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length.
+    Value: String(length <= 256 && length >= 0)
+}

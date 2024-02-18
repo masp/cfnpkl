@@ -1,0 +1,30 @@
+/// Resource Type definition for SSO
+/// InstanceAccessControlAttributeConfiguration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSO::InstanceAccessControlAttributeConfiguration"
+Properties: Props?
+class Props {
+    /// The ARN of the AWS SSO instance under which the operation will be
+    /// executed.
+    InstanceArn: String(length <= 1224 && length >= 10 && matches(Regex(#"arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):sso:::instance/(sso)?ins-[a-zA-Z0-9-.]{16}"#)))?
+    /// The InstanceAccessControlAttributeConfiguration property has been
+    /// deprecated but is still supported for backwards compatibility
+    /// purposes. We recomend that you use  AccessControlAttributes property
+    /// instead.
+    InstanceAccessControlAttributeConfiguration: InstanceAccessControlAttributeConfiguration?
+    AccessControlAttributes: Listing<AccessControlAttribute>?
+}
+/// The InstanceAccessControlAttributeConfiguration property has been
+/// deprecated but is still supported for backwards compatibility
+/// purposes. We recomend that you use  AccessControlAttributes property
+/// instead.
+class InstanceAccessControlAttributeConfiguration {
+    AccessControlAttributes: Listing<AccessControlAttribute>
+}
+class AccessControlAttribute {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"[\p{L}\p{Z}\p{N}_.:\/=+\-@]+"#)))
+    Value: AccessControlAttributeValue
+}
+class AccessControlAttributeValue {
+    Source: Listing<String(length <= 256 && length >= 0 && matches(Regex(#"[\p{L}\p{Z}\p{N}_.:\/=+\-@\[\]\{\}\$\\"]*"#)))>
+}

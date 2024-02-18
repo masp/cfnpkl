@@ -1,0 +1,45 @@
+/// The AWS::Comprehend::Flywheel resource creates an Amazon Comprehend
+/// Flywheel that enables customer to train their model.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Comprehend::Flywheel"
+Properties: Props?
+class Props {
+    ActiveModelArn: String(length <= 256 && matches(Regex(#"arn:aws(-[^:]+)?:comprehend:[a-zA-Z0-9-]*:[0-9]{12}:(document-classifier|entity-recognizer)/[a-zA-Z0-9](-*[a-zA-Z0-9])*(/version/[a-zA-Z0-9](-*[a-zA-Z0-9])*)?"#)))?
+    DataAccessRoleArn: String(length <= 2048 && length >= 20 && matches(Regex(#"arn:aws(-[^:]+)?:iam::[0-9]{12}:role/.+"#)))?
+    DataLakeS3Uri: String(length <= 512 && matches(Regex(#"s3://[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9](/.*)?"#)))?
+    DataSecurityConfig: DataSecurityConfig?
+    FlywheelName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*$"#)))?
+    ModelType: "DOCUMENT_CLASSIFIER" | "ENTITY_RECOGNIZER" | *Null
+    Tags: Listing<Tag>?
+    TaskConfig: TaskConfig?
+    Arn: String(length <= 256 && length >= 1 && matches(Regex(#"arn:aws(-[^:]+)?:comprehend:[a-zA-Z0-9-]*:[0-9]{12}:flywheel/[a-zA-Z0-9](-*[a-zA-Z0-9])*"#)))?
+}
+class DataSecurityConfig {
+    ModelKmsKeyId: String(length <= 2048 && length >= 1)?
+    VolumeKmsKeyId: String(length <= 2048 && length >= 1)?
+    DataLakeKmsKeyId: String(length <= 2048 && length >= 1)?
+    VpcConfig: VpcConfig?
+}
+class VpcConfig {
+    SecurityGroupIds: Listing<String(length <= 32 && length >= 1 && matches(Regex(#"[-0-9a-zA-Z]+"#)))>
+    Subnets: Listing<String(length <= 32 && length >= 1 && matches(Regex(#"[-0-9a-zA-Z]+"#)))>
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}
+class TaskConfig {
+    LanguageCode: "en" | "es" | "fr" | "it" | "de" | "pt"
+    DocumentClassificationConfig: DocumentClassificationConfig?
+    EntityRecognitionConfig: EntityRecognitionConfig?
+}
+class DocumentClassificationConfig {
+    Mode: "MULTI_CLASS" | "MULTI_LABEL"
+    Labels: Listing<String(length <= 5000)>?
+}
+class EntityRecognitionConfig {
+    EntityTypes: Listing<EntityTypesListItem>?
+}
+class EntityTypesListItem {
+    Type: String(length <= 64 && length >= 1 && matches(Regex(#"^(?![^\n\r\t,]*\\n|\\r|\\t)[^\n\r\t,]+$"#)))
+}

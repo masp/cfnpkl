@@ -1,0 +1,16 @@
+/// Resource Type definition for
+/// AWS::Route53Resolver::ResolverRuleAssociation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53Resolver::ResolverRuleAssociation"
+Properties: Props?
+class Props {
+    /// The ID of the VPC that you associated the Resolver rule with.
+    VPCId: String?
+    /// The ID of the Resolver rule that you associated with the VPC that is
+    /// specified by VPCId.
+    ResolverRuleId: String?
+    /// Primary Identifier for Resolver Rule Association
+    ResolverRuleAssociationId: String?
+    /// The name of an association between a Resolver rule and a VPC.
+    Name: String?
+}

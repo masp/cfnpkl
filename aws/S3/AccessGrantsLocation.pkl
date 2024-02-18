@@ -1,0 +1,23 @@
+/// The AWS::S3::AccessGrantsLocation resource is an Amazon S3 resource
+/// type hosted in an access grants instance which can be the target of S3
+/// access grants.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::S3::AccessGrantsLocation"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the specified Access Grants
+    /// location.
+    AccessGrantsLocationArn: String?
+    /// The unique identifier for the specified Access Grants location.
+    AccessGrantsLocationId: String?
+    /// The Amazon Resource Name (ARN) of the access grant location's
+    /// associated IAM role.
+    IamRoleArn: String?
+    /// Descriptor for where the location actually points
+    LocationScope: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

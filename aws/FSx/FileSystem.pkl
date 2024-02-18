@@ -1,0 +1,122 @@
+/// Resource Type definition for AWS::FSx::FileSystem
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FSx::FileSystem"
+Properties: Props?
+class Props {
+    StorageType: String?
+    KmsKeyId: String?
+    StorageCapacity: Int?
+    RootVolumeId: String?
+    LustreConfiguration: LustreConfiguration?
+    BackupId: String?
+    OntapConfiguration: OntapConfiguration?
+    DNSName: String?
+    SubnetIds: Listing<String>?
+    SecurityGroupIds: Listing<String>?
+    WindowsConfiguration: WindowsConfiguration?
+    FileSystemTypeVersion: String?
+    OpenZFSConfiguration: OpenZFSConfiguration?
+    ResourceARN: String?
+    FileSystemType: String?
+    Id: String?
+    LustreMountName: String?
+    Tags: Listing<Tag>?
+}
+class LustreConfiguration {
+    DriveCacheType: String?
+    AutoImportPolicy: String?
+    ImportedFileChunkSize: Int?
+    DeploymentType: String?
+    DataCompressionType: String?
+    ImportPath: String?
+    WeeklyMaintenanceStartTime: String?
+    DailyAutomaticBackupStartTime: String?
+    CopyTagsToBackups: Boolean?
+    ExportPath: String?
+    PerUnitStorageThroughput: Int?
+    AutomaticBackupRetentionDays: Int?
+}
+class OntapConfiguration {
+    HAPairs: Int?
+    FsxAdminPassword: String?
+    ThroughputCapacityPerHAPair: Int?
+    DeploymentType: String
+    ThroughputCapacity: Int?
+    EndpointIpAddressRange: String?
+    RouteTableIds: Listing<String>?
+    WeeklyMaintenanceStartTime: String?
+    DiskIopsConfiguration: DiskIopsConfiguration?
+    DailyAutomaticBackupStartTime: String?
+    AutomaticBackupRetentionDays: Int?
+    PreferredSubnetId: String?
+}
+class DiskIopsConfiguration {
+    Mode: String?
+    Iops: Int?
+}
+class WindowsConfiguration {
+    SelfManagedActiveDirectoryConfiguration: SelfManagedActiveDirectoryConfiguration?
+    AuditLogConfiguration: AuditLogConfiguration?
+    ActiveDirectoryId: String?
+    DeploymentType: String?
+    Aliases: Listing<String>?
+    ThroughputCapacity: Int
+    WeeklyMaintenanceStartTime: String?
+    DiskIopsConfiguration: DiskIopsConfiguration?
+    CopyTagsToBackups: Boolean?
+    DailyAutomaticBackupStartTime: String?
+    AutomaticBackupRetentionDays: Int?
+    PreferredSubnetId: String?
+}
+class SelfManagedActiveDirectoryConfiguration {
+    FileSystemAdministratorsGroup: String?
+    UserName: String?
+    DomainName: String?
+    OrganizationalUnitDistinguishedName: String?
+    DnsIps: Listing<String>?
+    Password: String?
+}
+class AuditLogConfiguration {
+    FileAccessAuditLogLevel: String
+    FileShareAccessAuditLogLevel: String
+    AuditLogDestination: String?
+}
+class OpenZFSConfiguration {
+    Options: Listing<String>?
+    CopyTagsToVolumes: Boolean?
+    DeploymentType: String
+    ThroughputCapacity: Int?
+    RootVolumeConfiguration: RootVolumeConfiguration?
+    EndpointIpAddressRange: String?
+    RouteTableIds: Listing<String>?
+    WeeklyMaintenanceStartTime: String?
+    DiskIopsConfiguration: DiskIopsConfiguration?
+    DailyAutomaticBackupStartTime: String?
+    CopyTagsToBackups: Boolean?
+    AutomaticBackupRetentionDays: Int?
+    PreferredSubnetId: String?
+}
+class RootVolumeConfiguration {
+    ReadOnly: Boolean?
+    DataCompressionType: String?
+    NfsExports: Listing<NfsExports>?
+    CopyTagsToSnapshots: Boolean?
+    RecordSizeKiB: Int?
+    UserAndGroupQuotas: Listing<UserAndGroupQuotas>?
+}
+class NfsExports {
+    ClientConfigurations: Listing<ClientConfigurations>?
+}
+class ClientConfigurations {
+    Clients: String?
+    Options: Listing<String>?
+}
+class UserAndGroupQuotas {
+    Type: String?
+    Id: Int?
+    StorageCapacityQuotaGiB: Int?
+}
+class Tag {
+    Value: String
+    Key: String
+}

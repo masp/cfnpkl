@@ -1,0 +1,127 @@
+/// A resource schema for a Detector in Amazon Fraud Detector.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FraudDetector::Detector"
+Properties: Props?
+class Props {
+    /// The ID of the detector
+    DetectorId: String(length <= 64 && length >= 1 && matches(Regex(#"^[0-9a-z_-]+$"#)))?
+    /// The desired detector version status for the detector
+    DetectorVersionStatus: "DRAFT" | "ACTIVE" | *Null
+    /// The active version ID of the detector
+    DetectorVersionId: String?
+    RuleExecutionMode: "FIRST_MATCHED" | "ALL_MATCHED" | *Null
+    /// Tags associated with this detector.
+    Tags: Listing<Tag>?
+    /// The description of the detector.
+    Description: String(length <= 128 && length >= 1)?
+    Rules: Listing<Rule>?
+    /// The event type to associate this detector with.
+    EventType: EventType?
+    /// The ARN of the detector.
+    Arn: String?
+    /// The time when the detector was created.
+    CreatedTime: String?
+    /// The time when the detector was last updated.
+    LastUpdatedTime: String?
+    /// The models to associate with this detector.
+    AssociatedModels: Listing<Model>?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}
+class Rule {
+    RuleId: String?
+    RuleVersion: String?
+    DetectorId: String?
+    Expression: String?
+    Language: "DETECTORPL" | *Null
+    Outcomes: Listing<Outcome>?
+    Arn: String?
+    /// The description.
+    Description: String(length <= 256 && length >= 1)?
+    /// Tags associated with this event type.
+    Tags: Listing<Tag>?
+    /// The time when the event type was created.
+    CreatedTime: String?
+    /// The time when the event type was last updated.
+    LastUpdatedTime: String?
+}
+class Outcome {
+    Arn: String?
+    Inline: Boolean?
+    Name: String?
+    /// The description.
+    Description: String(length <= 256 && length >= 1)?
+    /// Tags associated with this outcome.
+    Tags: Listing<Tag>?
+    /// The time when the outcome was created.
+    CreatedTime: String?
+    /// The time when the outcome was last updated.
+    LastUpdatedTime: String?
+}
+class EventType {
+    /// The name for the event type
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[0-9a-z_-]+$"#)))?
+    Inline: Boolean?
+    /// Tags associated with this event type.
+    Tags: Listing<Tag>?
+    /// The description of the event type.
+    Description: String(length <= 128 && length >= 1)?
+    EventVariables: Listing<EventVariable>?
+    Labels: Listing<Label>?
+    EntityTypes: Listing<EntityType>?
+    /// The ARN of the event type.
+    Arn: String?
+    /// The time when the event type was created.
+    CreatedTime: String?
+    /// The time when the event type was last updated.
+    LastUpdatedTime: String?
+}
+class EventVariable {
+    Arn: String?
+    Inline: Boolean?
+    Name: String?
+    DataSource: "EVENT" | *Null
+    DataType: "STRING" | "INTEGER" | "FLOAT" | "BOOLEAN" | *Null
+    DefaultValue: String?
+    VariableType: "AUTH_CODE" | "AVS" | "BILLING_ADDRESS_L1" | "BILLING_ADDRESS_L2" | "BILLING_CITY" | "BILLING_COUNTRY" | "BILLING_NAME" | "BILLING_PHONE" | "BILLING_STATE" | "BILLING_ZIP" | "CARD_BIN" | "CATEGORICAL" | "CURRENCY_CODE" | "EMAIL_ADDRESS" | "FINGERPRINT" | "FRAUD_LABEL" | "FREE_FORM_TEXT" | "IP_ADDRESS" | "NUMERIC" | "ORDER_ID" | "PAYMENT_TYPE" | "PHONE_NUMBER" | "PRICE" | "PRODUCT_CATEGORY" | "SHIPPING_ADDRESS_L1" | "SHIPPING_ADDRESS_L2" | "SHIPPING_CITY" | "SHIPPING_COUNTRY" | "SHIPPING_NAME" | "SHIPPING_PHONE" | "SHIPPING_STATE" | "SHIPPING_ZIP" | "USERAGENT" | *Null
+    /// The description.
+    Description: String(length <= 256 && length >= 1)?
+    /// Tags associated with this event variable.
+    Tags: Listing<Tag>?
+    /// The time when the event variable was created.
+    CreatedTime: String?
+    /// The time when the event variable was last updated.
+    LastUpdatedTime: String?
+}
+class Label {
+    Arn: String?
+    Inline: Boolean?
+    Name: String?
+    /// The description.
+    Description: String(length <= 256 && length >= 1)?
+    /// Tags associated with this label.
+    Tags: Listing<Tag>?
+    /// The time when the label was created.
+    CreatedTime: String?
+    /// The time when the label was last updated.
+    LastUpdatedTime: String?
+}
+class EntityType {
+    Arn: String?
+    Inline: Boolean?
+    Name: String?
+    /// The description.
+    Description: String(length <= 256 && length >= 1)?
+    /// Tags associated with this entity type.
+    Tags: Listing<Tag>?
+    /// The time when the entity type was created.
+    CreatedTime: String?
+    /// The time when the entity type was last updated.
+    LastUpdatedTime: String?
+}
+/// A model to associate with a detector.
+class Model {
+    Arn: String?
+}

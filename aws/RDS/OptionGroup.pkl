@@ -1,0 +1,58 @@
+/// The AWS::RDS::OptionGroup resource creates an option group, to enable
+/// and configure features that are specific to a particular DB engine.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RDS::OptionGroup"
+Properties: Props?
+class Props {
+    /// Specifies the name of the option group.
+    OptionGroupName: String?
+    /// Provides a description of the option group.
+    OptionGroupDescription: String?
+    /// Indicates the name of the engine that this option group can be applied
+    /// to.
+    EngineName: String?
+    /// Indicates the major engine version associated with this option group.
+    MajorEngineVersion: String?
+    /// Indicates what options are available in the option group.
+    OptionConfigurations: Listing<OptionConfiguration>?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// The OptionConfiguration property type specifies an individual option,
+/// and its settings, within an AWS::RDS::OptionGroup resource.
+class OptionConfiguration {
+    /// A list of DBSecurityGroupMembership name strings used for this option.
+    DBSecurityGroupMemberships: Listing<String>?
+    /// The configuration of options to include in a group.
+    OptionName: String
+    /// The option settings to include in an option group.
+    OptionSettings: Listing<OptionSetting>?
+    /// The version for the option.
+    OptionVersion: String?
+    /// The optional port for the option.
+    Port: Int?
+    /// A list of VpcSecurityGroupMembership name strings used for this
+    /// option.
+    VpcSecurityGroupMemberships: Listing<String>?
+}
+/// The OptionSetting property type specifies the value for an option
+/// within an OptionSetting property.
+class OptionSetting {
+    /// The name of the option that has settings that you can set.
+    Name: String?
+    /// The current value of the option setting.
+    Value: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)?
+}

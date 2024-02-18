@@ -1,0 +1,14 @@
+/// Associate a set of ECS Capacity Providers with a specified ECS Cluster
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ECS::ClusterCapacityProviderAssociations"
+Properties: Props?
+class Props {
+    CapacityProviders: Listing<String>?
+    Cluster: String(length <= 2048 && length >= 1)?
+    DefaultCapacityProviderStrategy: Listing<CapacityProviderStrategy>?
+}
+class CapacityProviderStrategy {
+    Base: Int?
+    Weight: Int?
+    CapacityProvider: String
+}

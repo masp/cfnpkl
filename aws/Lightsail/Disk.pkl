@@ -1,0 +1,73 @@
+/// Resource Type definition for AWS::Lightsail::Disk
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lightsail::Disk"
+Properties: Props?
+class Props {
+    /// The names to use for your new Lightsail disk.
+    DiskName: String(length <= 254 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][\w\-.]*[a-zA-Z0-9]$"#)))?
+    DiskArn: String?
+    /// Support code to help identify any issues
+    SupportCode: String?
+    /// The Availability Zone in which to create your instance. Use the
+    /// following format: us-east-2a (case sensitive). Be sure to add the
+    /// include Availability Zones parameter to your request.
+    AvailabilityZone: String(length <= 255 && length >= 1)?
+    Location: Location?
+    /// Resource type of Lightsail instance.
+    ResourceType: String?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// An array of objects representing the add-ons to enable for the new
+    /// instance.
+    AddOns: Listing<AddOn>?
+    /// State of the Lightsail disk
+    State: String?
+    /// Attachment State of the Lightsail disk
+    AttachmentState: String?
+    /// Size of the Lightsail disk
+    SizeInGb: Int?
+    /// Iops of the Lightsail disk
+    Iops: Int?
+    /// Check is Disk is attached state
+    IsAttached: Boolean?
+    /// Path of the  attached Disk
+    Path: String?
+    /// Name of the attached Lightsail Instance
+    AttachedTo: String?
+}
+/// Location of a resource.
+class Location {
+    /// The Availability Zone in which to create your disk. Use the following
+    /// format: us-east-2a (case sensitive). Be sure to add the include
+    /// Availability Zones parameter to your request.
+    AvailabilityZone: String?
+    /// The Region Name in which to create your disk.
+    RegionName: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)?
+}
+/// A addon associate with a resource.
+class AddOn {
+    /// The add-on type
+    AddOnType: String(length <= 128 && length >= 1)
+    /// Status of the Addon
+    Status: "Enabling" | "Disabling" | "Enabled" | "Terminating" | "Terminated" | "Disabled" | "Failed" | *Null
+    AutoSnapshotAddOnRequest: AutoSnapshotAddOn?
+}
+/// An object that represents additional parameters when enabling or
+/// modifying the automatic snapshot add-on
+class AutoSnapshotAddOn {
+    /// The daily time when an automatic snapshot will be created.
+    SnapshotTimeOfDay: String(matches(Regex(#"^[0-9]{2}:00$"#)))?
+}

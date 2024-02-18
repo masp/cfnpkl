@@ -1,0 +1,12 @@
+/// Resource Type definition for
+/// AWS::ServiceCatalog::PortfolioProductAssociation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceCatalog::PortfolioProductAssociation"
+Properties: Props?
+class Props {
+    Id: String?
+    SourcePortfolioId: String?
+    AcceptLanguage: String?
+    PortfolioId: String?
+    ProductId: String?
+}

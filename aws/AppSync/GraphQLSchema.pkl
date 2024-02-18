@@ -1,0 +1,10 @@
+/// Resource Type definition for AWS::AppSync::GraphQLSchema
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppSync::GraphQLSchema"
+Properties: Props?
+class Props {
+    Id: String?
+    Definition: String?
+    DefinitionS3Location: String?
+    ApiId: String?
+}

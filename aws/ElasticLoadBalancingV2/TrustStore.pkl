@@ -1,0 +1,26 @@
+/// Resource Type definition for AWS::ElasticLoadBalancingV2::TrustStore
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElasticLoadBalancingV2::TrustStore"
+Properties: Props?
+class Props {
+    /// The name of the trust store.
+    Name: String?
+    /// The name of the S3 bucket to fetch the CA certificate bundle from.
+    CaCertificatesBundleS3Bucket: String?
+    /// The name of the S3 object to fetch the CA certificate bundle from.
+    CaCertificatesBundleS3Key: String?
+    /// The version of the S3 bucket that contains the CA certificate bundle.
+    CaCertificatesBundleS3ObjectVersion: String?
+    /// The status of the trust store, could be either of ACTIVE or CREATING.
+    Status: String?
+    /// The number of certificates associated with the trust store.
+    NumberOfCaCertificates: Int?
+    /// The tags to assign to the trust store.
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the trust store.
+    TrustStoreArn: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

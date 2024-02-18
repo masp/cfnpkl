@@ -1,0 +1,25 @@
+/// Resource Type definition for AWS::IoT::TopicRuleDestination
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::TopicRuleDestination"
+Properties: Props?
+class Props {
+    /// Amazon Resource Name (ARN).
+    Arn: String?
+    /// The status of the TopicRuleDestination.
+    Status: "ENABLED" | "IN_PROGRESS" | "DISABLED" | *Null
+    /// HTTP URL destination properties.
+    HttpUrlProperties: HttpUrlDestinationSummary?
+    /// The reasoning for the current status of the TopicRuleDestination.
+    StatusReason: String?
+    /// VPC destination properties.
+    VpcProperties: VpcDestinationProperties?
+}
+class HttpUrlDestinationSummary {
+    ConfirmationUrl: String?
+}
+class VpcDestinationProperties {
+    SubnetIds: Listing<String>?
+    SecurityGroups: Listing<String>?
+    VpcId: String?
+    RoleArn: String?
+}

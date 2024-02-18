@@ -1,0 +1,14 @@
+/// Resource Type definition for AWS::MSK::VpcConnection
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MSK::VpcConnection"
+Properties: Props?
+class Props {
+    Arn: String?
+    Authentication: "SASL_IAM" | "SASL_SCRAM" | "TLS"(length <= 10 && length >= 3) | *Null
+    ClientSubnets: Listing<String(matches(Regex(#"^(subnet-)([a-z0-9]+)\Z"#)))>?
+    /// The Amazon Resource Name (ARN) of the target cluster
+    TargetClusterArn: String(matches(Regex(#"^arn:[\w-]+:kafka:[\w-]+:\d+:cluster.*\Z"#)))?
+    SecurityGroups: Listing<String(matches(Regex(#"^(sg-)([a-z0-9]+)\Z"#)))>?
+    Tags: Mapping?
+    VpcId: String(matches(Regex(#"^(vpc-)([a-z0-9]+)\Z"#)))?
+}

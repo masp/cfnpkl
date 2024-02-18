@@ -1,0 +1,36 @@
+/// Resource Type definition for AWS::Events::Endpoint.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Events::Endpoint"
+Properties: Props?
+class Props {
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[\.\-_A-Za-z0-9]+$"#)))?
+    Arn: String(length <= 1600 && length >= 1 && matches(Regex(#"^arn:aws([a-z]|\-)*:events:([a-z]|\d|\-)*:([0-9]{12})?:endpoint\/[/\.\-_A-Za-z0-9]+$"#)))?
+    RoleArn: String(length <= 256 && length >= 1 && matches(Regex(#"^arn:aws[a-z-]*:iam::\d{12}:role\/[\w+=,.@/-]+$"#)))?
+    Description: String(length <= 512 && matches(Regex(#".*"#)))?
+    RoutingConfig: RoutingConfig?
+    ReplicationConfig: ReplicationConfig?
+    EventBuses: Listing<EndpointEventBus>?
+    EndpointId: String(length <= 50 && length >= 1 && matches(Regex(#"^[A-Za-z0-9\-]+[\.][A-Za-z0-9\-]+$"#)))?
+    EndpointUrl: String(length <= 256 && length >= 1 && matches(Regex(#"^(https://)?[\.\-a-z0-9]+$"#)))?
+    State: "ACTIVE" | "CREATING" | "UPDATING" | "DELETING" | "CREATE_FAILED" | "UPDATE_FAILED" | *Null
+    StateReason: String(length <= 512 && length >= 1 && matches(Regex(#"^.*$"#)))?
+}
+class RoutingConfig {
+    FailoverConfig: FailoverConfig
+}
+class FailoverConfig {
+    Primary: Primary
+    Secondary: Secondary
+}
+class Primary {
+    HealthCheck: String(length <= 1600 && length >= 1 && matches(Regex(#"^arn:aws([a-z]|\-)*:route53:::healthcheck/[\-a-z0-9]+$"#)))
+}
+class Secondary {
+    Route: String(length <= 20 && length >= 9 && matches(Regex(#"^[\-a-z0-9]+$"#)))
+}
+class ReplicationConfig {
+    State: "ENABLED" | "DISABLED"
+}
+class EndpointEventBus {
+    EventBusArn: String(length <= 512 && length >= 1 && matches(Regex(#"^arn:aws[a-z-]*:events:[a-z]{2}-[a-z-]+-\d+:\d{12}:event-bus/[\w.-]+$"#)))
+}

@@ -1,0 +1,22 @@
+/// Resource type definition for AWS::Events::EventBus
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Events::EventBus"
+Properties: Props?
+class Props {
+    /// If you are creating a partner event bus, this specifies the partner
+    /// event source that the new event bus will be matched with.
+    EventSourceName: String?
+    /// The name of the event bus.
+    Name: String?
+    /// Any tags assigned to the event bus.
+    Tags: Listing<Tag>?
+    /// A JSON string that describes the permission policy statement for the
+    /// event bus.
+    Policy: Mapping | String | *Null
+    /// The Amazon Resource Name (ARN) for the event bus.
+    Arn: String?
+}
+class Tag {
+    Key: String
+    Value: String
+}

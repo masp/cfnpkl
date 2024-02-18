@@ -1,0 +1,24 @@
+/// Definition of AWS::VerifiedPermissions::IdentitySource Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::VerifiedPermissions::IdentitySource"
+Properties: Props?
+class Props {
+    Configuration: IdentitySourceConfiguration?
+    Details: IdentitySourceDetails?
+    IdentitySourceId: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]*$"#)))?
+    PolicyStoreId: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]*$"#)))?
+    PrincipalEntityType: String(length <= 200 && length >= 1 && matches(Regex(#"^.*$"#)))?
+}
+class IdentitySourceConfiguration {
+    CognitoUserPoolConfiguration: CognitoUserPoolConfiguration
+}
+class CognitoUserPoolConfiguration {
+    UserPoolArn: String(length <= 255 && length >= 1 && matches(Regex(#"^arn:[a-zA-Z0-9-]+:cognito-idp:(([a-zA-Z0-9-]+:\d{12}:userpool/[\w-]+_[0-9a-zA-Z]+))$"#)))
+    ClientIds: Listing<String(length <= 255 && length >= 1 && matches(Regex(#"^.*$"#)))>?
+}
+class IdentitySourceDetails {
+    ClientIds: Listing<String(length <= 255 && length >= 1 && matches(Regex(#"^.*$"#)))>?
+    UserPoolArn: String(length <= 255 && length >= 1 && matches(Regex(#"^arn:[a-zA-Z0-9-]+:cognito-idp:(([a-zA-Z0-9-]+:\d{12}:userpool/[\w-]+_[0-9a-zA-Z]+))$"#)))?
+    DiscoveryUrl: String(length <= 2048 && length >= 1 && matches(Regex(#"^https://.*$"#)))?
+    OpenIdIssuer: "COGNITO" | *Null
+}

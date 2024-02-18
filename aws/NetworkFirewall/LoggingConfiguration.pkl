@@ -1,0 +1,19 @@
+/// Resource type definition for
+/// AWS::NetworkFirewall::LoggingConfiguration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkFirewall::LoggingConfiguration"
+Properties: Props?
+class Props {
+    FirewallName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]+$"#)))?
+    FirewallArn: String(length <= 256 && length >= 1 && matches(Regex(#"^arn:aws.*$"#)))?
+    LoggingConfiguration: LoggingConfiguration?
+}
+class LoggingConfiguration {
+    LogDestinationConfigs: Listing<LogDestinationConfig>
+}
+class LogDestinationConfig {
+    LogType: "ALERT" | "FLOW"
+    LogDestinationType: "S3" | "CloudWatchLogs" | "KinesisDataFirehose"
+    /// A key-value pair to configure the logDestinations.
+    LogDestination: Mapping
+}

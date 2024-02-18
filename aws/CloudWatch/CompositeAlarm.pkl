@@ -1,0 +1,42 @@
+/// The AWS::CloudWatch::CompositeAlarm type specifies an alarm which
+/// aggregates the states of other Alarms (Metric or Composite Alarms) as
+/// defined by the AlarmRule expression
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudWatch::CompositeAlarm"
+Properties: Props?
+class Props {
+    /// Amazon Resource Name (ARN) of the alarm
+    Arn: String(length <= 1600 && length >= 1)?
+    /// The name of the Composite Alarm
+    AlarmName: String(length <= 255 && length >= 1)?
+    /// Expression which aggregates the state of other Alarms (Metric or
+    /// Composite Alarms)
+    AlarmRule: String(length <= 10240 && length >= 1)?
+    /// The description of the alarm
+    AlarmDescription: String(length <= 1024 && length >= 0)?
+    /// Indicates whether actions should be executed during any changes to the
+    /// alarm state. The default is TRUE.
+    ActionsEnabled: Boolean?
+    /// The actions to execute when this alarm transitions to the OK state
+    /// from any other state. Each action is specified as an Amazon Resource
+    /// Name (ARN).
+    OKActions: Listing<String(length <= 1024 && length >= 1)>?
+    /// The list of actions to execute when this alarm transitions into an
+    /// ALARM state from any other state. Specify each action as an Amazon
+    /// Resource Name (ARN).
+    AlarmActions: Listing<String(length <= 1024 && length >= 1)>?
+    /// The actions to execute when this alarm transitions to the
+    /// INSUFFICIENT_DATA state from any other state. Each action is specified
+    /// as an Amazon Resource Name (ARN).
+    InsufficientDataActions: Listing<String(length <= 1024 && length >= 1)>?
+    /// Actions will be suppressed if the suppressor alarm is in the ALARM
+    /// state. ActionsSuppressor can be an AlarmName or an Amazon Resource
+    /// Name (ARN) from an existing alarm.
+    ActionsSuppressor: String(length <= 1600 && length >= 1)?
+    /// Actions will be suppressed if ExtensionPeriod is active. The length of
+    /// time that actions are suppressed is in seconds.
+    ActionsSuppressorWaitPeriod: Int?
+    /// Actions will be suppressed if WaitPeriod is active. The length of time
+    /// that actions are suppressed is in seconds.
+    ActionsSuppressorExtensionPeriod: Int?
+}

@@ -1,0 +1,28 @@
+/// Resource Type definition for AWS::Transfer::Profile
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Transfer::Profile"
+Properties: Props?
+class Props {
+    /// AS2 identifier agreed with a trading partner.
+    As2Id: String(length <= 128 && length >= 1)?
+    /// Enum specifying whether the profile is local or associated with a
+    /// trading partner.
+    ProfileType: "LOCAL" | "PARTNER" | *Null
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// List of the certificate IDs associated with this profile to be used
+    /// for encryption and signing of AS2 messages.
+    CertificateIds: Listing<String(length <= 22 && length >= 22 && matches(Regex(#"^cert-([0-9a-f]{17})$"#)))>?
+    /// Specifies the unique Amazon Resource Name (ARN) for the profile.
+    Arn: String(length <= 1600 && length >= 20 && matches(Regex(#"arn:.*"#)))?
+    /// A unique identifier for the profile
+    ProfileId: String(length <= 19 && length >= 19 && matches(Regex(#"^p-([0-9a-f]{17})$"#)))?
+}
+/// Creates a key-value pair for a specific resource.
+class Tag {
+    /// The name assigned to the tag that you create.
+    Key: String(length <= 128 && length >= 1)
+    /// Contains one or more values that you assigned to the key name you
+    /// create.
+    Value: String(length <= 256 && length >= 0)
+}

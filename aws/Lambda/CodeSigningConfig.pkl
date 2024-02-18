@@ -1,0 +1,29 @@
+/// Resource Type definition for AWS::Lambda::CodeSigningConfig.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lambda::CodeSigningConfig"
+Properties: Props?
+class Props {
+    /// A description of the CodeSigningConfig
+    Description: String(length <= 256 && length >= 0)?
+    /// When the CodeSigningConfig is later on attached to a function, the
+    /// function code will be expected to be signed by profiles from this list
+    AllowedPublishers: AllowedPublishers?
+    /// Policies to control how to act if a signature is invalid
+    CodeSigningPolicies: CodeSigningPolicies?
+    /// A unique identifier for CodeSigningConfig resource
+    CodeSigningConfigId: String(matches(Regex(#"csc-[a-zA-Z0-9-_\.]{17}"#)))?
+    /// A unique Arn for CodeSigningConfig resource
+    CodeSigningConfigArn: String(matches(Regex(#"arn:(aws[a-zA-Z-]*)?:lambda:[a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}:\d{12}:code-signing-config:csc-[a-z0-9]{17}"#)))?
+}
+/// When the CodeSigningConfig is later on attached to a function, the
+/// function code will be expected to be signed by profiles from this list
+class AllowedPublishers {
+    /// List of Signing profile version Arns
+    SigningProfileVersionArns: Listing<String(length <= 1024 && length >= 12 && matches(Regex(#"arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)"#)))>
+}
+/// Policies to control how to act if a signature is invalid
+class CodeSigningPolicies {
+    /// Indicates how Lambda operations involve updating the code artifact
+    /// will operate. Default to Warn if not provided
+    UntrustedArtifactOnDeployment: "Warn" | "Enforce"
+}

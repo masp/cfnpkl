@@ -1,0 +1,53 @@
+/// Resource Type definition for AWS::SageMaker::Endpoint
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::Endpoint"
+Properties: Props?
+class Props {
+    RetainAllVariantProperties: Boolean?
+    EndpointName: String?
+    ExcludeRetainedVariantProperties: Listing<VariantProperty>?
+    EndpointConfigName: String?
+    Id: String?
+    DeploymentConfig: DeploymentConfig?
+    RetainDeploymentConfig: Boolean?
+    Tags: Listing<Tag>?
+}
+class VariantProperty {
+    VariantPropertyType: String?
+}
+class DeploymentConfig {
+    AutoRollbackConfiguration: AutoRollbackConfig?
+    RollingUpdatePolicy: RollingUpdatePolicy?
+    BlueGreenUpdatePolicy: BlueGreenUpdatePolicy?
+}
+class AutoRollbackConfig {
+    Alarms: Listing<Alarm>
+}
+class Alarm {
+    AlarmName: String
+}
+class RollingUpdatePolicy {
+    MaximumExecutionTimeoutInSeconds: Int?
+    MaximumBatchSize: CapacitySize
+    WaitIntervalInSeconds: Int
+    RollbackMaximumBatchSize: CapacitySize?
+}
+class CapacitySize {
+    Value: Int
+    Type: String
+}
+class BlueGreenUpdatePolicy {
+    MaximumExecutionTimeoutInSeconds: Int?
+    TerminationWaitInSeconds: Int?
+    TrafficRoutingConfiguration: TrafficRoutingConfig
+}
+class TrafficRoutingConfig {
+    Type: String
+    LinearStepSize: CapacitySize?
+    CanarySize: CapacitySize?
+    WaitIntervalInSeconds: Int?
+}
+class Tag {
+    Value: String
+    Key: String
+}

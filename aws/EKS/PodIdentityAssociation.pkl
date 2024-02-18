@@ -1,0 +1,35 @@
+/// An object representing an Amazon EKS PodIdentityAssociation.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EKS::PodIdentityAssociation"
+Properties: Props?
+class Props {
+    /// The cluster that the pod identity association is created for.
+    ClusterName: String(length >= 1)?
+    /// The IAM role ARN that the pod identity association is created for.
+    RoleArn: String?
+    /// The Kubernetes namespace that the pod identity association is created
+    /// for.
+    Namespace: String?
+    /// The Kubernetes service account that the pod identity association is
+    /// created for.
+    ServiceAccount: String?
+    /// The ARN of the pod identity association.
+    AssociationArn: String?
+    /// The ID of the pod identity association.
+    AssociationId: String(length >= 1)?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

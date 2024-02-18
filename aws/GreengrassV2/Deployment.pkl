@@ -1,0 +1,58 @@
+/// Resource for Greengrass V2 deployment.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GreengrassV2::Deployment"
+Properties: Props?
+class Props {
+    TargetArn: String(matches(Regex(#"arn:[^:]*:iot:[^:]*:[0-9]+:(thing|thinggroup)/.+"#)))?
+    ParentTargetArn: String(matches(Regex(#"arn:[^:]*:iot:[^:]*:[0-9]+:thinggroup/.+"#)))?
+    DeploymentId: String(matches(Regex(#".+"#)))?
+    DeploymentName: String(length <= 256 && length >= 1)?
+    Components: Mapping?
+    IotJobConfiguration: DeploymentIoTJobConfiguration?
+    DeploymentPolicies: DeploymentPolicies?
+    Tags: Mapping?
+}
+class DeploymentIoTJobConfiguration {
+    JobExecutionsRolloutConfig: IoTJobExecutionsRolloutConfig?
+    AbortConfig: IoTJobAbortConfig?
+    TimeoutConfig: IoTJobTimeoutConfig?
+}
+class IoTJobExecutionsRolloutConfig {
+    ExponentialRate: IoTJobExponentialRolloutRate?
+    MaximumPerMinute: Int?
+}
+class IoTJobExponentialRolloutRate {
+    BaseRatePerMinute: Int
+    IncrementFactor: Float
+    RateIncreaseCriteria: IoTJobRateIncreaseCriteria0 | IoTJobRateIncreaseCriteria1
+}
+class IoTJobRateIncreaseCriteria0 {
+    NumberOfNotifiedThings: Int?
+}
+class IoTJobRateIncreaseCriteria1 {
+    NumberOfSucceededThings: Int?
+}
+class IoTJobAbortConfig {
+    CriteriaList: Listing<IoTJobAbortCriteria>
+}
+class IoTJobAbortCriteria {
+    FailureType: "FAILED" | "REJECTED" | "TIMED_OUT" | "ALL"
+    Action: "CANCEL"
+    ThresholdPercentage: Float
+    MinNumberOfExecutedThings: Int
+}
+class IoTJobTimeoutConfig {
+    InProgressTimeoutInMinutes: Int?
+}
+class DeploymentPolicies {
+    FailureHandlingPolicy: "ROLLBACK" | "DO_NOTHING" | *Null
+    ComponentUpdatePolicy: DeploymentComponentUpdatePolicy?
+    ConfigurationValidationPolicy: DeploymentConfigurationValidationPolicy?
+}
+class DeploymentComponentUpdatePolicy {
+    TimeoutInSeconds: Int?
+    Action: "NOTIFY_COMPONENTS" | "SKIP_NOTIFY_COMPONENTS" | *Null
+}
+class DeploymentConfigurationValidationPolicy {
+    TimeoutInSeconds: Int?
+}

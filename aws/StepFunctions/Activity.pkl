@@ -1,0 +1,13 @@
+/// Resource schema for Activity
+extends ".../AWS/Resource.pkl"
+Type = "AWS::StepFunctions::Activity"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 1)?
+    Name: String(length <= 80 && length >= 1)?
+    Tags: Listing<TagsEntry>?
+}
+class TagsEntry {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

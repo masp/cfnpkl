@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::Glue::DataQualityRuleset
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::DataQualityRuleset"
+Properties: Props?
+class Props {
+    Ruleset: String?
+    Description: String?
+    TargetTable: DataQualityTargetTable?
+    Id: String?
+    ClientToken: String?
+    Tags: Mapping?
+    Name: String?
+}
+class DataQualityTargetTable {
+    DatabaseName: String?
+    TableName: String?
+}

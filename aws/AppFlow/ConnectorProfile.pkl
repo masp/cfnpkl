@@ -1,0 +1,383 @@
+/// Resource Type definition for AWS::AppFlow::ConnectorProfile
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppFlow::ConnectorProfile"
+Properties: Props?
+class Props {
+    /// Unique identifier for connector profile resources
+    ConnectorProfileArn: String(length <= 512 && matches(Regex(#"arn:aws:appflow:.*:[0-9]+:.*"#)))?
+    /// The label of the connector. The label is unique for each
+    /// ConnectorRegistration in your AWS account. Only needed if calling for
+    /// CUSTOMCONNECTOR connector type/.
+    ConnectorLabel: String(length <= 256 && matches(Regex(#"[\w!@#.-]+"#)))?
+    /// The maximum number of items to retrieve in a single batch.
+    ConnectorProfileName: String(length <= 256 && matches(Regex(#"[\w/!@#+=.-]+"#)))?
+    /// The ARN of the AWS Key Management Service (AWS KMS) key that's used to
+    /// encrypt your function's environment variables. If it's not provided,
+    /// AWS Lambda uses a default service key.
+    KMSArn: String(length <= 2048 && length >= 20 && matches(Regex(#"arn:aws:kms:.*:[0-9]+:.*"#)))?
+    /// List of Saas providers that need connector profile to be created
+    ConnectorType: "Salesforce" | "Pardot" | "Singular" | "Slack" | "Redshift" | "Marketo" | "Googleanalytics" | "Zendesk" | "Servicenow" | "SAPOData" | "Datadog" | "Trendmicro" | "Snowflake" | "Dynatrace" | "Infornexus" | "Amplitude" | "Veeva" | "CustomConnector" | *Null
+    /// Mode in which data transfer should be enabled. Private connection mode
+    /// is currently enabled for Salesforce, Snowflake, Trendmicro and
+    /// Singular
+    ConnectionMode: "Public" | "Private" | *Null
+    /// Connector specific configurations needed to create connector profile
+    ConnectorProfileConfig: ConnectorProfileConfig?
+    /// A unique Arn for Connector-Profile resource
+    CredentialsArn: String(length <= 512 && matches(Regex(#"arn:aws:.*:.*:[0-9]+:.*"#)))?
+}
+/// Connector specific configurations needed to create connector profile
+class ConnectorProfileConfig {
+    ConnectorProfileProperties: ConnectorProfileProperties?
+    ConnectorProfileCredentials: ConnectorProfileCredentials?
+}
+/// Connector specific properties needed to create connector profile -
+/// currently not needed for Amplitude, Trendmicro, Googleanalytics and
+/// Singular
+class ConnectorProfileProperties {
+    Datadog: DatadogConnectorProfileProperties?
+    Dynatrace: DynatraceConnectorProfileProperties?
+    InforNexus: InforNexusConnectorProfileProperties?
+    Marketo: MarketoConnectorProfileProperties?
+    Redshift: RedshiftConnectorProfileProperties?
+    SAPOData: SAPODataConnectorProfileProperties?
+    Salesforce: SalesforceConnectorProfileProperties?
+    Pardot: PardotConnectorProfileProperties?
+    ServiceNow: ServiceNowConnectorProfileProperties?
+    Slack: SlackConnectorProfileProperties?
+    Snowflake: SnowflakeConnectorProfileProperties?
+    Veeva: VeevaConnectorProfileProperties?
+    Zendesk: ZendeskConnectorProfileProperties?
+    CustomConnector: CustomConnectorProfileProperties?
+}
+class DatadogConnectorProfileProperties {
+    /// The location of the Datadog resource
+    InstanceUrl: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class DynatraceConnectorProfileProperties {
+    /// The location of the Dynatrace resource
+    InstanceUrl: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class InforNexusConnectorProfileProperties {
+    /// The location of the InforNexus resource
+    InstanceUrl: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class MarketoConnectorProfileProperties {
+    /// The location of the Marketo resource
+    InstanceUrl: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class RedshiftConnectorProfileProperties {
+    /// The JDBC URL of the Amazon Redshift cluster.
+    DatabaseUrl: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    /// The name of the Amazon S3 bucket associated with Redshift.
+    BucketName: String(length <= 63 && length >= 3 && matches(Regex(#"\S+"#)))
+    /// The object key for the destination bucket in which Amazon AppFlow will
+    /// place the ﬁles.
+    BucketPrefix: String(length <= 128)?
+    /// The Amazon Resource Name (ARN) of the IAM role.
+    RoleArn: String(length <= 512 && matches(Regex(#"arn:aws:iam:.*:[0-9]+:.*"#)))
+    /// If Amazon AppFlow will connect to Amazon Redshift Serverless or Amazon
+    /// Redshift cluster.
+    IsRedshiftServerless: Boolean?
+    /// The Amazon Resource Name (ARN) of the IAM role that grants Amazon
+    /// AppFlow access to the data through the Amazon Redshift Data API.
+    DataApiRoleArn: String(length <= 512 && matches(Regex(#"arn:aws:iam:.*:[0-9]+:.*"#)))?
+    /// The unique identifier of the Amazon Redshift cluster.
+    ClusterIdentifier: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    /// The name of the Amazon Redshift serverless workgroup
+    WorkgroupName: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    /// The name of the Amazon Redshift database that will store the
+    /// transferred data.
+    DatabaseName: String(length <= 512 && matches(Regex(#"\S+"#)))?
+}
+class SAPODataConnectorProfileProperties {
+    ApplicationHostUrl: String(length <= 256 && matches(Regex(#"^(https?)://[-a-zA-Z0-9+&amp;@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&amp;@#/%=~_|]"#)))?
+    ApplicationServicePath: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    PortNumber: Int?
+    ClientNumber: String(length <= 3 && length >= 3 && matches(Regex(#"^\d{3}$"#)))?
+    LogonLanguage: String(length <= 2 && matches(Regex(#"^[a-zA-Z0-9_]*$"#)))?
+    PrivateLinkServiceName: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    OAuthProperties: OAuthProperties?
+    /// If you set this parameter to true, Amazon AppFlow bypasses the single
+    /// sign-on (SSO) settings in your SAP account when it accesses your SAP
+    /// OData instance.
+    DisableSSO: Boolean?
+}
+class OAuthProperties {
+    AuthCodeUrl: String(length <= 256 && matches(Regex(#"^(https?)://[-a-zA-Z0-9+&amp;@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&amp;@#/%=~_|]"#)))?
+    TokenUrl: String(length <= 256 && matches(Regex(#"^(https?)://[-a-zA-Z0-9+&amp;@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&amp;@#/%=~_|]"#)))?
+    OAuthScopes: Listing<String(length <= 128 && matches(Regex(#"[/\w]*"#)))>?
+}
+class SalesforceConnectorProfileProperties {
+    /// The location of the Salesforce resource
+    InstanceUrl: String(length <= 256 && matches(Regex(#"\S+"#)))?
+    /// Indicates whether the connector profile applies to a sandbox or
+    /// production environment
+    isSandboxEnvironment: Boolean?
+    /// Indicates whether to make Metadata And Authorization calls over Pivate
+    /// Network
+    usePrivateLinkForMetadataAndAuthorization: Boolean?
+}
+class PardotConnectorProfileProperties {
+    /// The location of the Salesforce Pardot resource
+    InstanceUrl: String(length <= 256 && matches(Regex(#"\S+"#)))?
+    /// Indicates whether the connector profile applies to a demo or
+    /// production environment
+    IsSandboxEnvironment: Boolean?
+    /// The Business unit id of Salesforce Pardot instance to be connected
+    BusinessUnitId: String(length <= 18 && matches(Regex(#"\S+"#)))
+}
+class ServiceNowConnectorProfileProperties {
+    /// The location of the ServiceNow resource
+    InstanceUrl: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class SlackConnectorProfileProperties {
+    /// The location of the Slack resource
+    InstanceUrl: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class SnowflakeConnectorProfileProperties {
+    /// The name of the Snowﬂake warehouse.
+    Warehouse: String(length <= 512 && matches(Regex(#"[\s\w/!@#+=.-]*"#)))
+    /// The name of the Amazon S3 stage that was created while setting up an
+    /// Amazon S3 stage in the Snowﬂake account. This is written in the
+    /// following format: < Database>< Schema><Stage Name>.
+    Stage: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The name of the Amazon S3 bucket associated with Snowﬂake.
+    BucketName: String(length <= 63 && length >= 3 && matches(Regex(#"\S+"#)))
+    /// The bucket prefix that refers to the Amazon S3 bucket associated with
+    /// Snowﬂake.
+    BucketPrefix: String(length <= 128)?
+    /// The Snowﬂake Private Link service name to be used for private data
+    /// transfers.
+    PrivateLinkServiceName: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    /// The name of the account.
+    AccountName: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    /// The region of the Snowﬂake account.
+    Region: String(length <= 64 && matches(Regex(#"\S+"#)))?
+}
+class VeevaConnectorProfileProperties {
+    /// The location of the Veeva resource
+    InstanceUrl: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class ZendeskConnectorProfileProperties {
+    /// The location of the Zendesk resource
+    InstanceUrl: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class CustomConnectorProfileProperties {
+    ProfileProperties: Mapping?
+    OAuth2Properties: OAuth2Properties?
+}
+class OAuth2Properties {
+    TokenUrl: String(length <= 256 && length >= 0 && matches(Regex(#"^(https?)://[-a-zA-Z0-9+&amp;@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&amp;@#/%=~_|]"#)))?
+    OAuth2GrantType: "CLIENT_CREDENTIALS" | "AUTHORIZATION_CODE" | "JWT_BEARER" | *Null
+    TokenUrlCustomProperties: Mapping?
+}
+/// Connector specific configuration needed to create connector profile
+/// based on Authentication mechanism
+class ConnectorProfileCredentials {
+    Amplitude: AmplitudeConnectorProfileCredentials?
+    Datadog: DatadogConnectorProfileCredentials?
+    Dynatrace: DynatraceConnectorProfileCredentials?
+    GoogleAnalytics: GoogleAnalyticsConnectorProfileCredentials?
+    InforNexus: InforNexusConnectorProfileCredentials?
+    Marketo: MarketoConnectorProfileCredentials?
+    Redshift: RedshiftConnectorProfileCredentials?
+    SAPOData: SAPODataConnectorProfileCredentials?
+    Salesforce: SalesforceConnectorProfileCredentials?
+    Pardot: PardotConnectorProfileCredentials?
+    ServiceNow: ServiceNowConnectorProfileCredentials?
+    Singular: SingularConnectorProfileCredentials?
+    Slack: SlackConnectorProfileCredentials?
+    Snowflake: SnowflakeConnectorProfileCredentials?
+    Trendmicro: TrendmicroConnectorProfileCredentials?
+    Veeva: VeevaConnectorProfileCredentials?
+    Zendesk: ZendeskConnectorProfileCredentials?
+    CustomConnector: CustomConnectorProfileCredentials?
+}
+class AmplitudeConnectorProfileCredentials {
+    /// A unique alphanumeric identiﬁer used to authenticate a user,
+    /// developer, or calling program to your API.
+    ApiKey: String(length <= 256 && matches(Regex(#"\S+"#)))
+    SecretKey: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class DatadogConnectorProfileCredentials {
+    /// A unique alphanumeric identiﬁer used to authenticate a user,
+    /// developer, or calling program to your API.
+    ApiKey: String(length <= 256 && matches(Regex(#"\S+"#)))
+    /// Application keys, in conjunction with your API key, give you full
+    /// access to Datadog’s programmatic API. Application keys are associated
+    /// with the user account that created them. The application key is used
+    /// to log all requests made to the API.
+    ApplicationKey: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class DynatraceConnectorProfileCredentials {
+    /// The API tokens used by Dynatrace API to authenticate various API
+    /// calls.
+    ApiToken: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class GoogleAnalyticsConnectorProfileCredentials {
+    /// The identiﬁer for the desired client.
+    ClientId: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The client secret used by the oauth client to authenticate to the
+    /// authorization server.
+    ClientSecret: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The credentials used to access protected resources.
+    AccessToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    /// The credentials used to acquire new access tokens.
+    RefreshToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    /// The oauth needed to request security tokens from the connector
+    /// endpoint.
+    ConnectorOAuthRequest: ConnectorOAuthRequest?
+}
+class ConnectorOAuthRequest {
+    /// The code provided by the connector when it has been authenticated via
+    /// the connected app.
+    AuthCode: String?
+    /// The URL to which the authentication server redirects the browser after
+    /// authorization has been granted.
+    RedirectUri: String?
+}
+class InforNexusConnectorProfileCredentials {
+    /// The Access Key portion of the credentials.
+    AccessKeyId: String(length <= 256 && matches(Regex(#"\S+"#)))
+    /// The identiﬁer for the user.
+    UserId: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The secret key used to sign requests.
+    SecretAccessKey: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The encryption keys used to encrypt data.
+    Datakey: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class MarketoConnectorProfileCredentials {
+    /// The identiﬁer for the desired client.
+    ClientId: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The client secret used by the oauth client to authenticate to the
+    /// authorization server.
+    ClientSecret: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The credentials used to access protected resources.
+    AccessToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    /// The oauth needed to request security tokens from the connector
+    /// endpoint.
+    ConnectorOAuthRequest: ConnectorOAuthRequest?
+}
+class RedshiftConnectorProfileCredentials {
+    /// The name of the user.
+    Username: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    /// The password that corresponds to the username.
+    Password: String(length <= 512 && matches(Regex(#"\S+"#)))?
+}
+class SAPODataConnectorProfileCredentials {
+    BasicAuthCredentials: BasicAuthCredentials?
+    OAuthCredentials: OAuthCredentials?
+}
+class BasicAuthCredentials {
+    Username: String(length <= 512 && matches(Regex(#"\S+"#)))
+    Password: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class OAuthCredentials {
+    AccessToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    RefreshToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    ConnectorOAuthRequest: ConnectorOAuthRequest?
+    ClientId: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    ClientSecret: String(length <= 512 && matches(Regex(#"\S+"#)))?
+}
+class SalesforceConnectorProfileCredentials {
+    /// The credentials used to access protected resources.
+    AccessToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    /// The credentials used to acquire new access tokens.
+    RefreshToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    /// The oauth needed to request security tokens from the connector
+    /// endpoint.
+    ConnectorOAuthRequest: ConnectorOAuthRequest?
+    /// The client credentials to fetch access token and refresh token.
+    ClientCredentialsArn: String(length <= 2048 && matches(Regex(#"arn:aws:secretsmanager:.*:[0-9]+:.*"#)))?
+    /// The grant types to fetch an access token
+    OAuth2GrantType: "CLIENT_CREDENTIALS" | "AUTHORIZATION_CODE" | "JWT_BEARER" | *Null
+    /// The credentials used to access your Salesforce records
+    JwtToken: String(length <= 8000 && matches(Regex(#"^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$"#)))?
+}
+class PardotConnectorProfileCredentials {
+    /// The credentials used to access protected resources.
+    AccessToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    /// The credentials used to acquire new access tokens.
+    RefreshToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    /// The oauth needed to request security tokens from the connector
+    /// endpoint.
+    ConnectorOAuthRequest: ConnectorOAuthRequest?
+    /// The client credentials to fetch access token and refresh token.
+    ClientCredentialsArn: String(length <= 2048 && matches(Regex(#"arn:aws:secretsmanager:.*:[0-9]+:.*"#)))?
+}
+class ServiceNowConnectorProfileCredentials {
+    /// The name of the user.
+    Username: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    /// The password that corresponds to the username.
+    Password: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    /// The OAuth 2.0 credentials required to authenticate the user.
+    OAuth2Credentials: OAuth2Credentials?
+}
+class OAuth2Credentials {
+    ClientId: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    ClientSecret: String(length <= 512 && matches(Regex(#"\S+"#)))?
+    AccessToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    RefreshToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    OAuthRequest: ConnectorOAuthRequest?
+}
+class SingularConnectorProfileCredentials {
+    /// A unique alphanumeric identiﬁer used to authenticate a user,
+    /// developer, or calling program to your API.
+    ApiKey: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class SlackConnectorProfileCredentials {
+    /// The identiﬁer for the desired client.
+    ClientId: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The client secret used by the oauth client to authenticate to the
+    /// authorization server.
+    ClientSecret: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The credentials used to access protected resources.
+    AccessToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    /// The oauth needed to request security tokens from the connector
+    /// endpoint.
+    ConnectorOAuthRequest: ConnectorOAuthRequest?
+}
+class SnowflakeConnectorProfileCredentials {
+    /// The name of the user.
+    Username: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The password that corresponds to the username.
+    Password: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class TrendmicroConnectorProfileCredentials {
+    /// The Secret Access Key portion of the credentials.
+    ApiSecretKey: String(length <= 256 && matches(Regex(#"\S+"#)))
+}
+class VeevaConnectorProfileCredentials {
+    /// The name of the user.
+    Username: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The password that corresponds to the username.
+    Password: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class ZendeskConnectorProfileCredentials {
+    /// The identiﬁer for the desired client.
+    ClientId: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The client secret used by the oauth client to authenticate to the
+    /// authorization server.
+    ClientSecret: String(length <= 512 && matches(Regex(#"\S+"#)))
+    /// The credentials used to access protected resources.
+    AccessToken: String(length <= 4096 && matches(Regex(#"\S+"#)))?
+    /// The oauth needed to request security tokens from the connector
+    /// endpoint.
+    ConnectorOAuthRequest: ConnectorOAuthRequest?
+}
+class CustomConnectorProfileCredentials {
+    AuthenticationType: "OAUTH2" | "APIKEY" | "BASIC" | "CUSTOM"
+    Basic: BasicAuthCredentials?
+    Oauth2: OAuth2Credentials?
+    ApiKey: ApiKeyCredentials?
+    Custom: CustomAuthCredentials?
+}
+class ApiKeyCredentials {
+    ApiKey: String(length <= 256 && matches(Regex(#"\S+"#)))
+    ApiSecretKey: String(length <= 256 && matches(Regex(#"\S+"#)))?
+}
+class CustomAuthCredentials {
+    CustomAuthenticationType: String(length <= 256 && matches(Regex(#"\S+"#)))
+    CredentialsMap: Mapping?
+}

@@ -1,0 +1,10 @@
+/// Resource Type definition for AWS::Cognito::IdentityPoolPrincipalTag
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cognito::IdentityPoolPrincipalTag"
+Properties: Props?
+class Props {
+    IdentityPoolId: String?
+    IdentityProviderName: String?
+    UseDefaults: Boolean?
+    PrincipalTags: Mapping?
+}

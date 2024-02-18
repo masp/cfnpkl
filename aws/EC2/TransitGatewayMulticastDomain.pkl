@@ -1,0 +1,43 @@
+/// The AWS::EC2::TransitGatewayMulticastDomain type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::TransitGatewayMulticastDomain"
+Properties: Props?
+class Props {
+    /// The ID of the transit gateway multicast domain.
+    TransitGatewayMulticastDomainId: String?
+    /// The Amazon Resource Name (ARN) of the transit gateway multicast
+    /// domain.
+    TransitGatewayMulticastDomainArn: String?
+    /// The ID of the transit gateway.
+    TransitGatewayId: String?
+    /// The state of the transit gateway multicast domain.
+    State: String?
+    /// The time the transit gateway multicast domain was created.
+    CreationTime: String?
+    /// The tags for the transit gateway multicast domain.
+    Tags: Listing<Tag>?
+    /// The options for the transit gateway multicast domain.
+    Options: Options?
+}
+class Tag {
+    /// The key of the tag. Constraints: Tag keys are case-sensitive and
+    /// accept a maximum of 127 Unicode characters. May not begin with aws:.
+    Key: String?
+    /// The value of the tag. Constraints: Tag values are case-sensitive and
+    /// accept a maximum of 255 Unicode characters.
+    Value: String?
+}
+/// The options for the transit gateway multicast domain.
+class Options {
+    /// Indicates whether to automatically cross-account subnet associations
+    /// that are associated with the transit gateway multicast domain. Valid
+    /// Values: enable | disable
+    AutoAcceptSharedAssociations: String?
+    /// Indicates whether Internet Group Management Protocol (IGMP) version 2
+    /// is turned on for the transit gateway multicast domain. Valid Values:
+    /// enable | disable
+    Igmpv2Support: String?
+    /// Indicates whether support for statically configuring transit gateway
+    /// multicast group sources is turned on. Valid Values: enable | disable
+    StaticSourcesSupport: String?
+}

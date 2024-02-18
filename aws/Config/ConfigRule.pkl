@@ -1,0 +1,76 @@
+/// Schema for AWS Config ConfigRule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Config::ConfigRule"
+Properties: Props?
+class Props {
+    /// ID of the config rule
+    ConfigRuleId: String?
+    /// Description provided for the AWS Config rule
+    Description: String?
+    /// Scope to constrain which resources can trigger the AWS Config rule
+    Scope: Scope?
+    /// Name for the AWS Config rule
+    ConfigRuleName: String?
+    /// ARN generated for the AWS Config rule
+    Arn: String?
+    /// Compliance details of the Config rule
+    Compliance: Compliance?
+    /// Maximum frequency at which the rule has to be evaluated
+    MaximumExecutionFrequency: String?
+    /// Source of events for the AWS Config rule
+    Source: Source?
+    /// JSON string passed the Lambda function
+    InputParameters: String | Mapping | *Null
+    /// List of EvaluationModeConfiguration objects
+    EvaluationModes: Listing<EvaluationModeConfiguration>?
+}
+/// Scope to constrain which resources can trigger the rule
+class Scope {
+    /// Tag key applied only to resources which we want to trigger the rule
+    TagKey: String?
+    /// Resource types of resources which we want to trigger the rule
+    ComplianceResourceTypes: Listing<String>?
+    /// Tag value applied only to resources which we want to trigger the rule
+    TagValue: String?
+    /// ID of the only one resource which we want to trigger the rule
+    ComplianceResourceId: String?
+}
+/// Compliance details of the Config rule
+class Compliance {
+    /// Compliance type determined by the Config rule
+    Type: String?
+}
+/// Source of events for the config rule
+class Source {
+    /// Custom policy details when rule is custom owned
+    CustomPolicyDetails: CustomPolicyDetails?
+    /// Identifier for the source of events
+    SourceIdentifier: String?
+    /// Owner of the config rule
+    Owner: String
+    /// List of message types that can trigger the rule
+    SourceDetails: Listing<SourceDetail>?
+}
+/// Custom policy details when rule is custom owned
+class CustomPolicyDetails {
+    /// Logging toggle for custom policy rule
+    EnableDebugLogDelivery: Boolean?
+    /// Policy definition containing logic for custom policy rule
+    PolicyText: String?
+    /// Runtime system for custom policy rule
+    PolicyRuntime: String?
+}
+/// Source and message type that can trigger the rule
+class SourceDetail {
+    /// Source of event that can trigger the rule
+    EventSource: String
+    /// Frequency at which the rule has to be evaluated
+    MaximumExecutionFrequency: String?
+    /// Notification type that can trigger the rule
+    MessageType: String
+}
+/// Evaluation mode for the AWS Config rule
+class EvaluationModeConfiguration {
+    /// Mode of evaluation of AWS Config rule
+    Mode: String?
+}

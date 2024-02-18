@@ -1,0 +1,134 @@
+/// Resource Type definition for AWS::CodeDeploy::DeploymentGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodeDeploy::DeploymentGroup"
+Properties: Props?
+class Props {
+    OnPremisesTagSet: OnPremisesTagSet?
+    ApplicationName: String?
+    DeploymentStyle: DeploymentStyle?
+    ServiceRoleArn: String?
+    BlueGreenDeploymentConfiguration: BlueGreenDeploymentConfiguration?
+    AutoScalingGroups: Listing<String>?
+    Ec2TagSet: EC2TagSet?
+    OutdatedInstancesStrategy: String?
+    TriggerConfigurations: Listing<TriggerConfig>?
+    Deployment: Deployment?
+    DeploymentConfigName: String?
+    AlarmConfiguration: AlarmConfiguration?
+    Ec2TagFilters: Listing<EC2TagFilter>?
+    TerminationHookEnabled: Boolean?
+    ECSServices: Listing<ECSService>?
+    AutoRollbackConfiguration: AutoRollbackConfiguration?
+    LoadBalancerInfo: LoadBalancerInfo?
+    Id: String?
+    DeploymentGroupName: String?
+    Tags: Listing<Tag>?
+    OnPremisesInstanceTagFilters: Listing<TagFilter>?
+}
+class OnPremisesTagSet {
+    OnPremisesTagSetList: Listing<OnPremisesTagSetListObject>?
+}
+class OnPremisesTagSetListObject {
+    OnPremisesTagGroup: Listing<TagFilter>?
+}
+class TagFilter {
+    Value: String?
+    Type: String?
+    Key: String?
+}
+class DeploymentStyle {
+    DeploymentOption: String?
+    DeploymentType: String?
+}
+class BlueGreenDeploymentConfiguration {
+    GreenFleetProvisioningOption: GreenFleetProvisioningOption?
+    DeploymentReadyOption: DeploymentReadyOption?
+    TerminateBlueInstancesOnDeploymentSuccess: BlueInstanceTerminationOption?
+}
+class GreenFleetProvisioningOption {
+    Action: String?
+}
+class DeploymentReadyOption {
+    WaitTimeInMinutes: Int?
+    ActionOnTimeout: String?
+}
+class BlueInstanceTerminationOption {
+    TerminationWaitTimeInMinutes: Int?
+    Action: String?
+}
+class EC2TagSet {
+    Ec2TagSetList: Listing<EC2TagSetListObject>?
+}
+class EC2TagSetListObject {
+    Ec2TagGroup: Listing<EC2TagFilter>?
+}
+class EC2TagFilter {
+    Value: String?
+    Type: String?
+    Key: String?
+}
+class TriggerConfig {
+    TriggerTargetArn: String?
+    TriggerName: String?
+    TriggerEvents: Listing<String>?
+}
+class Deployment {
+    Description: String?
+    Revision: RevisionLocation
+    IgnoreApplicationStopFailures: Boolean?
+}
+class RevisionLocation {
+    S3Location: S3Location?
+    GitHubLocation: GitHubLocation?
+    RevisionType: String?
+}
+class S3Location {
+    BundleType: String?
+    Bucket: String
+    ETag: String?
+    Version: String?
+    Key: String
+}
+class GitHubLocation {
+    Repository: String
+    CommitId: String
+}
+class AlarmConfiguration {
+    Alarms: Listing<Alarm>?
+    IgnorePollAlarmFailure: Boolean?
+    Enabled: Boolean?
+}
+class Alarm {
+    Name: String?
+}
+class ECSService {
+    ServiceName: String
+    ClusterName: String
+}
+class AutoRollbackConfiguration {
+    Events: Listing<String>?
+    Enabled: Boolean?
+}
+class LoadBalancerInfo {
+    TargetGroupInfoList: Listing<TargetGroupInfo>?
+    ElbInfoList: Listing<ELBInfo>?
+    TargetGroupPairInfoList: Listing<TargetGroupPairInfo>?
+}
+class TargetGroupInfo {
+    Name: String?
+}
+class ELBInfo {
+    Name: String?
+}
+class TargetGroupPairInfo {
+    ProdTrafficRoute: TrafficRoute?
+    TestTrafficRoute: TrafficRoute?
+    TargetGroups: Listing<TargetGroupInfo>?
+}
+class TrafficRoute {
+    ListenerArns: Listing<String>?
+}
+class Tag {
+    Value: String
+    Key: String
+}

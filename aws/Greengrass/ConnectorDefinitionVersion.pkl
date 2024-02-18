@@ -1,0 +1,15 @@
+/// Resource Type definition for
+/// AWS::Greengrass::ConnectorDefinitionVersion
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Greengrass::ConnectorDefinitionVersion"
+Properties: Props?
+class Props {
+    Id: String?
+    Connectors: Listing<Connector>?
+    ConnectorDefinitionId: String?
+}
+class Connector {
+    ConnectorArn: String
+    Parameters: Mapping?
+    Id: String
+}

@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::FSx::Snapshot
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FSx::Snapshot"
+Properties: Props?
+class Props {
+    ResourceARN: String?
+    VolumeId: String?
+    Id: String?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

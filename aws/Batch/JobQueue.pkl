@@ -1,0 +1,18 @@
+/// Resource Type definition for AWS::Batch::JobQueue
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Batch::JobQueue"
+Properties: Props?
+class Props {
+    JobQueueName: String(length <= 128 && length >= 1)?
+    JobQueueArn: String(matches(Regex(#"arn:[a-z0-9-\.]{1,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[^/].{0,1023}"#)))?
+    ComputeEnvironmentOrder: Listing<ComputeEnvironmentOrder>?
+    Priority: Int?
+    State: "DISABLED" | "ENABLED" | *Null
+    SchedulingPolicyArn: String(matches(Regex(#"arn:[a-z0-9-\.]{1,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[^/].{0,1023}"#)))?
+    /// A key-value pair to associate with a resource.
+    Tags: Mapping?
+}
+class ComputeEnvironmentOrder {
+    ComputeEnvironment: String
+    Order: Int
+}

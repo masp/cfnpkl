@@ -1,0 +1,21 @@
+/// An example resource schema demonstrating some basic constructs and
+/// validation rules.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::CarrierGateway"
+Properties: Props?
+class Props {
+    /// The ID of the carrier gateway.
+    CarrierGatewayId: String?
+    /// The state of the carrier gateway.
+    State: String?
+    /// The ID of the VPC.
+    VpcId: String?
+    /// The ID of the owner.
+    OwnerId: String?
+    /// The tags for the carrier gateway.
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 127 && length >= 1 && matches(Regex(#"^(?!aws:.*)"#)))?
+    Value: String(length <= 255 && length >= 1 && matches(Regex(#"^(?!aws:.*)"#)))?
+}

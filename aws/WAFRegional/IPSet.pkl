@@ -1,0 +1,13 @@
+/// Resource Type definition for AWS::WAFRegional::IPSet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAFRegional::IPSet"
+Properties: Props?
+class Props {
+    Id: String?
+    IPSetDescriptors: Listing<IPSetDescriptor>?
+    Name: String?
+}
+class IPSetDescriptor {
+    Type: String
+    Value: String
+}

@@ -1,0 +1,137 @@
+/// Resource Type definition for AWS::EC2::Instance
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::Instance"
+Properties: Props?
+class Props {
+    Tenancy: String?
+    SecurityGroups: Listing<String>?
+    PrivateDnsName: String?
+    PrivateIpAddress: String?
+    UserData: String?
+    BlockDeviceMappings: Listing<BlockDeviceMapping>?
+    IamInstanceProfile: String?
+    Ipv6Addresses: Listing<InstanceIpv6Address>?
+    KernelId: String?
+    SubnetId: String?
+    EbsOptimized: Boolean?
+    PropagateTagsToVolumeOnCreation: Boolean?
+    ElasticGpuSpecifications: Listing<ElasticGpuSpecification>?
+    ElasticInferenceAccelerators: Listing<ElasticInferenceAccelerator>?
+    Volumes: Listing<Volume>?
+    PrivateIp: String?
+    Ipv6AddressCount: Int?
+    LaunchTemplate: LaunchTemplateSpecification?
+    EnclaveOptions: EnclaveOptions?
+    NetworkInterfaces: Listing<NetworkInterface>?
+    ImageId: String?
+    InstanceType: String?
+    Monitoring: Boolean?
+    Tags: Listing<Tag>?
+    AdditionalInfo: String?
+    HibernationOptions: HibernationOptions?
+    LicenseSpecifications: Listing<LicenseSpecification>?
+    PublicIp: String?
+    InstanceInitiatedShutdownBehavior: String?
+    CpuOptions: CpuOptions?
+    AvailabilityZone: String?
+    PrivateDnsNameOptions: PrivateDnsNameOptions?
+    HostId: String?
+    HostResourceGroupArn: String?
+    PublicDnsName: String?
+    SecurityGroupIds: Listing<String>?
+    DisableApiTermination: Boolean?
+    KeyName: String?
+    RamdiskId: String?
+    SourceDestCheck: Boolean?
+    PlacementGroupName: String?
+    SsmAssociations: Listing<SsmAssociation>?
+    Affinity: String?
+    Id: String?
+    CreditSpecification: CreditSpecification?
+}
+class BlockDeviceMapping {
+    NoDevice: Mapping?
+    VirtualName: String?
+    Ebs: Ebs?
+    DeviceName: String
+}
+class Ebs {
+    SnapshotId: String?
+    VolumeType: String?
+    KmsKeyId: String?
+    Encrypted: Boolean?
+    Iops: Int?
+    VolumeSize: Int?
+    DeleteOnTermination: Boolean?
+}
+class InstanceIpv6Address {
+    Ipv6Address: String
+}
+class ElasticGpuSpecification {
+    Type: String
+}
+class ElasticInferenceAccelerator {
+    Type: String
+    Count: Int?
+}
+class Volume {
+    VolumeId: String
+    Device: String
+}
+class LaunchTemplateSpecification {
+    LaunchTemplateName: String?
+    LaunchTemplateId: String?
+    Version: String
+}
+class EnclaveOptions {
+    Enabled: Boolean?
+}
+class NetworkInterface {
+    Description: String?
+    PrivateIpAddress: String?
+    PrivateIpAddresses: Listing<PrivateIpAddressSpecification>?
+    SecondaryPrivateIpAddressCount: Int?
+    DeviceIndex: String
+    GroupSet: Listing<String>?
+    Ipv6Addresses: Listing<InstanceIpv6Address>?
+    SubnetId: String?
+    AssociatePublicIpAddress: Boolean?
+    NetworkInterfaceId: String?
+    AssociateCarrierIpAddress: Boolean?
+    Ipv6AddressCount: Int?
+    DeleteOnTermination: Boolean?
+}
+class PrivateIpAddressSpecification {
+    PrivateIpAddress: String
+    Primary: Boolean
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class HibernationOptions {
+    Configured: Boolean?
+}
+class LicenseSpecification {
+    LicenseConfigurationArn: String
+}
+class CpuOptions {
+    ThreadsPerCore: Int?
+    CoreCount: Int?
+}
+class PrivateDnsNameOptions {
+    HostnameType: String?
+    EnableResourceNameDnsAAAARecord: Boolean?
+    EnableResourceNameDnsARecord: Boolean?
+}
+class SsmAssociation {
+    AssociationParameters: Listing<AssociationParameter>?
+    DocumentName: String
+}
+class AssociationParameter {
+    Value: Listing<String>
+    Key: String
+}
+class CreditSpecification {
+    CPUCredits: String?
+}

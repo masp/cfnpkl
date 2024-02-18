@@ -1,0 +1,23 @@
+/// Resource Type schema for AWS::Batch::SchedulingPolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Batch::SchedulingPolicy"
+Properties: Props?
+class Props {
+    /// Name of Scheduling Policy.
+    Name: String(matches(Regex(#""#)))?
+    Arn: String?
+    FairsharePolicy: FairsharePolicy?
+    /// A key-value pair to associate with a resource.
+    Tags: Mapping?
+}
+/// Fair Share Policy for the Job Queue.
+class FairsharePolicy {
+    ShareDecaySeconds: Float?
+    ComputeReservation: Float?
+    /// List of Share Attributes
+    ShareDistribution: Listing<ShareAttributes>?
+}
+class ShareAttributes {
+    ShareIdentifier: String?
+    WeightFactor: Float?
+}

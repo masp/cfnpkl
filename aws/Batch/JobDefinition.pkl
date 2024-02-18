@@ -1,0 +1,204 @@
+/// Resource Type definition for AWS::Batch::JobDefinition
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Batch::JobDefinition"
+Properties: Props?
+class Props {
+    Parameters: Mapping?
+    Timeout: Timeout?
+    JobDefinitionName: String?
+    PropagateTags: Boolean?
+    PlatformCapabilities: Listing<String>?
+    EksProperties: EksProperties?
+    Type: String?
+    NodeProperties: NodeProperties?
+    SchedulingPriority: Int?
+    ContainerProperties: ContainerProperties?
+    Id: String?
+    RetryStrategy: RetryStrategy?
+    Tags: Mapping?
+}
+class Timeout {
+    AttemptDurationSeconds: Int?
+}
+class EksProperties {
+    PodProperties: PodProperties?
+}
+class PodProperties {
+    Volumes: Listing<EksVolume>?
+    DnsPolicy: String?
+    Containers: Listing<EksContainer>?
+    Metadata: Metadata?
+    ServiceAccountName: String?
+    HostNetwork: Boolean?
+}
+class EksVolume {
+    Secret: EksSecret?
+    EmptyDir: EksEmptyDir?
+    HostPath: EksHostPath?
+    Name: String
+}
+class EksSecret {
+    SecretName: String
+    Optional: Boolean?
+}
+class EksEmptyDir {
+    Medium: String?
+    SizeLimit: String?
+}
+class EksHostPath {
+    Path: String?
+}
+class EksContainer {
+    Args: Listing<String>?
+    VolumeMounts: Listing<EksContainerVolumeMount>?
+    ImagePullPolicy: String?
+    Command: Listing<String>?
+    SecurityContext: EksContainerSecurityContext?
+    Resources: EksContainerResourceRequirements?
+    Image: String
+    Env: Listing<EksContainerEnvironmentVariable>?
+    Name: String?
+}
+class EksContainerVolumeMount {
+    MountPath: String?
+    ReadOnly: Boolean?
+    Name: String?
+}
+class EksContainerSecurityContext {
+    RunAsUser: Int?
+    RunAsGroup: Int?
+    RunAsNonRoot: Boolean?
+    Privileged: Boolean?
+    ReadOnlyRootFilesystem: Boolean?
+}
+class EksContainerResourceRequirements {
+    Requests: Mapping?
+    Limits: Mapping?
+}
+class EksContainerEnvironmentVariable {
+    Value: String?
+    Name: String
+}
+class Metadata {
+    Labels: Mapping?
+}
+class NodeProperties {
+    MainNode: Int
+    NodeRangeProperties: Listing<NodeRangeProperty>
+    NumNodes: Int
+}
+class NodeRangeProperty {
+    Container: ContainerProperties?
+    TargetNodes: String
+}
+class ContainerProperties {
+    User: String?
+    Secrets: Listing<Secret>?
+    Memory: Int?
+    Privileged: Boolean?
+    LinuxParameters: LinuxParameters?
+    FargatePlatformConfiguration: FargatePlatformConfiguration?
+    JobRoleArn: String?
+    ReadonlyRootFilesystem: Boolean?
+    Vcpus: Int?
+    Image: String
+    ResourceRequirements: Listing<ResourceRequirement>?
+    LogConfiguration: LogConfiguration?
+    MountPoints: Listing<MountPoints>?
+    ExecutionRoleArn: String?
+    RuntimePlatform: RuntimePlatform?
+    Volumes: Listing<Volumes>?
+    Command: Listing<String>?
+    Environment: Listing<Environment>?
+    Ulimits: Listing<Ulimit>?
+    NetworkConfiguration: NetworkConfiguration?
+    InstanceType: String?
+    EphemeralStorage: EphemeralStorage?
+}
+class Secret {
+    ValueFrom: String
+    Name: String
+}
+class LinuxParameters {
+    Swappiness: Int?
+    Tmpfs: Listing<Tmpfs>?
+    SharedMemorySize: Int?
+    Devices: Listing<Device>?
+    InitProcessEnabled: Boolean?
+    MaxSwap: Int?
+}
+class Tmpfs {
+    ContainerPath: String
+    MountOptions: Listing<String>?
+    Size: Int
+}
+class Device {
+    Permissions: Listing<String>?
+    HostPath: String?
+    ContainerPath: String?
+}
+class FargatePlatformConfiguration {
+    PlatformVersion: String?
+}
+class ResourceRequirement {
+    Value: String?
+    Type: String?
+}
+class LogConfiguration {
+    SecretOptions: Listing<Secret>?
+    Options: Mapping?
+    LogDriver: String
+}
+class MountPoints {
+    ReadOnly: Boolean?
+    SourceVolume: String?
+    ContainerPath: String?
+}
+class RuntimePlatform {
+    OperatingSystemFamily: String?
+    CpuArchitecture: String?
+}
+class Volumes {
+    Host: VolumesHost?
+    EfsVolumeConfiguration: EfsVolumeConfiguration?
+    Name: String?
+}
+class VolumesHost {
+    SourcePath: String?
+}
+class EfsVolumeConfiguration {
+    FileSystemId: String
+    TransitEncryption: String?
+    RootDirectory: String?
+    TransitEncryptionPort: Int?
+    AuthorizationConfig: AuthorizationConfig?
+}
+class AuthorizationConfig {
+    Iam: String?
+    AccessPointId: String?
+}
+class Environment {
+    Value: String?
+    Name: String?
+}
+class Ulimit {
+    SoftLimit: Int
+    HardLimit: Int
+    Name: String
+}
+class NetworkConfiguration {
+    AssignPublicIp: String?
+}
+class EphemeralStorage {
+    SizeInGiB: Int
+}
+class RetryStrategy {
+    EvaluateOnExit: Listing<EvaluateOnExit>?
+    Attempts: Int?
+}
+class EvaluateOnExit {
+    Action: String
+    OnStatusReason: String?
+    OnExitCode: String?
+    OnReason: String?
+}

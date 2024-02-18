@@ -1,0 +1,77 @@
+/// A Kendra index
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Kendra::Index"
+Properties: Props?
+class Props {
+    Id: String(length <= 36 && length >= 36)?
+    Arn: String(length <= 1000)?
+    /// A description for the index
+    Description: String(length <= 1000)?
+    /// Server side encryption configuration
+    ServerSideEncryptionConfiguration: ServerSideEncryptionConfiguration?
+    /// Tags for labeling the index
+    Tags: Listing<Tag>?
+    Name: String(length <= 1000 && length >= 1)?
+    RoleArn: String(length <= 1284 && length >= 1 && matches(Regex(#"arn:[a-z0-9-\.]{1,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[^/].{0,1023}"#)))?
+    Edition: "DEVELOPER_EDITION" | "ENTERPRISE_EDITION" | *Null
+    /// Document metadata configurations
+    DocumentMetadataConfigurations: Listing<DocumentMetadataConfiguration>?
+    /// Capacity units
+    CapacityUnits: CapacityUnitsConfiguration?
+    UserContextPolicy: "ATTRIBUTE_FILTER" | "USER_TOKEN" | *Null
+    UserTokenConfigurations: Listing<UserTokenConfiguration>?
+}
+class ServerSideEncryptionConfiguration {
+    KmsKeyId: String(length <= 2048 && length >= 1)?
+}
+/// A label for tagging Kendra resources
+class Tag {
+    /// A string used to identify this tag
+    Key: String(length <= 128 && length >= 1)
+    /// A string containing the value for the tag
+    Value: String(length <= 256 && length >= 0)
+}
+class DocumentMetadataConfiguration {
+    Name: String(length <= 30 && length >= 1)
+    Type: "STRING_VALUE" | "STRING_LIST_VALUE" | "LONG_VALUE" | "DATE_VALUE"
+    Relevance: Relevance?
+    Search: Search?
+}
+class Relevance {
+    Freshness: Boolean?
+    Importance: Int?
+    Duration: String(length <= 10 && length >= 1 && matches(Regex(#"[0-9]+[s]"#)))?
+    RankOrder: "ASCENDING" | "DESCENDING" | *Null
+    ValueImportanceItems: Listing<ValueImportanceItem>?
+}
+class ValueImportanceItem {
+    Key: String(length <= 50 && length >= 1)?
+    Value: Int?
+}
+class Search {
+    Facetable: Boolean?
+    Searchable: Boolean?
+    Displayable: Boolean?
+    Sortable: Boolean?
+}
+class CapacityUnitsConfiguration {
+    StorageCapacityUnits: Int
+    QueryCapacityUnits: Int
+}
+class UserTokenConfiguration {
+    JwtTokenTypeConfiguration: JwtTokenTypeConfiguration?
+    JsonTokenTypeConfiguration: JsonTokenTypeConfiguration?
+}
+class JwtTokenTypeConfiguration {
+    KeyLocation: "URL" | "SECRET_MANAGER"
+    URL: String(length <= 2048 && length >= 1 && matches(Regex(#"^(https?|ftp|file):\/\/([^\s]*)"#)))?
+    SecretManagerArn: String(length <= 1284 && length >= 1 && matches(Regex(#"arn:[a-z0-9-\.]{1,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[^/].{0,1023}"#)))?
+    UserNameAttributeField: String(length <= 100 && length >= 1)?
+    GroupAttributeField: String(length <= 100 && length >= 1)?
+    Issuer: String(length <= 65 && length >= 1)?
+    ClaimRegex: String(length <= 100 && length >= 1)?
+}
+class JsonTokenTypeConfiguration {
+    UserNameAttributeField: String(length <= 100 && length >= 1)
+    GroupAttributeField: String(length <= 100 && length >= 1)
+}

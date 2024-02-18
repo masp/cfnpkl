@@ -1,0 +1,335 @@
+/// Contains the Rules that identify the requests that you want to allow,
+/// block, or count. In a RuleGroup, you also specify a default action
+/// (ALLOW or BLOCK), and the action for each Rule that you add to a
+/// RuleGroup, for example, block requests from specified IP addresses or
+/// block requests from specified referrers. You also associate the
+/// RuleGroup with a CloudFront distribution to identify the requests that
+/// you want AWS WAF to filter. If you add more than one Rule to a
+/// RuleGroup, a request needs to match only one of the specifications to
+/// be allowed, blocked, or counted.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAFv2::RuleGroup"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 20)?
+    Capacity: Int?
+    Description: String(matches(Regex(#"^[a-zA-Z0-9=:#@/\-,.][a-zA-Z0-9+=:#@/\-,.\s]+[a-zA-Z0-9+=:#@/\-,.]{1,256}$"#)))?
+    Name: String(matches(Regex(#"^[0-9A-Za-z_-]{1,128}$"#)))?
+    Id: String(matches(Regex(#"^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$"#)))?
+    Scope: "CLOUDFRONT" | "REGIONAL" | *Null
+    /// Collection of Rules.
+    Rules: Listing<Rule>?
+    VisibilityConfig: VisibilityConfig?
+    Tags: Listing<Tag>?
+    LabelNamespace: String(matches(Regex(#"^[0-9A-Za-z_:-]{1,1024}$"#)))?
+    CustomResponseBodies: Mapping?
+    /// Collection of Available Labels.
+    AvailableLabels: Listing<LabelSummary>?
+    /// Collection of Consumed Labels.
+    ConsumedLabels: Listing<LabelSummary>?
+}
+/// Rule of RuleGroup that contains condition and action.
+class Rule {
+    Name: String(matches(Regex(#"^[0-9A-Za-z_-]{1,128}$"#)))
+    Priority: Int
+    Statement: Statement
+    Action: RuleAction?
+    /// Collection of Rule Labels.
+    RuleLabels: Listing<Label>?
+    VisibilityConfig: VisibilityConfig
+    CaptchaConfig: CaptchaConfig?
+    ChallengeConfig: ChallengeConfig?
+}
+/// First level statement that contains conditions, such as ByteMatch,
+/// SizeConstraint, etc
+class Statement {
+    ByteMatchStatement: ByteMatchStatement?
+    SqliMatchStatement: SqliMatchStatement?
+    XssMatchStatement: XssMatchStatement?
+    SizeConstraintStatement: SizeConstraintStatement?
+    GeoMatchStatement: GeoMatchStatement?
+    IPSetReferenceStatement: IPSetReferenceStatement?
+    RegexPatternSetReferenceStatement: RegexPatternSetReferenceStatement?
+    RateBasedStatement: RateBasedStatement?
+    AndStatement: AndStatement?
+    OrStatement: OrStatement?
+    NotStatement: NotStatement?
+    LabelMatchStatement: LabelMatchStatement?
+    RegexMatchStatement: RegexMatchStatement?
+}
+/// Byte Match statement.
+class ByteMatchStatement {
+    SearchString: String?
+    SearchStringBase64: String?
+    FieldToMatch: FieldToMatch
+    TextTransformations: Listing<TextTransformation>
+    PositionalConstraint: "EXACTLY" | "STARTS_WITH" | "ENDS_WITH" | "CONTAINS" | "CONTAINS_WORD"
+}
+/// Field of the request to match.
+class FieldToMatch {
+    SingleHeader: SingleHeader?
+    /// One query argument in a web request, identified by name, for example
+    /// UserName or SalesRegion. The name can be up to 30 characters long and
+    /// isn't case sensitive.
+    SingleQueryArgument: SingleQueryArgument?
+    /// All query arguments of a web request.
+    AllQueryArguments: Mapping?
+    /// The path component of the URI of a web request. This is the part of a
+    /// web request that identifies a resource, for example, /images/daily-
+    /// ad.jpg.
+    UriPath: Mapping?
+    /// The query string of a web request. This is the part of a URL that
+    /// appears after a ? character, if any.
+    QueryString: Mapping?
+    Body: Body?
+    /// The HTTP method of a web request. The method indicates the type of
+    /// operation that the request is asking the origin to perform.
+    Method: Mapping?
+    JsonBody: JsonBody?
+    Headers: Headers?
+    Cookies: Cookies?
+}
+class SingleHeader {
+    Name: String
+}
+/// One query argument in a web request, identified by name, for example
+/// UserName or SalesRegion. The name can be up to 30 characters long and
+/// isn't case sensitive.
+class SingleQueryArgument {
+    Name: String
+}
+/// The body of a web request. This immediately follows the request
+/// headers.
+class Body {
+    OversizeHandling: "CONTINUE" | "MATCH" | "NO_MATCH" | *Null
+}
+/// Inspect the request body as JSON. The request body immediately follows
+/// the request headers.
+class JsonBody {
+    MatchPattern: JsonMatchPattern
+    MatchScope: "ALL" | "KEY" | "VALUE"
+    InvalidFallbackBehavior: "MATCH" | "NO_MATCH" | "EVALUATE_AS_STRING" | *Null
+    OversizeHandling: "CONTINUE" | "MATCH" | "NO_MATCH" | *Null
+}
+/// The pattern to look for in the JSON body.
+class JsonMatchPattern {
+    /// Inspect all parts of the web request's JSON body.
+    All: Mapping?
+    IncludedPaths: Listing<String(matches(Regex(#"^[\/]+([^~]*(~[01])*)*{1,512}$"#)))>?
+}
+/// Includes headers of a web request.
+class Headers {
+    MatchPattern: HeaderMatchPattern
+    MatchScope: "ALL" | "KEY" | "VALUE"
+    OversizeHandling: "CONTINUE" | "MATCH" | "NO_MATCH"
+}
+/// The pattern to look for in the request headers.
+class HeaderMatchPattern {
+    /// Inspect all parts of the web request headers.
+    All: Mapping?
+    IncludedHeaders: Listing<String(length <= 64 && length >= 1 && matches(Regex(#".*\S.*"#)))>?
+    ExcludedHeaders: Listing<String(length <= 64 && length >= 1 && matches(Regex(#".*\S.*"#)))>?
+}
+/// Includes headers of a web request.
+class Cookies {
+    MatchPattern: CookieMatchPattern
+    MatchScope: "ALL" | "KEY" | "VALUE"
+    OversizeHandling: "CONTINUE" | "MATCH" | "NO_MATCH"
+}
+/// The pattern to look for in the request cookies.
+class CookieMatchPattern {
+    /// Inspect all parts of the web request cookies.
+    All: Mapping?
+    IncludedCookies: Listing<String(length <= 60 && length >= 1 && matches(Regex(#".*\S.*"#)))>?
+    ExcludedCookies: Listing<String(length <= 60 && length >= 1 && matches(Regex(#".*\S.*"#)))>?
+}
+/// Text Transformation on the Search String before match.
+class TextTransformation {
+    Priority: Int
+    Type: "NONE" | "COMPRESS_WHITE_SPACE" | "HTML_ENTITY_DECODE" | "LOWERCASE" | "CMD_LINE" | "URL_DECODE" | "BASE64_DECODE" | "HEX_DECODE" | "MD5" | "REPLACE_COMMENTS" | "ESCAPE_SEQ_DECODE" | "SQL_HEX_DECODE" | "CSS_DECODE" | "JS_DECODE" | "NORMALIZE_PATH" | "NORMALIZE_PATH_WIN" | "REMOVE_NULLS" | "REPLACE_NULLS" | "BASE64_DECODE_EXT" | "URL_DECODE_UNI" | "UTF8_TO_UNICODE"
+}
+/// Sqli Match Statement.
+class SqliMatchStatement {
+    FieldToMatch: FieldToMatch
+    TextTransformations: Listing<TextTransformation>
+    SensitivityLevel: "LOW" | "HIGH" | *Null
+}
+/// Xss Match Statement.
+class XssMatchStatement {
+    FieldToMatch: FieldToMatch
+    TextTransformations: Listing<TextTransformation>
+}
+/// Size Constraint statement.
+class SizeConstraintStatement {
+    FieldToMatch: FieldToMatch
+    ComparisonOperator: "EQ" | "NE" | "LE" | "LT" | "GE" | "GT"
+    Size: Float
+    TextTransformations: Listing<TextTransformation>
+}
+class GeoMatchStatement {
+    CountryCodes: Listing<String(length <= 2 && length >= 1)>?
+    ForwardedIPConfig: ForwardedIPConfiguration?
+}
+class ForwardedIPConfiguration {
+    HeaderName: String(matches(Regex(#"^[a-zA-Z0-9-]+{1,255}$"#)))
+    FallbackBehavior: "MATCH" | "NO_MATCH"
+}
+class IPSetReferenceStatement {
+    Arn: String(length <= 2048 && length >= 20)
+    IPSetForwardedIPConfig: IPSetForwardedIPConfiguration?
+}
+class IPSetForwardedIPConfiguration {
+    HeaderName: String(matches(Regex(#"^[a-zA-Z0-9-]+{1,255}$"#)))
+    FallbackBehavior: "MATCH" | "NO_MATCH"
+    Position: "FIRST" | "LAST" | "ANY"
+}
+class RegexPatternSetReferenceStatement {
+    Arn: String(length <= 2048 && length >= 20)
+    FieldToMatch: FieldToMatch
+    TextTransformations: Listing<TextTransformation>
+}
+class RateBasedStatement {
+    Limit: Int
+    AggregateKeyType: "CONSTANT" | "IP" | "FORWARDED_IP" | "CUSTOM_KEYS"
+    /// Specifies the aggregate keys to use in a rate-base rule.
+    CustomKeys: Listing<RateBasedStatementCustomKey>?
+    ScopeDownStatement: Statement?
+    ForwardedIPConfig: ForwardedIPConfiguration?
+}
+/// Specifies a single custom aggregate key for a rate-base rule.
+class RateBasedStatementCustomKey {
+    Cookie: RateLimitCookie?
+    ForwardedIP: Mapping?
+    Header: RateLimitHeader?
+    HTTPMethod: Mapping?
+    IP: Mapping?
+    LabelNamespace: RateLimitLabelNamespace?
+    QueryArgument: RateLimitQueryArgument?
+    QueryString: RateLimitQueryString?
+    UriPath: RateLimitUriPath?
+}
+/// Specifies a cookie as an aggregate key for a rate-based rule.
+class RateLimitCookie {
+    /// The name of the cookie to use.
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#".*\S.*"#)))
+    TextTransformations: Listing<TextTransformation>
+}
+/// Specifies a header as an aggregate key for a rate-based rule.
+class RateLimitHeader {
+    /// The name of the header to use.
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#".*\S.*"#)))
+    TextTransformations: Listing<TextTransformation>
+}
+/// Specifies a label namespace to use as an aggregate key for a rate-
+/// based rule.
+class RateLimitLabelNamespace {
+    /// The namespace to use for aggregation.
+    Namespace: String(matches(Regex(#"^[0-9A-Za-z_:-]{1,1024}$"#)))
+}
+/// Specifies a query argument in the request as an aggregate key for a
+/// rate-based rule.
+class RateLimitQueryArgument {
+    /// The name of the query argument to use.
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#".*\S.*"#)))
+    TextTransformations: Listing<TextTransformation>
+}
+/// Specifies the request's query string as an aggregate key for a rate-
+/// based rule.
+class RateLimitQueryString {
+    TextTransformations: Listing<TextTransformation>
+}
+/// Specifies the request's URI Path as an aggregate key for a rate-based
+/// rule.
+class RateLimitUriPath {
+    TextTransformations: Listing<TextTransformation>
+}
+class AndStatement {
+    Statements: Listing<Statement>
+}
+class OrStatement {
+    Statements: Listing<Statement>
+}
+class NotStatement {
+    Statement: Statement
+}
+class LabelMatchStatement {
+    Scope: "LABEL" | "NAMESPACE"
+    Key: String(matches(Regex(#"^[0-9A-Za-z_:-]{1,1024}$"#)))
+}
+class RegexMatchStatement {
+    RegexString: String(length <= 512 && length >= 1)
+    FieldToMatch: FieldToMatch
+    TextTransformations: Listing<TextTransformation>
+}
+/// Action taken when Rule matches its condition.
+class RuleAction {
+    Allow: AllowAction?
+    Block: BlockAction?
+    Count: CountAction?
+    Captcha: CaptchaAction?
+    Challenge: ChallengeAction?
+}
+/// Allow traffic towards application.
+class AllowAction {
+    CustomRequestHandling: CustomRequestHandling?
+}
+/// Custom request handling.
+class CustomRequestHandling {
+    /// Collection of HTTP headers.
+    InsertHeaders: Listing<CustomHTTPHeader>
+}
+/// HTTP header.
+class CustomHTTPHeader {
+    Name: String(length <= 64 && length >= 1)
+    Value: String(length <= 255 && length >= 1)
+}
+/// Block traffic towards application.
+class BlockAction {
+    CustomResponse: CustomResponse?
+}
+/// Custom response.
+class CustomResponse {
+    ResponseCode: Int
+    /// Custom response body key.
+    CustomResponseBodyKey: String(matches(Regex(#"^[\w\-]+$"#)))?
+    /// Collection of HTTP headers.
+    ResponseHeaders: Listing<CustomHTTPHeader>?
+}
+/// Count traffic towards application.
+class CountAction {
+    CustomRequestHandling: CustomRequestHandling?
+}
+/// Checks valid token exists with request.
+class CaptchaAction {
+    CustomRequestHandling: CustomRequestHandling?
+}
+/// Checks that the request has a valid token with an unexpired challenge
+/// timestamp and, if not, returns a browser challenge to the client.
+class ChallengeAction {
+    CustomRequestHandling: CustomRequestHandling?
+}
+class Label {
+    Name: String(matches(Regex(#"^[0-9A-Za-z_:-]{1,1024}$"#)))
+}
+/// Visibility Metric of the RuleGroup.
+class VisibilityConfig {
+    SampledRequestsEnabled: Boolean
+    CloudWatchMetricsEnabled: Boolean
+    MetricName: String(length <= 128 && length >= 1)
+}
+class CaptchaConfig {
+    ImmunityTimeProperty: ImmunityTimeProperty?
+}
+class ImmunityTimeProperty {
+    ImmunityTime: Int
+}
+class ChallengeConfig {
+    ImmunityTimeProperty: ImmunityTimeProperty?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)?
+    Value: String(length <= 256 && length >= 0)?
+}
+class LabelSummary {
+    Name: String(matches(Regex(#"^[0-9A-Za-z_:-]{1,1024}$"#)))?
+}

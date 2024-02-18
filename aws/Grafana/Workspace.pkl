@@ -1,0 +1,122 @@
+/// Definition of AWS::Grafana::Workspace Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Grafana::Workspace"
+Properties: Props?
+class Props {
+    /// List of authentication providers to enable.
+    AuthenticationProviders: Listing<"AWS_SSO" | "SAML">?
+    /// The client ID of the AWS SSO Managed Application.
+    SsoClientId: String?
+    SamlConfiguration: SamlConfiguration?
+    NetworkAccessControl: NetworkAccessControl?
+    VpcConfiguration: VpcConfiguration?
+    SamlConfigurationStatus: "CONFIGURED" | "NOT_CONFIGURED" | *Null
+    /// A unique, case-sensitive, user-provided identifier to ensure the
+    /// idempotency of the request.
+    ClientToken: String(matches(Regex(#"^[!-~]{1,64}$"#)))?
+    Status: "ACTIVE" | "CREATING" | "DELETING" | "FAILED" | "UPDATING" | "UPGRADING" | "VERSION_UPDATING" | "DELETION_FAILED" | "CREATION_FAILED" | "UPDATE_FAILED" | "UPGRADE_FAILED" | "LICENSE_REMOVAL_FAILED" | "VERSION_UPDATE_FAILED" | *Null
+    /// Timestamp when the workspace was created.
+    CreationTimestamp: String?
+    /// Timestamp when the workspace was last modified
+    ModificationTimestamp: String?
+    /// The version of Grafana to support in your workspace.
+    GrafanaVersion: String(length <= 255 && length >= 1)?
+    /// Endpoint for the Grafana workspace.
+    Endpoint: String(length <= 2048 && length >= 1)?
+    AccountAccessType: "CURRENT_ACCOUNT" | "ORGANIZATION" | *Null
+    /// The name of an IAM role that already exists to use with AWS
+    /// Organizations to access AWS data sources and notification channels in
+    /// other accounts in an organization.
+    OrganizationRoleName: String(length <= 2048 && length >= 1)?
+    PermissionType: "CUSTOMER_MANAGED" | "SERVICE_MANAGED" | *Null
+    /// The name of the AWS CloudFormation stack set to use to generate IAM
+    /// roles to be used for this workspace.
+    StackSetName: String?
+    /// List of data sources on the service managed IAM role.
+    DataSources: Listing<"AMAZON_OPENSEARCH_SERVICE" | "CLOUDWATCH" | "PROMETHEUS" | "XRAY" | "TIMESTREAM" | "SITEWISE" | "ATHENA" | "REDSHIFT">?
+    /// Description of a workspace.
+    Description: String(length <= 2048 && length >= 0)?
+    /// The id that uniquely identifies a Grafana workspace.
+    Id: String(matches(Regex(#"^g-[0-9a-f]{10}$"#)))?
+    /// The user friendly name of a workspace.
+    Name: String(matches(Regex(#"^[a-zA-Z0-9-._~]{1,255}$"#)))?
+    /// List of notification destinations on the customers service managed IAM
+    /// role that the Grafana workspace can query.
+    NotificationDestinations: Listing<"SNS">?
+    /// List of Organizational Units containing AWS accounts the Grafana
+    /// workspace can pull data from.
+    OrganizationalUnits: Listing<String>?
+    /// IAM Role that will be used to grant the Grafana workspace access to a
+    /// customers AWS resources.
+    RoleArn: String(length <= 2048 && length >= 1)?
+    /// Allow workspace admins to install plugins
+    PluginAdminEnabled: Boolean?
+}
+/// SAML configuration data associated with an AMG workspace.
+class SamlConfiguration {
+    IdpMetadata: IdpMetadata
+    AssertionAttributes: AssertionAttributes?
+    RoleValues: RoleValues?
+    /// List of SAML organizations allowed to access Grafana.
+    AllowedOrganizations: Listing<String(length <= 256 && length >= 1)>?
+    /// The maximum lifetime an authenticated user can be logged in (in
+    /// minutes) before being required to re-authenticate.
+    LoginValidityDuration: Float?
+}
+/// IdP Metadata used to configure SAML authentication in Grafana.
+class IdpMetadata {
+    /// URL that vends the IdPs metadata.
+    Url: String(length <= 2048 && length >= 1)?
+    /// XML blob of the IdPs metadata.
+    Xml: String?
+}
+/// Maps Grafana friendly names to the IdPs SAML attributes.
+class AssertionAttributes {
+    /// Name of the attribute within the SAML assert to use as the users name
+    /// in Grafana.
+    Name: String(length <= 256 && length >= 1)?
+    /// Name of the attribute within the SAML assert to use as the users login
+    /// handle in Grafana.
+    Login: String(length <= 256 && length >= 1)?
+    /// Name of the attribute within the SAML assert to use as the users email
+    /// in Grafana.
+    Email: String(length <= 256 && length >= 1)?
+    /// Name of the attribute within the SAML assert to use as the users
+    /// groups in Grafana.
+    Groups: String(length <= 256 && length >= 1)?
+    /// Name of the attribute within the SAML assert to use as the users roles
+    /// in Grafana.
+    Role: String(length <= 256 && length >= 1)?
+    /// Name of the attribute within the SAML assert to use as the users
+    /// organizations in Grafana.
+    Org: String(length <= 256 && length >= 1)?
+}
+/// Maps SAML roles to the Grafana Editor and Admin roles.
+class RoleValues {
+    /// List of SAML roles which will be mapped into the Grafana Editor role.
+    Editor: Listing<String(length <= 256 && length >= 1)>?
+    /// List of SAML roles which will be mapped into the Grafana Admin role.
+    Admin: Listing<String(length <= 256 && length >= 1)>?
+}
+/// The configuration settings for Network Access Control.
+class NetworkAccessControl {
+    /// The list of prefix list IDs. A prefix list is a list of CIDR ranges of
+    /// IP addresses. The IP addresses specified are allowed to access your
+    /// workspace. If the list is not included in the configuration then no IP
+    /// addresses will be allowed to access the workspace.
+    PrefixListIds: Listing<String(length >= 1)>?
+    /// The list of Amazon VPC endpoint IDs for the workspace. If a
+    /// NetworkAccessConfiguration is specified then only VPC endpoints
+    /// specified here will be allowed to access the workspace.
+    VpceIds: Listing<String(length >= 1)>?
+}
+/// The configuration settings for an Amazon VPC that contains data
+/// sources for your Grafana workspace to connect to.
+class VpcConfiguration {
+    /// The list of Amazon EC2 security group IDs attached to the Amazon VPC
+    /// for your Grafana workspace to connect.
+    SecurityGroupIds: Listing<String(length <= 255 && length >= 1)>
+    /// The list of Amazon EC2 subnet IDs created in the Amazon VPC for your
+    /// Grafana workspace to connect.
+    SubnetIds: Listing<String(length <= 255 && length >= 1)>
+}

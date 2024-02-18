@@ -1,0 +1,21 @@
+/// An example resource schema demonstrating some basic constructs and
+/// validation rules.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EMR::StudioSessionMapping"
+Properties: Props?
+class Props {
+    /// The name of the user or group. For more information, see UserName and
+    /// DisplayName in the AWS SSO Identity Store API Reference. Either
+    /// IdentityName or IdentityId must be specified.
+    IdentityName: String?
+    /// Specifies whether the identity to map to the Studio is a user or a
+    /// group.
+    IdentityType: "USER" | "GROUP" | *Null
+    /// The Amazon Resource Name (ARN) for the session policy that will be
+    /// applied to the user or group. Session policies refine Studio user
+    /// permissions without the need to use multiple IAM user roles.
+    SessionPolicyArn: String(matches(Regex(#"^arn:aws(-(cn|us-gov))?:iam::([0-9]{12})?:policy\/[^.]+$"#)))?
+    /// The ID of the Amazon EMR Studio to which the user or group will be
+    /// mapped.
+    StudioId: String(length <= 256 && length >= 4 && matches(Regex(#"^es-[0-9A-Z]+"#)))?
+}

@@ -1,0 +1,19 @@
+/// Resource Type definition for AWS::AppConfig::DeploymentStrategy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppConfig::DeploymentStrategy"
+Properties: Props?
+class Props {
+    ReplicateTo: String?
+    GrowthType: String?
+    Description: String?
+    DeploymentDurationInMinutes: Float?
+    GrowthFactor: Float?
+    Id: String?
+    FinalBakeTimeInMinutes: Float?
+    Tags: Listing<Tags>?
+    Name: String?
+}
+class Tags {
+    Value: String?
+    Key: String?
+}

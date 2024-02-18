@@ -1,0 +1,42 @@
+/// Resource Type definition for AWS::EC2::Subnet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::Subnet"
+Properties: Props?
+class Props {
+    AssignIpv6AddressOnCreation: Boolean?
+    VpcId: String?
+    MapPublicIpOnLaunch: Boolean?
+    NetworkAclAssociationId: String?
+    AvailabilityZone: String?
+    AvailabilityZoneId: String?
+    CidrBlock: String?
+    SubnetId: String?
+    Ipv6CidrBlocks: Listing<String>?
+    Ipv6CidrBlock: String?
+    OutpostArn: String?
+    Ipv6Native: Boolean?
+    EnableDns64: Boolean?
+    PrivateDnsNameOptionsOnLaunch: PrivateDnsNameOptionsOnLaunch?
+    Tags: Listing<Tag>?
+    /// The ID of an IPv4 IPAM pool you want to use for allocating this
+    /// subnet's CIDR
+    Ipv4IpamPoolId: String?
+    /// The netmask length of the IPv4 CIDR you want to allocate to this
+    /// subnet from an Amazon VPC IP Address Manager (IPAM) pool
+    Ipv4NetmaskLength: Int?
+    /// The ID of an IPv6 IPAM pool you want to use for allocating this
+    /// subnet's CIDR
+    Ipv6IpamPoolId: String?
+    /// The netmask length of the IPv6 CIDR you want to allocate to this
+    /// subnet from an Amazon VPC IP Address Manager (IPAM) pool
+    Ipv6NetmaskLength: Int?
+}
+class PrivateDnsNameOptionsOnLaunch {
+    HostnameType: String?
+    EnableResourceNameDnsARecord: Boolean?
+    EnableResourceNameDnsAAAARecord: Boolean?
+}
+class Tag {
+    Value: String
+    Key: String
+}

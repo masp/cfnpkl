@@ -1,0 +1,26 @@
+/// Describes a route table for a local gateway.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::LocalGatewayRouteTable"
+Properties: Props?
+class Props {
+    /// The ID of the local gateway route table.
+    LocalGatewayRouteTableId: String?
+    /// The ARN of the local gateway route table.
+    LocalGatewayRouteTableArn: String?
+    /// The ID of the local gateway.
+    LocalGatewayId: String?
+    /// The ARN of the outpost.
+    OutpostArn: String?
+    /// The owner of the local gateway route table.
+    OwnerId: String?
+    /// The state of the local gateway route table.
+    State: String?
+    /// The mode of the local gateway route table.
+    Mode: String?
+    /// The tags for the local gateway route table.
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 127 && length >= 1 && matches(Regex(#"^(?!aws:.*)"#)))?
+    Value: String(length <= 255 && length >= 1 && matches(Regex(#"^(?!aws:.*)"#)))?
+}

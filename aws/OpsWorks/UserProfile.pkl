@@ -1,0 +1,11 @@
+/// Resource Type definition for AWS::OpsWorks::UserProfile
+extends ".../AWS/Resource.pkl"
+Type = "AWS::OpsWorks::UserProfile"
+Properties: Props?
+class Props {
+    Id: String?
+    SshUsername: String?
+    AllowSelfManagement: Boolean?
+    IamUserArn: String?
+    SshPublicKey: String?
+}

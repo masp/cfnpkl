@@ -1,0 +1,25 @@
+/// Resource Type definition for AWS::SSMContacts::Rotation.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSMContacts::Rotation"
+Properties: Props?
+class Props {
+    /// Name of the Rotation
+    Name: String(matches(Regex(#"^[a-zA-Z0-9_]*$"#)))?
+    /// Members of the rotation
+    ContactIds: Listing<String>?
+    /// Start time of the first shift of Oncall Schedule
+    StartTime: String(matches(Regex(#"^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})$"#)))?
+    /// TimeZone Identifier for the Oncall Schedule
+    TimeZoneId: String?
+    Recurrence: Mapping | Mapping | Mapping | *Null
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the rotation.
+    Arn: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag.
+    Value: String(length <= 256 && length >= 0)
+}

@@ -1,0 +1,84 @@
+/// This schema provides construct and validation rules for AWS-XRay
+/// SamplingRule resource parameters.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::XRay::SamplingRule"
+Properties: Props?
+class Props {
+    SamplingRule: SamplingRule?
+    SamplingRuleRecord: SamplingRuleRecord?
+    SamplingRuleUpdate: SamplingRuleUpdate?
+    RuleARN: String?
+    RuleName: String(length <= 32 && length >= 1)?
+    Tags: Listing<Tag>?
+}
+class SamplingRule {
+    /// Matches attributes derived from the request.
+    Attributes: Mapping?
+    /// The percentage of matching requests to instrument, after the reservoir
+    /// is exhausted.
+    FixedRate: Float
+    /// Matches the hostname from a request URL.
+    Host: String(length <= 64)
+    /// Matches the HTTP method from a request URL.
+    HTTPMethod: String(length <= 10)
+    /// The priority of the sampling rule.
+    Priority: Int
+    /// A fixed number of matching requests to instrument per second, prior to
+    /// applying the fixed rate. The reservoir is not used directly by
+    /// services, but applies to all services using the rule collectively.
+    ReservoirSize: Int
+    /// Matches the ARN of the AWS resource on which the service runs.
+    ResourceARN: String(length <= 500)
+    RuleARN: String?
+    RuleName: String(length <= 32 && length >= 1)?
+    /// Matches the name that the service uses to identify itself in segments.
+    ServiceName: String(length <= 64)
+    /// Matches the origin that the service uses to identify its type in
+    /// segments.
+    ServiceType: String(length <= 64)
+    /// Matches the path from a request URL.
+    URLPath: String(length <= 128)
+    /// The version of the sampling rule format (1)
+    Version: Int?
+}
+class SamplingRuleRecord {
+    /// When the rule was created, in Unix time seconds.
+    CreatedAt: String?
+    /// When the rule was modified, in Unix time seconds.
+    ModifiedAt: String?
+    SamplingRule: SamplingRule?
+}
+class SamplingRuleUpdate {
+    /// Matches attributes derived from the request.
+    Attributes: Mapping?
+    /// The percentage of matching requests to instrument, after the reservoir
+    /// is exhausted.
+    FixedRate: Float?
+    /// Matches the hostname from a request URL.
+    Host: String(length <= 64)?
+    /// Matches the HTTP method from a request URL.
+    HTTPMethod: String(length <= 10)?
+    /// The priority of the sampling rule.
+    Priority: Int?
+    /// A fixed number of matching requests to instrument per second, prior to
+    /// applying the fixed rate. The reservoir is not used directly by
+    /// services, but applies to all services using the rule collectively.
+    ReservoirSize: Int?
+    /// Matches the ARN of the AWS resource on which the service runs.
+    ResourceARN: String(length <= 500)?
+    RuleARN: String?
+    RuleName: String(length <= 32 && length >= 1)?
+    /// Matches the name that the service uses to identify itself in segments.
+    ServiceName: String(length <= 64)?
+    /// Matches the origin that the service uses to identify its type in
+    /// segments.
+    ServiceType: String(length <= 64)?
+    /// Matches the path from a request URL.
+    URLPath: String(length <= 128)?
+}
+class Tag {
+    /// The key name of the tag.
+    Key: String
+    /// The value for the tag.
+    Value: String
+}

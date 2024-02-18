@@ -1,0 +1,71 @@
+/// Resource schema for AWS::DataSync::LocationHDFS.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataSync::LocationHDFS"
+Properties: Props?
+class Props {
+    /// An array of Name Node(s) of the HDFS location.
+    NameNodes: Listing<NameNode>?
+    /// Size of chunks (blocks) in bytes that the data is divided into when
+    /// stored in the HDFS cluster.
+    BlockSize: Int?
+    /// Number of copies of each block that exists inside the HDFS cluster.
+    ReplicationFactor: Int?
+    /// The identifier for the Key Management Server where the encryption keys
+    /// that encrypt data inside HDFS clusters are stored.
+    KmsKeyProviderUri: String(length <= 255 && length >= 1 && matches(Regex(#"^kms:\/\/http[s]?@(([a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9\-]*[A-Za-z0-9])(;(([a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9\-]*[A-Za-z0-9]))*:[0-9]{1,5}\/kms$"#)))?
+    QopConfiguration: QopConfiguration?
+    /// The authentication mode used to determine identity of user.
+    AuthenticationType: "SIMPLE" | "KERBEROS" | *Null
+    /// The user name that has read and write permissions on the specified
+    /// HDFS cluster.
+    SimpleUser: String(length <= 256 && length >= 1 && matches(Regex(#"^[_.A-Za-z0-9][-_.A-Za-z0-9]*$"#)))?
+    /// The unique identity, or principal, to which Kerberos can assign
+    /// tickets.
+    KerberosPrincipal: String(length <= 256 && length >= 1 && matches(Regex(#"^.+$"#)))?
+    /// The Base64 string representation of the Keytab file.
+    KerberosKeytab: String(length <= 87384)?
+    /// The string representation of the Krb5Conf file, or the presigned URL
+    /// to access the Krb5.conf file within an S3 bucket.
+    KerberosKrb5Conf: String(length <= 174764)?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// ARN(s) of the agent(s) to use for an HDFS location.
+    AgentArns: Listing<String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:agent/agent-[0-9a-z]{17}$"#)))>?
+    /// The subdirectory in HDFS that is used to read data from the HDFS
+    /// source location or write data to the HDFS destination.
+    Subdirectory: String(length <= 4096 && matches(Regex(#"^[a-zA-Z0-9_\-\+\./\(\)\$\p{Zs}]+$"#)))?
+    /// The Amazon Resource Name (ARN) of the HDFS location.
+    LocationArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:location/loc-[0-9a-z]{17}$"#)))?
+    /// The URL of the HDFS location that was described.
+    LocationUri: String(length <= 4356 && matches(Regex(#"^(efs|nfs|s3|smb|fsxw|hdfs)://[a-zA-Z0-9.:/\-]+$"#)))?
+}
+/// HDFS Name Node IP and port information.
+class NameNode {
+    /// The DNS name or IP address of the Name Node in the customer's on
+    /// premises HDFS cluster.
+    Hostname: String(length <= 255 && matches(Regex(#"^(([a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9\-]*[A-Za-z0-9])$"#)))
+    /// The port on which the Name Node is listening on for client requests.
+    Port: Int
+}
+/// Configuration information for RPC Protection and Data Transfer
+/// Protection. These parameters can be set to AUTHENTICATION, INTEGRITY,
+/// or PRIVACY. The default value is PRIVACY.
+class QopConfiguration {
+    /// Configuration for RPC Protection.
+    RpcProtection: "AUTHENTICATION" | "INTEGRITY" | "PRIVACY" | "DISABLED" | *Null
+    /// Configuration for Data Transfer Protection.
+    DataTransferProtection: "AUTHENTICATION" | "INTEGRITY" | "PRIVACY" | "DISABLED" | *Null
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

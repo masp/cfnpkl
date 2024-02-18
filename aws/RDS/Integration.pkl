@@ -1,0 +1,42 @@
+/// An example resource schema demonstrating some basic constructs and
+/// validation rules.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RDS::Integration"
+Properties: Props?
+class Props {
+    /// The name of the integration.
+    IntegrationName: String(length <= 64 && length >= 1)?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the Aurora DB cluster to use as the
+    /// source for replication.
+    SourceArn: String?
+    /// The ARN of the Redshift data warehouse to use as the target for
+    /// replication.
+    TargetArn: String?
+    /// The ARN of the integration.
+    IntegrationArn: String?
+    /// An optional AWS Key Management System (AWS KMS) key ARN for the key
+    /// used to to encrypt the integration. The resource accepts the key ID
+    /// and the key ARN forms. The key ID form can be used if the KMS key is
+    /// owned by te same account. If the KMS key belongs to a different
+    /// account than the calling account, the full key ARN must be specified.
+    /// Do not use the key alias or the key alias ARN as this will cause a
+    /// false drift of the resource.
+    KMSKeyId: String?
+    AdditionalEncryptionContext: Mapping?
+    CreateTime: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)?
+}

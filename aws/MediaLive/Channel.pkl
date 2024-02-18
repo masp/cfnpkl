@@ -1,0 +1,1003 @@
+/// Resource Type definition for AWS::MediaLive::Channel
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaLive::Channel"
+Properties: Props?
+class Props {
+    InputAttachments: Listing<InputAttachment>?
+    InputSpecification: InputSpecification?
+    Destinations: Listing<OutputDestination>?
+    Vpc: VpcOutputSettings?
+    Maintenance: MaintenanceCreateSettings?
+    LogLevel: String?
+    RoleArn: String?
+    Name: String?
+    ChannelClass: String?
+    EncoderSettings: EncoderSettings?
+    CdiInputSpecification: CdiInputSpecification?
+    Id: String?
+    Arn: String?
+    Inputs: Listing<String>?
+    Tags: Mapping?
+}
+class InputAttachment {
+    InputAttachmentName: String?
+    InputId: String?
+    AutomaticInputFailoverSettings: AutomaticInputFailoverSettings?
+    InputSettings: InputSettings?
+}
+class AutomaticInputFailoverSettings {
+    ErrorClearTimeMsec: Int?
+    FailoverConditions: Listing<FailoverCondition>?
+    InputPreference: String?
+    SecondaryInputId: String?
+}
+class FailoverCondition {
+    FailoverConditionSettings: FailoverConditionSettings?
+}
+class FailoverConditionSettings {
+    AudioSilenceSettings: AudioSilenceFailoverSettings?
+    VideoBlackSettings: VideoBlackFailoverSettings?
+    InputLossSettings: InputLossFailoverSettings?
+}
+class AudioSilenceFailoverSettings {
+    AudioSelectorName: String?
+    AudioSilenceThresholdMsec: Int?
+}
+class VideoBlackFailoverSettings {
+    BlackDetectThreshold: Float?
+    VideoBlackThresholdMsec: Int?
+}
+class InputLossFailoverSettings {
+    InputLossThresholdMsec: Int?
+}
+class InputSettings {
+    Scte35Pid: Int?
+    DeblockFilter: String?
+    FilterStrength: Int?
+    InputFilter: String?
+    SourceEndBehavior: String?
+    VideoSelector: VideoSelector?
+    Smpte2038DataPreference: String?
+    AudioSelectors: Listing<AudioSelector>?
+    CaptionSelectors: Listing<CaptionSelector>?
+    DenoiseFilter: String?
+    NetworkInputSettings: NetworkInputSettings?
+}
+class VideoSelector {
+    ColorSpaceSettings: VideoSelectorColorSpaceSettings?
+    ColorSpaceUsage: String?
+    SelectorSettings: VideoSelectorSettings?
+    ColorSpace: String?
+}
+class VideoSelectorColorSpaceSettings {
+    Hdr10Settings: Hdr10Settings?
+}
+class Hdr10Settings {
+    MaxCll: Int?
+    MaxFall: Int?
+}
+class VideoSelectorSettings {
+    VideoSelectorProgramId: VideoSelectorProgramId?
+    VideoSelectorPid: VideoSelectorPid?
+}
+class VideoSelectorProgramId {
+    ProgramId: Int?
+}
+class VideoSelectorPid {
+    Pid: Int?
+}
+class AudioSelector {
+    SelectorSettings: AudioSelectorSettings?
+    Name: String?
+}
+class AudioSelectorSettings {
+    AudioLanguageSelection: AudioLanguageSelection?
+    AudioTrackSelection: AudioTrackSelection?
+    AudioPidSelection: AudioPidSelection?
+    AudioHlsRenditionSelection: AudioHlsRenditionSelection?
+}
+class AudioLanguageSelection {
+    LanguageCode: String?
+    LanguageSelectionPolicy: String?
+}
+class AudioTrackSelection {
+    DolbyEDecode: AudioDolbyEDecode?
+    Tracks: Listing<AudioTrack>?
+}
+class AudioDolbyEDecode {
+    ProgramSelection: String?
+}
+class AudioTrack {
+    Track: Int?
+}
+class AudioPidSelection {
+    Pid: Int?
+}
+class AudioHlsRenditionSelection {
+    GroupId: String?
+    Name: String?
+}
+class CaptionSelector {
+    LanguageCode: String?
+    SelectorSettings: CaptionSelectorSettings?
+    Name: String?
+}
+class CaptionSelectorSettings {
+    DvbSubSourceSettings: DvbSubSourceSettings?
+    Scte27SourceSettings: Scte27SourceSettings?
+    AribSourceSettings: Mapping?
+    EmbeddedSourceSettings: EmbeddedSourceSettings?
+    Scte20SourceSettings: Scte20SourceSettings?
+    TeletextSourceSettings: TeletextSourceSettings?
+    AncillarySourceSettings: AncillarySourceSettings?
+}
+class DvbSubSourceSettings {
+    OcrLanguage: String?
+    Pid: Int?
+}
+class Scte27SourceSettings {
+    OcrLanguage: String?
+    Pid: Int?
+}
+class EmbeddedSourceSettings {
+    Source608ChannelNumber: Int?
+    Scte20Detection: String?
+    Source608TrackNumber: Int?
+    Convert608To708: String?
+}
+class Scte20SourceSettings {
+    Source608ChannelNumber: Int?
+    Convert608To708: String?
+}
+class TeletextSourceSettings {
+    OutputRectangle: CaptionRectangle?
+    PageNumber: String?
+}
+class CaptionRectangle {
+    Height: Float?
+    TopOffset: Float?
+    Width: Float?
+    LeftOffset: Float?
+}
+class AncillarySourceSettings {
+    SourceAncillaryChannelNumber: Int?
+}
+class NetworkInputSettings {
+    ServerValidation: String?
+    HlsInputSettings: HlsInputSettings?
+}
+class HlsInputSettings {
+    Scte35Source: String?
+    BufferSegments: Int?
+    RetryInterval: Int?
+    Retries: Int?
+    Bandwidth: Int?
+}
+class InputSpecification {
+    Codec: String?
+    MaximumBitrate: String?
+    Resolution: String?
+}
+class OutputDestination {
+    Id: String?
+    MultiplexSettings: MultiplexProgramChannelDestinationSettings?
+    Settings: Listing<OutputDestinationSettings>?
+    MediaPackageSettings: Listing<MediaPackageOutputDestinationSettings>?
+}
+class MultiplexProgramChannelDestinationSettings {
+    ProgramName: String?
+    MultiplexId: String?
+}
+class OutputDestinationSettings {
+    StreamName: String?
+    PasswordParam: String?
+    Username: String?
+    Url: String?
+}
+class MediaPackageOutputDestinationSettings {
+    ChannelId: String?
+}
+class VpcOutputSettings {
+    SecurityGroupIds: Listing<String>?
+    SubnetIds: Listing<String>?
+    PublicAddressAllocationIds: Listing<String>?
+}
+class MaintenanceCreateSettings {
+    MaintenanceDay: String?
+    MaintenanceStartTime: String?
+}
+class EncoderSettings {
+    AudioDescriptions: Listing<AudioDescription>?
+    VideoDescriptions: Listing<VideoDescription>?
+    GlobalConfiguration: GlobalConfiguration?
+    MotionGraphicsConfiguration: MotionGraphicsConfiguration?
+    ThumbnailConfiguration: ThumbnailConfiguration?
+    FeatureActivations: FeatureActivations?
+    CaptionDescriptions: Listing<CaptionDescription>?
+    AvailConfiguration: AvailConfiguration?
+    ColorCorrectionSettings: ColorCorrectionSettings?
+    OutputGroups: Listing<OutputGroup>?
+    AvailBlanking: AvailBlanking?
+    NielsenConfiguration: NielsenConfiguration?
+    BlackoutSlate: BlackoutSlate?
+    TimecodeConfig: TimecodeConfig?
+}
+class AudioDescription {
+    AudioNormalizationSettings: AudioNormalizationSettings?
+    LanguageCode: String?
+    RemixSettings: RemixSettings?
+    AudioSelectorName: String?
+    StreamName: String?
+    LanguageCodeControl: String?
+    AudioType: String?
+    AudioTypeControl: String?
+    CodecSettings: AudioCodecSettings?
+    Name: String?
+    AudioWatermarkingSettings: AudioWatermarkSettings?
+}
+class AudioNormalizationSettings {
+    TargetLkfs: Float?
+    Algorithm: String?
+    AlgorithmControl: String?
+}
+class RemixSettings {
+    ChannelsOut: Int?
+    ChannelsIn: Int?
+    ChannelMappings: Listing<AudioChannelMapping>?
+}
+class AudioChannelMapping {
+    InputChannelLevels: Listing<InputChannelLevel>?
+    OutputChannel: Int?
+}
+class InputChannelLevel {
+    InputChannel: Int?
+    Gain: Int?
+}
+class AudioCodecSettings {
+    Eac3Settings: Eac3Settings?
+    Ac3Settings: Ac3Settings?
+    Mp2Settings: Mp2Settings?
+    Eac3AtmosSettings: Eac3AtmosSettings?
+    PassThroughSettings: Mapping?
+    WavSettings: WavSettings?
+    AacSettings: AacSettings?
+}
+class Eac3Settings {
+    CodingMode: String?
+    SurroundMode: String?
+    PassthroughControl: String?
+    Dialnorm: Int?
+    LoRoSurroundMixLevel: Float?
+    PhaseControl: String?
+    LtRtCenterMixLevel: Float?
+    LfeFilter: String?
+    LfeControl: String?
+    Bitrate: Float?
+    DrcLine: String?
+    DcFilter: String?
+    MetadataControl: String?
+    LtRtSurroundMixLevel: Float?
+    LoRoCenterMixLevel: Float?
+    DrcRf: String?
+    AttenuationControl: String?
+    BitstreamMode: String?
+    SurroundExMode: String?
+    StereoDownmix: String?
+}
+class Ac3Settings {
+    CodingMode: String?
+    DrcProfile: String?
+    MetadataControl: String?
+    Dialnorm: Int?
+    LfeFilter: String?
+    BitstreamMode: String?
+    AttenuationControl: String?
+    Bitrate: Float?
+}
+class Mp2Settings {
+    CodingMode: String?
+    SampleRate: Float?
+    Bitrate: Float?
+}
+class Eac3AtmosSettings {
+    CodingMode: String?
+    Dialnorm: Int?
+    SurroundTrim: Float?
+    DrcRf: String?
+    Bitrate: Float?
+    DrcLine: String?
+    HeightTrim: Float?
+}
+class WavSettings {
+    CodingMode: String?
+    SampleRate: Float?
+    BitDepth: Float?
+}
+class AacSettings {
+    CodingMode: String?
+    RateControlMode: String?
+    SampleRate: Float?
+    InputType: String?
+    VbrQuality: String?
+    RawFormat: String?
+    Spec: String?
+    Bitrate: Float?
+    Profile: String?
+}
+class AudioWatermarkSettings {
+    NielsenWatermarksSettings: NielsenWatermarksSettings?
+}
+class NielsenWatermarksSettings {
+    NielsenNaesIiNwSettings: NielsenNaesIiNw?
+    NielsenDistributionType: String?
+    NielsenCbetSettings: NielsenCBET?
+}
+class NielsenNaesIiNw {
+    Timezone: String?
+    CheckDigitString: String?
+    Sid: Float?
+}
+class NielsenCBET {
+    CbetStepaside: String?
+    CbetCheckDigitString: String?
+    Csid: String?
+}
+class VideoDescription {
+    ScalingBehavior: String?
+    RespondToAfd: String?
+    Height: Int?
+    Sharpness: Int?
+    Width: Int?
+    CodecSettings: VideoCodecSettings?
+    Name: String?
+}
+class VideoCodecSettings {
+    FrameCaptureSettings: FrameCaptureSettings?
+    H264Settings: H264Settings?
+    Mpeg2Settings: Mpeg2Settings?
+    H265Settings: H265Settings?
+}
+class FrameCaptureSettings {
+    TimecodeBurninSettings: TimecodeBurninSettings?
+    CaptureIntervalUnits: String?
+    CaptureInterval: Int?
+}
+class TimecodeBurninSettings {
+    Prefix: String?
+    FontSize: String?
+    Position: String?
+}
+class H264Settings {
+    TimecodeBurninSettings: TimecodeBurninSettings?
+    NumRefFrames: Int?
+    TemporalAq: String?
+    Slices: Int?
+    FramerateControl: String?
+    QvbrQualityLevel: Int?
+    FramerateNumerator: Int?
+    ParControl: String?
+    GopClosedCadence: Int?
+    FlickerAq: String?
+    Profile: String?
+    QualityLevel: String?
+    MinIInterval: Int?
+    SceneChangeDetect: String?
+    ForceFieldPictures: String?
+    FramerateDenominator: Int?
+    Softness: Int?
+    GopSize: Float?
+    AdaptiveQuantization: String?
+    FilterSettings: H264FilterSettings?
+    ColorSpaceSettings: H264ColorSpaceSettings?
+    EntropyEncoding: String?
+    SpatialAq: String?
+    ParDenominator: Int?
+    FixedAfd: String?
+    GopSizeUnits: String?
+    AfdSignaling: String?
+    Bitrate: Int?
+    ParNumerator: Int?
+    RateControlMode: String?
+    ScanType: String?
+    BufSize: Int?
+    TimecodeInsertion: String?
+    ColorMetadata: String?
+    BufFillPct: Int?
+    GopBReference: String?
+    LookAheadRateControl: String?
+    Level: String?
+    MaxBitrate: Int?
+    Syntax: String?
+    SubgopLength: String?
+    GopNumBFrames: Int?
+}
+class H264FilterSettings {
+    TemporalFilterSettings: TemporalFilterSettings?
+}
+class TemporalFilterSettings {
+    PostFilterSharpening: String?
+    Strength: String?
+}
+class H264ColorSpaceSettings {
+    Rec601Settings: Mapping?
+    Rec709Settings: Mapping?
+    ColorSpacePassthroughSettings: Mapping?
+}
+class Mpeg2Settings {
+    TimecodeBurninSettings: TimecodeBurninSettings?
+    ColorSpace: String?
+    FixedAfd: String?
+    GopSizeUnits: String?
+    FramerateNumerator: Int?
+    GopClosedCadence: Int?
+    AfdSignaling: String?
+    DisplayAspectRatio: String?
+    ScanType: String?
+    TimecodeInsertion: String?
+    ColorMetadata: String?
+    FramerateDenominator: Int?
+    GopSize: Float?
+    AdaptiveQuantization: String?
+    SubgopLength: String?
+    FilterSettings: Mpeg2FilterSettings?
+    GopNumBFrames: Int?
+}
+class Mpeg2FilterSettings {
+    TemporalFilterSettings: TemporalFilterSettings?
+}
+class H265Settings {
+    TimecodeBurninSettings: TimecodeBurninSettings?
+    Slices: Int?
+    QvbrQualityLevel: Int?
+    FramerateNumerator: Int?
+    GopClosedCadence: Int?
+    FlickerAq: String?
+    Profile: String?
+    MinIInterval: Int?
+    SceneChangeDetect: String?
+    FramerateDenominator: Int?
+    GopSize: Float?
+    AdaptiveQuantization: String?
+    FilterSettings: H265FilterSettings?
+    AlternativeTransferFunction: String?
+    ColorSpaceSettings: H265ColorSpaceSettings?
+    Tier: String?
+    ParDenominator: Int?
+    FixedAfd: String?
+    GopSizeUnits: String?
+    AfdSignaling: String?
+    Bitrate: Int?
+    ParNumerator: Int?
+    RateControlMode: String?
+    ScanType: String?
+    BufSize: Int?
+    TimecodeInsertion: String?
+    ColorMetadata: String?
+    LookAheadRateControl: String?
+    Level: String?
+    MaxBitrate: Int?
+}
+class H265FilterSettings {
+    TemporalFilterSettings: TemporalFilterSettings?
+}
+class H265ColorSpaceSettings {
+    Rec601Settings: Mapping?
+    Rec709Settings: Mapping?
+    ColorSpacePassthroughSettings: Mapping?
+    DolbyVision81Settings: Mapping?
+    Hdr10Settings: Hdr10Settings?
+}
+class GlobalConfiguration {
+    InputEndAction: String?
+    OutputLockingSettings: OutputLockingSettings?
+    OutputTimingSource: String?
+    OutputLockingMode: String?
+    SupportLowFramerateInputs: String?
+    InitialAudioGain: Int?
+    InputLossBehavior: InputLossBehavior?
+}
+class OutputLockingSettings {
+    EpochLockingSettings: EpochLockingSettings?
+    PipelineLockingSettings: Mapping?
+}
+class EpochLockingSettings {
+    JamSyncTime: String?
+    CustomEpoch: String?
+}
+class InputLossBehavior {
+    InputLossImageType: String?
+    InputLossImageSlate: InputLocation?
+    InputLossImageColor: String?
+    RepeatFrameMsec: Int?
+    BlackFrameMsec: Int?
+}
+class InputLocation {
+    PasswordParam: String?
+    Username: String?
+    Uri: String?
+}
+class MotionGraphicsConfiguration {
+    MotionGraphicsSettings: MotionGraphicsSettings?
+    MotionGraphicsInsertion: String?
+}
+class MotionGraphicsSettings {
+    HtmlMotionGraphicsSettings: Mapping?
+}
+class ThumbnailConfiguration {
+    State: String?
+}
+class FeatureActivations {
+    OutputStaticImageOverlayScheduleActions: String?
+    InputPrepareScheduleActions: String?
+}
+class CaptionDescription {
+    DestinationSettings: CaptionDestinationSettings?
+    LanguageCode: String?
+    LanguageDescription: String?
+    Accessibility: String?
+    CaptionSelectorName: String?
+    Name: String?
+}
+class CaptionDestinationSettings {
+    AribDestinationSettings: Mapping?
+    EbuTtDDestinationSettings: EbuTtDDestinationSettings?
+    SmpteTtDestinationSettings: Mapping?
+    EmbeddedPlusScte20DestinationSettings: Mapping?
+    TtmlDestinationSettings: TtmlDestinationSettings?
+    Scte20PlusEmbeddedDestinationSettings: Mapping?
+    DvbSubDestinationSettings: DvbSubDestinationSettings?
+    TeletextDestinationSettings: Mapping?
+    BurnInDestinationSettings: BurnInDestinationSettings?
+    WebvttDestinationSettings: WebvttDestinationSettings?
+    EmbeddedDestinationSettings: Mapping?
+    RtmpCaptionInfoDestinationSettings: Mapping?
+    Scte27DestinationSettings: Mapping?
+}
+class EbuTtDDestinationSettings {
+    FontFamily: String?
+    StyleControl: String?
+    CopyrightHolder: String?
+    FillLineGap: String?
+}
+class TtmlDestinationSettings {
+    StyleControl: String?
+}
+class DvbSubDestinationSettings {
+    BackgroundOpacity: Int?
+    FontResolution: Int?
+    OutlineColor: String?
+    FontColor: String?
+    ShadowColor: String?
+    ShadowOpacity: Int?
+    Font: InputLocation?
+    ShadowYOffset: Int?
+    Alignment: String?
+    XPosition: Int?
+    FontSize: String?
+    YPosition: Int?
+    OutlineSize: Int?
+    TeletextGridControl: String?
+    FontOpacity: Int?
+    ShadowXOffset: Int?
+    BackgroundColor: String?
+}
+class BurnInDestinationSettings {
+    BackgroundOpacity: Int?
+    FontResolution: Int?
+    OutlineColor: String?
+    FontColor: String?
+    ShadowColor: String?
+    ShadowOpacity: Int?
+    Font: InputLocation?
+    ShadowYOffset: Int?
+    Alignment: String?
+    XPosition: Int?
+    FontSize: String?
+    YPosition: Int?
+    OutlineSize: Int?
+    TeletextGridControl: String?
+    FontOpacity: Int?
+    ShadowXOffset: Int?
+    BackgroundColor: String?
+}
+class WebvttDestinationSettings {
+    StyleControl: String?
+}
+class AvailConfiguration {
+    AvailSettings: AvailSettings?
+}
+class AvailSettings {
+    Scte35SpliceInsert: Scte35SpliceInsert?
+    Scte35TimeSignalApos: Scte35TimeSignalApos?
+    Esam: Esam?
+}
+class Scte35SpliceInsert {
+    AdAvailOffset: Int?
+    WebDeliveryAllowedFlag: String?
+    NoRegionalBlackoutFlag: String?
+}
+class Scte35TimeSignalApos {
+    AdAvailOffset: Int?
+    WebDeliveryAllowedFlag: String?
+    NoRegionalBlackoutFlag: String?
+}
+class Esam {
+    AdAvailOffset: Int?
+    ZoneIdentity: String?
+    AcquisitionPointId: String?
+    PoisEndpoint: String?
+    Username: String?
+    PasswordParam: String?
+}
+class ColorCorrectionSettings {
+    GlobalColorCorrections: Listing<ColorCorrection>?
+}
+class ColorCorrection {
+    OutputColorSpace: String?
+    InputColorSpace: String?
+    Uri: String?
+}
+class OutputGroup {
+    Outputs: Listing<Output>?
+    OutputGroupSettings: OutputGroupSettings?
+    Name: String?
+}
+class Output {
+    OutputSettings: OutputSettings?
+    CaptionDescriptionNames: Listing<String>?
+    AudioDescriptionNames: Listing<String>?
+    OutputName: String?
+    VideoDescriptionName: String?
+}
+class OutputSettings {
+    MediaPackageOutputSettings: Mapping?
+    MsSmoothOutputSettings: MsSmoothOutputSettings?
+    FrameCaptureOutputSettings: FrameCaptureOutputSettings?
+    HlsOutputSettings: HlsOutputSettings?
+    RtmpOutputSettings: RtmpOutputSettings?
+    UdpOutputSettings: UdpOutputSettings?
+    MultiplexOutputSettings: MultiplexOutputSettings?
+    ArchiveOutputSettings: ArchiveOutputSettings?
+}
+class MsSmoothOutputSettings {
+    NameModifier: String?
+    H265PackagingType: String?
+}
+class FrameCaptureOutputSettings {
+    NameModifier: String?
+}
+class HlsOutputSettings {
+    HlsSettings: HlsSettings?
+    NameModifier: String?
+    H265PackagingType: String?
+    SegmentModifier: String?
+}
+class HlsSettings {
+    Fmp4HlsSettings: Fmp4HlsSettings?
+    FrameCaptureHlsSettings: Mapping?
+    StandardHlsSettings: StandardHlsSettings?
+    AudioOnlyHlsSettings: AudioOnlyHlsSettings?
+}
+class Fmp4HlsSettings {
+    AudioRenditionSets: String?
+    NielsenId3Behavior: String?
+    TimedMetadataBehavior: String?
+}
+class StandardHlsSettings {
+    AudioRenditionSets: String?
+    M3u8Settings: M3u8Settings?
+}
+class M3u8Settings {
+    PatInterval: Int?
+    ProgramNum: Int?
+    PcrPeriod: Int?
+    PmtInterval: Int?
+    KlvDataPids: String?
+    NielsenId3Behavior: String?
+    PcrPid: String?
+    VideoPid: String?
+    AudioFramesPerPes: Int?
+    TransportStreamId: Int?
+    PmtPid: String?
+    Scte35Pid: String?
+    Scte35Behavior: String?
+    KlvBehavior: String?
+    EcmPid: String?
+    TimedMetadataPid: String?
+    AudioPids: String?
+    PcrControl: String?
+    TimedMetadataBehavior: String?
+}
+class AudioOnlyHlsSettings {
+    SegmentType: String?
+    AudioTrackType: String?
+    AudioGroupId: String?
+    AudioOnlyImage: InputLocation?
+}
+class RtmpOutputSettings {
+    Destination: OutputLocationRef?
+    CertificateMode: String?
+    NumRetries: Int?
+    ConnectionRetryInterval: Int?
+}
+class OutputLocationRef {
+    DestinationRefId: String?
+}
+class UdpOutputSettings {
+    Destination: OutputLocationRef?
+    FecOutputSettings: FecOutputSettings?
+    BufferMsec: Int?
+    ContainerSettings: UdpContainerSettings?
+}
+class FecOutputSettings {
+    ColumnDepth: Int?
+    IncludeFec: String?
+    RowLength: Int?
+}
+class UdpContainerSettings {
+    M2tsSettings: M2tsSettings?
+}
+class M2tsSettings {
+    EtvPlatformPid: String?
+    AribCaptionsPid: String?
+    EbpPlacement: String?
+    DvbSubPids: String?
+    SegmentationStyle: String?
+    Klv: String?
+    Scte35PrerollPullupMilliseconds: Float?
+    TimedMetadataBehavior: String?
+    DvbTeletextPid: String?
+    Scte35Control: String?
+    PcrPeriod: Int?
+    SegmentationTime: Float?
+    CcDescriptor: String?
+    PmtPid: String?
+    DvbNitSettings: DvbNitSettings?
+    EtvSignalPid: String?
+    Arib: String?
+    TimedMetadataPid: String?
+    AudioPids: String?
+    AudioBufferModel: String?
+    Ebif: String?
+    PcrControl: String?
+    PatInterval: Int?
+    ProgramNum: Int?
+    RateMode: String?
+    KlvDataPids: String?
+    NullPacketBitrate: Float?
+    PmtInterval: Int?
+    EsRateInPes: String?
+    VideoPid: String?
+    TransportStreamId: Int?
+    Scte35Pid: String?
+    AudioStreamType: String?
+    EbpLookaheadMs: Int?
+    DvbTdtSettings: DvbTdtSettings?
+    EbpAudioInterval: String?
+    FragmentTime: Float?
+    NielsenId3Behavior: String?
+    PcrPid: String?
+    AudioFramesPerPes: Int?
+    AbsentInputAudioBehavior: String?
+    Bitrate: Int?
+    Scte27Pids: String?
+    SegmentationMarkers: String?
+    DvbSdtSettings: DvbSdtSettings?
+    BufferModel: String?
+    EcmPid: String?
+    AribCaptionsPidControl: String?
+}
+class DvbNitSettings {
+    NetworkName: String?
+    NetworkId: Int?
+    RepInterval: Int?
+}
+class DvbTdtSettings {
+    RepInterval: Int?
+}
+class DvbSdtSettings {
+    ServiceProviderName: String?
+    OutputSdt: String?
+    ServiceName: String?
+    RepInterval: Int?
+}
+class MultiplexOutputSettings {
+    Destination: OutputLocationRef?
+}
+class ArchiveOutputSettings {
+    Extension: String?
+    NameModifier: String?
+    ContainerSettings: ArchiveContainerSettings?
+}
+class ArchiveContainerSettings {
+    M2tsSettings: M2tsSettings?
+    RawSettings: Mapping?
+}
+class OutputGroupSettings {
+    HlsGroupSettings: HlsGroupSettings?
+    FrameCaptureGroupSettings: FrameCaptureGroupSettings?
+    MultiplexGroupSettings: Mapping?
+    ArchiveGroupSettings: ArchiveGroupSettings?
+    MediaPackageGroupSettings: MediaPackageGroupSettings?
+    UdpGroupSettings: UdpGroupSettings?
+    MsSmoothGroupSettings: MsSmoothGroupSettings?
+    RtmpGroupSettings: RtmpGroupSettings?
+}
+class HlsGroupSettings {
+    SegmentationMode: String?
+    Destination: OutputLocationRef?
+    CodecSpecification: String?
+    IvSource: String?
+    TimedMetadataId3Frame: String?
+    KeyFormatVersions: String?
+    RedundantManifest: String?
+    OutputSelection: String?
+    KeyProviderSettings: KeyProviderSettings?
+    StreamInfResolution: String?
+    CaptionLanguageMappings: Listing<CaptionLanguageMapping>?
+    HlsId3SegmentTagging: String?
+    IFrameOnlyPlaylists: String?
+    CaptionLanguageSetting: String?
+    KeepSegments: Int?
+    ConstantIv: String?
+    DirectoryStructure: String?
+    EncryptionType: String?
+    AdMarkers: Listing<String>?
+    HlsCdnSettings: HlsCdnSettings?
+    IndexNSegments: Int?
+    DiscontinuityTags: String?
+    InputLossAction: String?
+    Mode: String?
+    TsFileMode: String?
+    BaseUrlManifest1: String?
+    ClientCache: String?
+    MinSegmentLength: Int?
+    KeyFormat: String?
+    IvInManifest: String?
+    BaseUrlContent1: String?
+    ProgramDateTimeClock: String?
+    ManifestCompression: String?
+    ManifestDurationFormat: String?
+    TimedMetadataId3Period: Int?
+    IncompleteSegmentBehavior: String?
+    ProgramDateTimePeriod: Int?
+    SegmentLength: Int?
+    TimestampDeltaMilliseconds: Int?
+    ProgramDateTime: String?
+    SegmentsPerSubdirectory: Int?
+    BaseUrlContent: String?
+    BaseUrlManifest: String?
+}
+class KeyProviderSettings {
+    StaticKeySettings: StaticKeySettings?
+}
+class StaticKeySettings {
+    KeyProviderServer: InputLocation?
+    StaticKeyValue: String?
+}
+class CaptionLanguageMapping {
+    LanguageCode: String?
+    LanguageDescription: String?
+    CaptionChannel: Int?
+}
+class HlsCdnSettings {
+    HlsWebdavSettings: HlsWebdavSettings?
+    HlsS3Settings: HlsS3Settings?
+    HlsBasicPutSettings: HlsBasicPutSettings?
+    HlsMediaStoreSettings: HlsMediaStoreSettings?
+    HlsAkamaiSettings: HlsAkamaiSettings?
+}
+class HlsWebdavSettings {
+    FilecacheDuration: Int?
+    RestartDelay: Int?
+    NumRetries: Int?
+    ConnectionRetryInterval: Int?
+    HttpTransferMode: String?
+}
+class HlsS3Settings {
+    CannedAcl: String?
+}
+class HlsBasicPutSettings {
+    FilecacheDuration: Int?
+    RestartDelay: Int?
+    NumRetries: Int?
+    ConnectionRetryInterval: Int?
+}
+class HlsMediaStoreSettings {
+    FilecacheDuration: Int?
+    MediaStoreStorageClass: String?
+    RestartDelay: Int?
+    NumRetries: Int?
+    ConnectionRetryInterval: Int?
+}
+class HlsAkamaiSettings {
+    Salt: String?
+    FilecacheDuration: Int?
+    NumRetries: Int?
+    Token: String?
+    RestartDelay: Int?
+    ConnectionRetryInterval: Int?
+    HttpTransferMode: String?
+}
+class FrameCaptureGroupSettings {
+    FrameCaptureCdnSettings: FrameCaptureCdnSettings?
+    Destination: OutputLocationRef?
+}
+class FrameCaptureCdnSettings {
+    FrameCaptureS3Settings: FrameCaptureS3Settings?
+}
+class FrameCaptureS3Settings {
+    CannedAcl: String?
+}
+class ArchiveGroupSettings {
+    Destination: OutputLocationRef?
+    ArchiveCdnSettings: ArchiveCdnSettings?
+    RolloverInterval: Int?
+}
+class ArchiveCdnSettings {
+    ArchiveS3Settings: ArchiveS3Settings?
+}
+class ArchiveS3Settings {
+    CannedAcl: String?
+}
+class MediaPackageGroupSettings {
+    Destination: OutputLocationRef?
+}
+class UdpGroupSettings {
+    TimedMetadataId3Frame: String?
+    TimedMetadataId3Period: Int?
+    InputLossAction: String?
+}
+class MsSmoothGroupSettings {
+    SegmentationMode: String?
+    Destination: OutputLocationRef?
+    EventStopBehavior: String?
+    FilecacheDuration: Int?
+    CertificateMode: String?
+    AcquisitionPointId: String?
+    StreamManifestBehavior: String?
+    InputLossAction: String?
+    FragmentLength: Int?
+    RestartDelay: Int?
+    SparseTrackType: String?
+    EventIdMode: String?
+    TimestampOffsetMode: String?
+    AudioOnlyTimecodeControl: String?
+    NumRetries: Int?
+    TimestampOffset: String?
+    EventId: String?
+    SendDelayMs: Int?
+    ConnectionRetryInterval: Int?
+}
+class RtmpGroupSettings {
+    AuthenticationScheme: String?
+    CacheLength: Int?
+    AdMarkers: Listing<String>?
+    IncludeFillerNalUnits: String?
+    InputLossAction: String?
+    RestartDelay: Int?
+    CaptionData: String?
+    CacheFullBehavior: String?
+}
+class AvailBlanking {
+    State: String?
+    AvailBlankingImage: InputLocation?
+}
+class NielsenConfiguration {
+    DistributorId: String?
+    NielsenPcmToId3Tagging: String?
+}
+class BlackoutSlate {
+    NetworkId: String?
+    NetworkEndBlackoutImage: InputLocation?
+    NetworkEndBlackout: String?
+    State: String?
+    BlackoutSlateImage: InputLocation?
+}
+class TimecodeConfig {
+    SyncThreshold: Int?
+    Source: String?
+}
+class CdiInputSpecification {
+    Resolution: String?
+}

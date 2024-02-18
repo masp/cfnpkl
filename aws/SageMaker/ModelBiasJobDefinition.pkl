@@ -1,0 +1,221 @@
+/// Resource Type definition for AWS::SageMaker::ModelBiasJobDefinition
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::ModelBiasJobDefinition"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of job definition.
+    JobDefinitionArn: String(length <= 256 && length >= 1)?
+    JobDefinitionName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*$"#)))?
+    ModelBiasBaselineConfig: ModelBiasBaselineConfig?
+    ModelBiasAppSpecification: ModelBiasAppSpecification?
+    ModelBiasJobInput: ModelBiasJobInput?
+    ModelBiasJobOutputConfig: MonitoringOutputConfig?
+    JobResources: MonitoringResources?
+    NetworkConfig: NetworkConfig?
+    EndpointName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*"#)))?
+    /// The Amazon Resource Name (ARN) of an IAM role that Amazon SageMaker
+    /// can assume to perform tasks on your behalf.
+    RoleArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:aws[a-z\-]*:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    StoppingCondition: StoppingCondition?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The time at which the job definition was created.
+    CreationTime: String?
+}
+/// Baseline configuration used to validate that the data conforms to the
+/// specified constraints and statistics.
+class ModelBiasBaselineConfig {
+    BaseliningJobName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*$"#)))?
+    ConstraintsResource: ConstraintsResource?
+}
+/// The baseline constraints resource for a monitoring job.
+class ConstraintsResource {
+    /// The Amazon S3 URI for baseline constraint file in Amazon S3 that the
+    /// current monitoring job should validated against.
+    S3Uri: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))?
+}
+/// Container image configuration object for the monitoring job.
+class ModelBiasAppSpecification {
+    /// The container image to be run by the monitoring job.
+    ImageUri: String(length <= 255 && matches(Regex(#".*"#)))
+    /// The S3 URI to an analysis configuration file
+    ConfigUri: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))
+    /// Sets the environment variables in the Docker container
+    Environment: Mapping?
+}
+/// The inputs for a monitoring job.
+class ModelBiasJobInput {
+    EndpointInput: EndpointInput?
+    BatchTransformInput: BatchTransformInput?
+    GroundTruthS3Input: MonitoringGroundTruthS3Input
+}
+/// The endpoint for a monitoring job.
+class EndpointInput {
+    EndpointName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*"#)))
+    /// Path to the filesystem where the endpoint data is available to the
+    /// container.
+    LocalPath: String(length <= 256 && matches(Regex(#".*"#)))
+    /// Whether input data distributed in Amazon S3 is fully replicated or
+    /// sharded by an S3 key. Defauts to FullyReplicated
+    S3DataDistributionType: "FullyReplicated" | "ShardedByS3Key" | *Null
+    /// Whether the Pipe or File is used as the input mode for transfering
+    /// data for the monitoring job. Pipe mode is recommended for large
+    /// datasets. File mode is useful for small files that fit in memory.
+    /// Defaults to File.
+    S3InputMode: "Pipe" | "File" | *Null
+    /// Monitoring start time offset, e.g. -PT1H
+    StartTimeOffset: String(length <= 15 && length >= 1 && matches(Regex(#"^.?P.*"#)))?
+    /// Monitoring end time offset, e.g. PT0H
+    EndTimeOffset: String(length <= 15 && length >= 1 && matches(Regex(#"^.?P.*"#)))?
+    /// JSONpath to locate features in JSONlines dataset
+    FeaturesAttribute: String(length <= 256)?
+    /// Index or JSONpath to locate predicted label(s)
+    InferenceAttribute: String(length <= 256)?
+    /// Index or JSONpath to locate probabilities
+    ProbabilityAttribute: String(length <= 256)?
+    ProbabilityThresholdAttribute: Float?
+}
+/// The batch transform input for a monitoring job.
+class BatchTransformInput {
+    /// A URI that identifies the Amazon S3 storage location where Batch
+    /// Transform Job captures data.
+    DataCapturedDestinationS3Uri: String(length <= 512 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))
+    DatasetFormat: DatasetFormat
+    /// Path to the filesystem where the endpoint data is available to the
+    /// container.
+    LocalPath: String(length <= 256 && matches(Regex(#".*"#)))
+    /// Whether input data distributed in Amazon S3 is fully replicated or
+    /// sharded by an S3 key. Defauts to FullyReplicated
+    S3DataDistributionType: "FullyReplicated" | "ShardedByS3Key" | *Null
+    /// Whether the Pipe or File is used as the input mode for transfering
+    /// data for the monitoring job. Pipe mode is recommended for large
+    /// datasets. File mode is useful for small files that fit in memory.
+    /// Defaults to File.
+    S3InputMode: "Pipe" | "File" | *Null
+    /// Monitoring start time offset, e.g. -PT1H
+    StartTimeOffset: String(length <= 15 && length >= 1 && matches(Regex(#"^.?P.*"#)))?
+    /// Monitoring end time offset, e.g. PT0H
+    EndTimeOffset: String(length <= 15 && length >= 1 && matches(Regex(#"^.?P.*"#)))?
+    /// JSONpath to locate features in JSONlines dataset
+    FeaturesAttribute: String(length <= 256)?
+    /// Index or JSONpath to locate predicted label(s)
+    InferenceAttribute: String(length <= 256)?
+    /// Index or JSONpath to locate probabilities
+    ProbabilityAttribute: String(length <= 256)?
+    ProbabilityThresholdAttribute: Float?
+}
+/// The dataset format of the data to monitor
+class DatasetFormat {
+    Csv: Csv?
+    Json: Json?
+    Parquet: Boolean?
+}
+/// The CSV format
+class Csv {
+    /// A boolean flag indicating if given CSV has header
+    Header: Boolean?
+}
+/// The Json format
+class Json {
+    /// A boolean flag indicating if it is JSON line format
+    Line: Boolean?
+}
+/// Ground truth input provided in S3
+class MonitoringGroundTruthS3Input {
+    /// A URI that identifies the Amazon S3 storage location where Amazon
+    /// SageMaker saves the results of a monitoring job.
+    S3Uri: String(length <= 512 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))
+}
+/// The output configuration for monitoring jobs.
+class MonitoringOutputConfig {
+    /// The AWS Key Management Service (AWS KMS) key that Amazon SageMaker
+    /// uses to encrypt the model artifacts at rest using Amazon S3 server-
+    /// side encryption.
+    KmsKeyId: String(length <= 2048 && matches(Regex(#".*"#)))?
+    /// Monitoring outputs for monitoring jobs. This is where the output of
+    /// the periodic monitoring jobs is uploaded.
+    MonitoringOutputs: Listing<MonitoringOutput>
+}
+/// The output object for a monitoring job.
+class MonitoringOutput {
+    S3Output: S3Output
+}
+/// Information about where and how to store the results of a monitoring
+/// job.
+class S3Output {
+    /// The local path to the Amazon S3 storage location where Amazon
+    /// SageMaker saves the results of a monitoring job. LocalPath is an
+    /// absolute path for the output data.
+    LocalPath: String(length <= 256 && matches(Regex(#".*"#)))
+    /// Whether to upload the results of the monitoring job continuously or
+    /// after the job completes.
+    S3UploadMode: "Continuous" | "EndOfJob" | *Null
+    /// A URI that identifies the Amazon S3 storage location where Amazon
+    /// SageMaker saves the results of a monitoring job.
+    S3Uri: String(length <= 512 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))
+}
+/// Identifies the resources to deploy for a monitoring job.
+class MonitoringResources {
+    ClusterConfig: ClusterConfig
+}
+/// Configuration for the cluster used to run model monitoring jobs.
+class ClusterConfig {
+    /// The number of ML compute instances to use in the model monitoring job.
+    /// For distributed processing jobs, specify a value greater than 1. The
+    /// default value is 1.
+    InstanceCount: Int
+    /// The ML compute instance type for the processing job.
+    InstanceType: String
+    /// The AWS Key Management Service (AWS KMS) key that Amazon SageMaker
+    /// uses to encrypt data on the storage volume attached to the ML compute
+    /// instance(s) that run the model monitoring job.
+    VolumeKmsKeyId: String?
+    /// The size of the ML storage volume, in gigabytes, that you want to
+    /// provision. You must specify sufficient ML storage for your scenario.
+    VolumeSizeInGB: Int
+}
+/// Networking options for a job, such as network traffic encryption
+/// between containers, whether to allow inbound and outbound network
+/// calls to and from containers, and the VPC subnets and security groups
+/// to use for VPC-enabled jobs.
+class NetworkConfig {
+    /// Whether to encrypt all communications between distributed processing
+    /// jobs. Choose True to encrypt communications. Encryption provides
+    /// greater security for distributed processing jobs, but the processing
+    /// might take longer.
+    EnableInterContainerTrafficEncryption: Boolean?
+    /// Whether to allow inbound and outbound network calls to and from the
+    /// containers used for the processing job.
+    EnableNetworkIsolation: Boolean?
+    VpcConfig: VpcConfig?
+}
+/// Specifies a VPC that your training jobs and hosted models have access
+/// to. Control access to and from your training and model containers by
+/// configuring the VPC.
+class VpcConfig {
+    /// The VPC security group IDs, in the form sg-xxxxxxxx. Specify the
+    /// security groups for the VPC that is specified in the Subnets field.
+    SecurityGroupIds: Listing<String(length <= 32 && matches(Regex(#"[-0-9a-zA-Z]+"#)))>
+    /// The ID of the subnets in the VPC to which you want to connect to your
+    /// monitoring jobs.
+    Subnets: Listing<String(length <= 32 && matches(Regex(#"[-0-9a-zA-Z]+"#)))>
+}
+/// Specifies a time limit for how long the monitoring job is allowed to
+/// run.
+class StoppingCondition {
+    /// The maximum runtime allowed in seconds.
+    MaxRuntimeInSeconds: Int
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+}

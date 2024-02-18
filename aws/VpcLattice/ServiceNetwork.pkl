@@ -1,0 +1,18 @@
+/// A service network is a logical boundary for a collection of services.
+/// You can associate services and VPCs with a service network.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::VpcLattice::ServiceNetwork"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:servicenetwork/sn-[0-9a-z]{17}$"#)))?
+    CreatedAt: String?
+    Id: String(length <= 20 && length >= 20 && matches(Regex(#"^sn-[0-9a-z]{17}$"#)))?
+    LastUpdatedAt: String?
+    Name: String(length <= 63 && length >= 3 && matches(Regex(#"^(?!servicenetwork-)(?![-])(?!.*[-]$)(?!.*[-]{2})[a-z0-9-]+$"#)))?
+    AuthType: "NONE" | "AWS_IAM" | *Null
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

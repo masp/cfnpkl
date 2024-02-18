@@ -1,0 +1,55 @@
+/// AWS::NetworkManager::CoreNetwork Resource Type Definition.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkManager::CoreNetwork"
+Properties: Props?
+class Props {
+    /// The ID of the global network that your core network is a part of.
+    GlobalNetworkId: String?
+    /// The Id of core network
+    CoreNetworkId: String?
+    /// The ARN (Amazon resource name) of core network
+    CoreNetworkArn: String?
+    /// Live policy document for the core network, you must provide
+    /// PolicyDocument in Json Format
+    PolicyDocument: Mapping?
+    /// The description of core network
+    Description: String?
+    /// The creation time of core network
+    CreatedAt: String?
+    /// The state of core network
+    State: String?
+    /// The segments within a core network.
+    Segments: Listing<CoreNetworkSegment>?
+    /// The edges within a core network.
+    Edges: Listing<CoreNetworkEdge>?
+    /// Owner of the core network
+    OwnerAccount: String?
+    /// The tags for the global network.
+    Tags: Listing<Tag>?
+}
+class CoreNetworkSegment {
+    /// Name of segment
+    Name: String?
+    EdgeLocations: Listing<String>?
+    SharedSegments: Listing<String>?
+}
+class CoreNetworkEdge {
+    /// The Region where a core network edge is located.
+    EdgeLocation: String?
+    /// The ASN of a core network edge.
+    Asn: Float?
+    InsideCidrBlocks: Listing<String>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String
+}

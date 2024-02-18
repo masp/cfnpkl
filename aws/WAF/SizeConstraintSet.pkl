@@ -1,0 +1,19 @@
+/// Resource Type definition for AWS::WAF::SizeConstraintSet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAF::SizeConstraintSet"
+Properties: Props?
+class Props {
+    Id: String?
+    Name: String?
+    SizeConstraints: Listing<SizeConstraint>?
+}
+class SizeConstraint {
+    ComparisonOperator: String
+    FieldToMatch: FieldToMatch
+    Size: Int
+    TextTransformation: String
+}
+class FieldToMatch {
+    Data: String?
+    Type: String
+}

@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::IdentityStore::Group
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IdentityStore::Group"
+Properties: Props?
+class Props {
+    /// A string containing the description of the group.
+    Description: String(length <= 1024 && length >= 1 && matches(Regex(#"^[\p{L}\p{M}\p{S}\p{N}\p{P}\t\n\r  　]+$"#)))?
+    /// A string containing the name of the group. This value is commonly
+    /// displayed when the group is referenced.
+    DisplayName: String(length <= 1024 && length >= 1 && matches(Regex(#"^[\p{L}\p{M}\p{S}\p{N}\p{P}\t\n\r  ]+$"#)))?
+    /// The unique identifier for a group in the identity store.
+    GroupId: String(length <= 47 && length >= 1 && matches(Regex(#"^([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"#)))?
+    /// The globally unique identifier for the identity store.
+    IdentityStoreId: String(length <= 36 && length >= 1 && matches(Regex(#"^d-[0-9a-f]{10}$|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"#)))?
+}

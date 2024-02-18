@@ -1,0 +1,45 @@
+/// Resource Type definition for AWS::ManagedBlockchain::Member
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ManagedBlockchain::Member"
+Properties: Props?
+class Props {
+    MemberId: String?
+    NetworkConfiguration: NetworkConfiguration?
+    MemberConfiguration: MemberConfiguration?
+    NetworkId: String?
+    InvitationId: String?
+}
+class NetworkConfiguration {
+    Description: String?
+    FrameworkVersion: String
+    VotingPolicy: VotingPolicy
+    Framework: String
+    Name: String
+    NetworkFrameworkConfiguration: NetworkFrameworkConfiguration?
+}
+class VotingPolicy {
+    ApprovalThresholdPolicy: ApprovalThresholdPolicy?
+}
+class ApprovalThresholdPolicy {
+    ThresholdComparator: String?
+    ThresholdPercentage: Int?
+    ProposalDurationInHours: Int?
+}
+class NetworkFrameworkConfiguration {
+    NetworkFabricConfiguration: NetworkFabricConfiguration?
+}
+class NetworkFabricConfiguration {
+    Edition: String
+}
+class MemberConfiguration {
+    Description: String?
+    MemberFrameworkConfiguration: MemberFrameworkConfiguration?
+    Name: String
+}
+class MemberFrameworkConfiguration {
+    MemberFabricConfiguration: MemberFabricConfiguration?
+}
+class MemberFabricConfiguration {
+    AdminUsername: String
+    AdminPassword: String
+}

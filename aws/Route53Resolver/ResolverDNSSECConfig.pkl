@@ -1,0 +1,15 @@
+/// Resource schema for AWS::Route53Resolver::ResolverDNSSECConfig.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53Resolver::ResolverDNSSECConfig"
+Properties: Props?
+class Props {
+    /// Id
+    Id: String(length <= 64 && length >= 1)?
+    /// AccountId
+    OwnerId: String(length <= 32 && length >= 12)?
+    /// ResourceId
+    ResourceId: String(length <= 64 && length >= 1)?
+    /// ResolverDNSSECValidationStatus, possible values are ENABLING, ENABLED,
+    /// DISABLING AND DISABLED.
+    ValidationStatus: "ENABLING" | "ENABLED" | "DISABLING" | "DISABLED" | *Null
+}

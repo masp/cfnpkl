@@ -1,0 +1,152 @@
+/// Resource Type definition for AWS::EC2::EC2Fleet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::EC2Fleet"
+Properties: Props?
+class Props {
+    Context: String?
+    TargetCapacitySpecification: TargetCapacitySpecificationRequest?
+    OnDemandOptions: OnDemandOptionsRequest?
+    ExcessCapacityTerminationPolicy: "termination" | "no-termination" | *Null
+    TagSpecifications: Listing<TagSpecification>?
+    SpotOptions: SpotOptionsRequest?
+    LaunchTemplateConfigs: Listing<FleetLaunchTemplateConfigRequest>?
+    TerminateInstancesWithExpiration: Boolean?
+    ValidUntil: String?
+    Type: "maintain" | "request" | "instant" | *Null
+    FleetId: String?
+    ValidFrom: String?
+    ReplaceUnhealthyInstances: Boolean?
+}
+class TargetCapacitySpecificationRequest {
+    DefaultTargetCapacityType: "on-demand" | "spot" | *Null
+    TotalTargetCapacity: Int
+    OnDemandTargetCapacity: Int?
+    SpotTargetCapacity: Int?
+    TargetCapacityUnitType: "vcpu" | "memory-mib" | "units" | *Null
+}
+class OnDemandOptionsRequest {
+    SingleAvailabilityZone: Boolean?
+    AllocationStrategy: String?
+    SingleInstanceType: Boolean?
+    MinTargetCapacity: Int?
+    MaxTotalPrice: String?
+    CapacityReservationOptions: CapacityReservationOptionsRequest?
+}
+class CapacityReservationOptionsRequest {
+    UsageStrategy: "use-capacity-reservations-first" | *Null
+}
+class TagSpecification {
+    ResourceType: "client-vpn-endpoint" | "customer-gateway" | "dedicated-host" | "dhcp-options" | "egress-only-internet-gateway" | "elastic-gpu" | "elastic-ip" | "export-image-task" | "export-instance-task" | "fleet" | "fpga-image" | "host-reservation" | "image" | "import-image-task" | "import-snapshot-task" | "instance" | "internet-gateway" | "key-pair" | "launch-template" | "local-gateway-route-table-vpc-association" | "natgateway" | "network-acl" | "network-insights-analysis" | "network-insights-path" | "network-interface" | "placement-group" | "reserved-instances" | "route-table" | "security-group" | "snapshot" | "spot-fleet-request" | "spot-instances-request" | "subnet" | "traffic-mirror-filter" | "traffic-mirror-session" | "traffic-mirror-target" | "transit-gateway" | "transit-gateway-attachment" | "transit-gateway-connect-peer" | "transit-gateway-multicast-domain" | "transit-gateway-route-table" | "volume" | "vpc" | "vpc-flow-log" | "vpc-peering-connection" | "vpn-connection" | "vpn-gateway" | *Null
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class SpotOptionsRequest {
+    SingleAvailabilityZone: Boolean?
+    AllocationStrategy: "lowest-price" | "lowestPrice" | "diversified" | "capacityOptimized" | "capacity-optimized" | "capacityOptimizedPrioritized" | "capacity-optimized-prioritized" | "priceCapacityOptimized" | "price-capacity-optimized" | *Null
+    SingleInstanceType: Boolean?
+    MinTargetCapacity: Int?
+    MaxTotalPrice: String?
+    MaintenanceStrategies: MaintenanceStrategies?
+    InstanceInterruptionBehavior: "hibernate" | "stop" | "terminate" | *Null
+    InstancePoolsToUseCount: Int?
+}
+class MaintenanceStrategies {
+    CapacityRebalance: CapacityRebalance?
+}
+class CapacityRebalance {
+    TerminationDelay: Int?
+    ReplacementStrategy: "launch" | "launch-before-terminate" | *Null
+}
+class FleetLaunchTemplateConfigRequest {
+    LaunchTemplateSpecification: FleetLaunchTemplateSpecificationRequest?
+    Overrides: Listing<FleetLaunchTemplateOverridesRequest>?
+}
+class FleetLaunchTemplateSpecificationRequest {
+    LaunchTemplateName: String(length <= 128 && length >= 3 && matches(Regex(#"[a-zA-Z0-9\(\)\.\-/_]+"#)))?
+    Version: String
+    LaunchTemplateId: String?
+}
+class FleetLaunchTemplateOverridesRequest {
+    WeightedCapacity: Float?
+    Placement: Placement?
+    Priority: Float?
+    AvailabilityZone: String?
+    SubnetId: String?
+    InstanceRequirements: InstanceRequirementsRequest?
+    InstanceType: String?
+    MaxPrice: String?
+}
+class Placement {
+    GroupName: String?
+    Tenancy: String?
+    SpreadDomain: String?
+    PartitionNumber: Int?
+    AvailabilityZone: String?
+    Affinity: String?
+    HostId: String?
+    HostResourceGroupArn: String?
+}
+class InstanceRequirementsRequest {
+    LocalStorageTypes: Listing<"hdd" | "ssd">?
+    InstanceGenerations: Listing<"current" | "previous">?
+    NetworkInterfaceCount: NetworkInterfaceCountRequest?
+    MemoryGiBPerVCpu: MemoryGiBPerVCpuRequest?
+    AcceleratorTypes: Listing<"gpu" | "fpga" | "inference">?
+    VCpuCount: VCpuCountRangeRequest?
+    ExcludedInstanceTypes: Listing<String(length <= 30 && length >= 1 && matches(Regex(#"[a-zA-Z0-9\.\*]+"#)))>?
+    AcceleratorManufacturers: Listing<"amazon-web-services" | "amd" | "habana" | "nvidia" | "xilinx">?
+    AllowedInstanceTypes: Listing<String(length <= 30 && length >= 1 && matches(Regex(#"[a-zA-Z0-9\.\*]+"#)))>?
+    LocalStorage: "included" | "required" | "excluded" | *Null
+    CpuManufacturers: Listing<"intel" | "amd" | "amazon-web-services">?
+    NetworkBandwidthGbps: NetworkBandwidthGbpsRequest?
+    AcceleratorCount: AcceleratorCountRequest?
+    BareMetal: "included" | "required" | "excluded" | *Null
+    RequireHibernateSupport: Boolean?
+    SpotMaxPricePercentageOverLowestPrice: Int?
+    BaselineEbsBandwidthMbps: BaselineEbsBandwidthMbpsRequest?
+    OnDemandMaxPricePercentageOverLowestPrice: Int?
+    AcceleratorNames: Listing<"a10g" | "a100" | "h100" | "inferentia" | "k520" | "k80" | "m60" | "radeon-pro-v520" | "t4" | "t4g" | "vu9p" | "v100">?
+    AcceleratorTotalMemoryMiB: AcceleratorTotalMemoryMiBRequest?
+    BurstablePerformance: "included" | "required" | "excluded" | *Null
+    MemoryMiB: MemoryMiBRequest?
+    TotalLocalStorageGB: TotalLocalStorageGBRequest?
+}
+class NetworkInterfaceCountRequest {
+    Min: Int?
+    Max: Int?
+}
+class MemoryGiBPerVCpuRequest {
+    Min: Float?
+    Max: Float?
+}
+class VCpuCountRangeRequest {
+    Min: Int?
+    Max: Int?
+}
+class NetworkBandwidthGbpsRequest {
+    Min: Float?
+    Max: Float?
+}
+class AcceleratorCountRequest {
+    Min: Int?
+    Max: Int?
+}
+class BaselineEbsBandwidthMbpsRequest {
+    Min: Int?
+    Max: Int?
+}
+class AcceleratorTotalMemoryMiBRequest {
+    Min: Int?
+    Max: Int?
+}
+class MemoryMiBRequest {
+    Min: Int?
+    Max: Int?
+}
+class TotalLocalStorageGBRequest {
+    Min: Float?
+    Max: Float?
+}

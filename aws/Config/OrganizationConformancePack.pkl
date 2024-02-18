@@ -1,0 +1,28 @@
+/// Resource schema for AWS::Config::OrganizationConformancePack.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Config::OrganizationConformancePack"
+Properties: Props?
+class Props {
+    /// The name of the organization conformance pack.
+    OrganizationConformancePackName: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z][-a-zA-Z0-9]*"#)))?
+    /// Location of file containing the template body.
+    TemplateS3Uri: String(length <= 1024 && length >= 1 && matches(Regex(#"s3://.*"#)))?
+    /// A string containing full conformance pack template body.
+    TemplateBody: String(length <= 51200 && length >= 1)?
+    /// AWS Config stores intermediate files while processing conformance pack
+    /// template.
+    DeliveryS3Bucket: String(length <= 63 && length >= 0)?
+    /// The prefix for the delivery S3 bucket.
+    DeliveryS3KeyPrefix: String(length <= 1024 && length >= 0)?
+    /// A list of ConformancePackInputParameter objects.
+    ConformancePackInputParameters: Listing<ConformancePackInputParameter>?
+    /// A list of AWS accounts to be excluded from an organization conformance
+    /// pack while deploying a conformance pack.
+    ExcludedAccounts: Listing<String>?
+}
+/// Input parameters in the form of key-value pairs for the conformance
+/// pack.
+class ConformancePackInputParameter {
+    ParameterName: String(length <= 255 && length >= 0)
+    ParameterValue: String(length <= 4096 && length >= 0)
+}

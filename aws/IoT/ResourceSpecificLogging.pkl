@@ -1,0 +1,18 @@
+/// Resource-specific logging allows you to specify a logging level for a
+/// specific thing group.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::ResourceSpecificLogging"
+Properties: Props?
+class Props {
+    /// The target type. Value must be THING_GROUP, CLIENT_ID, SOURCE_IP,
+    /// PRINCIPAL_ID, or EVENT_TYPE.
+    TargetType: "THING_GROUP" | "CLIENT_ID" | "SOURCE_IP" | "PRINCIPAL_ID" | "EVENT_TYPE" | *Null
+    /// The target name.
+    TargetName: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9.:\s_\-]+"#)))?
+    /// The log level for a specific target. Valid values are: ERROR, WARN,
+    /// INFO, DEBUG, or DISABLED.
+    LogLevel: "ERROR" | "WARN" | "INFO" | "DEBUG" | "DISABLED" | *Null
+    /// Unique Id for a Target (TargetType:TargetName), this will be
+    /// internally built to serve as primary identifier for a log target.
+    TargetId: String(length <= 140 && length >= 13 && matches(Regex(#"[a-zA-Z0-9.:\s_\-]+"#)))?
+}

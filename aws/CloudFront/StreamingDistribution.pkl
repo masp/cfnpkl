@@ -1,0 +1,36 @@
+/// Resource Type definition for AWS::CloudFront::StreamingDistribution
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::StreamingDistribution"
+Properties: Props?
+class Props {
+    Id: String?
+    DomainName: String?
+    StreamingDistributionConfig: StreamingDistributionConfig?
+    Tags: Listing<Tag>?
+}
+class StreamingDistributionConfig {
+    Logging: Logging?
+    Comment: String
+    PriceClass: String?
+    S3Origin: S3Origin
+    Enabled: Boolean
+    Aliases: Listing<String>?
+    TrustedSigners: TrustedSigners
+}
+class Logging {
+    Bucket: String
+    Enabled: Boolean
+    Prefix: String
+}
+class S3Origin {
+    DomainName: String
+    OriginAccessIdentity: String
+}
+class TrustedSigners {
+    Enabled: Boolean
+    AwsAccountNumbers: Listing<String>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

@@ -1,0 +1,9 @@
+/// Resource Type definition for AWS::IAM::UserToGroupAddition
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IAM::UserToGroupAddition"
+Properties: Props?
+class Props {
+    Id: String?
+    GroupName: String?
+    Users: Listing<String>?
+}

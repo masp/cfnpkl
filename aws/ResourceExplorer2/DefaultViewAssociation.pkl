@@ -1,0 +1,11 @@
+/// Definition of AWS::ResourceExplorer2::DefaultViewAssociation Resource
+/// Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ResourceExplorer2::DefaultViewAssociation"
+Properties: Props?
+class Props {
+    ViewArn: String?
+    /// The AWS principal that the default view is associated with, used as
+    /// the unique identifier for this resource.
+    AssociatedAwsPrincipal: String(matches(Regex(#"^[0-9]{12}$"#)))?
+}

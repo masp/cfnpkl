@@ -1,0 +1,27 @@
+/// Resource Type definition for
+/// AWS::ElasticLoadBalancingV2::TrustStoreRevocation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElasticLoadBalancingV2::TrustStoreRevocation"
+Properties: Props?
+class Props {
+    /// The attributes required to create a trust store revocation.
+    RevocationContents: Listing<RevocationContent>?
+    /// The Amazon Resource Name (ARN) of the trust store.
+    TrustStoreArn: String?
+    /// The ID associated with the revocation.
+    RevocationId: Int?
+    /// The data associated with a trust store revocation
+    TrustStoreRevocations: Listing<TrustStoreRevocation>?
+}
+class RevocationContent {
+    S3Bucket: String?
+    S3Key: String?
+    S3ObjectVersion: String?
+    RevocationType: String?
+}
+class TrustStoreRevocation {
+    TrustStoreArn: String?
+    RevocationId: String?
+    RevocationType: String?
+    NumberOfRevokedEntries: Int?
+}

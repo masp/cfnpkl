@@ -1,0 +1,40 @@
+/// Resource Type definition for AWS::Lightsail::Alarm
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lightsail::Alarm"
+Properties: Props?
+class Props {
+    /// The name for the alarm. Specify the name of an existing alarm to
+    /// update, and overwrite the previous configuration of the alarm.
+    AlarmName: String(matches(Regex(#"\w[\w\-]*\w"#)))?
+    /// The validation status of the SSL/TLS certificate.
+    MonitoredResourceName: String?
+    /// The name of the metric to associate with the alarm.
+    MetricName: String?
+    /// The arithmetic operation to use when comparing the specified statistic
+    /// to the threshold. The specified statistic value is used as the first
+    /// operand.
+    ComparisonOperator: String?
+    /// The contact protocols to use for the alarm, such as Email, SMS (text
+    /// messaging), or both.
+    ContactProtocols: Listing<String>?
+    AlarmArn: String?
+    /// The number of data points that must be not within the specified
+    /// threshold to trigger the alarm. If you are setting an "M out of N"
+    /// alarm, this value (datapointsToAlarm) is the M.
+    DatapointsToAlarm: Int?
+    /// The number of most recent periods over which data is compared to the
+    /// specified threshold. If you are setting an "M out of N" alarm, this
+    /// value (evaluationPeriods) is the N.
+    EvaluationPeriods: Int?
+    /// Indicates whether the alarm is enabled. Notifications are enabled by
+    /// default if you don't specify this parameter.
+    NotificationEnabled: Boolean?
+    /// The alarm states that trigger a notification.
+    NotificationTriggers: Listing<String>?
+    /// The value against which the specified statistic is compared.
+    Threshold: Float?
+    /// Sets how this alarm will handle missing data points.
+    TreatMissingData: String?
+    /// The current state of the alarm.
+    State: String?
+}

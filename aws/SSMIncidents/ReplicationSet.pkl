@@ -1,0 +1,27 @@
+/// Resource type definition for AWS::SSMIncidents::ReplicationSet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSMIncidents::ReplicationSet"
+Properties: Props?
+class Props {
+    /// The ARN of the ReplicationSet.
+    Arn: String(length <= 1000 && matches(Regex(#"^arn:aws(-(cn|us-gov|iso(-b)?))?:[a-z-]+:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))?
+    /// The ReplicationSet configuration.
+    Regions: Listing<ReplicationRegion>?
+    DeletionProtected: Boolean?
+    /// The tags to apply to the replication set.
+    Tags: Listing<Tag>?
+}
+/// The ReplicationSet regional configuration.
+class ReplicationRegion {
+    RegionName: String(length <= 20)?
+    RegionConfiguration: RegionConfiguration?
+}
+/// The ReplicationSet regional configuration.
+class RegionConfiguration {
+    SseKmsKeyId: String(length <= 1000 && matches(Regex(#"^arn:aws(-(cn|us-gov|iso(-b)?))?:[a-z-]+:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))
+}
+/// A key-value pair to tag a resource.
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z+-=._:/]+$"#)))
+    Value: String(length <= 256 && length >= 1)
+}

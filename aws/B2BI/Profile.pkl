@@ -1,0 +1,21 @@
+/// Definition of AWS::B2BI::Profile Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::B2BI::Profile"
+Properties: Props?
+class Props {
+    BusinessName: String(length <= 254 && length >= 1)?
+    CreatedAt: String?
+    Email: String(length <= 254 && length >= 5 && matches(Regex(#"^[\w\.\-]+@[\w\.\-]+$"#)))?
+    LogGroupName: String(length <= 512 && length >= 1)?
+    Logging: "ENABLED" | "DISABLED" | *Null
+    ModifiedAt: String?
+    Name: String(length <= 254 && length >= 1)?
+    Phone: String(length <= 22 && length >= 7 && matches(Regex(#"^\+?([0-9 \t\-()\/]{7,})(?:\s*(?:#|x\.?|ext\.?|extension) \t*(\d+))?$"#)))?
+    ProfileArn: String(length <= 255 && length >= 1)?
+    ProfileId: String(length <= 64 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

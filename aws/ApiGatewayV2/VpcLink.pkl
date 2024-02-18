@@ -1,0 +1,12 @@
+/// Resource Type definition for AWS::ApiGatewayV2::VpcLink
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGatewayV2::VpcLink"
+Properties: Props?
+class Props {
+    VpcLinkId: String?
+    SubnetIds: Listing<String>?
+    SecurityGroupIds: Listing<String>?
+    /// This resource type use map for Tags, suggest to use List of Tag
+    Tags: Mapping?
+    Name: String?
+}

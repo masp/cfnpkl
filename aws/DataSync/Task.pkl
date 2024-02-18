@@ -1,0 +1,197 @@
+/// Resource schema for AWS::DataSync::Task.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataSync::Task"
+Properties: Props?
+class Props {
+    Excludes: Listing<FilterRule>?
+    Includes: Listing<FilterRule>?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The ARN of the Amazon CloudWatch log group that is used to monitor and
+    /// log events in the task.
+    CloudWatchLogGroupArn: String(length <= 562 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):logs:[a-z\-0-9]*:[0-9]{12}:log-group:([^:\*]*)(:\*)?$"#)))?
+    /// The ARN of an AWS storage resource's location.
+    DestinationLocationArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:location/loc-[0-9a-z]{17}$"#)))?
+    /// The name of a task. This value is a text reference that is used to
+    /// identify the task in the console.
+    Name: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))?
+    Options: Options?
+    TaskReportConfig: TaskReportConfig?
+    Schedule: TaskSchedule?
+    /// The ARN of the source location for the task.
+    SourceLocationArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:location/loc-[0-9a-z]{17}$"#)))?
+    /// The ARN of the task.
+    TaskArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]*:[0-9]{12}:task/task-[0-9a-f]{17}$"#)))?
+    /// The status of the task that was described.
+    Status: "AVAILABLE" | "CREATING" | "QUEUED" | "RUNNING" | "UNAVAILABLE" | *Null
+    SourceNetworkInterfaceArns: Listing<String(matches(Regex(#"^arn:aws[\-a-z]{0,}:ec2:[a-z\-0-9]*:[0-9]{12}:network-interface/eni-[0-9a-f]+$"#)))>?
+    DestinationNetworkInterfaceArns: Listing<String(matches(Regex(#"^arn:aws[\-a-z]{0,}:ec2:[a-z\-0-9]*:[0-9]{12}:network-interface/eni-[0-9a-f]+$"#)))>?
+}
+/// Specifies which files folders and objects to include or exclude when
+/// transferring files from source to destination.
+class FilterRule {
+    /// The type of filter rule to apply. AWS DataSync only supports the
+    /// SIMPLE_PATTERN rule type.
+    FilterType: "SIMPLE_PATTERN"(length <= 128 && matches(Regex(#"^[A-Z0-9_]+$"#))) | *Null
+    /// A single filter string that consists of the patterns to include or
+    /// exclude. The patterns are delimited by "|".
+    Value: String(length <= 409600 && matches(Regex(#"^[^\x00]+$"#)))?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for an AWS resource tag.
+    Key: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:/-]+$"#)))
+    /// The value for an AWS resource tag.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))
+}
+/// Represents the options that are available to control the behavior of a
+/// StartTaskExecution operation.
+class Options {
+    /// A file metadata value that shows the last time a file was accessed
+    /// (that is, when the file was read or written to).
+    Atime: "NONE" | "BEST_EFFORT" | *Null
+    /// A value that limits the bandwidth used by AWS DataSync.
+    BytesPerSecond: Int?
+    /// The group ID (GID) of the file's owners.
+    Gid: "NONE" | "INT_VALUE" | "NAME" | "BOTH" | *Null
+    /// A value that determines the types of logs that DataSync publishes to a
+    /// log stream in the Amazon CloudWatch log group that you provide.
+    LogLevel: "OFF" | "BASIC" | "TRANSFER" | *Null
+    /// A value that indicates the last time that a file was modified (that
+    /// is, a file was written to) before the PREPARING phase.
+    Mtime: "NONE" | "PRESERVE" | *Null
+    /// A value that determines whether files at the destination should be
+    /// overwritten or preserved when copying files.
+    OverwriteMode: "ALWAYS" | "NEVER" | *Null
+    /// A value that determines which users or groups can access a file for a
+    /// specific purpose such as reading, writing, or execution of the file.
+    PosixPermissions: "NONE" | "PRESERVE" | *Null
+    /// A value that specifies whether files in the destination that don't
+    /// exist in the source file system should be preserved.
+    PreserveDeletedFiles: "PRESERVE" | "REMOVE" | *Null
+    /// A value that determines whether AWS DataSync should preserve the
+    /// metadata of block and character devices in the source file system, and
+    /// recreate the files with that device name and metadata on the
+    /// destination.
+    PreserveDevices: "NONE" | "PRESERVE" | *Null
+    /// A value that determines which components of the SMB security
+    /// descriptor are copied during transfer.
+    SecurityDescriptorCopyFlags: "NONE" | "OWNER_DACL" | "OWNER_DACL_SACL" | *Null
+    /// A value that determines whether tasks should be queued before
+    /// executing the tasks.
+    TaskQueueing: "ENABLED" | "DISABLED" | *Null
+    /// A value that determines whether DataSync transfers only the data and
+    /// metadata that differ between the source and the destination location,
+    /// or whether DataSync transfers all the content from the source, without
+    /// comparing to the destination location.
+    TransferMode: "CHANGED" | "ALL" | *Null
+    /// The user ID (UID) of the file's owner.
+    Uid: "NONE" | "INT_VALUE" | "NAME" | "BOTH" | *Null
+    /// A value that determines whether a data integrity verification should
+    /// be performed at the end of a task execution after all data and
+    /// metadata have been transferred.
+    VerifyMode: "POINT_IN_TIME_CONSISTENT" | "ONLY_FILES_TRANSFERRED" | "NONE" | *Null
+    /// A value that determines whether object tags should be read from the
+    /// source object store and written to the destination object store.
+    ObjectTags: "PRESERVE" | "NONE" | *Null
+}
+/// Specifies how you want to configure a task report, which provides
+/// detailed information about for your Datasync transfer.
+class TaskReportConfig {
+    /// Specifies where DataSync uploads your task report.
+    Destination: Destination
+    /// Specifies the type of task report that you want.
+    OutputType: "SUMMARY_ONLY" | "STANDARD"
+    /// Specifies whether you want your task report to include only what went
+    /// wrong with your transfer or a list of what succeeded and didn't.
+    ReportLevel: "ERRORS_ONLY" | "SUCCESSES_AND_ERRORS" | *Null
+    /// Specifies whether your task report includes the new version of each
+    /// object transferred into an S3 bucket, this only applies if you enable
+    /// versioning on your bucket.
+    ObjectVersionIds: "INCLUDE" | "NONE" | *Null
+    /// Customizes the reporting level for aspects of your task report. For
+    /// example, your report might generally only include errors, but you
+    /// could specify that you want a list of successes and errors just for
+    /// the files that Datasync attempted to delete in your destination
+    /// location.
+    Overrides: Overrides?
+}
+/// Specifies where DataSync uploads your task report.
+class Destination {
+    /// Specifies the Amazon S3 bucket where DataSync uploads your task
+    /// report.
+    S3: S3?
+}
+/// Specifies the Amazon S3 bucket where DataSync uploads your task
+/// report.
+class S3 {
+    /// Specifies a bucket prefix for your report.
+    Subdirectory: String(length <= 4096 && matches(Regex(#"^[a-zA-Z0-9_\-\+\./\(\)\p{Zs}]*$"#)))?
+    /// Specifies the Amazon Resource Name (ARN) of the IAM policy that allows
+    /// Datasync to upload a task report to your S3 bucket.
+    BucketAccessRoleArn: String(length <= 2048 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):iam::[0-9]{12}:role/.*$"#)))?
+    /// Specifies the ARN of the S3 bucket where Datasync uploads your report.
+    S3BucketArn: String(length <= 156 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):(s3|s3-outposts):[a-z\-0-9]*:[0-9]*:.*$"#)))?
+}
+/// Customizes the reporting level for aspects of your task report. For
+/// example, your report might generally only include errors, but you
+/// could specify that you want a list of successes and errors just for
+/// the files that Datasync attempted to delete in your destination
+/// location.
+class Overrides {
+    /// Specifies the level of reporting for the files, objects, and
+    /// directories that Datasync attempted to transfer.
+    Transferred: Transferred?
+    /// Specifies the level of reporting for the files, objects, and
+    /// directories that Datasync attempted to verify at the end of your
+    /// transfer. This only applies if you configure your task to verify data
+    /// during and after the transfer (which Datasync does by default)
+    Verified: Verified?
+    /// Specifies the level of reporting for the files, objects, and
+    /// directories that Datasync attempted to delete in your destination
+    /// location. This only applies if you configure your task to delete data
+    /// in the destination that isn't in the source.
+    Deleted: Deleted?
+    /// Specifies the level of reporting for the files, objects, and
+    /// directories that Datasync attempted to skip during your transfer.
+    Skipped: Skipped?
+}
+/// Specifies the level of reporting for the files, objects, and
+/// directories that Datasync attempted to transfer.
+class Transferred {
+    /// Specifies whether you want your task report to include only what went
+    /// wrong with your transfer or a list of what succeeded and didn't.
+    ReportLevel: "ERRORS_ONLY" | "SUCCESSES_AND_ERRORS" | *Null
+}
+/// Specifies the level of reporting for the files, objects, and
+/// directories that Datasync attempted to verify at the end of your
+/// transfer. This only applies if you configure your task to verify data
+/// during and after the transfer (which Datasync does by default)
+class Verified {
+    /// Specifies whether you want your task report to include only what went
+    /// wrong with your transfer or a list of what succeeded and didn't.
+    ReportLevel: "ERRORS_ONLY" | "SUCCESSES_AND_ERRORS" | *Null
+}
+/// Specifies the level of reporting for the files, objects, and
+/// directories that Datasync attempted to delete in your destination
+/// location. This only applies if you configure your task to delete data
+/// in the destination that isn't in the source.
+class Deleted {
+    /// Specifies whether you want your task report to include only what went
+    /// wrong with your transfer or a list of what succeeded and didn't.
+    ReportLevel: "ERRORS_ONLY" | "SUCCESSES_AND_ERRORS" | *Null
+}
+/// Specifies the level of reporting for the files, objects, and
+/// directories that Datasync attempted to skip during your transfer.
+class Skipped {
+    /// Specifies whether you want your task report to include only what went
+    /// wrong with your transfer or a list of what succeeded and didn't.
+    ReportLevel: "ERRORS_ONLY" | "SUCCESSES_AND_ERRORS" | *Null
+}
+/// Specifies the schedule you want your task to use for repeated
+/// executions.
+class TaskSchedule {
+    /// A cron expression that specifies when AWS DataSync initiates a
+    /// scheduled transfer from a source to a destination location
+    ScheduleExpression: String(length <= 256 && matches(Regex(#"^[a-zA-Z0-9\ \_\*\?\,\|\^\-\/\#\s\(\)\+]*$"#)))
+}

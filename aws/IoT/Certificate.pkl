@@ -1,0 +1,14 @@
+/// Use the AWS::IoT::Certificate resource to declare an AWS IoT X.509
+/// certificate.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::Certificate"
+Properties: Props?
+class Props {
+    CACertificatePem: String(length <= 65536 && length >= 1)?
+    CertificatePem: String(length <= 65536 && length >= 1)?
+    CertificateSigningRequest: String?
+    CertificateMode: "DEFAULT" | "SNI_ONLY" | *Null
+    Status: "ACTIVE" | "INACTIVE" | "REVOKED" | "PENDING_TRANSFER" | "PENDING_ACTIVATION" | *Null
+    Id: String?
+    Arn: String?
+}

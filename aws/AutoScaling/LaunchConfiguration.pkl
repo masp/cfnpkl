@@ -1,0 +1,108 @@
+/// The AWS::AutoScaling::LaunchConfiguration resource specifies the
+/// launch configuration that can be used by an Auto Scaling group to
+/// configure Amazon EC2 instances.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AutoScaling::LaunchConfiguration"
+Properties: Props?
+class Props {
+    /// For Auto Scaling groups that are running in a virtual private cloud
+    /// (VPC), specifies whether to assign a public IP address to the group's
+    /// instances.
+    AssociatePublicIpAddress: Boolean?
+    /// Specifies how block devices are exposed to the instance. You can
+    /// specify virtual devices and EBS volumes.
+    BlockDeviceMappings: Listing<BlockDeviceMapping>?
+    /// The ID of a ClassicLink-enabled VPC to link your EC2-Classic instances
+    /// to.
+    ClassicLinkVPCId: String?
+    /// The IDs of one or more security groups for the VPC that you specified
+    /// in the ClassicLinkVPCId property.
+    ClassicLinkVPCSecurityGroups: Listing<String>?
+    /// Specifies whether the launch configuration is optimized for EBS I/O
+    /// (true) or not (false).
+    EbsOptimized: Boolean?
+    /// Provides the name or the Amazon Resource Name (ARN) of the instance
+    /// profile associated with the IAM role for the instance. The instance
+    /// profile contains the IAM role.
+    IamInstanceProfile: String?
+    /// Provides the unique ID of the Amazon Machine Image (AMI) that was
+    /// assigned during registration.
+    ImageId: String?
+    /// The ID of the Amazon EC2 instance you want to use to create the launch
+    /// configuration.
+    InstanceId: String?
+    /// Controls whether instances in this group are launched with detailed
+    /// (true) or basic (false) monitoring.
+    InstanceMonitoring: Boolean?
+    /// Specifies the instance type of the EC2 instance.
+    InstanceType: String?
+    /// Provides the ID of the kernel associated with the EC2 AMI.
+    KernelId: String?
+    /// Provides the name of the EC2 key pair.
+    KeyName: String?
+    /// The name of the launch configuration. This name must be unique per
+    /// Region per account.
+    LaunchConfigurationName: String(length <= 255 && length >= 1)?
+    /// The metadata options for the instances.
+    MetadataOptions: MetadataOptions?
+    /// The tenancy of the instance, either default or dedicated.
+    PlacementTenancy: String?
+    /// The ID of the RAM disk to select.
+    RamDiskId: String?
+    /// A list that contains the security groups to assign to the instances in
+    /// the Auto Scaling group.
+    SecurityGroups: Listing<String>?
+    /// The maximum hourly price you are willing to pay for any Spot Instances
+    /// launched to fulfill the request.
+    SpotPrice: String?
+    /// The Base64-encoded user data to make available to the launched EC2
+    /// instances.
+    UserData: String(length <= 21847)?
+}
+/// BlockDeviceMapping is a property of
+/// AWS::AutoScaling::LaunchConfiguration that describes a block device
+/// mapping for an Auto Scaling group.
+class BlockDeviceMapping {
+    /// Setting this value to true suppresses the specified device included in
+    /// the block device mapping of the AMI.
+    NoDevice: Boolean?
+    /// The name of the virtual device.
+    VirtualName: String?
+    /// Parameters used to automatically set up EBS volumes when an instance
+    /// is launched.
+    Ebs: BlockDevice?
+    /// The device name exposed to the EC2 instance (for example, /dev/sdh or
+    /// xvdh).
+    DeviceName: String
+}
+/// BlockDevice is a subproperty of BlockDeviceMapping that describes an
+/// Amazon EBS volume.
+class BlockDevice {
+    /// The snapshot ID of the volume to use.
+    SnapshotId: String?
+    /// The volume type.
+    VolumeType: String?
+    /// Specifies whether the volume should be encrypted.
+    Encrypted: Boolean?
+    /// The number of input/output (I/O) operations per second (IOPS) to
+    /// provision for the volume.
+    Iops: Int?
+    /// The volume size, in GiBs.
+    VolumeSize: Int?
+    /// Indicates whether the volume is deleted on instance termination.
+    DeleteOnTermination: Boolean?
+    /// The throughput (MiBps) to provision for a gp3 volume.
+    Throughput: Int?
+}
+/// MetadataOptions is a property of AWS::AutoScaling::LaunchConfiguration
+/// that describes metadata options for the instances.
+class MetadataOptions {
+    /// The desired HTTP PUT response hop limit for instance metadata
+    /// requests.
+    HttpPutResponseHopLimit: Int?
+    /// The state of token usage for your instance metadata requests.
+    HttpTokens: String?
+    /// This parameter enables or disables the HTTP metadata endpoint on your
+    /// instances.
+    HttpEndpoint: String?
+}

@@ -1,0 +1,33 @@
+/// AWS Cost Anomaly Detection leverages advanced Machine Learning
+/// technologies to identify anomalous spend and root causes, so you can
+/// quickly take action. You can use Cost Anomaly Detection by creating
+/// monitor.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CE::AnomalyMonitor"
+Properties: Props?
+class Props {
+    MonitorArn: String(matches(Regex(#"^arn:aws[-a-z0-9]*:[a-z0-9]+:[-a-z0-9]*:[0-9]{12}:[-a-zA-Z0-9/:_]+$"#)))?
+    MonitorType: "DIMENSIONAL" | "CUSTOM" | *Null
+    /// The name of the monitor.
+    MonitorName: String(length <= 1024 && length >= 0 && matches(Regex(#"[\S\s]*"#)))?
+    /// The date when the monitor was created.
+    CreationDate: String(length <= 40 && length >= 0 && matches(Regex(#"(\d{4}-\d{2}-\d{2})(T\d{2}:\d{2}:\d{2}Z)?"#)))?
+    /// The date when the monitor last evaluated for anomalies.
+    LastEvaluatedDate: String(length <= 40 && length >= 0 && matches(Regex(#"(\d{4}-\d{2}-\d{2})(T\d{2}:\d{2}:\d{2}Z)?|(NOT_EVALUATED_YET)"#)))?
+    /// The date when the monitor was last updated.
+    LastUpdatedDate: String(length <= 40 && length >= 0 && matches(Regex(#"(\d{4}-\d{2}-\d{2})(T\d{2}:\d{2}:\d{2}Z)?"#)))?
+    /// The dimensions to evaluate
+    MonitorDimension: "SERVICE" | *Null
+    MonitorSpecification: String?
+    /// The value for evaluated dimensions.
+    DimensionalValueCount: Int?
+    /// Tags to assign to monitor.
+    ResourceTags: Listing<ResourceTag>?
+}
+/// A key-value pair to associate with a resource.
+class ResourceTag {
+    /// The key name for the tag.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:).*$"#)))
+    /// The value for the tag.
+    Value: String(length <= 256 && length >= 0)
+}

@@ -1,0 +1,25 @@
+/// Resource Type definition for AWS::Evidently::Segment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Evidently::Segment"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 0 && matches(Regex(#"arn:[^:]*:[^:]*:[^:]*:[^:]*:segment/[-a-zA-Z0-9._]*"#)))?
+    Name: String(length <= 127 && length >= 1 && matches(Regex(#"[-a-zA-Z0-9._]*"#)))?
+    Description: String(length <= 160 && length >= 0)?
+    Pattern: String(length <= 1024 && length >= 1)?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z+-=._:/]+$"#)))
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

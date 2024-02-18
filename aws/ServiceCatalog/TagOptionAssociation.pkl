@@ -1,0 +1,9 @@
+/// Resource Type definition for AWS::ServiceCatalog::TagOptionAssociation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceCatalog::TagOptionAssociation"
+Properties: Props?
+class Props {
+    Id: String?
+    TagOptionId: String?
+    ResourceId: String?
+}

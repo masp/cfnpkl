@@ -1,0 +1,70 @@
+/// A resource schema representing a Lake Formation Permission.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LakeFormation::PrincipalPermissions"
+Properties: Props?
+class Props {
+    Catalog: String(length <= 12 && length >= 12)?
+    Principal: DataLakePrincipal?
+    Resource: Resource?
+    Permissions: Listing<"ALL" | "SELECT" | "ALTER" | "DROP" | "DELETE" | "INSERT" | "DESCRIBE" | "CREATE_DATABASE" | "CREATE_TABLE" | "DATA_LOCATION_ACCESS" | "CREATE_TAG" | "ASSOCIATE">?
+    PermissionsWithGrantOption: Listing<"ALL" | "SELECT" | "ALTER" | "DROP" | "DELETE" | "INSERT" | "DESCRIBE" | "CREATE_DATABASE" | "CREATE_TABLE" | "DATA_LOCATION_ACCESS" | "CREATE_TAG" | "ASSOCIATE">?
+    PrincipalIdentifier: String?
+    ResourceIdentifier: String?
+}
+class DataLakePrincipal {
+    DataLakePrincipalIdentifier: String(length <= 255 && length >= 1)?
+}
+class Resource {
+    Catalog: Mapping?
+    Database: DatabaseResource?
+    Table: TableResource?
+    TableWithColumns: TableWithColumnsResource?
+    DataLocation: DataLocationResource?
+    DataCellsFilter: DataCellsFilterResource?
+    LFTag: LFTagKeyResource?
+    LFTagPolicy: LFTagPolicyResource?
+}
+class DatabaseResource {
+    CatalogId: String(length <= 12 && length >= 12)
+    Name: String(length <= 255 && length >= 1)
+}
+class TableResource {
+    CatalogId: String(length <= 12 && length >= 12)
+    DatabaseName: String(length <= 255 && length >= 1)
+    Name: String(length <= 255 && length >= 1)?
+    TableWildcard: Mapping?
+}
+class TableWithColumnsResource {
+    CatalogId: String(length <= 12 && length >= 12)
+    DatabaseName: String(length <= 255 && length >= 1)
+    Name: String(length <= 255 && length >= 1)
+    ColumnNames: Listing<String(length <= 255 && length >= 1)>?
+    ColumnWildcard: ColumnWildcard?
+}
+class ColumnWildcard {
+    ExcludedColumnNames: Listing<String(length <= 255 && length >= 1)>?
+}
+class DataLocationResource {
+    CatalogId: String(length <= 12 && length >= 12)
+    ResourceArn: String
+}
+class DataCellsFilterResource {
+    TableCatalogId: String(length <= 12 && length >= 12)
+    DatabaseName: String(length <= 255 && length >= 1)
+    TableName: String(length <= 255 && length >= 1)
+    Name: String(length <= 255 && length >= 1)
+}
+class LFTagKeyResource {
+    CatalogId: String(length <= 12 && length >= 12)
+    TagKey: String(length <= 255 && length >= 1)
+    TagValues: Listing<String(length <= 256 && length >= 0)>
+}
+class LFTagPolicyResource {
+    CatalogId: String(length <= 12 && length >= 12)
+    ResourceType: "DATABASE" | "TABLE"
+    Expression: Listing<LFTag>
+}
+class LFTag {
+    TagKey: String(length <= 128 && length >= 1)?
+    TagValues: Listing<String(length <= 256 && length >= 0)>?
+}

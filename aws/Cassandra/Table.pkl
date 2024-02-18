@@ -1,0 +1,90 @@
+/// Resource schema for AWS::Cassandra::Table
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cassandra::Table"
+Properties: Props?
+class Props {
+    /// Name for Cassandra keyspace
+    KeyspaceName: String(matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9_]{1,47}$"#)))?
+    /// Name for Cassandra table
+    TableName: String(matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9_]{1,47}$"#)))?
+    /// Non-key columns of the table
+    RegularColumns: Listing<Column>?
+    /// Partition key columns of the table
+    PartitionKeyColumns: Listing<Column>?
+    /// Clustering key columns of the table
+    ClusteringKeyColumns: Listing<ClusteringKeyColumn>?
+    BillingMode: BillingMode?
+    /// Indicates whether point in time recovery is enabled (true) or disabled
+    /// (false) on the table
+    PointInTimeRecoveryEnabled: Boolean?
+    /// Indicates whether client side timestamps are enabled (true) or
+    /// disabled (false) on the table. False by default, once it is enabled it
+    /// cannot be disabled again.
+    ClientSideTimestampsEnabled: Boolean?
+    /// An array of key-value pairs to apply to this resource
+    Tags: Listing<Tag>?
+    /// Default TTL (Time To Live) in seconds, where zero is disabled. If the
+    /// value is greater than zero, TTL is enabled for the entire table and an
+    /// expiration timestamp is added to each column.
+    DefaultTimeToLive: Int?
+    EncryptionSpecification: EncryptionSpecification?
+    AutoScalingSpecifications: AutoScalingSpecification?
+    ReplicaSpecifications: Listing<ReplicaSpecification>?
+}
+class Column {
+    ColumnName: String(matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9_]{1,47}$"#)))
+    ColumnType: String
+}
+class ClusteringKeyColumn {
+    Column: Column
+    OrderBy: "ASC" | "DESC" | *Null
+}
+class BillingMode {
+    Mode: "PROVISIONED" | "ON_DEMAND"
+    ProvisionedThroughput: ProvisionedThroughput?
+}
+/// Throughput for the specified table, which consists of values for
+/// ReadCapacityUnits and WriteCapacityUnits
+class ProvisionedThroughput {
+    ReadCapacityUnits: Int
+    WriteCapacityUnits: Int
+}
+/// A key-value pair to apply to the resource
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}
+/// Represents the settings used to enable server-side encryption
+class EncryptionSpecification {
+    EncryptionType: "AWS_OWNED_KMS_KEY" | "CUSTOMER_MANAGED_KMS_KEY"
+    KmsKeyIdentifier: String?
+}
+/// Represents the read and write settings used for AutoScaling.
+class AutoScalingSpecification {
+    WriteCapacityAutoScaling: AutoScalingSetting?
+    ReadCapacityAutoScaling: AutoScalingSetting?
+}
+/// Represents configuration for auto scaling.
+class AutoScalingSetting {
+    AutoScalingDisabled: Boolean?
+    MinimumUnits: Int?
+    MaximumUnits: Int?
+    ScalingPolicy: ScalingPolicy?
+}
+/// Represents scaling policy.
+class ScalingPolicy {
+    TargetTrackingScalingPolicyConfiguration: TargetTrackingScalingPolicyConfiguration?
+}
+/// Represents configuration for target tracking scaling policy.
+class TargetTrackingScalingPolicyConfiguration {
+    DisableScaleIn: Boolean?
+    ScaleInCooldown: Int?
+    ScaleOutCooldown: Int?
+    TargetValue: Int
+}
+/// Represents replica specifications.
+class ReplicaSpecification {
+    Region: String(length <= 25 && length >= 2)
+    ReadCapacityUnits: Int?
+    ReadCapacityAutoScaling: AutoScalingSetting?
+}

@@ -1,0 +1,12 @@
+/// An AWS Support App resource that creates, updates, lists, and deletes
+/// Slack workspace configurations.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SupportApp::SlackWorkspaceConfiguration"
+Properties: Props?
+class Props {
+    /// The team ID in Slack, which uniquely identifies a workspace.
+    TeamId: String(length <= 256 && length >= 1 && matches(Regex(#"^\S+$"#)))?
+    /// An identifier used to update an existing Slack workspace configuration
+    /// in AWS CloudFormation.
+    VersionId: String(length <= 256 && length >= 1 && matches(Regex(#"^[0-9]+$"#)))?
+}

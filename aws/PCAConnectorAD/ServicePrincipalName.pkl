@@ -1,0 +1,8 @@
+/// Definition of AWS::PCAConnectorAD::ServicePrincipalName Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::PCAConnectorAD::ServicePrincipalName"
+Properties: Props?
+class Props {
+    ConnectorArn: String(length <= 200 && length >= 5 && matches(Regex(#"^arn:[\w-]+:pca-connector-ad:[\w-]+:[0-9]+:connector(\/[\w-]+)$"#)))?
+    DirectoryRegistrationArn: String(length <= 200 && length >= 5 && matches(Regex(#"^arn:[\w-]+:pca-connector-ad:[\w-]+:[0-9]+:directory-registration(\/[\w-]+)$"#)))?
+}

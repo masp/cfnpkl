@@ -1,0 +1,69 @@
+/// Resource Type definition for AWS::AppSync::DataSource
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppSync::DataSource"
+Properties: Props?
+class Props {
+    OpenSearchServiceConfig: OpenSearchServiceConfig?
+    Description: String?
+    ServiceRoleArn: String?
+    Name: String?
+    DataSourceArn: String?
+    Type: String?
+    EventBridgeConfig: EventBridgeConfig?
+    HttpConfig: HttpConfig?
+    RelationalDatabaseConfig: RelationalDatabaseConfig?
+    LambdaConfig: LambdaConfig?
+    Id: String?
+    ApiId: String?
+    DynamoDBConfig: DynamoDBConfig?
+    ElasticsearchConfig: ElasticsearchConfig?
+}
+class OpenSearchServiceConfig {
+    AwsRegion: String
+    Endpoint: String
+}
+class EventBridgeConfig {
+    EventBusArn: String
+}
+class HttpConfig {
+    Endpoint: String
+    AuthorizationConfig: AuthorizationConfig?
+}
+class AuthorizationConfig {
+    AuthorizationType: String
+    AwsIamConfig: AwsIamConfig?
+}
+class AwsIamConfig {
+    SigningRegion: String?
+    SigningServiceName: String?
+}
+class RelationalDatabaseConfig {
+    RdsHttpEndpointConfig: RdsHttpEndpointConfig?
+    RelationalDatabaseSourceType: String
+}
+class RdsHttpEndpointConfig {
+    DatabaseName: String?
+    AwsRegion: String
+    DbClusterIdentifier: String
+    AwsSecretStoreArn: String
+    Schema: String?
+}
+class LambdaConfig {
+    LambdaFunctionArn: String
+}
+class DynamoDBConfig {
+    TableName: String
+    DeltaSyncConfig: DeltaSyncConfig?
+    UseCallerCredentials: Boolean?
+    AwsRegion: String
+    Versioned: Boolean?
+}
+class DeltaSyncConfig {
+    BaseTableTTL: String
+    DeltaSyncTableTTL: String
+    DeltaSyncTableName: String
+}
+class ElasticsearchConfig {
+    AwsRegion: String
+    Endpoint: String
+}

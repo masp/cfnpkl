@@ -1,0 +1,21 @@
+/// Definition of AWS::DataZone::EnvironmentBlueprintConfiguration
+/// Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataZone::EnvironmentBlueprintConfiguration"
+Properties: Props?
+class Props {
+    RegionalParameters: Listing<RegionalParameter>?
+    ProvisioningRoleArn: String(matches(Regex(#"^arn:aws[^:]*:iam::\d{12}:(role|role/service-role)/[\w+=,.@-]*$"#)))?
+    DomainId: String(matches(Regex(#"^dzd[-_][a-zA-Z0-9_-]{1,36}$"#)))?
+    CreatedAt: String?
+    EnabledRegions: Listing<String(length <= 16 && length >= 4 && matches(Regex(#"^[a-z]{2}-?(iso|gov)?-{1}[a-z]*-{1}[0-9]$"#)))>?
+    EnvironmentBlueprintIdentifier: String(matches(Regex(#"^[a-zA-Z0-9_-]{1,36}$"#)))?
+    EnvironmentBlueprintId: String(matches(Regex(#"^[a-zA-Z0-9_-]{1,36}$"#)))?
+    UpdatedAt: String?
+    DomainIdentifier: String(matches(Regex(#"^dzd[-_][a-zA-Z0-9_-]{1,36}$"#)))?
+    ManageAccessRoleArn: String(matches(Regex(#"^arn:aws[^:]*:iam::\d{12}:(role|role/service-role)/[\w+=,.@-]*$"#)))?
+}
+class RegionalParameter {
+    Parameters: Mapping?
+    Region: String(matches(Regex(#"^[a-z]{2}-?(iso|gov)?-{1}[a-z]*-{1}[0-9]$"#)))?
+}

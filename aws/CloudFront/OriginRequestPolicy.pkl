@@ -1,0 +1,28 @@
+/// Resource Type definition for AWS::CloudFront::OriginRequestPolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::OriginRequestPolicy"
+Properties: Props?
+class Props {
+    Id: String?
+    LastModifiedTime: String?
+    OriginRequestPolicyConfig: OriginRequestPolicyConfig?
+}
+class OriginRequestPolicyConfig {
+    Comment: String?
+    CookiesConfig: CookiesConfig
+    HeadersConfig: HeadersConfig
+    Name: String
+    QueryStringsConfig: QueryStringsConfig
+}
+class CookiesConfig {
+    CookieBehavior: String(matches(Regex(#"^(none|whitelist|all|allExcept)$"#)))
+    Cookies: Listing<String>?
+}
+class HeadersConfig {
+    HeaderBehavior: String(matches(Regex(#"^(none|whitelist|allViewer|allViewerAndWhitelistCloudFront|allExcept)$"#)))
+    Headers: Listing<String>?
+}
+class QueryStringsConfig {
+    QueryStringBehavior: String(matches(Regex(#"^(none|whitelist|all|allExcept)$"#)))
+    QueryStrings: Listing<String>?
+}

@@ -1,0 +1,9 @@
+/// Resource Type definition for AWS::IoT::PolicyPrincipalAttachment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::PolicyPrincipalAttachment"
+Properties: Props?
+class Props {
+    Id: String?
+    PolicyName: String?
+    Principal: String?
+}

@@ -1,0 +1,42 @@
+/// Resource schema for StateMachine
+extends ".../AWS/Resource.pkl"
+Type = "AWS::StepFunctions::StateMachine"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 1)?
+    Name: String(length <= 80 && length >= 1)?
+    DefinitionString: String(length <= 1048576 && length >= 1)?
+    RoleArn: String(length <= 256 && length >= 1)?
+    StateMachineName: String(length <= 80 && length >= 1)?
+    StateMachineType: "STANDARD" | "EXPRESS" | *Null
+    StateMachineRevisionId: String(length <= 256 && length >= 1)?
+    LoggingConfiguration: LoggingConfiguration?
+    TracingConfiguration: TracingConfiguration?
+    DefinitionS3Location: S3Location?
+    DefinitionSubstitutions: Mapping?
+    Definition: Mapping?
+    Tags: Listing<TagsEntry>?
+}
+class LoggingConfiguration {
+    Level: "ALL" | "ERROR" | "FATAL" | "OFF" | *Null
+    IncludeExecutionData: Boolean?
+    Destinations: Listing<LogDestination>?
+}
+class LogDestination {
+    CloudWatchLogsLogGroup: CloudWatchLogsLogGroup?
+}
+class CloudWatchLogsLogGroup {
+    LogGroupArn: String(length <= 256 && length >= 1)?
+}
+class TracingConfiguration {
+    Enabled: Boolean?
+}
+class S3Location {
+    Bucket: String
+    Key: String
+    Version: String?
+}
+class TagsEntry {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

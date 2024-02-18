@@ -1,0 +1,35 @@
+/// Definition of AWS::AmplifyUIBuilder::Component Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AmplifyUIBuilder::Component"
+Properties: Props?
+class Props {
+    AppId: String?
+    BindingProperties: Mapping?
+    Children: Listing<ComponentChild>?
+    CollectionProperties: Mapping?
+    ComponentType: String(length <= 255 && length >= 1)?
+    CreatedAt: String?
+    EnvironmentName: String?
+    Events: Mapping?
+    Id: String?
+    ModifiedAt: String?
+    Name: String(length <= 255 && length >= 1)?
+    Overrides: Mapping?
+    Properties: Mapping?
+    SchemaVersion: String?
+    SourceId: String?
+    Tags: Mapping?
+    Variants: Listing<ComponentVariant>?
+}
+class ComponentChild {
+    ComponentType: String
+    Name: String
+    Properties: Mapping
+    Children: Listing<ComponentChild>?
+    Events: Mapping?
+    SourceId: String?
+}
+class ComponentVariant {
+    VariantValues: Mapping?
+    Overrides: Mapping?
+}

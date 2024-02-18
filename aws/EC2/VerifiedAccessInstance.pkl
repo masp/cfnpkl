@@ -1,0 +1,89 @@
+/// The AWS::EC2::VerifiedAccessInstance resource creates an AWS EC2
+/// Verified Access Instance.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VerifiedAccessInstance"
+Properties: Props?
+class Props {
+    /// The ID of the AWS Verified Access instance.
+    VerifiedAccessInstanceId: String?
+    /// AWS Verified Access trust providers.
+    VerifiedAccessTrustProviders: Listing<VerifiedAccessTrustProvider>?
+    /// The IDs of the AWS Verified Access trust providers.
+    VerifiedAccessTrustProviderIds: Listing<String>?
+    /// Time this Verified Access Instance was created.
+    CreationTime: String?
+    /// Time this Verified Access Instance was last updated.
+    LastUpdatedTime: String?
+    /// A description for the AWS Verified Access instance.
+    Description: String?
+    /// The configuration options for AWS Verified Access instances.
+    LoggingConfigurations: VerifiedAccessLogs?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// Indicates whether FIPS is enabled
+    FipsEnabled: Boolean?
+}
+/// A Verified Access Trust Provider.
+class VerifiedAccessTrustProvider {
+    /// The ID of the trust provider.
+    VerifiedAccessTrustProviderId: String?
+    /// The description of trust provider.
+    Description: String?
+    /// The type of trust provider (user- or device-based).
+    TrustProviderType: String?
+    /// The type of user-based trust provider.
+    UserTrustProviderType: String?
+    /// The type of device-based trust provider.
+    DeviceTrustProviderType: String?
+}
+/// The configuration options for AWS Verified Access instances.
+class VerifiedAccessLogs {
+    /// Select log version for Verified Access logs.
+    LogVersion: String?
+    /// Include claims from trust providers in Verified Access logs.
+    IncludeTrustContext: Boolean?
+    /// Sends Verified Access logs to CloudWatch Logs.
+    CloudWatchLogs: CloudWatchLogs?
+    /// Sends Verified Access logs to Kinesis.
+    KinesisDataFirehose: KinesisDataFirehose?
+    /// Sends Verified Access logs to Amazon S3.
+    S3: S3?
+}
+/// Sends Verified Access logs to CloudWatch Logs.
+class CloudWatchLogs {
+    /// Indicates whether logging is enabled.
+    Enabled: Boolean?
+    /// The ID of the CloudWatch Logs log group.
+    LogGroup: String?
+}
+/// Sends Verified Access logs to Kinesis.
+class KinesisDataFirehose {
+    /// Indicates whether logging is enabled.
+    Enabled: Boolean?
+    /// The ID of the delivery stream.
+    DeliveryStream: String?
+}
+/// Sends Verified Access logs to Amazon S3.
+class S3 {
+    /// Indicates whether logging is enabled.
+    Enabled: Boolean?
+    /// The bucket name.
+    BucketName: String?
+    /// The ID of the AWS account that owns the Amazon S3 bucket.
+    BucketOwner: String?
+    /// The bucket prefix.
+    Prefix: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

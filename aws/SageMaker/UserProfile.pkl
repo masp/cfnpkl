@@ -1,0 +1,164 @@
+/// Resource Type definition for AWS::SageMaker::UserProfile
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::UserProfile"
+Properties: Props?
+class Props {
+    /// The user profile Amazon Resource Name (ARN).
+    UserProfileArn: String(length <= 256 && matches(Regex(#"arn:aws[a-z\-]*:sagemaker:[a-z0-9\-]*:[0-9]{12}:user-profile/.*"#)))?
+    /// The ID of the associated Domain.
+    DomainId: String(length <= 63 && length >= 1)?
+    /// A specifier for the type of value specified in SingleSignOnUserValue.
+    /// Currently, the only supported value is "UserName". If the Domain's
+    /// AuthMode is SSO, this field is required. If the Domain's AuthMode is
+    /// not SSO, this field cannot be specified.
+    SingleSignOnUserIdentifier: String(matches(Regex(#"UserName"#)))?
+    /// The username of the associated AWS Single Sign-On User for this
+    /// UserProfile. If the Domain's AuthMode is SSO, this field is required,
+    /// and must match a valid username of a user in your directory. If the
+    /// Domain's AuthMode is not SSO, this field cannot be specified.
+    SingleSignOnUserValue: String(length <= 256 && length >= 1)?
+    /// A name for the UserProfile.
+    UserProfileName: String(length <= 63 && length >= 1)?
+    /// A collection of settings.
+    UserSettings: UserSettings?
+    /// A list of tags to apply to the user profile.
+    Tags: Listing<Tag>?
+}
+/// A collection of settings that apply to users of Amazon SageMaker
+/// Studio. These settings are specified when the CreateUserProfile API is
+/// called, and as DefaultUserSettings when the CreateDomain API is
+/// called.
+class UserSettings {
+    /// The user profile Amazon Resource Name (ARN).
+    ExecutionRole: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:aws[a-z\-]*:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    /// The Jupyter server's app settings.
+    JupyterServerAppSettings: JupyterServerAppSettings?
+    /// The kernel gateway app settings.
+    KernelGatewayAppSettings: KernelGatewayAppSettings?
+    RStudioServerProAppSettings: RStudioServerProAppSettings?
+    JupyterLabAppSettings: JupyterLabAppSettings?
+    SpaceStorageSettings: DefaultSpaceStorageSettings?
+    CodeEditorAppSettings: CodeEditorAppSettings?
+    /// Defines which Amazon SageMaker application users are directed to by
+    /// default.
+    DefaultLandingUri: String(length <= 1023)?
+    /// Indicates whether the Studio experience is available to users. If not,
+    /// users cannot access Studio.
+    StudioWebPortal: "ENABLED" | "DISABLED" | *Null
+    CustomPosixUserConfig: CustomPosixUserConfig?
+    CustomFileSystemConfigs: Listing<CustomFileSystemConfig>?
+    /// The security groups for the Amazon Virtual Private Cloud (VPC) that
+    /// Studio uses for communication.
+    SecurityGroups: Listing<String(length <= 32 && matches(Regex(#"[-0-9a-zA-Z]+"#)))>?
+    /// The sharing settings.
+    SharingSettings: SharingSettings?
+}
+/// The JupyterServer app settings.
+class JupyterServerAppSettings {
+    DefaultResourceSpec: ResourceSpec?
+}
+class ResourceSpec {
+    /// The instance type that the image version runs on.
+    InstanceType: "system" | "ml.t3.micro" | "ml.t3.small" | "ml.t3.medium" | "ml.t3.large" | "ml.t3.xlarge" | "ml.t3.2xlarge" | "ml.m5.large" | "ml.m5.xlarge" | "ml.m5.2xlarge" | "ml.m5.4xlarge" | "ml.m5.8xlarge" | "ml.m5.12xlarge" | "ml.m5.16xlarge" | "ml.m5.24xlarge" | "ml.c5.large" | "ml.c5.xlarge" | "ml.c5.2xlarge" | "ml.c5.4xlarge" | "ml.c5.9xlarge" | "ml.c5.12xlarge" | "ml.c5.18xlarge" | "ml.c5.24xlarge" | "ml.p3.2xlarge" | "ml.p3.8xlarge" | "ml.p3.16xlarge" | "ml.g4dn.xlarge" | "ml.g4dn.2xlarge" | "ml.g4dn.4xlarge" | "ml.g4dn.8xlarge" | "ml.g4dn.12xlarge" | "ml.g4dn.16xlarge" | "ml.r5.large" | "ml.r5.xlarge" | "ml.r5.2xlarge" | "ml.r5.4xlarge" | "ml.r5.8xlarge" | "ml.r5.12xlarge" | "ml.r5.16xlarge" | "ml.r5.24xlarge" | "ml.p3dn.24xlarge" | "ml.m5d.large" | "ml.m5d.xlarge" | "ml.m5d.2xlarge" | "ml.m5d.4xlarge" | "ml.m5d.8xlarge" | "ml.m5d.12xlarge" | "ml.m5d.16xlarge" | "ml.m5d.24xlarge" | "ml.g5.xlarge" | "ml.g5.2xlarge" | "ml.g5.4xlarge" | "ml.g5.8xlarge" | "ml.g5.12xlarge" | "ml.g5.16xlarge" | "ml.g5.24xlarge" | "ml.g5.48xlarge" | "ml.p4d.24xlarge" | "ml.p4de.24xlarge" | "ml.geospatial.interactive" | "ml.trn1.2xlarge" | "ml.trn1.32xlarge" | "ml.trn1n.32xlarge" | *Null
+    /// The ARN of the SageMaker image that the image version belongs to.
+    SageMakerImageArn: String(length <= 256 && matches(Regex(#"^arn:aws(-[\w]+)*:sagemaker:.+:[0-9]{12}:image/[a-z0-9]([-.]?[a-z0-9])*$"#)))?
+    /// The ARN of the image version created on the instance.
+    SageMakerImageVersionArn: String(length <= 256 && matches(Regex(#"^arn:aws(-[\w]+)*:sagemaker:.+:[0-9]{12}:image-version/[a-z0-9]([-.]?[a-z0-9])*/[0-9]+$"#)))?
+}
+/// The kernel gateway app settings.
+class KernelGatewayAppSettings {
+    /// A list of custom SageMaker images that are configured to run as a
+    /// KernelGateway app.
+    CustomImages: Listing<CustomImage>?
+    /// The default instance type and the Amazon Resource Name (ARN) of the
+    /// default SageMaker image used by the KernelGateway app.
+    DefaultResourceSpec: ResourceSpec?
+}
+/// A custom SageMaker image.
+class CustomImage {
+    /// The Name of the AppImageConfig.
+    AppImageConfigName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,62}"#)))
+    /// The name of the CustomImage. Must be unique to your account.
+    ImageName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9]([-.]?[a-zA-Z0-9]){0,62}$"#)))
+    /// The version number of the CustomImage.
+    ImageVersionNumber: Int?
+}
+/// A collection of settings that configure user interaction with the
+/// RStudioServerPro app.
+class RStudioServerProAppSettings {
+    /// Indicates whether the current user has access to the RStudioServerPro
+    /// app.
+    AccessStatus: "ENABLED" | "DISABLED" | *Null
+    /// The level of permissions that the user has within the RStudioServerPro
+    /// app. This value defaults to User. The Admin value allows the user
+    /// access to the RStudio Administrative Dashboard.
+    UserGroup: "R_STUDIO_ADMIN" | "R_STUDIO_USER" | *Null
+}
+/// The JupyterLab app settings.
+class JupyterLabAppSettings {
+    /// The default instance type and the Amazon Resource Name (ARN) of the
+    /// default SageMaker image used by the JupyterLab app.
+    DefaultResourceSpec: ResourceSpec?
+    /// A list of LifecycleConfigArns available for use with JupyterLab apps.
+    LifecycleConfigArns: Listing<String(length <= 256 && matches(Regex(#"arn:aws[a-z\-]*:sagemaker:[a-z0-9\-]*:[0-9]{12}:studio-lifecycle-config/.*"#)))>?
+    /// A list of CodeRepositories available for use with JupyterLab apps.
+    CodeRepositories: Listing<CodeRepository>?
+    /// A list of custom images available for use for JupyterLab apps
+    CustomImages: Listing<CustomImage>?
+}
+class CodeRepository {
+    /// A CodeRepository (valid URL) to be used within Jupyter's Git
+    /// extension.
+    RepositoryUrl: String(length <= 256 && matches(Regex(#"^https://([.\-_a-zA-Z0-9]+/?){3,1016}$"#)))
+}
+/// Default storage settings for a space.
+class DefaultSpaceStorageSettings {
+    DefaultEbsStorageSettings: DefaultEbsStorageSettings?
+}
+/// Properties related to the Amazon Elastic Block Store volume.
+class DefaultEbsStorageSettings {
+    /// Default size of the Amazon EBS volume in Gb
+    DefaultEbsVolumeSizeInGb: Int
+    /// Maximum size of the Amazon EBS volume in Gb. Must be greater than or
+    /// equal to the DefaultEbsVolumeSizeInGb.
+    MaximumEbsVolumeSizeInGb: Int
+}
+/// The CodeEditor app settings.
+class CodeEditorAppSettings {
+    /// The default instance type and the Amazon Resource Name (ARN) of the
+    /// default SageMaker image used by the CodeEditor app.
+    DefaultResourceSpec: ResourceSpec?
+    /// A list of LifecycleConfigArns available for use with CodeEditor apps.
+    LifecycleConfigArns: Listing<String(length <= 256 && matches(Regex(#"arn:aws[a-z\-]*:sagemaker:[a-z0-9\-]*:[0-9]{12}:studio-lifecycle-config/.*"#)))>?
+}
+class CustomPosixUserConfig {
+    Uid: Int
+    Gid: Int
+}
+class CustomFileSystemConfig {
+    EFSFileSystemConfig: EFSFileSystemConfig?
+}
+class EFSFileSystemConfig {
+    FileSystemPath: String(length <= 256 && length >= 1 && matches(Regex(#"^\/\S*$"#)))?
+    FileSystemId: String(length <= 21 && length >= 11 && matches(Regex(#"^(fs-[0-9a-f]{8,})$"#)))
+}
+/// Specifies options when sharing an Amazon SageMaker Studio notebook.
+/// These settings are specified as part of DefaultUserSettings when the
+/// CreateDomain API is called, and as part of UserSettings when the
+/// CreateUserProfile API is called.
+class SharingSettings {
+    /// Whether to include the notebook cell output when sharing the notebook.
+    /// The default is Disabled.
+    NotebookOutputOption: "Allowed" | "Disabled" | *Null
+    /// When NotebookOutputOption is Allowed, the AWS Key Management Service
+    /// (KMS) encryption key ID used to encrypt the notebook cell output in
+    /// the Amazon S3 bucket.
+    S3KmsKeyId: String(length <= 2048 && matches(Regex(#".*"#)))?
+    /// When NotebookOutputOption is Allowed, the Amazon S3 bucket used to
+    /// store the shared notebook snapshots.
+    S3OutputPath: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))?
+}
+class Tag {
+    Value: String(length <= 128 && length >= 1)
+    Key: String(length <= 128 && length >= 1)
+}

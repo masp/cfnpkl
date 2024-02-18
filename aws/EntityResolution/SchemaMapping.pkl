@@ -1,0 +1,39 @@
+/// SchemaMapping defined in AWS Entity Resolution service
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EntityResolution::SchemaMapping"
+Properties: Props?
+class Props {
+    /// The name of the SchemaMapping
+    SchemaName: String(length <= 255 && length >= 0 && matches(Regex(#"^[a-zA-Z_0-9-]*$"#)))?
+    /// The description of the SchemaMapping
+    Description: String(length <= 255 && length >= 0)?
+    /// The SchemaMapping attributes input
+    MappedInputFields: Listing<SchemaInputAttribute>?
+    Tags: Listing<Tag>?
+    SchemaArn: String(matches(Regex(#"^arn:(aws|aws-us-gov|aws-cn):entityresolution:.*:[0-9]+:(schemamapping/.*)$"#)))?
+    CreatedAt: String?
+    UpdatedAt: String?
+    HasWorkflows: Boolean?
+}
+class SchemaInputAttribute {
+    FieldName: String(length <= 255 && length >= 0 && matches(Regex(#"^[a-zA-Z_0-9- \t]*$"#)))
+    Type: "NAME" | "NAME_FIRST" | "NAME_MIDDLE" | "NAME_LAST" | "ADDRESS" | "ADDRESS_STREET1" | "ADDRESS_STREET2" | "ADDRESS_STREET3" | "ADDRESS_CITY" | "ADDRESS_STATE" | "ADDRESS_COUNTRY" | "ADDRESS_POSTALCODE" | "PHONE" | "PHONE_NUMBER" | "PHONE_COUNTRYCODE" | "EMAIL_ADDRESS" | "UNIQUE_ID" | "DATE" | "STRING" | "PROVIDER_ID"
+    /// The subtype of the Attribute. Would be required only when type is
+    /// PROVIDER_ID
+    SubType: String?
+    GroupName: String(length <= 255 && length >= 0 && matches(Regex(#"^[a-zA-Z_0-9- \t]*$"#)))?
+    MatchKey: String(length <= 255 && length >= 0 && matches(Regex(#"^[a-zA-Z_0-9- \t]*$"#)))?
+}
+/// A key-value pair to associate with a resource
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

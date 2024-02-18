@@ -1,0 +1,49 @@
+/// An object representing an Amazon EKS AccessEntry.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EKS::AccessEntry"
+Properties: Props?
+class Props {
+    /// The cluster that the access entry is created for.
+    ClusterName: String(length >= 1)?
+    /// The principal ARN that the access entry is created for.
+    PrincipalArn: String(length >= 1)?
+    /// The Kubernetes user that the access entry is associated with.
+    Username: String?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The ARN of the access entry.
+    AccessEntryArn: String?
+    /// The Kubernetes groups that the access entry is associated with.
+    KubernetesGroups: Listing<String>?
+    /// An array of access policies that are associated with the access entry.
+    AccessPolicies: Listing<AccessPolicy>?
+    /// The node type to associate with the access entry.
+    Type: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}
+/// An access policy to associate with the current access entry.
+class AccessPolicy {
+    /// The ARN of the access policy to add to the access entry.
+    PolicyArn: String
+    AccessScope: AccessScope
+}
+/// The access scope of the access policy.
+class AccessScope {
+    /// The type of the access scope.
+    Type: "namespace" | "cluster"
+    /// The namespaces to associate with the access scope. Only specify if
+    /// Type is set to 'namespace'.
+    Namespaces: Listing<String>?
+}

@@ -1,0 +1,9 @@
+/// Resource Type definition for AWS::EC2::VPNGatewayRoutePropagation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VPNGatewayRoutePropagation"
+Properties: Props?
+class Props {
+    Id: String?
+    RouteTableIds: Listing<String>?
+    VpnGatewayId: String?
+}

@@ -1,0 +1,11 @@
+/// Resource Type Definition for AWS::S3Outposts::BucketPolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::S3Outposts::BucketPolicy"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the specified bucket.
+    Bucket: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[^:]+:s3-outposts:[a-zA-Z0-9\-]+:\d{12}:outpost\/[^:]+\/bucket\/[^:]+$"#)))?
+    /// A policy document containing permissions to add to the specified
+    /// bucket.
+    PolicyDocument: Mapping?
+}

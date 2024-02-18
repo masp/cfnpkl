@@ -1,0 +1,33 @@
+/// Resource Type definition for AWS::Config::ConfigurationRecorder
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Config::ConfigurationRecorder"
+Properties: Props?
+class Props {
+    Id: String?
+    RecordingGroup: RecordingGroup?
+    RecordingMode: RecordingMode?
+    RoleARN: String?
+    Name: String?
+}
+class RecordingGroup {
+    IncludeGlobalResourceTypes: Boolean?
+    ResourceTypes: Listing<String>?
+    RecordingStrategy: RecordingStrategy?
+    ExclusionByResourceTypes: ExclusionByResourceTypes?
+    AllSupported: Boolean?
+}
+class RecordingStrategy {
+    UseOnly: String
+}
+class ExclusionByResourceTypes {
+    ResourceTypes: Listing<String>
+}
+class RecordingMode {
+    RecordingModeOverrides: Listing<RecordingModeOverride>?
+    RecordingFrequency: String
+}
+class RecordingModeOverride {
+    ResourceTypes: Listing<String>
+    RecordingFrequency: String
+    Description: String?
+}

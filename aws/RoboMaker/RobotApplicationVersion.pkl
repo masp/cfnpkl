@@ -1,0 +1,13 @@
+/// AWS::RoboMaker::RobotApplicationVersion resource creates an AWS
+/// RoboMaker RobotApplicationVersion. This helps you control which code
+/// your robot uses.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RoboMaker::RobotApplicationVersion"
+Properties: Props?
+class Props {
+    Application: String(matches(Regex(#"arn:[\w+=/,.@-]+:[\w+=/,.@-]+:[\w+=/,.@-]*:[0-9]*:[\w+=,.@-]+(/[\w+=,.@-]+)*"#)))?
+    /// The revision ID of robot application.
+    CurrentRevisionId: String(length <= 40 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_.\-]*"#)))?
+    ApplicationVersion: String?
+    Arn: String(matches(Regex(#"arn:[\w+=/,.@-]+:[\w+=/,.@-]+:[\w+=/,.@-]*:[0-9]*:[\w+=,.@-]+(/[\w+=,.@-]+)*"#)))?
+}

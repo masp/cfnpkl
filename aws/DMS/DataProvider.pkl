@@ -1,0 +1,87 @@
+/// Resource schema for AWS::DMS::DataProvider
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DMS::DataProvider"
+Properties: Props?
+class Props {
+    /// The property describes a name to identify the data provider.
+    DataProviderName: String(length <= 255 && length >= 1)?
+    /// The property describes an identifier for the data provider. It is used
+    /// for describing/deleting/modifying can be name/arn
+    DataProviderIdentifier: String(length <= 255 && length >= 1)?
+    /// The data provider ARN.
+    DataProviderArn: String(length <= 255 && length >= 1)?
+    /// The data provider creation time.
+    DataProviderCreationTime: String(length <= 40 && length >= 1)?
+    /// The optional description of the data provider.
+    Description: String(length <= 255 && length >= 1)?
+    /// The property describes a data engine for the data provider.
+    Engine: "postgresql" | "mysql" | "oracle" | "sqlserver" | "aurora" | "aurora_postgresql" | *Null
+    /// The property describes the exact settings which can be modified
+    ExactSettings: Boolean?
+    /// The property identifies the exact type of settings for the data
+    /// provider.
+    Settings: Settings0 | Settings1 | Settings2 | Settings3 | *Null
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// PostgreSqlSettings property identifier.
+class Settings0 {
+    PostgreSqlSettings: PostgreSqlSettings?
+}
+class PostgreSqlSettings {
+    ServerName: String?
+    Port: Int?
+    DatabaseName: String?
+    SslMode: "none" | "require" | "verify_ca" | "verify_full" | *Null
+    CertificateArn: String?
+}
+/// MySqlSettings property identifier.
+class Settings1 {
+    MySqlSettings: MySqlSettings?
+}
+class MySqlSettings {
+    ServerName: String?
+    Port: Int?
+    SslMode: "none" | "require" | "verify_ca" | "verify_full" | *Null
+    CertificateArn: String?
+}
+/// OracleSettings property identifier.
+class Settings2 {
+    OracleSettings: OracleSettings?
+}
+class OracleSettings {
+    ServerName: String?
+    Port: Int?
+    DatabaseName: String?
+    SslMode: "none" | "require" | "verify_ca" | "verify_full" | *Null
+    CertificateArn: String?
+    AsmServer: String?
+    SecretsManagerOracleAsmSecretId: String?
+    SecretsManagerOracleAsmAccessRoleArn: String?
+    SecretsManagerSecurityDbEncryptionSecretId: String?
+    SecretsManagerSecurityDbEncryptionAccessRoleArn: String?
+}
+/// MicrosoftSqlServerSettings property identifier.
+class Settings3 {
+    MicrosoftSqlServerSettings: MicrosoftSqlServerSettings?
+}
+class MicrosoftSqlServerSettings {
+    ServerName: String?
+    Port: Int?
+    DatabaseName: String?
+    SslMode: "none" | "require" | "verify_ca" | "verify_full" | *Null
+    CertificateArn: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

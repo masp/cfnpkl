@@ -1,0 +1,24 @@
+/// This resource creates a Registry for authoring schemas as part of Glue
+/// Schema Registry.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::Registry"
+Properties: Props?
+class Props {
+    /// Amazon Resource Name for the created Registry.
+    Arn: String(matches(Regex(#"arn:aws(-(cn|us-gov|iso(-[bef])?))?:glue:.*"#)))?
+    /// Name of the registry to be created of max length of 255, and may only
+    /// contain letters, numbers, hyphen, underscore, dollar sign, or hash
+    /// mark.  No whitespace.
+    Name: String(length <= 255 && length >= 1)?
+    /// A description of the registry. If description is not provided, there
+    /// will not be any default value for this.
+    Description: String(length <= 1000 && length >= 0)?
+    /// List of tags to tag the Registry
+    Tags: Listing<Tag>?
+}
+class Tag {
+    /// A key to identify the tag.
+    Key: String(length <= 128 && length >= 1)
+    /// Corresponding tag value for the key.
+    Value: String(length <= 256 && length >= 0)
+}

@@ -1,0 +1,52 @@
+/// Resource schema for AWS::DataSync::StorageSystem.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataSync::StorageSystem"
+Properties: Props?
+class Props {
+    ServerConfiguration: ServerConfiguration?
+    ServerCredentials: ServerCredentials?
+    /// The ARN of a secret stored by AWS Secrets Manager.
+    SecretsManagerArn: String(length <= 2048 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):secretsmanager:[a-z\-0-9]+:[0-9]{12}:secret:.*"#)))?
+    /// The type of on-premises storage system that DataSync Discovery will
+    /// analyze.
+    SystemType: "NetAppONTAP" | *Null
+    /// The ARN of the DataSync agent that connects to and reads from the on-
+    /// premises storage system's management interface.
+    AgentArns: Listing<String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:agent/agent-[0-9a-z]{17}$"#)))>?
+    /// The ARN of the Amazon CloudWatch log group used to monitor and log
+    /// discovery job events.
+    CloudWatchLogGroupArn: String(length <= 562 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):logs:[a-z\-0-9]+:[0-9]{12}:log-group:([^:\*]*)(:\*)?$"#)))?
+    /// A familiar name for the on-premises storage system.
+    Name: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The ARN of the on-premises storage system added to DataSync Discovery.
+    StorageSystemArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:system/storage-system-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"#)))?
+    /// Indicates whether the DataSync agent can access the on-premises
+    /// storage system.
+    ConnectivityStatus: "PASS" | "FAIL" | "UNKNOWN" | *Null
+}
+/// The server name and network port required to connect with the
+/// management interface of the on-premises storage system.
+class ServerConfiguration {
+    /// The domain name or IP address of the storage system's management
+    /// interface.
+    ServerHostname: String(length <= 255 && matches(Regex(#"^(([a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9\-]*[A-Za-z0-9])$"#)))
+    /// The network port needed to access the system's management interface
+    ServerPort: Int?
+}
+/// The username and password for accessing your on-premises storage
+/// system's management interface.
+class ServerCredentials {
+    /// The username for your storage system's management interface.
+    Username: String(length <= 1024)
+    /// The password for your storage system's management interface
+    Password: String(length <= 1024)
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for an AWS resource tag.
+    Key: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:/-]+$"#)))
+    /// The value for an AWS resource tag.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))
+}

@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::WAF::XssMatchSet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAF::XssMatchSet"
+Properties: Props?
+class Props {
+    Id: String?
+    Name: String?
+    XssMatchTuples: Listing<XssMatchTuple>?
+}
+class XssMatchTuple {
+    FieldToMatch: FieldToMatch
+    TextTransformation: String
+}
+class FieldToMatch {
+    Data: String?
+    Type: String
+}

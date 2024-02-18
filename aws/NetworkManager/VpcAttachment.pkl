@@ -1,0 +1,71 @@
+/// AWS::NetworkManager::VpcAttachment Resoruce Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkManager::VpcAttachment"
+Properties: Props?
+class Props {
+    /// The ID of a core network for the VPC attachment.
+    CoreNetworkId: String?
+    /// The ARN of a core network for the VPC attachment.
+    CoreNetworkArn: String?
+    /// Id of the attachment.
+    AttachmentId: String?
+    /// Owner account of the attachment.
+    OwnerAccountId: String?
+    /// Attachment type.
+    AttachmentType: String?
+    /// State of the attachment.
+    State: String?
+    /// The Region where the edge is located.
+    EdgeLocation: String?
+    /// The ARN of the VPC.
+    VpcArn: String?
+    /// The ARN of the Resource.
+    ResourceArn: String?
+    /// The policy rule number associated with the attachment.
+    AttachmentPolicyRuleNumber: Int?
+    /// The name of the segment attachment..
+    SegmentName: String?
+    /// The attachment to move from one segment to another.
+    ProposedSegmentChange: ProposedSegmentChange?
+    /// Tags for the attachment.
+    Tags: Listing<Tag>?
+    /// Creation time of the attachment.
+    CreatedAt: String?
+    /// Last update time of the attachment.
+    UpdatedAt: String?
+    /// Subnet Arn list
+    SubnetArns: Listing<String>?
+    /// Vpc options of the attachment.
+    Options: VpcOptions?
+}
+/// The attachment to move from one segment to another.
+class ProposedSegmentChange {
+    /// The key-value tags that changed for the segment.
+    Tags: Listing<Tag>?
+    /// The rule number in the policy document that applies to this change.
+    AttachmentPolicyRuleNumber: Int?
+    /// The name of the segment to change.
+    SegmentName: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String
+}
+/// Vpc options of the attachment.
+class VpcOptions {
+    /// Indicates whether to enable Ipv6 Support for Vpc Attachment. Valid
+    /// Values: enable | disable
+    Ipv6Support: Boolean?
+    /// Indicates whether to enable ApplianceModeSupport Support for Vpc
+    /// Attachment. Valid Values: true | false
+    ApplianceModeSupport: Boolean?
+}

@@ -1,0 +1,36 @@
+/// Resource schema for AWS::MediaPackage::Asset
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaPackage::Asset"
+Properties: Props?
+class Props {
+    /// The ARN of the Asset.
+    Arn: String?
+    /// The time the Asset was initially submitted for Ingest.
+    CreatedAt: String?
+    /// The list of egress endpoints available for the Asset.
+    EgressEndpoints: Listing<EgressEndpoint>?
+    /// The unique identifier for the Asset.
+    Id: String?
+    /// The ID of the PackagingGroup for the Asset.
+    PackagingGroupId: String?
+    /// The resource ID to include in SPEKE key requests.
+    ResourceId: String?
+    /// ARN of the source object in S3.
+    SourceArn: String?
+    /// The IAM role_arn used to access the source S3 bucket.
+    SourceRoleArn: String?
+    /// A collection of tags associated with a resource
+    Tags: Listing<Tag>?
+}
+/// The endpoint URL used to access an Asset using one
+/// PackagingConfiguration.
+class EgressEndpoint {
+    /// The ID of the PackagingConfiguration being applied to the Asset.
+    PackagingConfigurationId: String
+    /// The URL of the parent manifest for the repackaged Asset.
+    Url: String
+}
+class Tag {
+    Key: String
+    Value: String
+}

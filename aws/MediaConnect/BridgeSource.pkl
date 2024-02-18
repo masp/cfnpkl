@@ -1,0 +1,37 @@
+/// Resource schema for AWS::MediaConnect::BridgeSource
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaConnect::BridgeSource"
+Properties: Props?
+class Props {
+    /// The name of the source.
+    Name: String?
+    /// The Amazon Resource Number (ARN) of the bridge.
+    BridgeArn: String?
+    FlowSource: BridgeFlowSource?
+    NetworkSource: BridgeNetworkSource?
+}
+/// The source of the bridge. A flow source originates in MediaConnect as
+/// an existing cloud flow.
+class BridgeFlowSource {
+    /// The ARN of the cloud flow used as a source of this bridge.
+    FlowArn: String
+    /// The name of the VPC interface attachment to use for this source.
+    FlowVpcInterfaceAttachment: VpcInterfaceAttachment?
+}
+/// The settings for attaching a VPC interface to an resource.
+class VpcInterfaceAttachment {
+    /// The name of the VPC interface to use for this resource.
+    VpcInterfaceName: String?
+}
+/// The source of the bridge. A network source originates at your
+/// premises.
+class BridgeNetworkSource {
+    /// The network source protocol.
+    Protocol: "rtp-fec" | "rtp" | "udp"
+    /// The network source multicast IP.
+    MulticastIp: String
+    /// The network source port.
+    Port: Int
+    /// The network source's gateway network name.
+    NetworkName: String
+}

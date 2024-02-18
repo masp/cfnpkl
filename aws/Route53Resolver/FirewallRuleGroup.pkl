@@ -1,0 +1,66 @@
+/// Resource schema for AWS::Route53Resolver::FirewallRuleGroup.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53Resolver::FirewallRuleGroup"
+Properties: Props?
+class Props {
+    /// ResourceId
+    Id: String(length <= 64 && length >= 1)?
+    /// Arn
+    Arn: String(length <= 600 && length >= 1)?
+    /// FirewallRuleGroupName
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"(?!^[0-9]+$)([a-zA-Z0-9\-_' ']+)"#)))?
+    /// Count
+    RuleCount: Int?
+    /// ResolverFirewallRuleGroupAssociation, possible values are COMPLETE,
+    /// DELETING, UPDATING, and INACTIVE_OWNER_ACCOUNT_CLOSED.
+    Status: "COMPLETE" | "DELETING" | "UPDATING" | "INACTIVE_OWNER_ACCOUNT_CLOSED" | *Null
+    /// FirewallRuleGroupStatus
+    StatusMessage: String?
+    /// AccountId
+    OwnerId: String(length <= 32 && length >= 12)?
+    /// ShareStatus, possible values are NOT_SHARED, SHARED_WITH_ME,
+    /// SHARED_BY_ME.
+    ShareStatus: "NOT_SHARED" | "SHARED_WITH_ME" | "SHARED_BY_ME" | *Null
+    /// The id of the creator request.
+    CreatorRequestId: String(length <= 255 && length >= 1)?
+    /// Rfc3339TimeString
+    CreationTime: String(length <= 40 && length >= 20)?
+    /// Rfc3339TimeString
+    ModificationTime: String(length <= 40 && length >= 20)?
+    /// FirewallRules
+    FirewallRules: Listing<FirewallRule>?
+    /// Tags
+    Tags: Listing<Tag>?
+}
+/// Firewall Rule associating the Rule Group to a Domain List
+class FirewallRule {
+    /// ResourceId
+    FirewallDomainListId: String(length <= 64 && length >= 1)
+    /// Rule Priority
+    Priority: Int
+    /// Rule Action
+    Action: "ALLOW" | "BLOCK" | "ALERT"
+    /// BlockResponse
+    BlockResponse: "NODATA" | "NXDOMAIN" | "OVERRIDE" | *Null
+    /// BlockOverrideDomain
+    BlockOverrideDomain: String(length <= 255 && length >= 1)?
+    /// BlockOverrideDnsType
+    BlockOverrideDnsType: "CNAME" | *Null
+    /// BlockOverrideTtl
+    BlockOverrideTtl: Int?
+    /// Qtype
+    Qtype: String(length <= 16 && length >= 1)?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 127 && length >= 1)
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 255 && length >= 0)
+}

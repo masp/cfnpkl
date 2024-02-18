@@ -1,0 +1,334 @@
+/// Definition of the AWS::QuickSight::DataSource Resource Type.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::QuickSight::DataSource"
+Properties: Props?
+class Props {
+    /// <p>A set of alternate data source parameters that you want to share
+    /// for the credentials             stored with this data source. The
+    /// credentials are applied in tandem with the data source
+    /// parameters when you copy a data source by using a create or update
+    /// request. The API             operation compares the
+    /// <code>DataSourceParameters</code> structure that's in the request
+    /// with the structures in the <code>AlternateDataSourceParameters</code>
+    /// allow list. If the             structures are an exact match, the
+    /// request is allowed to use the credentials from this
+    /// existing data source. If the
+    /// <code>AlternateDataSourceParameters</code> list is null,
+    /// the <code>Credentials</code> originally used with this
+    /// <code>DataSourceParameters</code>             are automatically
+    /// allowed.</p>
+    AlternateDataSourceParameters: Listing<DataSourceParameters>?
+    /// <p>The Amazon Resource Name (ARN) of the data source.</p>
+    Arn: String?
+    AwsAccountId: String(length <= 12 && length >= 12 && matches(Regex(#"^[0-9]{12}$"#)))?
+    /// <p>The time that this data source was created.</p>
+    CreatedTime: String?
+    Credentials: DataSourceCredentials?
+    DataSourceId: String?
+    DataSourceParameters: DataSourceParameters?
+    ErrorInfo: DataSourceErrorInfo?
+    /// <p>The last time that this data source was updated.</p>
+    LastUpdatedTime: String?
+    /// <p>A display name for the data source.</p>
+    Name: String(length <= 128 && length >= 1)?
+    /// <p>A list of resource permissions on the data source.</p>
+    Permissions: Listing<ResourcePermission>?
+    SslProperties: SslProperties?
+    Status: "CREATION_IN_PROGRESS" | "CREATION_SUCCESSFUL" | "CREATION_FAILED" | "UPDATE_IN_PROGRESS" | "UPDATE_SUCCESSFUL" | "UPDATE_FAILED" | "DELETED" | *Null
+    /// <p>Contains a map of the key-value pairs for the resource tag or tags
+    /// assigned to the data source.</p>
+    Tags: Listing<Tag>?
+    Type: "ADOBE_ANALYTICS" | "AMAZON_ELASTICSEARCH" | "AMAZON_OPENSEARCH" | "ATHENA" | "AURORA" | "AURORA_POSTGRESQL" | "AWS_IOT_ANALYTICS" | "DATABRICKS" | "GITHUB" | "JIRA" | "MARIADB" | "MYSQL" | "ORACLE" | "POSTGRESQL" | "PRESTO" | "REDSHIFT" | "S3" | "SALESFORCE" | "SERVICENOW" | "SNOWFLAKE" | "SPARK" | "SQLSERVER" | "TERADATA" | "TWITTER" | "TIMESTREAM" | "STARBURST" | "TRINO" | *Null
+    VpcConnectionProperties: VpcConnectionProperties?
+}
+/// <p>The parameters that Amazon QuickSight uses to connect to your
+/// underlying data source.             This is a variant type structure.
+/// For this structure to be valid, only one of the             attributes
+/// can be non-null.</p>
+class DataSourceParameters {
+    AuroraPostgreSqlParameters: AuroraPostgreSqlParameters?
+    TeradataParameters: TeradataParameters?
+    RdsParameters: RdsParameters?
+    AthenaParameters: AthenaParameters?
+    SparkParameters: SparkParameters?
+    MariaDbParameters: MariaDbParameters?
+    OracleParameters: OracleParameters?
+    PrestoParameters: PrestoParameters?
+    RedshiftParameters: RedshiftParameters?
+    MySqlParameters: MySqlParameters?
+    SqlServerParameters: SqlServerParameters?
+    SnowflakeParameters: SnowflakeParameters?
+    AmazonElasticsearchParameters: AmazonElasticsearchParameters?
+    AmazonOpenSearchParameters: AmazonOpenSearchParameters?
+    PostgreSqlParameters: PostgreSqlParameters?
+    AuroraParameters: AuroraParameters?
+    S3Parameters: S3Parameters?
+    DatabricksParameters: DatabricksParameters?
+    StarburstParameters: StarburstParameters?
+    TrinoParameters: TrinoParameters?
+}
+/// <p>Amazon Aurora with PostgreSQL compatibility parameters.</p>
+class AuroraPostgreSqlParameters {
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Database.</p>
+    Database: String(length <= 128 && length >= 1)
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+}
+/// <p>Teradata parameters.</p>
+class TeradataParameters {
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Database.</p>
+    Database: String(length <= 128 && length >= 1)
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+}
+/// <p>Amazon RDS parameters.</p>
+class RdsParameters {
+    /// <p>Instance ID.</p>
+    InstanceId: String(length <= 64 && length >= 1)
+    /// <p>Database.</p>
+    Database: String(length <= 128 && length >= 1)
+}
+/// <p>Amazon Athena parameters.</p>
+class AthenaParameters {
+    /// <p>The workgroup that Amazon Athena uses.</p>
+    WorkGroup: String(length <= 128 && length >= 1)?
+    /// <p>Use the <code>RoleArn</code> structure to override an account-wide
+    /// role for a specific Athena data source. For example, say an account
+    /// administrator has turned off all Athena access with an account-wide
+    /// role. The administrator can then use <code>RoleArn</code> to bypass
+    /// the account-wide role and allow Athena access for the single Athena
+    /// data source that is specified in the structure, even if the account-
+    /// wide role forbidding Athena access is still active.</p>
+    RoleArn: String(length <= 2048 && length >= 20)?
+}
+/// <p>Spark parameters.</p>
+class SparkParameters {
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+}
+/// <p>MariaDB parameters.</p>
+class MariaDbParameters {
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Database.</p>
+    Database: String(length <= 128 && length >= 1)
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+}
+class OracleParameters {
+    Port: Float
+    Database: String(length <= 128 && length >= 1)
+    Host: String(length <= 256 && length >= 1)
+}
+/// <p>Presto parameters.</p>
+class PrestoParameters {
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+    /// <p>Catalog.</p>
+    Catalog: String(length <= 128 && length >= 0)
+}
+/// <p>Amazon Redshift parameters. The <code>ClusterId</code> field can be
+/// blank if             <code>Host</code> and <code>Port</code> are both
+/// set. The <code>Host</code> and             <code>Port</code> fields
+/// can be blank if the <code>ClusterId</code> field is set.</p>
+class RedshiftParameters {
+    /// <p>Cluster ID. This field can be blank if the <code>Host</code> and
+    /// <code>Port</code> are             provided.</p>
+    ClusterId: String(length <= 64 && length >= 1)?
+    /// <p>Port. This field can be blank if the <code>ClusterId</code> is
+    /// provided.</p>
+    Port: Float?
+    /// <p>Database.</p>
+    Database: String(length <= 128 && length >= 1)
+    /// <p>Host. This field can be blank if <code>ClusterId</code> is
+    /// provided.</p>
+    Host: String(length <= 256 && length >= 1)?
+}
+/// <p>MySQL parameters.</p>
+class MySqlParameters {
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Database.</p>
+    Database: String(length <= 128 && length >= 1)
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+}
+/// <p>SQL Server parameters.</p>
+class SqlServerParameters {
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Database.</p>
+    Database: String(length <= 128 && length >= 1)
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+}
+/// <p>Snowflake parameters.</p>
+class SnowflakeParameters {
+    /// <p>Warehouse.</p>
+    Warehouse: String(length <= 128 && length >= 0)
+    /// <p>Database.</p>
+    Database: String(length <= 128 && length >= 1)
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+}
+/// <p>Amazon Elasticsearch Service parameters.</p>
+class AmazonElasticsearchParameters {
+    /// <p>The Amazon Elasticsearch Service domain.</p>
+    Domain: String(length <= 64 && length >= 1)
+}
+/// <p>Amazon OpenSearch Service parameters.</p>
+class AmazonOpenSearchParameters {
+    /// <p>The Amazon OpenSearch Service domain.</p>
+    Domain: String(length <= 64 && length >= 1)
+}
+/// <p>PostgreSQL parameters.</p>
+class PostgreSqlParameters {
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Database.</p>
+    Database: String(length <= 128 && length >= 1)
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+}
+/// <p>Amazon Aurora parameters.</p>
+class AuroraParameters {
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Database.</p>
+    Database: String(length <= 128 && length >= 1)
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+}
+/// <p>S3 parameters.</p>
+class S3Parameters {
+    ManifestFileLocation: ManifestFileLocation
+    /// <p>Use the <code>RoleArn</code> structure to override an account-wide
+    /// role for a specific S3 data source. For example, say an account
+    /// administrator has turned off all S3 access with an account-wide role.
+    /// The administrator can then use <code>RoleArn</code> to bypass the
+    /// account-wide role and allow S3 access for the single S3 data source
+    /// that is specified in the structure, even if the account-wide role
+    /// forbidding S3 access is still active.</p>
+    RoleArn: String(length <= 2048 && length >= 20)?
+}
+/// <p>Amazon S3 manifest file location.</p>
+class ManifestFileLocation {
+    /// <p>Amazon S3 bucket.</p>
+    Bucket: String(length <= 1024 && length >= 1)
+    /// <p>Amazon S3 key that identifies an object.</p>
+    Key: String(length <= 1024 && length >= 1)
+}
+/// <p>Databricks parameters.</p>
+class DatabricksParameters {
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>The HTTP Path of the Databricks data source.</p>
+    SqlEndpointPath: String(length <= 4096 && length >= 1)
+}
+/// <p>Starburst parameters.</p>
+class StarburstParameters {
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Catalog.</p>
+    Catalog: String(length <= 128 && length >= 0)
+    ProductType: "GALAXY" | "ENTERPRISE" | *Null
+}
+/// <p>Trino parameters.</p>
+class TrinoParameters {
+    /// <p>Host.</p>
+    Host: String(length <= 256 && length >= 1)
+    /// <p>Port.</p>
+    Port: Float
+    /// <p>Catalog.</p>
+    Catalog: String(length <= 128 && length >= 0)
+}
+/// <p>Data source credentials. This is a variant type structure. For this
+/// structure to be             valid, only one of the attributes can be
+/// non-null.</p>
+class DataSourceCredentials {
+    /// <p>The Amazon Resource Name (ARN) of a data source that has the
+    /// credential pair that you             want to use. When
+    /// <code>CopySourceArn</code> is not null, the credential pair from the
+    /// data source in the ARN is used as the credentials for the
+    /// <code>DataSourceCredentials</code> structure.</p>
+    CopySourceArn: String(matches(Regex(#"^arn:[-a-z0-9]*:quicksight:[-a-z0-9]*:[0-9]{12}:datasource/.+"#)))?
+    CredentialPair: CredentialPair?
+    /// <p>The Amazon Resource Name (ARN) of the secret associated with the
+    /// data source in Amazon Secrets Manager.</p>
+    SecretArn: String(length <= 2048 && length >= 1 && matches(Regex(#"^arn:[-a-z0-9]*:secretsmanager:[-a-z0-9]*:[0-9]{12}:secret:.+"#)))?
+}
+/// <p>The combination of user name and password that are used as
+/// credentials.</p>
+class CredentialPair {
+    /// <p>A set of alternate data source parameters that you want to share
+    /// for these             credentials. The credentials are applied in
+    /// tandem with the data source parameters when             you copy a
+    /// data source by using a create or update request. The API operation
+    /// compares             the <code>DataSourceParameters</code> structure
+    /// that's in the request with the             structures in the
+    /// <code>AlternateDataSourceParameters</code> allow list. If the
+    /// structures are an exact match, the request is allowed to use the new
+    /// data source with             the existing credentials. If the
+    /// <code>AlternateDataSourceParameters</code> list is             null,
+    /// the <code>DataSourceParameters</code> originally used with these
+    /// <code>Credentials</code> is automatically allowed.</p>
+    AlternateDataSourceParameters: Listing<DataSourceParameters>?
+    /// <p>User name.</p>
+    Username: String(length <= 64 && length >= 1)
+    /// <p>Password.</p>
+    Password: String(length <= 1024 && length >= 1)
+}
+/// <p>Error information for the data source creation or update.</p>
+class DataSourceErrorInfo {
+    Type: "ACCESS_DENIED" | "COPY_SOURCE_NOT_FOUND" | "TIMEOUT" | "ENGINE_VERSION_NOT_SUPPORTED" | "UNKNOWN_HOST" | "GENERIC_SQL_FAILURE" | "CONFLICT" | "UNKNOWN" | *Null
+    /// <p>Error message.</p>
+    Message: String?
+}
+/// <p>Permission for the resource.</p>
+class ResourcePermission {
+    /// <p>The IAM action to grant or revoke permissions on.</p>
+    Actions: Listing<String>
+    /// <p>The Amazon Resource Name (ARN) of the principal. This can be one of
+    /// the             following:</p>         <ul>             <li>
+    /// <p>The ARN of an Amazon QuickSight user or group associated with a
+    /// data source or dataset. (This is common.)</p>             </li>
+    /// <li>                 <p>The ARN of an Amazon QuickSight user, group,
+    /// or namespace associated with an analysis, dashboard, template, or
+    /// theme. (This is common.)</p>             </li>             <li>
+    /// <p>The ARN of an AWS account root: This is an IAM ARN rather than a
+    /// QuickSight                     ARN. Use this option only to share
+    /// resources (templates) across AWS accounts.                     (This
+    /// is less common.) </p>             </li>          </ul>
+    Principal: String(length <= 256 && length >= 1)
+}
+/// <p>Secure Socket Layer (SSL) properties that apply when QuickSight
+/// connects to your             underlying data source.</p>
+class SslProperties {
+    /// <p>A Boolean option to control whether SSL should be disabled.</p>
+    DisableSsl: Boolean?
+}
+/// <p>The key or keys of the key-value pairs for the resource tag or tags
+/// assigned to the             resource.</p>
+class Tag {
+    /// <p>Tag value.</p>
+    Value: String(length <= 256 && length >= 1)
+    /// <p>Tag key.</p>
+    Key: String(length <= 128 && length >= 1)
+}
+/// <p>VPC connection properties.</p>
+class VpcConnectionProperties {
+    /// <p>The Amazon Resource Name (ARN) for the VPC connection.</p>
+    VpcConnectionArn: String
+}

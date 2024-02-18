@@ -1,0 +1,36 @@
+/// Definition of the AWS::QuickSight::RefreshSchedule Resource Type.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::QuickSight::RefreshSchedule"
+Properties: Props?
+class Props {
+    /// <p>The Amazon Resource Name (ARN) of the data source.</p>
+    Arn: String?
+    AwsAccountId: String(length <= 12 && length >= 12 && matches(Regex(#"^[0-9]{12}$"#)))?
+    DataSetId: String?
+    Schedule: RefreshScheduleMap?
+}
+class RefreshScheduleMap {
+    /// <p>An unique identifier for the refresh schedule.</p>
+    ScheduleId: String(length <= 128 && length >= 1)?
+    /// <p>Information about the schedule frequency.</p>
+    ScheduleFrequency: ScheduleFrequency?
+    /// <p>The date time after which refresh is to be scheduled</p>
+    StartAfterDateTime: String(length <= 128 && length >= 1)?
+    RefreshType: "FULL_REFRESH" | "INCREMENTAL_REFRESH" | *Null
+}
+/// <p>Information about the schedule frequency.</p>
+class ScheduleFrequency {
+    Interval: "MINUTE15" | "MINUTE30" | "HOURLY" | "DAILY" | "WEEKLY" | "MONTHLY" | *Null
+    /// <p>The day scheduled for refresh.</p>
+    RefreshOnDay: RefreshOnDay?
+    /// <p>The timezone for scheduled refresh.</p>
+    TimeZone: String(length <= 128 && length >= 1)?
+    /// <p>The time of the day for scheduled refresh.</p>
+    TimeOfTheDay: String(length <= 128 && length >= 1)?
+}
+/// <p>The day scheduled for refresh.</p>
+class RefreshOnDay {
+    DayOfWeek: "SUNDAY" | "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | *Null
+    /// <p>The Day Of Month for scheduled refresh.</p>
+    DayOfMonth: String(length <= 128 && length >= 1)?
+}

@@ -1,0 +1,92 @@
+/// Resource Type definition for AWS::CloudFront::ResponseHeadersPolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::ResponseHeadersPolicy"
+Properties: Props?
+class Props {
+    Id: String?
+    LastModifiedTime: String?
+    ResponseHeadersPolicyConfig: ResponseHeadersPolicyConfig?
+}
+class ResponseHeadersPolicyConfig {
+    Comment: String?
+    CorsConfig: CorsConfig?
+    CustomHeadersConfig: CustomHeadersConfig?
+    Name: String
+    RemoveHeadersConfig: RemoveHeadersConfig?
+    SecurityHeadersConfig: SecurityHeadersConfig?
+    ServerTimingHeadersConfig: ServerTimingHeadersConfig?
+}
+class CorsConfig {
+    AccessControlAllowCredentials: Boolean
+    AccessControlAllowHeaders: AccessControlAllowHeaders
+    AccessControlAllowMethods: AccessControlAllowMethods
+    AccessControlAllowOrigins: AccessControlAllowOrigins
+    AccessControlExposeHeaders: AccessControlExposeHeaders?
+    AccessControlMaxAgeSec: Int?
+    OriginOverride: Boolean
+}
+class AccessControlAllowHeaders {
+    Items: Listing<String>
+}
+class AccessControlAllowMethods {
+    Items: Listing<String>
+}
+class AccessControlAllowOrigins {
+    Items: Listing<String>
+}
+class AccessControlExposeHeaders {
+    Items: Listing<String>
+}
+class CustomHeadersConfig {
+    Items: Listing<CustomHeader>
+}
+class CustomHeader {
+    Header: String
+    Override: Boolean
+    Value: String
+}
+class RemoveHeadersConfig {
+    Items: Listing<RemoveHeader>
+}
+class RemoveHeader {
+    Header: String
+}
+class SecurityHeadersConfig {
+    ContentSecurityPolicy: ContentSecurityPolicy?
+    ContentTypeOptions: ContentTypeOptions?
+    FrameOptions: FrameOptions?
+    ReferrerPolicy: ReferrerPolicy?
+    StrictTransportSecurity: StrictTransportSecurity?
+    XSSProtection: XSSProtection?
+}
+class ContentSecurityPolicy {
+    ContentSecurityPolicy: String
+    Override: Boolean
+}
+class ContentTypeOptions {
+    Override: Boolean
+}
+class FrameOptions {
+    FrameOption: String(matches(Regex(#"^(DENY|SAMEORIGIN)$"#)))
+    Override: Boolean
+}
+class ReferrerPolicy {
+    Override: Boolean
+    ReferrerPolicy: String(matches(Regex(#"^(no-referrer|no-referrer-when-downgrade|origin|origin-when-cross-origin|same-origin|strict-origin|strict-origin-when-cross-origin|unsafe-url)$"#)))
+}
+class StrictTransportSecurity {
+    AccessControlMaxAgeSec: Int
+    IncludeSubdomains: Boolean?
+    Override: Boolean
+    Preload: Boolean?
+}
+class XSSProtection {
+    ModeBlock: Boolean?
+    Override: Boolean
+    Protection: Boolean
+    ReportUri: String?
+}
+class ServerTimingHeadersConfig {
+    Enabled: Boolean
+    SamplingRate: Float?
+}

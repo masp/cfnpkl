@@ -1,0 +1,9 @@
+/// Resource Type definition for AWS::AppSync::DomainNameApiAssociation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppSync::DomainNameApiAssociation"
+Properties: Props?
+class Props {
+    DomainName: String(length <= 253 && length >= 1 && matches(Regex(#"^(\*[a-z\d-]*\.)?([a-z\d-]+\.)+[a-z\d-]+$"#)))?
+    ApiId: String?
+    ApiAssociationIdentifier: String?
+}

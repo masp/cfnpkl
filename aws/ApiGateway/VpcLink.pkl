@@ -1,0 +1,23 @@
+/// Schema for AWS ApiGateway VpcLink
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::VpcLink"
+Properties: Props?
+class Props {
+    /// A name for the VPC link.
+    Name: String?
+    /// A description of the VPC link.
+    Description: String?
+    /// An array of arbitrary tags (key-value pairs) to associate with the
+    /// stage.
+    Tags: Listing<Tag>?
+    /// The ARN of network load balancer of the VPC targeted by the VPC link.
+    /// The network load balancer must be owned by the same AWS account of the
+    /// API owner.
+    TargetArns: Listing<String>?
+    /// The ID of the instance that backs VPC link.
+    VpcLinkId: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

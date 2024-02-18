@@ -1,0 +1,16 @@
+/// Resource Type definition for
+/// AWS::Greengrass::SubscriptionDefinitionVersion
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Greengrass::SubscriptionDefinitionVersion"
+Properties: Props?
+class Props {
+    Id: String?
+    SubscriptionDefinitionId: String?
+    Subscriptions: Listing<Subscription>?
+}
+class Subscription {
+    Target: String
+    Id: String
+    Source: String
+    Subject: String
+}

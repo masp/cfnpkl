@@ -1,0 +1,19 @@
+/// Resource Type definition for AWS::SageMaker::CodeRepository
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::CodeRepository"
+Properties: Props?
+class Props {
+    GitConfig: GitConfig?
+    CodeRepositoryName: String?
+    Id: String?
+    Tags: Listing<Tag>?
+}
+class GitConfig {
+    SecretArn: String?
+    RepositoryUrl: String
+    Branch: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

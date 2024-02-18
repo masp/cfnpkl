@@ -1,0 +1,39 @@
+/// Resource schema for AWS::DataSync::LocationNFS
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataSync::LocationNFS"
+Properties: Props?
+class Props {
+    MountOptions: MountOptions?
+    OnPremConfig: OnPremConfig?
+    /// The name of the NFS server. This value is the IP address or DNS name
+    /// of the NFS server.
+    ServerHostname: String(length <= 255 && matches(Regex(#"^(([a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9\-]*[A-Za-z0-9])$"#)))?
+    /// The subdirectory in the NFS file system that is used to read data from
+    /// the NFS source location or write data to the NFS destination.
+    Subdirectory: String(length <= 4096 && matches(Regex(#"^[a-zA-Z0-9_\-\+\./\(\)\$\p{Zs}]+$"#)))?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the NFS location.
+    LocationArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:location/loc-[0-9a-z]{17}$"#)))?
+    /// The URL of the NFS location that was described.
+    LocationUri: String(length <= 4356 && matches(Regex(#"^(efs|nfs|s3|smb|fsxw)://[a-zA-Z0-9./\-]+$"#)))?
+}
+/// The NFS mount options that DataSync can use to mount your NFS share.
+class MountOptions {
+    /// The specific NFS version that you want DataSync to use to mount your
+    /// NFS share.
+    Version: "AUTOMATIC" | "NFS3" | "NFS4_0" | "NFS4_1" | *Null
+}
+/// Contains a list of Amazon Resource Names (ARNs) of agents that are
+/// used to connect an NFS server.
+class OnPremConfig {
+    /// ARN(s) of the agent(s) to use for an NFS location.
+    AgentArns: Listing<String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:agent/agent-[0-9a-z]{17}$"#)))>
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for an AWS resource tag.
+    Key: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:/-]+$"#)))
+    /// The value for an AWS resource tag.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))
+}

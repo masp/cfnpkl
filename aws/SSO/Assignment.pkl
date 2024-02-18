@@ -1,0 +1,18 @@
+/// Resource Type definition for SSO assignmet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSO::Assignment"
+Properties: Props?
+class Props {
+    /// The sso instance that the permission set is owned.
+    InstanceArn: String(length <= 1224 && length >= 10 && matches(Regex(#"arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):sso:::instance/(sso)?ins-[a-zA-Z0-9-.]{16}"#)))?
+    /// The account id to be provisioned.
+    TargetId: String(matches(Regex(#"\d{12}"#)))?
+    /// The type of resource to be provsioned to, only aws account now
+    TargetType: "AWS_ACCOUNT" | *Null
+    /// The permission set that the assignemt will be assigned
+    PermissionSetArn: String(length <= 1224 && length >= 10 && matches(Regex(#"arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):sso:::permissionSet/(sso)?ins-[a-zA-Z0-9-.]{16}/ps-[a-zA-Z0-9-./]{16}"#)))?
+    /// The assignee's type, user/group
+    PrincipalType: "USER" | "GROUP" | *Null
+    /// The assignee's identifier, user id/group id
+    PrincipalId: String(length <= 47 && length >= 1 && matches(Regex(#"^([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"#)))?
+}

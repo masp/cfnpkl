@@ -1,0 +1,129 @@
+/// Resource Type definition for AWS::Transfer::Workflow
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Transfer::Workflow"
+Properties: Props?
+class Props {
+    /// Specifies the steps (actions) to take if any errors are encountered
+    /// during execution of the workflow.
+    OnExceptionSteps: Listing<WorkflowStep>?
+    /// Specifies the details for the steps that are in the specified
+    /// workflow.
+    Steps: Listing<WorkflowStep>?
+    /// Key-value pairs that can be used to group and search for workflows.
+    /// Tags are metadata attached to workflows for any purpose.
+    Tags: Listing<Tag>?
+    /// A textual description for the workflow.
+    Description: String(length <= 256 && length >= 0 && matches(Regex(#"^[\w\- ]*$"#)))?
+    /// A unique identifier for the workflow.
+    WorkflowId: String(length <= 19 && length >= 19 && matches(Regex(#"^w-([a-z0-9]{17})$"#)))?
+    /// Specifies the unique Amazon Resource Name (ARN) for the workflow.
+    Arn: String(length <= 1600 && length >= 20 && matches(Regex(#"arn:.*"#)))?
+}
+/// The basic building block of a workflow.
+class WorkflowStep {
+    /// Details for a step that performs a file copy.
+    CopyStepDetails: CopyStepDetails?
+    /// Details for a step that invokes a lambda function.
+    CustomStepDetails: CustomStepDetails?
+    /// Details for a step that performs a file decryption.
+    DecryptStepDetails: DecryptStepDetails?
+    /// Details for a step that deletes the file.
+    DeleteStepDetails: DeleteStepDetails?
+    /// Details for a step that creates one or more tags.
+    TagStepDetails: TagStepDetails?
+    Type: "COPY" | "CUSTOM" | "DECRYPT" | "DELETE" | "TAG" | *Null
+}
+/// Details for a step that performs a file copy.
+class CopyStepDetails {
+    DestinationFileLocation: S3FileLocation?
+    /// The name of the step, used as an identifier.
+    Name: String(length <= 30 && length >= 0 && matches(Regex(#"^[\w-]*$"#)))?
+    /// A flag that indicates whether or not to overwrite an existing file of
+    /// the same name. The default is FALSE.
+    OverwriteExisting: "TRUE" | "FALSE" | *Null
+    /// Specifies which file to use as input to the workflow step.
+    SourceFileLocation: String(length <= 256 && length >= 0 && matches(Regex(#"^\$\{(\w+.)+\w+\}$"#)))?
+}
+/// Specifies the location for the file being copied. Only applicable for
+/// the Copy type of workflow steps.
+class S3FileLocation {
+    S3FileLocation: S3InputFileLocation?
+}
+/// Specifies the details for a S3 file.
+class S3InputFileLocation {
+    /// Specifies the S3 bucket that contains the file.
+    Bucket: String(length <= 63 && length >= 3 && matches(Regex(#"^[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9]$"#)))?
+    /// The name assigned to the file when it was created in S3. You use the
+    /// object key to retrieve the object.
+    Key: String(length <= 1024 && length >= 0 && matches(Regex(#".*"#)))?
+}
+/// Details for a step that invokes a lambda function.
+class CustomStepDetails {
+    /// The name of the step, used as an identifier.
+    Name: String(length <= 30 && length >= 0 && matches(Regex(#"^[\w-]*$"#)))?
+    /// The ARN for the lambda function that is being called.
+    Target: String(length <= 170 && length >= 0 && matches(Regex(#"arn:[a-z-]+:lambda:.*$"#)))?
+    /// Timeout, in seconds, for the step.
+    TimeoutSeconds: Int?
+    /// Specifies which file to use as input to the workflow step.
+    SourceFileLocation: String(length <= 256 && length >= 0 && matches(Regex(#"^\$\{(\w+.)+\w+\}$"#)))?
+}
+/// Details for a step that performs a file decryption.
+class DecryptStepDetails {
+    DestinationFileLocation: InputFileLocation?
+    /// The name of the step, used as an identifier.
+    Name: String(length <= 30 && length >= 0 && matches(Regex(#"^[\w-]*$"#)))?
+    /// Specifies which encryption method to use.
+    Type: "PGP" | *Null
+    /// A flag that indicates whether or not to overwrite an existing file of
+    /// the same name. The default is FALSE.
+    OverwriteExisting: "TRUE" | "FALSE" | *Null
+    /// Specifies which file to use as input to the workflow step.
+    SourceFileLocation: String(length <= 256 && length >= 0 && matches(Regex(#"^\$\{(\w+.)+\w+\}$"#)))?
+}
+/// Specifies the location for the file being decrypted. Only applicable
+/// for the Decrypt type of workflow steps.
+class InputFileLocation {
+    S3FileLocation: S3InputFileLocation?
+    EfsFileLocation: EfsInputFileLocation?
+}
+/// Specifies the details for an EFS file.
+class EfsInputFileLocation {
+    /// Specifies the EFS filesystem that contains the file.
+    FileSystemId: String(length <= 128 && length >= 0 && matches(Regex(#"^(arn:aws[-a-z]*:elasticfilesystem:[0-9a-z-:]+:(access-point/fsap|file-system/fs)-[0-9a-f]{8,40}|fs(ap)?-[0-9a-f]{8,40})$"#)))?
+    /// The name assigned to the file when it was created in EFS. You use the
+    /// object path to retrieve the object.
+    Path: String(length <= 65536 && length >= 1 && matches(Regex(#"^[^\x00]+$"#)))?
+}
+/// Details for a step that deletes the file.
+class DeleteStepDetails {
+    /// The name of the step, used as an identifier.
+    Name: String(length <= 30 && length >= 0 && matches(Regex(#"^[\w-]*$"#)))?
+    /// Specifies which file to use as input to the workflow step.
+    SourceFileLocation: String(length <= 256 && length >= 0 && matches(Regex(#"^\$\{(\w+.)+\w+\}$"#)))?
+}
+/// Details for a step that creates one or more tags.
+class TagStepDetails {
+    /// The name of the step, used as an identifier.
+    Name: String(length <= 30 && length >= 0 && matches(Regex(#"^[\w-]*$"#)))?
+    /// Array that contains from 1 to 10 key/value pairs.
+    Tags: Listing<S3Tag>?
+    /// Specifies which file to use as input to the workflow step.
+    SourceFileLocation: String(length <= 256 && length >= 0 && matches(Regex(#"^\$\{(\w+.)+\w+\}$"#)))?
+}
+/// Specifies the key-value pair that are assigned to a file during the
+/// execution of a Tagging step.
+class S3Tag {
+    /// The name assigned to the tag that you create.
+    Key: String(length <= 128 && length >= 1)
+    /// The value that corresponds to the key.
+    Value: String(length <= 256 && length >= 0)
+}
+/// Creates a key-value pair for a specific resource.
+class Tag {
+    /// The name assigned to the tag that you create.
+    Key: String(length <= 128 && length >= 1)
+    /// Contains one or more values that you assigned to the key name you
+    /// create.
+    Value: String(length <= 256 && length >= 0)
+}

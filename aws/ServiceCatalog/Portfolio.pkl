@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::ServiceCatalog::Portfolio
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceCatalog::Portfolio"
+Properties: Props?
+class Props {
+    Id: String?
+    PortfolioName: String?
+    ProviderName: String?
+    Description: String?
+    DisplayName: String?
+    AcceptLanguage: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

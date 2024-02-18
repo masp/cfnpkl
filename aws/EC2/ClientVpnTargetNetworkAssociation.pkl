@@ -1,0 +1,10 @@
+/// Resource Type definition for
+/// AWS::EC2::ClientVpnTargetNetworkAssociation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::ClientVpnTargetNetworkAssociation"
+Properties: Props?
+class Props {
+    Id: String?
+    ClientVpnEndpointId: String?
+    SubnetId: String?
+}

@@ -1,0 +1,27 @@
+/// Resource Type definition for AWS::DAX::Cluster
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DAX::Cluster"
+Properties: Props?
+class Props {
+    SSESpecification: SSESpecification?
+    ClusterDiscoveryEndpointURL: String?
+    Description: String?
+    ReplicationFactor: Int?
+    ParameterGroupName: String?
+    AvailabilityZones: Listing<String>?
+    IAMRoleARN: String?
+    SubnetGroupName: String?
+    PreferredMaintenanceWindow: String?
+    ClusterEndpointEncryptionType: String?
+    NotificationTopicARN: String?
+    SecurityGroupIds: Listing<String>?
+    NodeType: String?
+    ClusterName: String?
+    ClusterDiscoveryEndpoint: String?
+    Id: String?
+    Arn: String?
+    Tags: Mapping?
+}
+class SSESpecification {
+    SSEEnabled: Boolean?
+}

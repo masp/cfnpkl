@@ -1,0 +1,34 @@
+/// Resource schema for AWS::Athena::CapacityReservation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Athena::CapacityReservation"
+Properties: Props?
+class Props {
+    Arn: String?
+    /// The reservation name.
+    Name: String(matches(Regex(#"[a-zA-Z0-9._-]{1,128}"#)))?
+    /// The status of the reservation.
+    Status: "PENDING" | "ACTIVE" | "CANCELLING" | "CANCELLED" | "FAILED" | "UPDATE_PENDING" | *Null
+    /// The number of DPUs to request to be allocated to the reservation.
+    TargetDpus: Int?
+    /// The number of DPUs Athena has provisioned and allocated for the
+    /// reservation
+    AllocatedDpus: Int?
+    CapacityAssignmentConfiguration: CapacityAssignmentConfiguration?
+    /// The date and time the reservation was created.
+    CreationTime: String?
+    /// The timestamp when the last successful allocated was made
+    LastSuccessfulAllocationTime: String?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// Assignment configuration to assign workgroups to a reservation
+class CapacityAssignmentConfiguration {
+    CapacityAssignments: Listing<CapacityAssignment>
+}
+class CapacityAssignment {
+    WorkgroupNames: Listing<String(matches(Regex(#"[a-zA-Z0-9._-]{1,128}"#)))>
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

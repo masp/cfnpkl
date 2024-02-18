@@ -1,0 +1,78 @@
+/// Resource Type definition for AWS::Glue::Crawler
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::Crawler"
+Properties: Props?
+class Props {
+    Classifiers: Listing<String>?
+    Description: String?
+    SchemaChangePolicy: SchemaChangePolicy?
+    Configuration: String?
+    RecrawlPolicy: RecrawlPolicy?
+    DatabaseName: String?
+    Targets: Targets?
+    CrawlerSecurityConfiguration: String?
+    Name: String?
+    Role: String?
+    Schedule: Schedule?
+    Id: String?
+    TablePrefix: String?
+    Tags: Mapping?
+}
+class SchemaChangePolicy {
+    UpdateBehavior: String?
+    DeleteBehavior: String?
+}
+class RecrawlPolicy {
+    RecrawlBehavior: String?
+}
+class Targets {
+    S3Targets: Listing<S3Target>?
+    CatalogTargets: Listing<CatalogTarget>?
+    DeltaTargets: Listing<DeltaTarget>?
+    MongoDBTargets: Listing<MongoDBTarget>?
+    JdbcTargets: Listing<JdbcTarget>?
+    DynamoDBTargets: Listing<DynamoDBTarget>?
+    IcebergTargets: Listing<IcebergTarget>?
+}
+class S3Target {
+    ConnectionName: String?
+    Path: String?
+    SampleSize: Int?
+    Exclusions: Listing<String>?
+    DlqEventQueueArn: String?
+    EventQueueArn: String?
+}
+class CatalogTarget {
+    ConnectionName: String?
+    DatabaseName: String?
+    DlqEventQueueArn: String?
+    Tables: Listing<String>?
+    EventQueueArn: String?
+}
+class DeltaTarget {
+    ConnectionName: String?
+    CreateNativeDeltaTable: Boolean?
+    WriteManifest: Boolean?
+    DeltaTables: Listing<String>?
+}
+class MongoDBTarget {
+    ConnectionName: String?
+    Path: String?
+}
+class JdbcTarget {
+    ConnectionName: String?
+    Path: String?
+    Exclusions: Listing<String>?
+}
+class DynamoDBTarget {
+    Path: String?
+}
+class IcebergTarget {
+    ConnectionName: String?
+    Paths: Listing<String>?
+    Exclusions: Listing<String>?
+    MaximumTraversalDepth: Int?
+}
+class Schedule {
+    ScheduleExpression: String?
+}

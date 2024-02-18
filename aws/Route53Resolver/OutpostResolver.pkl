@@ -1,0 +1,45 @@
+/// Resource schema for AWS::Route53Resolver::OutpostResolver.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53Resolver::OutpostResolver"
+Properties: Props?
+class Props {
+    /// Id
+    Id: String(length <= 64 && length >= 1)?
+    /// The id of the creator request.
+    CreatorRequestId: String(length <= 255 && length >= 1)?
+    /// The OutpostResolver name.
+    Name: String(length <= 255 && length >= 1)?
+    /// The OutpostResolver ARN.
+    Arn: String(length <= 1024 && length >= 1)?
+    /// The Outpost ARN.
+    OutpostArn: String(length <= 1024 && length >= 1)?
+    /// The OutpostResolver instance type.
+    PreferredInstanceType: String(length <= 255 && length >= 1)?
+    /// The OutpostResolver status, possible values are CREATING, OPERATIONAL,
+    /// UPDATING, DELETING, ACTION_NEEDED, FAILED_CREATION and
+    /// FAILED_DELETION.
+    Status: "CREATING" | "OPERATIONAL" | "DELETING" | "UPDATING" | "ACTION_NEEDED" | "FAILED_CREATION" | "FAILED_DELETION" | *Null
+    /// The OutpostResolver status message.
+    StatusMessage: String?
+    /// The number of OutpostResolvers.
+    InstanceCount: Int?
+    /// The OutpostResolver creation time
+    CreationTime: String(length <= 40 && length >= 20)?
+    /// The OutpostResolver last modified time
+    ModificationTime: String(length <= 40 && length >= 20)?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

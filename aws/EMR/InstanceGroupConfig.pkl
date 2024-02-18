@@ -1,0 +1,78 @@
+/// Resource Type definition for AWS::EMR::InstanceGroupConfig
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EMR::InstanceGroupConfig"
+Properties: Props?
+class Props {
+    JobFlowId: String?
+    AutoScalingPolicy: AutoScalingPolicy?
+    BidPrice: String?
+    InstanceCount: Int?
+    EbsConfiguration: EbsConfiguration?
+    InstanceRole: String?
+    CustomAmiId: String?
+    Id: String?
+    Configurations: Listing<Configuration>?
+    InstanceType: String?
+    Market: String?
+    Name: String?
+}
+class AutoScalingPolicy {
+    Rules: Listing<ScalingRule>
+    Constraints: ScalingConstraints
+}
+class ScalingRule {
+    Action: ScalingAction
+    Description: String?
+    Trigger: ScalingTrigger
+    Name: String
+}
+class ScalingAction {
+    Market: String?
+    SimpleScalingPolicyConfiguration: SimpleScalingPolicyConfiguration
+}
+class SimpleScalingPolicyConfiguration {
+    ScalingAdjustment: Int
+    CoolDown: Int?
+    AdjustmentType: String?
+}
+class ScalingTrigger {
+    CloudWatchAlarmDefinition: CloudWatchAlarmDefinition
+}
+class CloudWatchAlarmDefinition {
+    MetricName: String
+    ComparisonOperator: String
+    Statistic: String?
+    Dimensions: Listing<MetricDimension>?
+    Period: Int
+    EvaluationPeriods: Int?
+    Unit: String?
+    Namespace: String?
+    Threshold: Float
+}
+class MetricDimension {
+    Value: String
+    Key: String
+}
+class ScalingConstraints {
+    MinCapacity: Int
+    MaxCapacity: Int
+}
+class EbsConfiguration {
+    EbsBlockDeviceConfigs: Listing<EbsBlockDeviceConfig>?
+    EbsOptimized: Boolean?
+}
+class EbsBlockDeviceConfig {
+    VolumeSpecification: VolumeSpecification
+    VolumesPerInstance: Int?
+}
+class VolumeSpecification {
+    SizeInGB: Int
+    Throughput: Int?
+    VolumeType: String
+    Iops: Int?
+}
+class Configuration {
+    ConfigurationProperties: Mapping?
+    Configurations: Listing<Configuration>?
+    Classification: String?
+}

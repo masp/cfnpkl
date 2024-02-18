@@ -1,0 +1,19 @@
+/// Used to install the certificate authority certificate and update the
+/// certificate authority status.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ACMPCA::CertificateAuthorityActivation"
+Properties: Props?
+class Props {
+    /// Arn of the Certificate Authority.
+    CertificateAuthorityArn: String?
+    /// Certificate Authority certificate that will be installed in the
+    /// Certificate Authority.
+    Certificate: String?
+    /// Certificate chain for the Certificate Authority certificate.
+    CertificateChain: String?
+    /// The status of the Certificate Authority.
+    Status: String?
+    /// The complete certificate chain, including the Certificate Authority
+    /// certificate.
+    CompleteCertificateChain: String?
+}

@@ -1,0 +1,102 @@
+/// Resource schema for AWS::Athena::WorkGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Athena::WorkGroup"
+Properties: Props?
+class Props {
+    /// The workGroup name.
+    Name: String(matches(Regex(#"[a-zA-Z0-9._-]{1,128}"#)))?
+    /// The workgroup description.
+    Description: String(length <= 1024 && length >= 0)?
+    /// One or more tags, separated by commas, that you want to attach to the
+    /// workgroup as you create it
+    Tags: Listing<Tag>?
+    /// The workgroup configuration
+    WorkGroupConfiguration: WorkGroupConfiguration?
+    /// The workgroup configuration update object
+    WorkGroupConfigurationUpdates: WorkGroupConfigurationUpdates?
+    /// The date and time the workgroup was created.
+    CreationTime: String?
+    /// The state of the workgroup: ENABLED or DISABLED.
+    State: "ENABLED" | "DISABLED" | *Null
+    /// The option to delete the workgroup and its contents even if the
+    /// workgroup contains any named queries.
+    RecursiveDeleteOption: Boolean?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}
+class WorkGroupConfiguration {
+    BytesScannedCutoffPerQuery: Int?
+    EnforceWorkGroupConfiguration: Boolean?
+    PublishCloudWatchMetricsEnabled: Boolean?
+    RequesterPaysEnabled: Boolean?
+    ResultConfiguration: ResultConfiguration?
+    EngineVersion: EngineVersion?
+    AdditionalConfiguration: String?
+    ExecutionRole: String?
+    CustomerContentEncryptionConfiguration: CustomerContentEncryptionConfiguration?
+}
+/// The location in Amazon S3 where query results are stored and the
+/// encryption option, if any, used for query results. These are known as
+/// "client-side settings". If workgroup settings override client-side
+/// settings, then the query uses the workgroup settings.
+class ResultConfiguration {
+    EncryptionConfiguration: EncryptionConfiguration?
+    OutputLocation: String?
+    ExpectedBucketOwner: String?
+    AclConfiguration: AclConfiguration?
+}
+/// If query results are encrypted in Amazon S3, indicates the encryption
+/// option used (for example, SSE-KMS or CSE-KMS) and key information.
+class EncryptionConfiguration {
+    EncryptionOption: "SSE_S3" | "SSE_KMS" | "CSE_KMS"
+    KmsKey: String?
+}
+/// Indicates that an Amazon S3 canned ACL should be set to control
+/// ownership of stored query results
+class AclConfiguration {
+    S3AclOption: "BUCKET_OWNER_FULL_CONTROL"
+}
+/// The Athena engine version for running queries.
+class EngineVersion {
+    SelectedEngineVersion: String?
+    EffectiveEngineVersion: String?
+}
+/// Indicates the KMS key for encrypting notebook content.
+class CustomerContentEncryptionConfiguration {
+    KmsKey: String
+}
+/// The configuration information that will be updated for this workgroup,
+/// which includes the location in Amazon S3 where query results are
+/// stored, the encryption option, if any, used for query results, whether
+/// the Amazon CloudWatch Metrics are enabled for the workgroup, whether
+/// the workgroup settings override the client-side settings, and the data
+/// usage limit for the amount of bytes scanned per query, if it is
+/// specified.
+class WorkGroupConfigurationUpdates {
+    BytesScannedCutoffPerQuery: Int?
+    EnforceWorkGroupConfiguration: Boolean?
+    PublishCloudWatchMetricsEnabled: Boolean?
+    RequesterPaysEnabled: Boolean?
+    ResultConfigurationUpdates: ResultConfigurationUpdates?
+    RemoveBytesScannedCutoffPerQuery: Boolean?
+    EngineVersion: EngineVersion?
+    AdditionalConfiguration: String?
+    ExecutionRole: String?
+    CustomerContentEncryptionConfiguration: CustomerContentEncryptionConfiguration?
+    RemoveCustomerContentEncryptionConfiguration: Boolean?
+}
+/// The result configuration information about the queries in this
+/// workgroup that will be updated. Includes the updated results location
+/// and an updated option for encrypting query results.
+class ResultConfigurationUpdates {
+    EncryptionConfiguration: EncryptionConfiguration?
+    OutputLocation: String?
+    ExpectedBucketOwner: String?
+    AclConfiguration: AclConfiguration?
+    RemoveEncryptionConfiguration: Boolean?
+    RemoveOutputLocation: Boolean?
+    RemoveExpectedBucketOwner: Boolean?
+    RemoveAclConfiguration: Boolean?
+}

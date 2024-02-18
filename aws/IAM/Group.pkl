@@ -1,0 +1,24 @@
+/// Resource Type definition for AWS::IAM::Group
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IAM::Group"
+Properties: Props?
+class Props {
+    /// The Arn of the group to create
+    Arn: String?
+    /// The name of the group to create
+    GroupName: String?
+    /// A list of Amazon Resource Names (ARNs) of the IAM managed policies
+    /// that you want to attach to the role.
+    ManagedPolicyArns: Listing<String>?
+    /// The path to the group
+    Path: String?
+    /// Adds or updates an inline policy document that is embedded in the
+    /// specified IAM group
+    Policies: Listing<Policy>?
+}
+class Policy {
+    /// The policy document.
+    PolicyDocument: String | Mapping
+    /// The friendly name (not ARN) identifying the policy.
+    PolicyName: String
+}

@@ -1,0 +1,10 @@
+/// Resource Type definition for AWS::SecretsManager::ResourcePolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SecretsManager::ResourcePolicy"
+Properties: Props?
+class Props {
+    ResourcePolicy: Mapping?
+    Id: String?
+    BlockPublicPolicy: Boolean?
+    SecretId: String?
+}

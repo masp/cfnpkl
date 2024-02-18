@@ -1,0 +1,21 @@
+/// Resource schema for AWS::Route53::CidrCollection.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53::CidrCollection"
+Properties: Props?
+class Props {
+    /// UUID of the CIDR collection.
+    Id: String?
+    /// A unique name for the CIDR collection.
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[0-9A-Za-z_\-]+$"#)))?
+    /// The Amazon resource name (ARN) to uniquely identify the AWS resource.
+    Arn: String?
+    /// A complex type that contains information about the list of CIDR
+    /// locations.
+    Locations: Listing<Location>?
+}
+class Location {
+    /// The name of the location that is associated with the CIDR collection.
+    LocationName: String(length <= 16 && length >= 1)
+    /// A list of CIDR blocks.
+    CidrList: Listing<String>
+}

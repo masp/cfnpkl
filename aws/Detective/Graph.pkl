@@ -1,0 +1,25 @@
+/// Resource schema for AWS::Detective::Graph
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Detective::Graph"
+Properties: Props?
+class Props {
+    /// The Detective graph ARN
+    Arn: String?
+    Tags: Listing<Tag>?
+    /// Indicates whether to automatically enable new organization accounts as
+    /// member accounts in the organization behavior graph.
+    AutoEnableMembers: Boolean?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. Valid
+    /// characters are Unicode letters, digits, white space, and any of the
+    /// following symbols: _ . : / = + - @
+    Key: String(length <= 128 && length >= 1)?
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. Valid
+    /// characters are Unicode letters, digits, white space, and any of the
+    /// following symbols: _ . : / = + - @
+    Value: String(length <= 256 && length >= 0)?
+}

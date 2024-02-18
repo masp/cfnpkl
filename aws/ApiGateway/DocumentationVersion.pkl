@@ -1,0 +1,16 @@
+/// The ``AWS::ApiGateway::DocumentationVersion`` resource creates a
+/// snapshot of the documentation for an API. For more information, see
+/// [Representation of API Documentation in API Gateway](https://docs.aws.
+/// amazon.com/apigateway/latest/developerguide/api-gateway-documenting-
+/// api-content-representation.html) in the *API Gateway Developer Guide*.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::DocumentationVersion"
+Properties: Props?
+class Props {
+    /// A description about the new documentation snapshot.
+    Description: String?
+    /// The version identifier of the to-be-updated documentation version.
+    DocumentationVersion: String(length >= 1)?
+    /// The string identifier of the associated RestApi.
+    RestApiId: String(length >= 1)?
+}

@@ -1,0 +1,21 @@
+/// Resource Type definition for AWS::Glue::DataCatalogEncryptionSettings
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::DataCatalogEncryptionSettings"
+Properties: Props?
+class Props {
+    Id: String?
+    DataCatalogEncryptionSettings: DataCatalogEncryptionSettings?
+    CatalogId: String?
+}
+class DataCatalogEncryptionSettings {
+    ConnectionPasswordEncryption: ConnectionPasswordEncryption?
+    EncryptionAtRest: EncryptionAtRest?
+}
+class ConnectionPasswordEncryption {
+    ReturnConnectionPasswordEncrypted: Boolean?
+    KmsKeyId: String?
+}
+class EncryptionAtRest {
+    CatalogEncryptionMode: String?
+    SseAwsKmsKeyId: String?
+}

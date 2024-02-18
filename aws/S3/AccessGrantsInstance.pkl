@@ -1,0 +1,19 @@
+/// The AWS::S3::AccessGrantsInstance resource is an Amazon S3 resource
+/// type that hosts Access Grants and their associated locations
+extends ".../AWS/Resource.pkl"
+Type = "AWS::S3::AccessGrantsInstance"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the specified Access Grants
+    /// instance.
+    AccessGrantsInstanceArn: String?
+    /// The Amazon Resource Name (ARN) of the specified AWS Identity Center.
+    IdentityCenterArn: String?
+    /// A unique identifier for the specified access grants instance.
+    AccessGrantsInstanceId: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::MSK::Configuration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MSK::Configuration"
+Properties: Props?
+class Props {
+    Name: String?
+    Description: String?
+    ServerProperties: String?
+    KafkaVersionsList: Listing<String>?
+    Arn: String?
+    LatestRevision: LatestRevision?
+}
+class LatestRevision {
+    CreationTime: String?
+    Description: String?
+    Revision: Int?
+}

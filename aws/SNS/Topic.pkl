@@ -1,0 +1,89 @@
+/// Resource Type definition for AWS::SNS::Topic
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SNS::Topic"
+Properties: Props?
+class Props {
+    /// The display name to use for an Amazon SNS topic with SMS
+    /// subscriptions.
+    DisplayName: String?
+    /// The ID of an AWS-managed customer master key (CMK) for Amazon SNS or a
+    /// custom CMK. For more information, see Key Terms. For more examples,
+    /// see KeyId in the AWS Key Management Service API Reference.  This
+    /// property applies only to [server-side-
+    /// encryption](https://docs.aws.amazon.com/sns/latest/dg/sns-server-side-
+    /// encryption.html).
+    KmsMasterKeyId: String?
+    /// The body of the policy document you want to use for this topic.  You
+    /// can only add one policy per topic.  The policy must be in JSON string
+    /// format.  Length Constraints: Maximum length of 30720
+    DataProtectionPolicy: Mapping?
+    /// The SNS subscriptions (endpoints) for this topic.
+    Subscription: Listing<Subscription>?
+    /// Set to true to create a FIFO topic.
+    FifoTopic: Boolean?
+    /// Enables content-based deduplication for FIFO topics. By default,
+    /// ContentBasedDeduplication is set to false. If you create a FIFO topic
+    /// and this attribute is false, you must specify a value for the
+    /// MessageDeduplicationId parameter for the Publish action.  When you set
+    /// ContentBasedDeduplication to true, Amazon SNS uses a SHA-256 hash to
+    /// generate the MessageDeduplicationId using the body of the message (but
+    /// not the attributes of the message).  (Optional) To override the
+    /// generated value, you can specify a value for the the
+    /// MessageDeduplicationId parameter for the Publish action.
+    ContentBasedDeduplication: Boolean?
+    /// The archive policy determines the number of days Amazon SNS retains
+    /// messages. You can set a retention period from 1 to 365 days.
+    ArchivePolicy: Mapping?
+    Tags: Listing<Tag>?
+    /// The name of the topic you want to create. Topic names must include
+    /// only uppercase and lowercase ASCII letters, numbers, underscores, and
+    /// hyphens, and must be between 1 and 256 characters long. FIFO topic
+    /// names must end with .fifo.  If you don't specify a name, AWS
+    /// CloudFormation generates a unique physical ID and uses that ID for the
+    /// topic name. For more information, see Name Type.
+    TopicName: String?
+    TopicArn: String?
+    /// Version of the Amazon SNS signature used. If the SignatureVersion is
+    /// 1, Signature is a Base64-encoded SHA1withRSA signature of the Message,
+    /// MessageId, Type, Timestamp, and TopicArn values. If the
+    /// SignatureVersion is 2, Signature is a Base64-encoded SHA256withRSA
+    /// signature of the Message, MessageId, Type, Timestamp, and TopicArn
+    /// values.
+    SignatureVersion: String?
+    /// Tracing mode of an Amazon SNS topic. By default TracingConfig is set
+    /// to PassThrough, and the topic passes through the tracing header it
+    /// receives from an SNS publisher to its subscriptions. If set to Active,
+    /// SNS will vend X-Ray segment data to topic owner account if the sampled
+    /// flag in the tracing header is true. Only supported on standard topics.
+    TracingConfig: String?
+    /// Delivery status logging configuration for supported protocols for an
+    /// Amazon SNS topic.
+    DeliveryStatusLogging: Listing<LoggingConfig>?
+}
+class Subscription {
+    Endpoint: String
+    Protocol: String
+}
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, `_`, `.`, `/`, `=`, `+`, and `-`.
+    Key: String
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// characters in length.
+    Value: String
+}
+class LoggingConfig {
+    /// Indicates one of the supported protocols for the SNS topic
+    Protocol: "http/s" | "sqs" | "lambda" | "firehose" | "application"
+    /// The IAM role ARN to be used when logging successful message deliveries
+    /// in Amazon CloudWatch
+    SuccessFeedbackRoleArn: String?
+    /// The percentage of successful message deliveries to be logged in Amazon
+    /// CloudWatch. Valid percentage values range from 0 to 100
+    SuccessFeedbackSampleRate: String?
+    /// The IAM role ARN to be used when logging failed message deliveries in
+    /// Amazon CloudWatch
+    FailureFeedbackRoleArn: String?
+}

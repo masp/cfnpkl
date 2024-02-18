@@ -1,0 +1,31 @@
+/// Macie CustomDataIdentifier resource schema
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Macie::CustomDataIdentifier"
+Properties: Props?
+class Props {
+    /// Name of custom data identifier.
+    Name: String?
+    /// Description of custom data identifier.
+    Description: String?
+    /// Regular expression for custom data identifier.
+    Regex: String?
+    /// Maximum match distance.
+    MaximumMatchDistance: Int?
+    /// Keywords to be matched against.
+    Keywords: Listing<String>?
+    /// Words to be ignored.
+    IgnoreWords: Listing<String>?
+    /// Custom data identifier ID.
+    Id: String?
+    /// Custom data identifier ARN.
+    Arn: String?
+    /// A collection of tags associated with a resource
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The tag's key.
+    Key: String
+    /// The tag's value.
+    Value: String
+}

@@ -1,0 +1,49 @@
+/// Resource Type definition for AWS::AppStream::Fleet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppStream::Fleet"
+Properties: Props?
+class Props {
+    Description: String?
+    ComputeCapacity: ComputeCapacity?
+    Platform: String?
+    VpcConfig: VpcConfig?
+    FleetType: String?
+    EnableDefaultInternetAccess: Boolean?
+    DomainJoinInfo: DomainJoinInfo?
+    SessionScriptS3Location: S3Location?
+    Name: String?
+    ImageName: String?
+    MaxUserDurationInSeconds: Int?
+    IdleDisconnectTimeoutInSeconds: Int?
+    UsbDeviceFilterStrings: Listing<String>?
+    DisconnectTimeoutInSeconds: Int?
+    DisplayName: String?
+    StreamView: String?
+    IamRoleArn: String?
+    MaxSessionsPerInstance: Int?
+    Id: String?
+    InstanceType: String?
+    MaxConcurrentSessions: Int?
+    Tags: Listing<Tag>?
+    ImageArn: String?
+}
+class ComputeCapacity {
+    DesiredInstances: Int?
+    DesiredSessions: Int?
+}
+class VpcConfig {
+    SubnetIds: Listing<String>?
+    SecurityGroupIds: Listing<String>?
+}
+class DomainJoinInfo {
+    OrganizationalUnitDistinguishedName: String?
+    DirectoryName: String?
+}
+class S3Location {
+    S3Bucket: String
+    S3Key: String
+}
+class Tag {
+    Value: String
+    Key: String
+}

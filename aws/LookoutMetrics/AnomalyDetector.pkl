@@ -1,0 +1,110 @@
+/// An Amazon Lookout for Metrics Detector
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LookoutMetrics::AnomalyDetector"
+Properties: Props?
+class Props {
+    Arn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))?
+    /// Name for the Amazon Lookout for Metrics Anomaly Detector
+    AnomalyDetectorName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))?
+    /// A description for the AnomalyDetector.
+    AnomalyDetectorDescription: String(length <= 256 && matches(Regex(#".*\S.*"#)))?
+    /// Configuration options for the AnomalyDetector
+    AnomalyDetectorConfig: AnomalyDetectorConfig?
+    /// List of metric sets for anomaly detection
+    MetricSetList: Listing<MetricSet>?
+    /// KMS key used to encrypt the AnomalyDetector data
+    KmsKeyArn: String(length <= 2048 && length >= 20 && matches(Regex(#"arn:aws.*:kms:.*:[0-9]{12}:key/.*"#)))?
+}
+class AnomalyDetectorConfig {
+    /// Frequency of anomaly detection
+    AnomalyDetectorFrequency: "PT5M" | "PT10M" | "PT1H" | "P1D"
+}
+class MetricSet {
+    /// The name of the MetricSet.
+    MetricSetName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))
+    /// A description for the MetricSet.
+    MetricSetDescription: String(length <= 256 && matches(Regex(#".*\S.*"#)))?
+    MetricSource: MetricSource
+    /// Metrics captured by this MetricSet.
+    MetricList: Listing<Metric>
+    /// Offset, in seconds, between the frequency interval and the time at
+    /// which the metrics are available.
+    Offset: Int?
+    TimestampColumn: TimestampColumn?
+    /// Dimensions for this MetricSet.
+    DimensionList: Listing<String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))>?
+    /// A frequency period to aggregate the data
+    MetricSetFrequency: "PT5M" | "PT10M" | "PT1H" | "P1D" | *Null
+    Timezone: String(length <= 60 && matches(Regex(#".*\S.*"#)))?
+}
+class MetricSource {
+    S3SourceConfig: S3SourceConfig?
+    RDSSourceConfig: RDSSourceConfig?
+    RedshiftSourceConfig: RedshiftSourceConfig?
+    CloudwatchConfig: CloudwatchConfig?
+    AppFlowConfig: AppFlowConfig?
+}
+class S3SourceConfig {
+    RoleArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))
+    TemplatedPathList: Listing<String(length <= 1024 && matches(Regex(#"^s3://[a-zA-Z0-9_\-\/ {}=]+$"#)))>?
+    HistoricalDataPathList: Listing<String(length <= 1024 && matches(Regex(#"^s3://[a-z0-9].+$"#)))>?
+    FileFormatDescriptor: FileFormatDescriptor
+}
+class FileFormatDescriptor {
+    CsvFormatDescriptor: CsvFormatDescriptor?
+    JsonFormatDescriptor: JsonFormatDescriptor?
+}
+class CsvFormatDescriptor {
+    FileCompression: "NONE" | "GZIP" | *Null
+    Charset: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))?
+    Delimiter: String(length <= 1 && matches(Regex(#"[^\r\n]"#)))?
+    HeaderList: Listing<String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))>?
+    QuoteSymbol: String(length <= 1 && matches(Regex(#"[^\r\n]|^$"#)))?
+    ContainsHeader: Boolean?
+}
+class JsonFormatDescriptor {
+    FileCompression: "NONE" | "GZIP" | *Null
+    Charset: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))?
+}
+class RDSSourceConfig {
+    DBInstanceIdentifier: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z](?!.*--)(?!.*-$)[0-9a-zA-Z\-]*$"#)))
+    DatabaseHost: String(length <= 253 && length >= 1 && matches(Regex(#".*\S.*"#)))
+    DatabasePort: Int
+    SecretManagerArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:secret:AmazonLookoutMetrics-.+"#)))
+    DatabaseName: String(length <= 64 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_]+"#)))
+    TableName: String(length <= 100 && length >= 1 && matches(Regex(#"^[a-zA-Z][a-zA-Z0-9_]*$"#)))
+    RoleArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))
+    VpcConfiguration: VpcConfiguration
+}
+class VpcConfiguration {
+    SubnetIdList: Listing<String(length <= 255 && matches(Regex(#"[\-0-9a-zA-Z]+"#)))>
+    SecurityGroupIdList: Listing<String(length <= 255 && length >= 1 && matches(Regex(#"[-0-9a-zA-Z]+"#)))>
+}
+class RedshiftSourceConfig {
+    ClusterIdentifier: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-z](?!.*--)(?!.*-$)[0-9a-z\-]*$"#)))
+    DatabaseHost: String(length <= 253 && length >= 1 && matches(Regex(#".*\S.*"#)))
+    DatabasePort: Int
+    SecretManagerArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:secret:AmazonLookoutMetrics-.+"#)))
+    DatabaseName: String(length <= 100 && length >= 1 && matches(Regex(#"[a-z0-9]+"#)))
+    TableName: String(length <= 100 && length >= 1 && matches(Regex(#"^[a-zA-Z][a-zA-Z0-9_]*$"#)))
+    RoleArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))
+    VpcConfiguration: VpcConfiguration
+}
+class CloudwatchConfig {
+    RoleArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))
+}
+class AppFlowConfig {
+    RoleArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))
+    FlowName: String(length <= 256 && matches(Regex(#"[a-zA-Z0-9][\w!@#.-]+"#)))
+}
+class Metric {
+    MetricName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))
+    /// Operator used to aggregate metric values
+    AggregationFunction: "AVG" | "SUM"
+    Namespace: String(length <= 255 && length >= 1 && matches(Regex(#"[^:].*"#)))?
+}
+class TimestampColumn {
+    ColumnName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))?
+    /// A timestamp format for the timestamps in the dataset
+    ColumnFormat: String(length <= 63 && matches(Regex(#".*\S.*"#)))?
+}

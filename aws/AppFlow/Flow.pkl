@@ -1,0 +1,340 @@
+/// Resource schema for AWS::AppFlow::Flow.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppFlow::Flow"
+Properties: Props?
+class Props {
+    /// ARN identifier of the flow.
+    FlowArn: String(length <= 512 && matches(Regex(#"arn:aws:appflow:.*:[0-9]+:.*"#)))?
+    /// Name of the flow.
+    FlowName: String(length <= 256 && length >= 1 && matches(Regex(#"[a-zA-Z0-9][\w!@#.-]+"#)))?
+    /// Description of the flow.
+    Description: String(length <= 2048 && matches(Regex(#"[\w!@#\-.?,\s]*"#)))?
+    /// The ARN of the AWS Key Management Service (AWS KMS) key that's used to
+    /// encrypt your function's environment variables. If it's not provided,
+    /// AWS Lambda uses a default service key.
+    KMSArn: String(length <= 2048 && length >= 20 && matches(Regex(#"arn:aws:kms:.*:[0-9]+:.*"#)))?
+    /// Trigger settings of the flow.
+    TriggerConfig: TriggerConfig?
+    /// Flow activation status for Scheduled- and Event-triggered flows
+    FlowStatus: "Active" | "Suspended" | "Draft" | *Null
+    /// Configurations of Source connector of the flow.
+    SourceFlowConfig: SourceFlowConfig?
+    /// List of Destination connectors of the flow.
+    DestinationFlowConfigList: Listing<DestinationFlowConfig>?
+    /// List of tasks for the flow.
+    Tasks: Listing<Task>?
+    /// List of Tags.
+    Tags: Listing<Tag>?
+    /// Configurations of metadata catalog of the flow.
+    MetadataCatalogConfig: MetadataCatalogConfig?
+}
+/// Trigger settings of the flow.
+class TriggerConfig {
+    /// Trigger type of the flow
+    TriggerType: "Scheduled" | "Event" | "OnDemand"
+    /// Details required based on the type of trigger
+    TriggerProperties: ScheduledTriggerProperties?
+}
+/// Details required for scheduled trigger type
+class ScheduledTriggerProperties {
+    ScheduleExpression: String(length <= 256 && length >= 1)
+    DataPullMode: "Incremental" | "Complete" | *Null
+    ScheduleStartTime: Float?
+    ScheduleEndTime: Float?
+    FirstExecutionFrom: Float?
+    TimeZone: String(length <= 256)?
+    ScheduleOffset: Float?
+    FlowErrorDeactivationThreshold: Int?
+}
+/// Configurations of Source connector of the flow.
+class SourceFlowConfig {
+    /// Type of source connector
+    ConnectorType: "SAPOData" | "Salesforce" | "Pardot" | "Singular" | "Slack" | "Redshift" | "S3" | "Marketo" | "Googleanalytics" | "Zendesk" | "Servicenow" | "Datadog" | "Trendmicro" | "Snowflake" | "Dynatrace" | "Infornexus" | "Amplitude" | "Veeva" | "CustomConnector" | "EventBridge" | "Upsolver" | "LookoutMetrics"
+    /// The API version that the destination connector uses.
+    ApiVersion: String(length <= 256 && matches(Regex(#"\S+"#)))?
+    /// Name of source connector profile
+    ConnectorProfileName: String(length <= 256 && matches(Regex(#"[\w/!@#+=.-]+"#)))?
+    /// Source connector details required to query a connector
+    SourceConnectorProperties: SourceConnectorProperties
+    /// Configuration for scheduled incremental data pull
+    IncrementalPullConfig: IncrementalPullConfig?
+}
+/// Source connector details required to query a connector
+class SourceConnectorProperties {
+    Amplitude: AmplitudeSourceProperties?
+    Datadog: DatadogSourceProperties?
+    Dynatrace: DynatraceSourceProperties?
+    GoogleAnalytics: GoogleAnalyticsSourceProperties?
+    InforNexus: InforNexusSourceProperties?
+    Marketo: MarketoSourceProperties?
+    S3: S3SourceProperties?
+    SAPOData: SAPODataSourceProperties?
+    Salesforce: SalesforceSourceProperties?
+    Pardot: PardotSourceProperties?
+    ServiceNow: ServiceNowSourceProperties?
+    Singular: SingularSourceProperties?
+    Slack: SlackSourceProperties?
+    Trendmicro: TrendmicroSourceProperties?
+    Veeva: VeevaSourceProperties?
+    Zendesk: ZendeskSourceProperties?
+    CustomConnector: CustomConnectorSourceProperties?
+}
+class AmplitudeSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class DatadogSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class DynatraceSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class GoogleAnalyticsSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class InforNexusSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class MarketoSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class S3SourceProperties {
+    BucketName: String(length <= 63 && length >= 3 && matches(Regex(#"\S+"#)))
+    BucketPrefix: String(length <= 512)
+    S3InputFormatConfig: S3InputFormatConfig?
+}
+class S3InputFormatConfig {
+    S3InputFileType: "CSV" | "JSON" | *Null
+}
+class SAPODataSourceProperties {
+    ObjectPath: String(length <= 512 && matches(Regex(#"\S+"#)))
+    parallelismConfig: SAPODataParallelismConfig?
+    paginationConfig: SAPODataPaginationConfig?
+}
+/// SAP Source connector parallelism factor
+class SAPODataParallelismConfig {
+    maxParallelism: Int
+}
+/// SAP Source connector page size
+class SAPODataPaginationConfig {
+    maxPageSize: Int
+}
+class SalesforceSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+    EnableDynamicFieldUpdate: Boolean?
+    IncludeDeletedRecords: Boolean?
+    DataTransferApi: "AUTOMATIC" | "BULKV2" | "REST_SYNC" | *Null
+}
+class PardotSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class ServiceNowSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class SingularSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class SlackSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class TrendmicroSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class VeevaSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+    DocumentType: String(length <= 512 && matches(Regex(#"[\s\w_-]+"#)))?
+    IncludeSourceFiles: Boolean?
+    IncludeRenditions: Boolean?
+    IncludeAllVersions: Boolean?
+}
+class ZendeskSourceProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+}
+class CustomConnectorSourceProperties {
+    EntityName: String(length <= 1024 && matches(Regex(#"\S+"#)))
+    CustomProperties: Mapping?
+    DataTransferApi: DataTransferApi?
+}
+class DataTransferApi {
+    Name: String(length <= 64 && matches(Regex(#"[\w/-]+"#)))
+    Type: "SYNC" | "ASYNC" | "AUTOMATIC"
+}
+/// Configuration for scheduled incremental data pull
+class IncrementalPullConfig {
+    DatetimeTypeFieldName: String(length <= 256)?
+}
+/// Configurations of destination connector.
+class DestinationFlowConfig {
+    /// Destination connector type
+    ConnectorType: "SAPOData" | "Salesforce" | "Pardot" | "Singular" | "Slack" | "Redshift" | "S3" | "Marketo" | "Googleanalytics" | "Zendesk" | "Servicenow" | "Datadog" | "Trendmicro" | "Snowflake" | "Dynatrace" | "Infornexus" | "Amplitude" | "Veeva" | "CustomConnector" | "EventBridge" | "Upsolver" | "LookoutMetrics"
+    /// The API version that the destination connector uses.
+    ApiVersion: String(length <= 256 && matches(Regex(#"\S+"#)))?
+    /// Name of destination connector profile
+    ConnectorProfileName: String(length <= 256 && matches(Regex(#"[\w/!@#+=.-]+"#)))?
+    /// Destination connector details
+    DestinationConnectorProperties: DestinationConnectorProperties
+}
+/// Destination connector details
+class DestinationConnectorProperties {
+    Redshift: RedshiftDestinationProperties?
+    S3: S3DestinationProperties?
+    Salesforce: SalesforceDestinationProperties?
+    Snowflake: SnowflakeDestinationProperties?
+    EventBridge: EventBridgeDestinationProperties?
+    Upsolver: UpsolverDestinationProperties?
+    LookoutMetrics: LookoutMetricsDestinationProperties?
+    Marketo: MarketoDestinationProperties?
+    Zendesk: ZendeskDestinationProperties?
+    CustomConnector: CustomConnectorDestinationProperties?
+    SAPOData: SAPODataDestinationProperties?
+}
+class RedshiftDestinationProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+    IntermediateBucketName: String(length <= 63 && length >= 3 && matches(Regex(#"\S+"#)))
+    BucketPrefix: String(length <= 512)?
+    ErrorHandlingConfig: ErrorHandlingConfig?
+}
+class ErrorHandlingConfig {
+    FailOnFirstError: Boolean?
+    BucketPrefix: String(length <= 512)?
+    BucketName: String(length <= 63 && length >= 3 && matches(Regex(#"\S+"#)))?
+}
+class S3DestinationProperties {
+    BucketName: String(length <= 63 && length >= 3 && matches(Regex(#"\S+"#)))
+    BucketPrefix: String(length <= 512)?
+    S3OutputFormatConfig: S3OutputFormatConfig?
+}
+class S3OutputFormatConfig {
+    FileType: "CSV" | "JSON" | "PARQUET" | *Null
+    PrefixConfig: PrefixConfig?
+    AggregationConfig: AggregationConfig?
+    PreserveSourceDataTyping: Boolean?
+}
+class PrefixConfig {
+    PrefixType: "FILENAME" | "PATH" | "PATH_AND_FILENAME" | *Null
+    PrefixFormat: "YEAR" | "MONTH" | "DAY" | "HOUR" | "MINUTE" | *Null
+    PathPrefixHierarchy: Listing<"EXECUTION_ID" | "SCHEMA_VERSION">?
+}
+class AggregationConfig {
+    AggregationType: "None" | "SingleFile" | *Null
+    TargetFileSize: Int?
+}
+class SalesforceDestinationProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+    ErrorHandlingConfig: ErrorHandlingConfig?
+    /// List of fields used as ID when performing a write operation.
+    IdFieldNames: Listing<String>?
+    WriteOperationType: "INSERT" | "UPSERT" | "UPDATE" | "DELETE" | *Null
+    DataTransferApi: "AUTOMATIC" | "BULKV2" | "REST_SYNC" | *Null
+}
+class SnowflakeDestinationProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+    IntermediateBucketName: String(length <= 63 && length >= 3 && matches(Regex(#"\S+"#)))
+    BucketPrefix: String(length <= 512)?
+    ErrorHandlingConfig: ErrorHandlingConfig?
+}
+class EventBridgeDestinationProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+    ErrorHandlingConfig: ErrorHandlingConfig?
+}
+class UpsolverDestinationProperties {
+    BucketName: String(length <= 63 && length >= 16 && matches(Regex(#"^(upsolver-appflow)\S*"#)))
+    BucketPrefix: String(length <= 512)?
+    S3OutputFormatConfig: UpsolverS3OutputFormatConfig
+}
+class UpsolverS3OutputFormatConfig {
+    FileType: "CSV" | "JSON" | "PARQUET" | *Null
+    PrefixConfig: PrefixConfig
+    AggregationConfig: AggregationConfig?
+}
+class LookoutMetricsDestinationProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))?
+}
+class MarketoDestinationProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+    ErrorHandlingConfig: ErrorHandlingConfig?
+}
+class ZendeskDestinationProperties {
+    Object: String(length <= 512 && matches(Regex(#"\S+"#)))
+    ErrorHandlingConfig: ErrorHandlingConfig?
+    /// List of fields used as ID when performing a write operation.
+    IdFieldNames: Listing<String>?
+    WriteOperationType: "INSERT" | "UPSERT" | "UPDATE" | "DELETE" | *Null
+}
+class CustomConnectorDestinationProperties {
+    EntityName: String(length <= 1024 && matches(Regex(#"\S+"#)))
+    ErrorHandlingConfig: ErrorHandlingConfig?
+    WriteOperationType: "INSERT" | "UPSERT" | "UPDATE" | "DELETE" | *Null
+    /// List of fields used as ID when performing a write operation.
+    IdFieldNames: Listing<String>?
+    CustomProperties: Mapping?
+}
+class SAPODataDestinationProperties {
+    ObjectPath: String(length <= 512 && matches(Regex(#"\S+"#)))
+    ErrorHandlingConfig: ErrorHandlingConfig?
+    SuccessResponseHandlingConfig: SuccessResponseHandlingConfig?
+    /// List of fields used as ID when performing a write operation.
+    IdFieldNames: Listing<String>?
+    WriteOperationType: "INSERT" | "UPSERT" | "UPDATE" | "DELETE" | *Null
+}
+class SuccessResponseHandlingConfig {
+    BucketPrefix: String(length <= 512)?
+    BucketName: String(length <= 63 && length >= 3 && matches(Regex(#"\S+"#)))?
+}
+class Task {
+    /// Source fields on which particular task will be applied
+    SourceFields: Listing<String>
+    /// Operation to be performed on provided source fields
+    ConnectorOperator: ConnectorOperator?
+    /// A field value on which source field should be validated
+    DestinationField: String(length <= 256)?
+    /// Type of task
+    TaskType: "Arithmetic" | "Filter" | "Map" | "Map_all" | "Mask" | "Merge" | "Passthrough" | "Truncate" | "Validate" | "Partition"
+    /// A Map used to store task related info
+    TaskProperties: Listing<TaskPropertiesObject>?
+}
+/// Operation to be performed on provided source fields
+class ConnectorOperator {
+    Amplitude: "BETWEEN" | *Null
+    Datadog: "PROJECTION" | "BETWEEN" | "EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    Dynatrace: "PROJECTION" | "BETWEEN" | "EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    GoogleAnalytics: "PROJECTION" | "BETWEEN" | *Null
+    InforNexus: "PROJECTION" | "BETWEEN" | "EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    Marketo: "PROJECTION" | "LESS_THAN" | "GREATER_THAN" | "BETWEEN" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    S3: "PROJECTION" | "LESS_THAN" | "GREATER_THAN" | "BETWEEN" | "LESS_THAN_OR_EQUAL_TO" | "GREATER_THAN_OR_EQUAL_TO" | "EQUAL_TO" | "NOT_EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    SAPOData: "PROJECTION" | "LESS_THAN" | "CONTAINS" | "GREATER_THAN" | "BETWEEN" | "LESS_THAN_OR_EQUAL_TO" | "GREATER_THAN_OR_EQUAL_TO" | "EQUAL_TO" | "NOT_EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    Salesforce: "PROJECTION" | "LESS_THAN" | "CONTAINS" | "GREATER_THAN" | "BETWEEN" | "LESS_THAN_OR_EQUAL_TO" | "GREATER_THAN_OR_EQUAL_TO" | "EQUAL_TO" | "NOT_EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    Pardot: "PROJECTION" | "EQUAL_TO" | "NO_OP" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | *Null
+    ServiceNow: "PROJECTION" | "LESS_THAN" | "CONTAINS" | "GREATER_THAN" | "BETWEEN" | "LESS_THAN_OR_EQUAL_TO" | "GREATER_THAN_OR_EQUAL_TO" | "EQUAL_TO" | "NOT_EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    Singular: "PROJECTION" | "EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    Slack: "PROJECTION" | "BETWEEN" | "EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    Trendmicro: "PROJECTION" | "EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    Veeva: "PROJECTION" | "LESS_THAN" | "GREATER_THAN" | "BETWEEN" | "LESS_THAN_OR_EQUAL_TO" | "GREATER_THAN_OR_EQUAL_TO" | "EQUAL_TO" | "NOT_EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    Zendesk: "PROJECTION" | "GREATER_THAN" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+    CustomConnector: "PROJECTION" | "LESS_THAN" | "GREATER_THAN" | "CONTAINS" | "BETWEEN" | "LESS_THAN_OR_EQUAL_TO" | "GREATER_THAN_OR_EQUAL_TO" | "EQUAL_TO" | "NOT_EQUAL_TO" | "ADDITION" | "MULTIPLICATION" | "DIVISION" | "SUBTRACTION" | "MASK_ALL" | "MASK_FIRST_N" | "MASK_LAST_N" | "VALIDATE_NON_NULL" | "VALIDATE_NON_ZERO" | "VALIDATE_NON_NEGATIVE" | "VALIDATE_NUMERIC" | "NO_OP" | *Null
+}
+/// An object used to store task related info
+class TaskPropertiesObject {
+    Key: "VALUE" | "VALUES" | "DATA_TYPE" | "UPPER_BOUND" | "LOWER_BOUND" | "SOURCE_DATA_TYPE" | "DESTINATION_DATA_TYPE" | "VALIDATION_ACTION" | "MASK_VALUE" | "MASK_LENGTH" | "TRUNCATE_LENGTH" | "MATH_OPERATION_FIELDS_ORDER" | "CONCAT_FORMAT" | "SUBFIELD_CATEGORY_MAP" | "EXCLUDE_SOURCE_FIELDS_LIST" | "INCLUDE_NEW_FIELDS" | "ORDERED_PARTITION_KEYS_LIST"
+    Value: String(length <= 2048 && matches(Regex(#".+"#)))
+}
+/// A label for tagging AppFlow resources
+class Tag {
+    /// A string used to identify this tag
+    Key: String(length <= 128 && length >= 1)
+    /// A string containing the value for the tag
+    Value: String(length <= 256 && length >= 0)
+}
+/// Configurations of metadata catalog of the flow.
+class MetadataCatalogConfig {
+    /// Configurations of glue data catalog of the flow.
+    GlueDataCatalog: GlueDataCatalog?
+}
+/// Trigger settings of the flow.
+class GlueDataCatalog {
+    /// A string containing the value for the tag
+    RoleArn: String(length <= 512 && length >= 0 && matches(Regex(#"arn:aws:iam:.*:[0-9]+:.*"#)))
+    /// A string containing the value for the tag
+    DatabaseName: String(length <= 255 && length >= 0 && matches(Regex(#"[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\t]*"#)))
+    /// A string containing the value for the tag
+    TablePrefix: String(length <= 128 && length >= 0 && matches(Regex(#"[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\t]*"#)))
+}

@@ -1,0 +1,123 @@
+/// Resource schema for AWS::IoTSiteWise::AssetModel
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTSiteWise::AssetModel"
+Properties: Props?
+class Props {
+    /// The ID of the asset model.
+    AssetModelId: String?
+    /// The ARN of the asset model, which has the following format.
+    AssetModelArn: String?
+    /// A unique, friendly name for the asset model.
+    AssetModelName: String?
+    /// A description for the asset model.
+    AssetModelDescription: String?
+    /// The property definitions of the asset model. You can specify up to 200
+    /// properties per asset model.
+    AssetModelProperties: Listing<AssetModelProperty>?
+    /// The composite asset models that are part of this asset model.
+    /// Composite asset models are asset models that contain specific
+    /// properties.
+    AssetModelCompositeModels: Listing<AssetModelCompositeModel>?
+    /// The hierarchy definitions of the asset model. Each hierarchy specifies
+    /// an asset model whose assets can be children of any other assets
+    /// created from this asset model. You can specify up to 10 hierarchies
+    /// per asset model.
+    AssetModelHierarchies: Listing<AssetModelHierarchy>?
+    /// A list of key-value pairs that contain metadata for the asset model.
+    Tags: Listing<Tag>?
+}
+/// Contains information about an asset model property.
+class AssetModelProperty {
+    /// Customer provided ID for property.
+    LogicalId: String(length <= 256 && length >= 1 && matches(Regex(#"[^\u0000-\u001F\u007F]+"#)))
+    /// The name of the asset model property.
+    Name: String
+    /// The data type of the asset model property.
+    DataType: "STRING" | "INTEGER" | "DOUBLE" | "BOOLEAN" | "STRUCT"
+    /// The data type of the structure for this property.
+    DataTypeSpec: "AWS/ALARM_STATE" | *Null
+    /// The unit of the asset model property, such as Newtons or RPM.
+    Unit: String?
+    /// The property type
+    Type: PropertyType
+}
+/// Contains a property type, which can be one of attribute, measurement,
+/// metric, or transform.
+class PropertyType {
+    TypeName: "Measurement" | "Attribute" | "Transform" | "Metric"
+    Attribute: Attribute?
+    Transform: Transform?
+    Metric: Metric?
+}
+class Attribute {
+    DefaultValue: String?
+}
+class Transform {
+    /// The mathematical expression that defines the transformation function.
+    /// You can specify up to 10 functions per expression.
+    Expression: String
+    /// The list of variables used in the expression.
+    Variables: Listing<ExpressionVariable>
+}
+class ExpressionVariable {
+    /// The friendly name of the variable to be used in the expression.
+    Name: String
+    /// The variable that identifies an asset property from which to use
+    /// values.
+    Value: VariableValue
+}
+class VariableValue {
+    PropertyLogicalId: String(length <= 256 && length >= 1 && matches(Regex(#"[^\u0000-\u001F\u007F]+"#)))
+    HierarchyLogicalId: String(length <= 256 && length >= 1 && matches(Regex(#"[^\u0000-\u001F\u007F]+"#)))?
+}
+class Metric {
+    /// The mathematical expression that defines the metric aggregation
+    /// function. You can specify up to 10 functions per expression.
+    Expression: String
+    /// The list of variables used in the expression.
+    Variables: Listing<ExpressionVariable>
+    /// The window (time interval) over which AWS IoT SiteWise computes the
+    /// metric's aggregation expression
+    Window: MetricWindow
+}
+/// Contains a time interval window used for data aggregate computations
+/// (for example, average, sum, count, and so on).
+class MetricWindow {
+    Tumbling: TumblingWindow?
+}
+/// Contains a tumbling window, which is a repeating fixed-sized, non-
+/// overlapping, and contiguous time interval. This window is used in
+/// metric and aggregation computations.
+class TumblingWindow {
+    Interval: String
+    Offset: String?
+}
+/// Contains a composite model definition in an asset model. This
+/// composite model definition is applied to all assets created from the
+/// asset model.
+class AssetModelCompositeModel {
+    /// A description for the asset composite model.
+    Description: String?
+    /// A unique, friendly name for the asset composite model.
+    Name: String
+    /// The type of the composite model. For alarm composite models, this type
+    /// is AWS/ALARM
+    Type: String
+    /// The property definitions of the asset model. You can specify up to 200
+    /// properties per asset model.
+    CompositeModelProperties: Listing<AssetModelProperty>?
+}
+/// Contains information about an asset model hierarchy.
+class AssetModelHierarchy {
+    /// Customer provided ID for hierarchy.
+    LogicalId: String(length <= 256 && length >= 1 && matches(Regex(#"[^\u0000-\u001F\u007F]+"#)))
+    /// The name of the asset model hierarchy.
+    Name: String
+    /// The ID of the asset model. All assets in this hierarchy must be
+    /// instances of the child AssetModelId asset model.
+    ChildAssetModelId: String
+}
+class Tag {
+    Key: String
+    Value: String
+}

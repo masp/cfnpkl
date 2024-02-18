@@ -1,0 +1,41 @@
+/// Specifies a metric filter that describes how CloudWatch Logs extracts
+/// information from logs and transforms it into Amazon CloudWatch
+/// metrics.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Logs::MetricFilter"
+Properties: Props?
+class Props {
+    /// A name for the metric filter.
+    FilterName: String(length <= 512 && length >= 1 && matches(Regex(#"^[^:*]{1,512}"#)))?
+    /// Pattern that Logs follows to interpret each entry in a log.
+    FilterPattern: String(length <= 1024)?
+    /// Existing log group that you want to associate with this filter.
+    LogGroupName: String(length <= 512 && length >= 1 && matches(Regex(#"^[.\-_/#A-Za-z0-9]{1,512}"#)))?
+    /// A collection of information that defines how metric data gets emitted.
+    MetricTransformations: Listing<MetricTransformation>?
+}
+class MetricTransformation {
+    /// The value to emit when a filter pattern does not match a log event.
+    /// This value can be null.
+    DefaultValue: Float?
+    /// The name of the CloudWatch metric. Metric name must be in ASCII
+    /// format.
+    MetricName: String(length <= 255 && length >= 1 && matches(Regex(#"^((?![:*$])[\x00-\x7F]){1,255}"#)))
+    /// The namespace of the CloudWatch metric.
+    MetricNamespace: String(length <= 256 && length >= 1 && matches(Regex(#"^[0-9a-zA-Z\.\-_\/#]{1,256}"#)))
+    /// The value to publish to the CloudWatch metric when a filter pattern
+    /// matches a log event.
+    MetricValue: String(length <= 100 && length >= 1 && matches(Regex(#".{1,100}"#)))
+    /// The unit to assign to the metric. If you omit this, the unit is set as
+    /// None.
+    Unit: "Seconds" | "Microseconds" | "Milliseconds" | "Bytes" | "Kilobytes" | "Megabytes" | "Gigabytes" | "Terabytes" | "Bits" | "Kilobits" | "Megabits" | "Gigabits" | "Terabits" | "Percent" | "Count" | "Bytes/Second" | "Kilobytes/Second" | "Megabytes/Second" | "Gigabytes/Second" | "Terabytes/Second" | "Bits/Second" | "Kilobits/Second" | "Megabits/Second" | "Gigabits/Second" | "Terabits/Second" | "Count/Second" | "None" | *Null
+    /// Dimensions are the key-value pairs that further define a metric
+    Dimensions: Listing<Dimension>?
+}
+/// the key-value pairs that further define a metric.
+class Dimension {
+    /// The key of the dimension. Maximum length of 255.
+    Key: String(length <= 255 && length >= 1)
+    /// The value of the dimension. Maximum length of 255.
+    Value: String(length <= 255 && length >= 1)
+}

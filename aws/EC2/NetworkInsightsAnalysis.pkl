@@ -1,0 +1,170 @@
+/// Resource schema for AWS::EC2::NetworkInsightsAnalysis
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::NetworkInsightsAnalysis"
+Properties: Props?
+class Props {
+    Status: "running" | "failed" | "succeeded" | *Null
+    ReturnPathComponents: Listing<PathComponent>?
+    NetworkInsightsAnalysisId: String?
+    NetworkInsightsPathId: String?
+    NetworkPathFound: Boolean?
+    SuggestedAccounts: Listing<String>?
+    FilterInArns: Listing<String>?
+    NetworkInsightsAnalysisArn: String?
+    StatusMessage: String?
+    StartDate: String?
+    AlternatePathHints: Listing<AlternatePathHint>?
+    Explanations: Listing<Explanation>?
+    ForwardPathComponents: Listing<PathComponent>?
+    AdditionalAccounts: Listing<String>?
+    Tags: Listing<Tag>?
+}
+class PathComponent {
+    AdditionalDetails: Listing<AdditionalDetail>?
+    InboundHeader: AnalysisPacketHeader?
+    Vpc: AnalysisComponent?
+    DestinationVpc: AnalysisComponent?
+    SecurityGroupRule: AnalysisSecurityGroupRule?
+    TransitGateway: AnalysisComponent?
+    ElasticLoadBalancerListener: AnalysisComponent?
+    Explanations: Listing<Explanation>?
+    ServiceName: String?
+    SequenceNumber: Int?
+    SourceVpc: AnalysisComponent?
+    OutboundHeader: AnalysisPacketHeader?
+    AclRule: AnalysisAclRule?
+    TransitGatewayRouteTableRoute: TransitGatewayRouteTableRoute?
+    Component: AnalysisComponent?
+    Subnet: AnalysisComponent?
+    RouteTableRoute: AnalysisRouteTableRoute?
+}
+class AdditionalDetail {
+    ServiceName: String?
+    AdditionalDetailType: String?
+    LoadBalancers: Listing<AnalysisComponent>?
+    Component: AnalysisComponent?
+}
+class AnalysisComponent {
+    Id: String?
+    Arn: String?
+}
+class AnalysisPacketHeader {
+    DestinationPortRanges: Listing<PortRange>?
+    SourcePortRanges: Listing<PortRange>?
+    DestinationAddresses: Listing<String>?
+    Protocol: String?
+    SourceAddresses: Listing<String>?
+}
+class PortRange {
+    From: Int?
+    To: Int?
+}
+class AnalysisSecurityGroupRule {
+    PortRange: PortRange?
+    Cidr: String?
+    PrefixListId: String?
+    SecurityGroupId: String?
+    Protocol: String?
+    Direction: String?
+}
+class Explanation {
+    VpnGateway: AnalysisComponent?
+    PacketField: String?
+    TransitGatewayAttachment: AnalysisComponent?
+    Protocols: Listing<String>?
+    IngressRouteTable: AnalysisComponent?
+    ClassicLoadBalancerListener: AnalysisLoadBalancerListener?
+    VpcPeeringConnection: AnalysisComponent?
+    Address: String?
+    Port: Int?
+    Addresses: Listing<String>?
+    ElasticLoadBalancerListener: AnalysisComponent?
+    TransitGatewayRouteTable: AnalysisComponent?
+    ExplanationCode: String?
+    InternetGateway: AnalysisComponent?
+    SourceVpc: AnalysisComponent?
+    AttachedTo: AnalysisComponent?
+    PrefixList: AnalysisComponent?
+    TransitGatewayRouteTableRoute: TransitGatewayRouteTableRoute?
+    ComponentRegion: String?
+    LoadBalancerTargetGroup: AnalysisComponent?
+    NetworkInterface: AnalysisComponent?
+    CustomerGateway: AnalysisComponent?
+    DestinationVpc: AnalysisComponent?
+    SecurityGroup: AnalysisComponent?
+    TransitGateway: AnalysisComponent?
+    RouteTable: AnalysisComponent?
+    State: String?
+    LoadBalancerListenerPort: Int?
+    vpcEndpoint: AnalysisComponent?
+    Subnet: AnalysisComponent?
+    Cidrs: Listing<String>?
+    Destination: AnalysisComponent?
+    SecurityGroups: Listing<AnalysisComponent>?
+    ComponentAccount: String?
+    VpnConnection: AnalysisComponent?
+    Vpc: AnalysisComponent?
+    NatGateway: AnalysisComponent?
+    Direction: String?
+    LoadBalancerTargetPort: Int?
+    LoadBalancerTarget: AnalysisLoadBalancerTarget?
+    LoadBalancerTargetGroups: Listing<AnalysisComponent>?
+    Component: AnalysisComponent?
+    MissingComponent: String?
+    RouteTableRoute: AnalysisRouteTableRoute?
+    AvailabilityZones: Listing<String>?
+    PortRanges: Listing<PortRange>?
+    Acl: AnalysisComponent?
+    SecurityGroupRule: AnalysisSecurityGroupRule?
+    SubnetRouteTable: AnalysisComponent?
+    LoadBalancerArn: String?
+    AclRule: AnalysisAclRule?
+}
+class AnalysisLoadBalancerListener {
+    InstancePort: Int?
+    LoadBalancerPort: Int?
+}
+class TransitGatewayRouteTableRoute {
+    PrefixListId: String?
+    ResourceId: String?
+    State: String?
+    ResourceType: String?
+    RouteOrigin: String?
+    DestinationCidr: String?
+    AttachmentId: String?
+}
+class AnalysisLoadBalancerTarget {
+    Address: String?
+    Instance: AnalysisComponent?
+    Port: Int?
+    AvailabilityZone: String?
+}
+class AnalysisRouteTableRoute {
+    Origin: String?
+    destinationPrefixListId: String?
+    destinationCidr: String?
+    NetworkInterfaceId: String?
+    TransitGatewayId: String?
+    VpcPeeringConnectionId: String?
+    instanceId: String?
+    State: String?
+    egressOnlyInternetGatewayId: String?
+    NatGatewayId: String?
+    gatewayId: String?
+}
+class AnalysisAclRule {
+    PortRange: PortRange?
+    Cidr: String?
+    RuleAction: String?
+    Egress: Boolean?
+    RuleNumber: Int?
+    Protocol: String?
+}
+class AlternatePathHint {
+    ComponentArn: String?
+    ComponentId: String?
+}
+class Tag {
+    Value: String?
+    Key: String
+}

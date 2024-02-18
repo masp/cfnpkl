@@ -1,0 +1,30 @@
+/// This schema provides construct and validation rules for AWS-XRay Group
+/// resource parameters.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::XRay::Group"
+Properties: Props?
+class Props {
+    /// The filter expression defining criteria by which to group traces.
+    FilterExpression: String?
+    /// The case-sensitive name of the new group. Names must be unique.
+    GroupName: String(length <= 32 && length >= 1)?
+    /// The ARN of the group that was generated on creation.
+    GroupARN: String(length <= 400 && length >= 1)?
+    InsightsConfiguration: InsightsConfiguration?
+    Tags: Listing<Tag>?
+}
+class InsightsConfiguration {
+    /// Set the InsightsEnabled value to true to enable insights or false to
+    /// disable insights.
+    InsightsEnabled: Boolean?
+    /// Set the NotificationsEnabled value to true to enable insights
+    /// notifications. Notifications can only be enabled on a group with
+    /// InsightsEnabled set to true.
+    NotificationsEnabled: Boolean?
+}
+class Tag {
+    /// The key name of the tag.
+    Key: String
+    /// The value for the tag.
+    Value: String
+}

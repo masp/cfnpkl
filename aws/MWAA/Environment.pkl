@@ -1,0 +1,61 @@
+/// Resource schema for AWS::MWAA::Environment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MWAA::Environment"
+Properties: Props?
+class Props {
+    Name: String(length <= 80 && length >= 1 && matches(Regex(#"^[a-zA-Z][0-9a-zA-Z\-_]*$"#)))?
+    Arn: String(length <= 1224 && length >= 1 && matches(Regex(#"^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b)(-[a-z]+)?:airflow:[a-z0-9\-]+:\d{12}:environment/\w+"#)))?
+    WebserverUrl: String(length <= 256 && length >= 1 && matches(Regex(#"^https://.+$"#)))?
+    ExecutionRoleArn: String(length <= 1224 && matches(Regex(#"^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b)(-[a-z]+)?:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    KmsKey: String(length <= 1224 && matches(Regex(#"^(((arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b)(-[a-z]+)?:kms:[a-z]{2}-[a-z]+-\d:\d+:)?key\/)?[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|(arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):kms:[a-z]{2}-[a-z]+-\d:\d+:)?alias/.+)$"#)))?
+    AirflowVersion: String(length <= 32 && matches(Regex(#"^[0-9a-z.]+$"#)))?
+    SourceBucketArn: String(length <= 1224 && length >= 1 && matches(Regex(#"^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b)(-[a-z]+)?:s3:::[a-z0-9.\-]+$"#)))?
+    DagS3Path: String(length <= 1024 && matches(Regex(#".*"#)))?
+    PluginsS3Path: String(length <= 1024 && matches(Regex(#".*"#)))?
+    PluginsS3ObjectVersion: String(length <= 1024)?
+    RequirementsS3Path: String(length <= 1024 && matches(Regex(#".*"#)))?
+    RequirementsS3ObjectVersion: String(length <= 1024)?
+    StartupScriptS3Path: String(length <= 1024 && matches(Regex(#".*"#)))?
+    StartupScriptS3ObjectVersion: String(length <= 1024)?
+    /// Key/value pairs representing Airflow configuration variables.     Keys
+    /// are prefixed by their section:      [core]
+    /// dags_folder={AIRFLOW_HOME}/dags      Would be represented as
+    /// "core.dags_folder": "{AIRFLOW_HOME}/dags"
+    AirflowConfigurationOptions: Mapping?
+    EnvironmentClass: String(length <= 1024 && length >= 1)?
+    MaxWorkers: Int?
+    MinWorkers: Int?
+    Schedulers: Int?
+    NetworkConfiguration: NetworkConfiguration?
+    LoggingConfiguration: LoggingConfiguration?
+    WeeklyMaintenanceWindowStart: String(length <= 9 && matches(Regex(#"(MON|TUE|WED|THU|FRI|SAT|SUN):([01]\d|2[0-3]):(00|30)"#)))?
+    /// A map of tags for the environment.
+    Tags: Mapping?
+    WebserverAccessMode: "PRIVATE_ONLY" | "PUBLIC_ONLY" | *Null
+    EndpointManagement: "CUSTOMER" | "SERVICE" | *Null
+    CeleryExecutorQueue: String(length <= 1224)?
+    DatabaseVpcEndpointService: String(length <= 1224)?
+    WebserverVpcEndpointService: String(length <= 1224)?
+}
+/// Configures the network resources of the environment.
+class NetworkConfiguration {
+    /// A list of subnets to use for the environment. These must be private
+    /// subnets, in the same VPC, in two different availability zones.
+    SubnetIds: Listing<String(length <= 1024 && matches(Regex(#"^subnet-[a-zA-Z0-9\-._]+$"#)))>?
+    /// A list of security groups to use for the environment.
+    SecurityGroupIds: Listing<String(length <= 1024 && length >= 1 && matches(Regex(#"^sg-[a-zA-Z0-9\-._]+$"#)))>?
+}
+/// Logging configuration for the environment.
+class LoggingConfiguration {
+    DagProcessingLogs: ModuleLoggingConfiguration?
+    SchedulerLogs: ModuleLoggingConfiguration?
+    WebserverLogs: ModuleLoggingConfiguration?
+    WorkerLogs: ModuleLoggingConfiguration?
+    TaskLogs: ModuleLoggingConfiguration?
+}
+/// Logging configuration for a specific airflow component.
+class ModuleLoggingConfiguration {
+    Enabled: Boolean?
+    LogLevel: "CRITICAL" | "ERROR" | "WARNING" | "INFO" | "DEBUG" | *Null
+    CloudWatchLogGroupArn: String(length <= 1224 && matches(Regex(#"^arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b)(-[a-z]+)?:logs:[a-z0-9\-]+:\d{12}:log-group:\w+"#)))?
+}

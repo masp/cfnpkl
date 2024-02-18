@@ -1,0 +1,32 @@
+/// Resource Type definition for AWS::SSM::ResourceDataSync
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSM::ResourceDataSync"
+Properties: Props?
+class Props {
+    S3Destination: S3Destination?
+    KMSKeyArn: String(length <= 512 && length >= 0)?
+    SyncSource: SyncSource?
+    BucketName: String(length <= 2048 && length >= 1)?
+    BucketRegion: String(length <= 64 && length >= 1)?
+    SyncFormat: String(length <= 1024 && length >= 0)?
+    SyncName: String(length <= 64 && length >= 1)?
+    SyncType: String(length <= 64 && length >= 1)?
+    BucketPrefix: String(length <= 64 && length >= 0)?
+}
+class S3Destination {
+    KMSKeyArn: String(length <= 512 && length >= 1)?
+    BucketPrefix: String(length <= 256 && length >= 1)?
+    BucketName: String(length <= 2048 && length >= 1)
+    BucketRegion: String(length <= 64 && length >= 1)
+    SyncFormat: String(length <= 1024 && length >= 1)
+}
+class SyncSource {
+    IncludeFutureRegions: Boolean?
+    SourceRegions: Listing<String>
+    SourceType: String(length <= 64 && length >= 1)
+    AwsOrganizationsSource: AwsOrganizationsSource?
+}
+class AwsOrganizationsSource {
+    OrganizationalUnits: Listing<String>?
+    OrganizationSourceType: String(length <= 64 && length >= 1)
+}

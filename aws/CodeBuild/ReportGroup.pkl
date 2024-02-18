@@ -1,0 +1,29 @@
+/// Resource Type definition for AWS::CodeBuild::ReportGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodeBuild::ReportGroup"
+Properties: Props?
+class Props {
+    Type: String?
+    ExportConfig: ReportExportConfig?
+    Id: String?
+    Arn: String?
+    DeleteReports: Boolean?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class ReportExportConfig {
+    S3Destination: S3ReportExportConfig?
+    ExportConfigType: String
+}
+class S3ReportExportConfig {
+    Path: String?
+    Bucket: String
+    Packaging: String?
+    EncryptionKey: String?
+    BucketOwner: String?
+    EncryptionDisabled: Boolean?
+}
+class Tag {
+    Value: String
+    Key: String
+}

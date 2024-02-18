@@ -1,0 +1,13 @@
+/// Resource Type definition for AWS::MediaConvert::Queue
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaConvert::Queue"
+Properties: Props?
+class Props {
+    Status: String?
+    Description: String?
+    PricingPlan: String?
+    Id: String?
+    Arn: String?
+    Tags: Mapping?
+    Name: String?
+}

@@ -1,0 +1,21 @@
+/// The AWS::CodeDeploy::Application resource creates an AWS CodeDeploy
+/// application
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodeDeploy::Application"
+Properties: Props?
+class Props {
+    /// A name for the application. If you don't specify a name, AWS
+    /// CloudFormation generates a unique physical ID and uses that ID for the
+    /// application name.
+    ApplicationName: String?
+    /// The compute platform that CodeDeploy deploys the application to.
+    ComputePlatform: String?
+    /// The metadata that you apply to CodeDeploy applications to help you
+    /// organize and categorize them. Each tag consists of a key and an
+    /// optional value, both of which you define.
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String
+    Key: String
+}

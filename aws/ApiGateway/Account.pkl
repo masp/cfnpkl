@@ -1,0 +1,12 @@
+/// The ``AWS::ApiGateway::Account`` resource specifies the IAM role that
+/// Amazon API Gateway uses to write API logs to Amazon CloudWatch Logs.
+/// To avoid overwriting other roles, you should only have one
+/// ``AWS::ApiGateway::Account`` resource per region per account.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::Account"
+Properties: Props?
+class Props {
+    Id: String?
+    /// The ARN of an Amazon CloudWatch role for the current Account.
+    CloudWatchRoleArn: String?
+}

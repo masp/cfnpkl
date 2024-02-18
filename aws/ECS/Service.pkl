@@ -1,0 +1,146 @@
+/// Resource Type definition for AWS::ECS::Service
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ECS::Service"
+Properties: Props?
+class Props {
+    ServiceArn: String?
+    CapacityProviderStrategy: Listing<CapacityProviderStrategyItem>?
+    Cluster: String?
+    DeploymentConfiguration: DeploymentConfiguration?
+    DeploymentController: DeploymentController?
+    DesiredCount: Int?
+    EnableECSManagedTags: Boolean?
+    EnableExecuteCommand: Boolean?
+    HealthCheckGracePeriodSeconds: Int?
+    LaunchType: "EC2" | "FARGATE" | "EXTERNAL" | *Null
+    LoadBalancers: Listing<LoadBalancer>?
+    Name: String?
+    NetworkConfiguration: NetworkConfiguration?
+    PlacementConstraints: Listing<PlacementConstraint>?
+    PlacementStrategies: Listing<PlacementStrategy>?
+    PlatformVersion: String?
+    PropagateTags: "SERVICE" | "TASK_DEFINITION" | *Null
+    Role: String?
+    SchedulingStrategy: "DAEMON" | "REPLICA" | *Null
+    ServiceConnectConfiguration: ServiceConnectConfiguration?
+    ServiceName: String?
+    ServiceRegistries: Listing<ServiceRegistry>?
+    Tags: Listing<Tag>?
+    TaskDefinition: String?
+    VolumeConfigurations: Listing<ServiceVolumeConfiguration>?
+}
+class CapacityProviderStrategyItem {
+    Base: Int?
+    CapacityProvider: String?
+    Weight: Int?
+}
+class DeploymentConfiguration {
+    DeploymentCircuitBreaker: DeploymentCircuitBreaker?
+    MaximumPercent: Int?
+    MinimumHealthyPercent: Int?
+    Alarms: DeploymentAlarms?
+}
+class DeploymentCircuitBreaker {
+    Enable: Boolean
+    Rollback: Boolean
+}
+class DeploymentAlarms {
+    AlarmNames: Listing<String>
+    Rollback: Boolean
+    Enable: Boolean
+}
+class DeploymentController {
+    Type: "CODE_DEPLOY" | "ECS" | "EXTERNAL" | *Null
+}
+class LoadBalancer {
+    ContainerName: String?
+    ContainerPort: Int?
+    LoadBalancerName: String?
+    TargetGroupArn: String?
+}
+class NetworkConfiguration {
+    AwsvpcConfiguration: AwsVpcConfiguration?
+}
+class AwsVpcConfiguration {
+    AssignPublicIp: "DISABLED" | "ENABLED" | *Null
+    SecurityGroups: Listing<String>?
+    Subnets: Listing<String>?
+}
+class PlacementConstraint {
+    Expression: String?
+    Type: "distinctInstance" | "memberOf"
+}
+class PlacementStrategy {
+    Field: String?
+    Type: "binpack" | "random" | "spread"
+}
+class ServiceConnectConfiguration {
+    Enabled: Boolean
+    Namespace: String?
+    Services: Listing<ServiceConnectService>?
+    LogConfiguration: LogConfiguration?
+}
+class ServiceConnectService {
+    PortName: String
+    DiscoveryName: String?
+    ClientAliases: Listing<ServiceConnectClientAlias>?
+    IngressPortOverride: Int?
+    Tls: ServiceConnectTlsConfiguration?
+    Timeout: TimeoutConfiguration?
+}
+class ServiceConnectClientAlias {
+    Port: Int
+    DnsName: String?
+}
+class ServiceConnectTlsConfiguration {
+    IssuerCertificateAuthority: ServiceConnectTlsCertificateAuthority
+    KmsKey: String?
+    RoleArn: String?
+}
+class ServiceConnectTlsCertificateAuthority {
+    AwsPcaAuthorityArn: String?
+}
+class TimeoutConfiguration {
+    IdleTimeoutSeconds: Int?
+    PerRequestTimeoutSeconds: Int?
+}
+class LogConfiguration {
+    LogDriver: String?
+    Options: Mapping?
+    SecretOptions: Listing<Secret>?
+}
+class Secret {
+    Name: String
+    ValueFrom: String
+}
+class ServiceRegistry {
+    ContainerName: String?
+    ContainerPort: Int?
+    Port: Int?
+    RegistryArn: String?
+}
+class Tag {
+    Key: String?
+    Value: String?
+}
+class ServiceVolumeConfiguration {
+    Name: String
+    ManagedEBSVolume: ServiceManagedEBSVolumeConfiguration?
+}
+class ServiceManagedEBSVolumeConfiguration {
+    Encrypted: Boolean?
+    KmsKeyId: String?
+    VolumeType: String?
+    SizeInGiB: Int?
+    SnapshotId: String?
+    Iops: Int?
+    Throughput: Int?
+    TagSpecifications: Listing<EBSTagSpecification>?
+    RoleArn: String
+    FilesystemType: String?
+}
+class EBSTagSpecification {
+    ResourceType: String
+    Tags: Listing<Tag>?
+    PropagateTags: "SERVICE" | "TASK_DEFINITION" | *Null
+}

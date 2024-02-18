@@ -1,0 +1,81 @@
+/// Resource Type definition for AWS::IoTAnalytics::Pipeline
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTAnalytics::Pipeline"
+Properties: Props?
+class Props {
+    Id: String?
+    PipelineName: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_]+"#)))?
+    Tags: Listing<Tag>?
+    PipelineActivities: Listing<Activity>?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}
+class Activity {
+    SelectAttributes: SelectAttributes?
+    Datastore: Datastore?
+    Filter: Filter?
+    AddAttributes: AddAttributes?
+    Channel: Channel?
+    DeviceShadowEnrich: DeviceShadowEnrich?
+    Math: Math?
+    Lambda: Lambda?
+    DeviceRegistryEnrich: DeviceRegistryEnrich?
+    RemoveAttributes: RemoveAttributes?
+}
+class SelectAttributes {
+    Next: String(length <= 128 && length >= 1)?
+    Attributes: Listing<String(length <= 256 && length >= 1)>
+    Name: String(length <= 128 && length >= 1)
+}
+class Datastore {
+    DatastoreName: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_]+"#)))
+    Name: String(length <= 128 && length >= 1)
+}
+class Filter {
+    Filter: String(length <= 256 && length >= 1)
+    Next: String(length <= 128 && length >= 1)?
+    Name: String(length <= 128 && length >= 1)
+}
+class AddAttributes {
+    Next: String(length <= 128 && length >= 1)?
+    Attributes: Mapping
+    Name: String(length <= 128 && length >= 1)
+}
+class Channel {
+    ChannelName: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_]+"#)))
+    Next: String(length <= 128 && length >= 1)?
+    Name: String(length <= 128 && length >= 1)
+}
+class DeviceShadowEnrich {
+    Attribute: String(length <= 256 && length >= 1)
+    Next: String(length <= 128 && length >= 1)?
+    ThingName: String(length <= 256 && length >= 1)
+    RoleArn: String(length <= 2048 && length >= 20)
+    Name: String(length <= 128 && length >= 1)
+}
+class Math {
+    Attribute: String(length <= 256 && length >= 1)
+    Next: String(length <= 128 && length >= 1)?
+    Math: String(length <= 256 && length >= 1)
+    Name: String(length <= 128 && length >= 1)
+}
+class Lambda {
+    BatchSize: Int
+    Next: String(length <= 128 && length >= 1)?
+    LambdaName: String(length <= 64 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_-]+"#)))
+    Name: String(length <= 128 && length >= 1)
+}
+class DeviceRegistryEnrich {
+    Attribute: String(length <= 256 && length >= 1)
+    Next: String(length <= 128 && length >= 1)?
+    ThingName: String(length <= 256 && length >= 1)
+    RoleArn: String(length <= 2048 && length >= 20)
+    Name: String(length <= 128 && length >= 1)
+}
+class RemoveAttributes {
+    Next: String(length <= 128 && length >= 1)?
+    Attributes: Listing<String(length <= 256 && length >= 1)>
+    Name: String(length <= 128 && length >= 1)
+}

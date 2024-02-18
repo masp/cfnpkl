@@ -1,0 +1,22 @@
+/// Associates a VPC with a service network.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::VpcLattice::ServiceNetworkVpcAssociation"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:servicenetworkvpcassociation/snva-[0-9a-z]{17}$"#)))?
+    CreatedAt: String?
+    SecurityGroupIds: Listing<String(length <= 200 && length >= 0 && matches(Regex(#"^sg-(([0-9a-z]{8})|([0-9a-z]{17}))$"#)))>?
+    Id: String(length <= 22 && length >= 22 && matches(Regex(#"^snva-[0-9a-z]{17}$"#)))?
+    ServiceNetworkArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:servicenetwork/sn-[0-9a-z]{17}$"#)))?
+    ServiceNetworkId: String(length <= 20 && length >= 20 && matches(Regex(#"^sn-[0-9a-z]{17}$"#)))?
+    ServiceNetworkIdentifier: String(length <= 2048 && length >= 20 && matches(Regex(#"^((sn-[0-9a-z]{17})|(arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:servicenetwork/sn-[0-9a-z]{17}))$"#)))?
+    ServiceNetworkName: String(length <= 63 && length >= 3 && matches(Regex(#"^(?!servicenetwork-)(?![-])(?!.*[-]$)(?!.*[-]{2})[a-z0-9-]+$"#)))?
+    Status: "CREATE_IN_PROGRESS" | "ACTIVE" | "UPDATE_IN_PROGRESS" | "DELETE_IN_PROGRESS" | "CREATE_FAILED" | "DELETE_FAILED" | *Null
+    VpcId: String(length <= 2048 && length >= 5 && matches(Regex(#"^vpc-(([0-9a-z]{8})|([0-9a-z]{17}))$"#)))?
+    VpcIdentifier: String(length <= 2048 && length >= 5 && matches(Regex(#"^vpc-(([0-9a-z]{8})|([0-9a-z]{17}))$"#)))?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

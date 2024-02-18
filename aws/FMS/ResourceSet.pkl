@@ -1,0 +1,17 @@
+/// Creates an AWS Firewall Manager resource set.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FMS::ResourceSet"
+Properties: Props?
+class Props {
+    Id: String(length <= 22 && length >= 22 && matches(Regex(#"^([a-z0-9A-Z]*)$"#)))?
+    Name: String(length <= 128 && length >= 1 && matches(Regex(#"^([a-zA-Z0-9_.:/=+\-@\s]+)$"#)))?
+    Description: String(length <= 256 && matches(Regex(#"^([a-zA-Z0-9_.:/=+\-@\s]*)$"#)))?
+    ResourceTypeList: Listing<String(length <= 128 && length >= 1 && matches(Regex(#"^([^\s]*)$"#)))>?
+    Resources: Listing<String(length <= 1024 && length >= 1 && matches(Regex(#"^([^\s]*)$"#)))>?
+    Tags: Listing<Tag>?
+}
+/// A tag.
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^([^\s]*)$"#)))
+    Value: String(length <= 256 && matches(Regex(#"^([^\s]*)$"#)))
+}

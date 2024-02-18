@@ -1,0 +1,29 @@
+/// The AWS::GameLift::Alias resource creates an alias for an Amazon
+/// GameLift (GameLift) fleet destination.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GameLift::Alias"
+Properties: Props?
+class Props {
+    /// A human-readable description of the alias.
+    Description: String(length <= 1024 && length >= 1)?
+    /// A descriptive label that is associated with an alias. Alias names do
+    /// not need to be unique.
+    Name: String(length <= 1024 && length >= 1 && matches(Regex(#".*\S.*"#)))?
+    /// A routing configuration that specifies where traffic is directed for
+    /// this alias, such as to a fleet or to a message.
+    RoutingStrategy: RoutingStrategy?
+    /// Unique alias ID
+    AliasId: String?
+}
+class RoutingStrategy {
+    /// The message text to be used with a terminal routing strategy. If you
+    /// specify TERMINAL for the Type property, you must specify this
+    /// property.
+    Message: String?
+    /// A unique identifier for a fleet that the alias points to. If you
+    /// specify SIMPLE for the Type property, you must specify this property.
+    FleetId: String(matches(Regex(#"^fleet-\S+"#)))?
+    /// Simple routing strategy. The alias resolves to one specific fleet. Use
+    /// this type when routing to active fleets.
+    Type: "SIMPLE" | "TERMINAL"
+}

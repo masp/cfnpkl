@@ -1,0 +1,11 @@
+/// AWS::RoboMaker::Fleet resource creates an AWS RoboMaker fleet. Fleets
+/// contain robots and can receive deployments.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RoboMaker::Fleet"
+Properties: Props?
+class Props {
+    Arn: String(matches(Regex(#"arn:[\w+=/,.@-]+:[\w+=/,.@-]+:[\w+=/,.@-]*:[0-9]*:[\w+=,.@-]+(/[\w+=,.@-]+)*"#)))?
+    Tags: Mapping?
+    /// The name of the fleet.
+    Name: String(length <= 255 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_\-]{1,255}$"#)))?
+}

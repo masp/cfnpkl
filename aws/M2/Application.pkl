@@ -1,0 +1,24 @@
+/// Represents an application that runs on an AWS Mainframe Modernization
+/// Environment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::M2::Application"
+Properties: Props?
+class Props {
+    ApplicationArn: String(matches(Regex(#"^arn:(aws|aws-cn|aws-iso|aws-iso-[a-z]{1}|aws-us-gov):[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:([a-z]{2}-((iso[a-z]{0,1}-)|(gov-)){0,1}[a-z]+-[0-9]):[0-9]{12}:[A-Za-z0-9/][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))?
+    ApplicationId: String(matches(Regex(#"^\S{1,80}$"#)))?
+    Definition: Definition0 | Definition1 | *Null
+    Description: String(length <= 500 && length >= 0)?
+    EngineType: "microfocus" | "bluage" | *Null
+    /// The ID or the Amazon Resource Name (ARN) of the customer managed KMS
+    /// Key used for encrypting application-related resources.
+    KmsKeyId: String(length <= 2048)?
+    Name: String(matches(Regex(#"^[A-Za-z0-9][A-Za-z0-9_\-]{1,59}$"#)))?
+    RoleArn: String(matches(Regex(#"^arn:(aws|aws-cn|aws-iso|aws-iso-[a-z]{1}|aws-us-gov):[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:([a-z]{2}-((iso[a-z]{0,1}-)|(gov-)){0,1}[a-z]+-[0-9]|):[0-9]{12}:[A-Za-z0-9/][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))?
+    Tags: Mapping?
+}
+class Definition0 {
+    S3Location: String(matches(Regex(#"^\S{1,2000}$"#)))
+}
+class Definition1 {
+    Content: String(length <= 65000 && length >= 1)
+}

@@ -1,0 +1,96 @@
+/// Definition of the AWS::QuickSight::Theme Resource Type.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::QuickSight::Theme"
+Properties: Props?
+class Props {
+    Arn: String?
+    AwsAccountId: String(length <= 12 && length >= 12 && matches(Regex(#"^[0-9]{12}$"#)))?
+    BaseThemeId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))?
+    Configuration: ThemeConfiguration?
+    CreatedTime: String?
+    LastUpdatedTime: String?
+    Name: String(length <= 2048 && length >= 1)?
+    Permissions: Listing<ResourcePermission>?
+    Tags: Listing<Tag>?
+    ThemeId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))?
+    Type: "QUICKSIGHT" | "CUSTOM" | "ALL" | *Null
+    Version: ThemeVersion?
+    VersionDescription: String(length <= 512 && length >= 1)?
+}
+class ThemeConfiguration {
+    DataColorPalette: DataColorPalette?
+    UIColorPalette: UIColorPalette?
+    Sheet: SheetStyle?
+    Typography: Typography?
+}
+class DataColorPalette {
+    Colors: Listing<String(matches(Regex(#"^#[A-F0-9]{6}$"#)))>?
+    MinMaxGradient: Listing<String(matches(Regex(#"^#[A-F0-9]{6}$"#)))>?
+    EmptyFillColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+}
+class UIColorPalette {
+    PrimaryForeground: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    PrimaryBackground: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    SecondaryForeground: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    SecondaryBackground: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    Accent: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    AccentForeground: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    Danger: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    DangerForeground: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    Warning: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    WarningForeground: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    Success: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    SuccessForeground: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    Dimension: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    DimensionForeground: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    Measure: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    MeasureForeground: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+}
+class SheetStyle {
+    Tile: TileStyle?
+    TileLayout: TileLayoutStyle?
+}
+class TileStyle {
+    Border: BorderStyle?
+}
+class BorderStyle {
+    Show: Boolean?
+}
+class TileLayoutStyle {
+    Gutter: GutterStyle?
+    Margin: MarginStyle?
+}
+class GutterStyle {
+    Show: Boolean?
+}
+class MarginStyle {
+    Show: Boolean?
+}
+class Typography {
+    FontFamilies: Listing<Font>?
+}
+class Font {
+    FontFamily: String?
+}
+class ResourcePermission {
+    Principal: String(length <= 256 && length >= 1)
+    Actions: Listing<String>
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}
+class ThemeVersion {
+    VersionNumber: Float?
+    Arn: String?
+    Description: String(length <= 512 && length >= 1)?
+    BaseThemeId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))?
+    CreatedTime: String?
+    Configuration: ThemeConfiguration?
+    Errors: Listing<ThemeError>?
+    Status: "CREATION_IN_PROGRESS" | "CREATION_SUCCESSFUL" | "CREATION_FAILED" | "UPDATE_IN_PROGRESS" | "UPDATE_SUCCESSFUL" | "UPDATE_FAILED" | "DELETED" | *Null
+}
+class ThemeError {
+    Type: "INTERNAL_FAILURE" | *Null
+    Message: String(matches(Regex(#".*\S.*"#)))?
+}

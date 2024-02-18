@@ -1,0 +1,74 @@
+/// Mitigation actions can be used to take actions to mitigate issues that
+/// were found in an Audit finding or Detect violation.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::MitigationAction"
+Properties: Props?
+class Props {
+    /// A unique identifier for the mitigation action.
+    ActionName: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9:_-]+"#)))?
+    RoleArn: String?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    ActionParams: ActionParams?
+    MitigationActionArn: String?
+    MitigationActionId: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The tag's key.
+    Key: String(length <= 128 && length >= 1)
+    /// The tag's value.
+    Value: String(length <= 256 && length >= 1)
+}
+/// The set of parameters for this mitigation action. You can specify only
+/// one type of parameter (in other words, you can apply only one action
+/// for each defined mitigation action).
+class ActionParams {
+    AddThingsToThingGroupParams: AddThingsToThingGroupParams?
+    EnableIoTLoggingParams: EnableIoTLoggingParams?
+    PublishFindingToSnsParams: PublishFindingToSnsParams?
+    ReplaceDefaultPolicyVersionParams: ReplaceDefaultPolicyVersionParams?
+    UpdateCACertificateParams: UpdateCACertificateParams?
+    UpdateDeviceCertificateParams: UpdateDeviceCertificateParams?
+}
+/// Parameters to define a mitigation action that moves devices associated
+/// with a certificate to one or more specified thing groups, typically
+/// for quarantine.
+class AddThingsToThingGroupParams {
+    /// Specifies if this mitigation action can move the things that triggered
+    /// the mitigation action out of one or more dynamic thing groups.
+    OverrideDynamicGroups: Boolean?
+    /// The list of groups to which you want to add the things that triggered
+    /// the mitigation action.
+    ThingGroupNames: Listing<String(length <= 128 && length >= 1)>
+}
+/// Parameters to define a mitigation action that enables AWS IoT logging
+/// at a specified level of detail.
+class EnableIoTLoggingParams {
+    ///  Specifies which types of information are logged.
+    LogLevel: "DEBUG" | "INFO" | "ERROR" | "WARN" | "UNSET_VALUE"
+    ///  The ARN of the IAM role used for logging.
+    RoleArnForLogging: String(length <= 2048 && length >= 20)
+}
+/// Parameters, to define a mitigation action that publishes findings to
+/// Amazon SNS. You can implement your own custom actions in response to
+/// the Amazon SNS messages.
+class PublishFindingToSnsParams {
+    /// The ARN of the topic to which you want to publish the findings.
+    TopicArn: String(length <= 2048 && length >= 20)
+}
+/// Parameters to define a mitigation action that adds a blank policy to
+/// restrict permissions.
+class ReplaceDefaultPolicyVersionParams {
+    TemplateName: "BLANK_POLICY" | "UNSET_VALUE"
+}
+/// Parameters to define a mitigation action that changes the state of the
+/// CA certificate to inactive.
+class UpdateCACertificateParams {
+    Action: "DEACTIVATE" | "UNSET_VALUE"
+}
+/// Parameters to define a mitigation action that changes the state of the
+/// device certificate to inactive.
+class UpdateDeviceCertificateParams {
+    Action: "DEACTIVATE" | "UNSET_VALUE"
+}

@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::Events::ApiDestination.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Events::ApiDestination"
+Properties: Props?
+class Props {
+    /// Name of the apiDestination.
+    Name: String(length <= 64 && length >= 1)?
+    Description: String(length <= 512)?
+    /// The arn of the connection.
+    ConnectionArn: String?
+    /// The arn of the api destination.
+    Arn: String?
+    InvocationRateLimitPerSecond: Int?
+    /// Url endpoint to invoke.
+    InvocationEndpoint: String?
+    HttpMethod: "GET" | "HEAD" | "POST" | "OPTIONS" | "PUT" | "DELETE" | "PATCH" | *Null
+}

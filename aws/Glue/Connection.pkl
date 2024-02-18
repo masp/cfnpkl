@@ -1,0 +1,22 @@
+/// Resource Type definition for AWS::Glue::Connection
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::Connection"
+Properties: Props?
+class Props {
+    ConnectionInput: ConnectionInput?
+    CatalogId: String?
+    Id: String?
+}
+class ConnectionInput {
+    Description: String?
+    ConnectionType: String
+    MatchCriteria: Listing<String>?
+    PhysicalConnectionRequirements: PhysicalConnectionRequirements?
+    ConnectionProperties: Mapping?
+    Name: String?
+}
+class PhysicalConnectionRequirements {
+    AvailabilityZone: String?
+    SecurityGroupIdList: Listing<String>?
+    SubnetId: String?
+}

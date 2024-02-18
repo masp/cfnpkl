@@ -1,0 +1,99 @@
+/// Resource Type definition for AWS::MSK::Replicator
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MSK::Replicator"
+Properties: Props?
+class Props {
+    /// Amazon Resource Name for the created replicator.
+    ReplicatorArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):kafka:.*"#)))?
+    /// The name of the replicator.
+    ReplicatorName: String(length <= 128 && length >= 1 && matches(Regex(#"^[0-9A-Za-z][0-9A-Za-z-]{0,}$"#)))?
+    /// The current version of the MSK replicator.
+    CurrentVersion: String?
+    /// A summary description of the replicator.
+    Description: String(length <= 1024)?
+    /// Specifies a list of Kafka clusters which are targets of the
+    /// replicator.
+    KafkaClusters: Listing<KafkaCluster>?
+    /// A list of replication configurations, where each configuration targets
+    /// a given source cluster to target cluster replication flow.
+    ReplicationInfoList: Listing<ReplicationInfo>?
+    /// The Amazon Resource Name (ARN) of the IAM role used by the replicator
+    /// to access external resources.
+    ServiceExecutionRoleArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):iam:.*"#)))?
+    /// A collection of tags associated with a resource
+    Tags: Listing<Tag>?
+}
+/// Details of a Kafka cluster for replication.
+class KafkaCluster {
+    /// Details of an Amazon MSK cluster. Exactly one of AmazonMskCluster is
+    /// required.
+    AmazonMskCluster: AmazonMskCluster
+    /// Details of an Amazon VPC which has network connectivity to the Apache
+    /// Kafka cluster.
+    VpcConfig: KafkaClusterClientVpcConfig
+}
+/// Details of an Amazon MSK cluster.
+class AmazonMskCluster {
+    /// The ARN of an Amazon MSK cluster.
+    MskClusterArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):kafka:.*"#)))
+}
+/// Details of an Amazon VPC which has network connectivity to the Kafka
+/// cluster.
+class KafkaClusterClientVpcConfig {
+    /// The AWS security groups to associate with the elastic network
+    /// interfaces in order to specify what the replicator has access to. If a
+    /// security group is not specified, the default security group associated
+    /// with the VPC is used.
+    SecurityGroupIds: Listing<String>?
+    /// The list of subnets to connect to in the virtual private cloud (VPC).
+    /// AWS creates elastic network interfaces inside these subnets.
+    SubnetIds: Listing<String>
+}
+/// Specifies configuration for replication between a source and target
+/// Kafka cluster.
+class ReplicationInfo {
+    /// Amazon Resource Name of the source Kafka cluster.
+    SourceKafkaClusterArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):kafka:.*"#)))
+    /// Amazon Resource Name of the target Kafka cluster.
+    TargetKafkaClusterArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):kafka:.*"#)))
+    /// The type of compression to use writing records to target Kafka
+    /// cluster.
+    TargetCompressionType: "NONE" | "GZIP" | "SNAPPY" | "LZ4" | "ZSTD"
+    /// Configuration relating to topic replication.
+    TopicReplication: TopicReplication
+    /// Configuration relating to consumer group replication.
+    ConsumerGroupReplication: ConsumerGroupReplication
+}
+class TopicReplication {
+    /// List of regular expression patterns indicating the topics to copy.
+    TopicsToReplicate: Listing<String(length <= 249)>
+    /// List of regular expression patterns indicating the topics that should
+    /// not be replicated.
+    TopicsToExclude: Listing<String(length <= 249)>?
+    /// Whether to periodically configure remote topics to match their
+    /// corresponding upstream topics.
+    CopyTopicConfigurations: Boolean?
+    /// Whether to periodically configure remote topic ACLs to match their
+    /// corresponding upstream topics.
+    CopyAccessControlListsForTopics: Boolean?
+    /// Whether to periodically check for new topics and partitions.
+    DetectAndCopyNewTopics: Boolean?
+}
+/// Configuration relating to consumer group replication.
+class ConsumerGroupReplication {
+    /// List of regular expression patterns indicating the consumer groups to
+    /// copy.
+    ConsumerGroupsToReplicate: Listing<String(length <= 256)>
+    /// List of regular expression patterns indicating the consumer groups
+    /// that should not be replicated.
+    ConsumerGroupsToExclude: Listing<String(length <= 256)>?
+    /// Whether to periodically write the translated offsets to
+    /// __consumer_offsets topic in target cluster.
+    SynchroniseConsumerGroupOffsets: Boolean?
+    /// Whether to periodically check for new consumer groups.
+    DetectAndCopyNewConsumerGroups: Boolean?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256)
+}

@@ -1,0 +1,33 @@
+/// Definition of AWS::RolesAnywhere::TrustAnchor Resource Type.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RolesAnywhere::TrustAnchor"
+Properties: Props?
+class Props {
+    Enabled: Boolean?
+    Name: String?
+    NotificationSettings: Listing<NotificationSetting>?
+    Source: Source?
+    Tags: Listing<Tag>?
+    TrustAnchorId: String(matches(Regex(#"[a-f0-9]{8}-([a-z0-9]{4}-){3}[a-z0-9]{12}"#)))?
+    TrustAnchorArn: String(matches(Regex(#"[a-f0-9]{8}-([a-z0-9]{4}-){3}[a-z0-9]{12}"#)))?
+}
+class NotificationSetting {
+    Enabled: Boolean
+    Event: "CA_CERTIFICATE_EXPIRY" | "END_ENTITY_CERTIFICATE_EXPIRY"
+    Threshold: Float?
+    Channel: "ALL" | *Null
+}
+class Source {
+    SourceType: "AWS_ACM_PCA" | "CERTIFICATE_BUNDLE" | "SELF_SIGNED_REPOSITORY" | *Null
+    SourceData: SourceData0 | SourceData1 | *Null
+}
+class SourceData0 {
+    X509CertificateData: String
+}
+class SourceData1 {
+    AcmPcaArn: String
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

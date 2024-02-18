@@ -1,0 +1,133 @@
+/// Resource Type definition for AWS::Lambda::EventSourceMapping
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lambda::EventSourceMapping"
+Properties: Props?
+class Props {
+    /// Event Source Mapping Identifier UUID.
+    Id: String(length <= 36 && length >= 36 && matches(Regex(#"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"#)))?
+    /// The maximum number of items to retrieve in a single batch.
+    BatchSize: Int?
+    /// (Streams) If the function returns an error, split the batch in two and
+    /// retry.
+    BisectBatchOnFunctionError: Boolean?
+    /// (Streams) An Amazon SQS queue or Amazon SNS topic destination for
+    /// discarded records.
+    DestinationConfig: DestinationConfig?
+    /// Disables the event source mapping to pause polling and invocation.
+    Enabled: Boolean?
+    /// The Amazon Resource Name (ARN) of the event source.
+    EventSourceArn: String(length <= 1024 && length >= 12 && matches(Regex(#"arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)"#)))?
+    /// The filter criteria to control event filtering.
+    FilterCriteria: FilterCriteria?
+    /// The name of the Lambda function.
+    FunctionName: String(length <= 140 && length >= 1 && matches(Regex(#"(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}(-gov)?-[a-z]+-\d{1}:)?(\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\$LATEST|[a-zA-Z0-9-_]+))?"#)))?
+    /// (Streams) The maximum amount of time to gather records before invoking
+    /// the function, in seconds.
+    MaximumBatchingWindowInSeconds: Int?
+    /// (Streams) The maximum age of a record that Lambda sends to a function
+    /// for processing.
+    MaximumRecordAgeInSeconds: Int?
+    /// (Streams) The maximum number of times to retry when the function
+    /// returns an error.
+    MaximumRetryAttempts: Int?
+    /// (Streams) The number of batches to process from each shard
+    /// concurrently.
+    ParallelizationFactor: Int?
+    /// The position in a stream from which to start reading. Required for
+    /// Amazon Kinesis and Amazon DynamoDB Streams sources.
+    StartingPosition: String(length <= 12 && length >= 6 && matches(Regex(#"(LATEST|TRIM_HORIZON|AT_TIMESTAMP)+"#)))?
+    /// With StartingPosition set to AT_TIMESTAMP, the time from which to
+    /// start reading, in Unix time seconds.
+    StartingPositionTimestamp: Float?
+    /// (Kafka) A list of Kafka topics.
+    Topics: Listing<String(length <= 249 && length >= 1 && matches(Regex(#"^[^.]([a-zA-Z0-9\-_.]+)"#)))>?
+    /// (ActiveMQ) A list of ActiveMQ queues.
+    Queues: Listing<String(length <= 1000 && length >= 1 && matches(Regex(#"[\s\S]*"#)))>?
+    /// A list of SourceAccessConfiguration.
+    SourceAccessConfigurations: Listing<SourceAccessConfiguration>?
+    /// (Streams) Tumbling window (non-overlapping time window) duration to
+    /// perform aggregations.
+    TumblingWindowInSeconds: Int?
+    /// (Streams) A list of response types supported by the function.
+    FunctionResponseTypes: Listing<"ReportBatchItemFailures">?
+    /// Self-managed event source endpoints.
+    SelfManagedEventSource: SelfManagedEventSource?
+    /// Specific configuration settings for an MSK event source.
+    AmazonManagedKafkaEventSourceConfig: AmazonManagedKafkaEventSourceConfig?
+    /// Specific configuration settings for a Self-Managed Apache Kafka event
+    /// source.
+    SelfManagedKafkaEventSourceConfig: SelfManagedKafkaEventSourceConfig?
+    /// The scaling configuration for the event source.
+    ScalingConfig: ScalingConfig?
+    /// Document db event source config.
+    DocumentDBEventSourceConfig: DocumentDBEventSourceConfig?
+}
+/// (Streams) An Amazon SQS queue or Amazon SNS topic destination for
+/// discarded records.
+class DestinationConfig {
+    /// The destination configuration for failed invocations.
+    OnFailure: OnFailure?
+}
+/// A destination for events that failed processing.
+class OnFailure {
+    /// The Amazon Resource Name (ARN) of the destination resource.
+    Destination: String(length <= 1024 && length >= 12 && matches(Regex(#"arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)"#)))?
+}
+/// The filter criteria to control event filtering.
+class FilterCriteria {
+    /// List of filters of this FilterCriteria
+    Filters: Listing<Filter>?
+}
+/// The filter object that defines parameters for ESM filtering.
+class Filter {
+    /// The filter pattern that defines which events should be passed for
+    /// invocations.
+    Pattern: String(length <= 4096 && length >= 0 && matches(Regex(#".*"#)))?
+}
+/// The configuration used by AWS Lambda to access event source
+class SourceAccessConfiguration {
+    /// The type of source access configuration.
+    Type: "BASIC_AUTH" | "VPC_SUBNET" | "VPC_SECURITY_GROUP" | "SASL_SCRAM_512_AUTH" | "SASL_SCRAM_256_AUTH" | "VIRTUAL_HOST" | "CLIENT_CERTIFICATE_TLS_AUTH" | "SERVER_ROOT_CA_CERTIFICATE" | *Null
+    /// The URI for the source access configuration resource.
+    URI: String(length <= 200 && length >= 1 && matches(Regex(#"[a-zA-Z0-9-\/*:_+=.@-]*"#)))?
+}
+/// The configuration used by AWS Lambda to access a self-managed event
+/// source.
+class SelfManagedEventSource {
+    /// The endpoints for a self-managed event source.
+    Endpoints: Endpoints?
+}
+/// The endpoints used by AWS Lambda to access a self-managed event
+/// source.
+class Endpoints {
+    /// A list of Kafka server endpoints.
+    KafkaBootstrapServers: Listing<String(length <= 300 && length >= 1 && matches(Regex(#"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]):[0-9]{1,5}"#)))>?
+}
+/// Specific configuration settings for an MSK event source.
+class AmazonManagedKafkaEventSourceConfig {
+    /// The identifier for the Kafka Consumer Group to join.
+    ConsumerGroupId: String(length <= 200 && length >= 1 && matches(Regex(#"[a-zA-Z0-9-\/*:_+=.@-]*"#)))?
+}
+/// Specific configuration settings for a Self-Managed Apache Kafka event
+/// source.
+class SelfManagedKafkaEventSourceConfig {
+    /// The identifier for the Kafka Consumer Group to join.
+    ConsumerGroupId: String(length <= 200 && length >= 1 && matches(Regex(#"[a-zA-Z0-9-\/*:_+=.@-]*"#)))?
+}
+/// The scaling configuration for the event source.
+class ScalingConfig {
+    /// The maximum number of concurrent functions that the event source can
+    /// invoke.
+    MaximumConcurrency: Int?
+}
+/// Document db event source config.
+class DocumentDBEventSourceConfig {
+    /// The database name to connect to.
+    DatabaseName: String(length <= 63 && length >= 1)?
+    /// The collection name to connect to.
+    CollectionName: String(length <= 57 && length >= 1)?
+    /// Include full document in change stream response. The default option
+    /// will only send the changes made to documents to Lambda. If you want
+    /// the complete document sent to Lambda, set this to UpdateLookup.
+    FullDocument: "UpdateLookup" | "Default" | *Null
+}

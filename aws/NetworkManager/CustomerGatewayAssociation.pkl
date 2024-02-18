@@ -1,0 +1,15 @@
+/// The AWS::NetworkManager::CustomerGatewayAssociation type associates a
+/// customer gateway with a device and optionally, with a link.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkManager::CustomerGatewayAssociation"
+Properties: Props?
+class Props {
+    /// The ID of the global network.
+    GlobalNetworkId: String?
+    /// The Amazon Resource Name (ARN) of the customer gateway.
+    CustomerGatewayArn: String?
+    /// The ID of the device
+    DeviceId: String?
+    /// The ID of the link
+    LinkId: String?
+}

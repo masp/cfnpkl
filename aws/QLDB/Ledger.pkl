@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::QLDB::Ledger
+extends ".../AWS/Resource.pkl"
+Type = "AWS::QLDB::Ledger"
+Properties: Props?
+class Props {
+    PermissionsMode: String?
+    DeletionProtection: Boolean?
+    Id: String?
+    KmsKey: String?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

@@ -1,0 +1,44 @@
+/// Resource Type definition for AWS::LakeFormation::Permissions
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LakeFormation::Permissions"
+Properties: Props?
+class Props {
+    Resource: Resource?
+    Permissions: Listing<String>?
+    Id: String?
+    DataLakePrincipal: DataLakePrincipal?
+    PermissionsWithGrantOption: Listing<String>?
+}
+class Resource {
+    DatabaseResource: DatabaseResource?
+    DataLocationResource: DataLocationResource?
+    TableWithColumnsResource: TableWithColumnsResource?
+    TableResource: TableResource?
+}
+class DatabaseResource {
+    CatalogId: String?
+    Name: String?
+}
+class DataLocationResource {
+    S3Resource: String?
+    CatalogId: String?
+}
+class TableWithColumnsResource {
+    DatabaseName: String?
+    ColumnNames: Listing<String>?
+    CatalogId: String?
+    Name: String?
+    ColumnWildcard: ColumnWildcard?
+}
+class ColumnWildcard {
+    ExcludedColumnNames: Listing<String>?
+}
+class TableResource {
+    DatabaseName: String?
+    CatalogId: String?
+    TableWildcard: Mapping?
+    Name: String?
+}
+class DataLakePrincipal {
+    DataLakePrincipalIdentifier: String?
+}

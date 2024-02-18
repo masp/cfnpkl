@@ -1,0 +1,19 @@
+/// Resource schema for EC2 EIP association.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::EIPAssociation"
+Properties: Props?
+class Props {
+    /// Composite ID of non-empty properties, to determine the identification.
+    Id: String?
+    /// The allocation ID. This is required for EC2-VPC.
+    AllocationId: String?
+    /// The ID of the network interface.
+    NetworkInterfaceId: String?
+    /// The ID of the instance.
+    InstanceId: String?
+    /// The primary or secondary private IP address to associate with the
+    /// Elastic IP address.
+    PrivateIpAddress: String?
+    /// The Elastic IP address to associate with the instance.
+    EIP: String?
+}

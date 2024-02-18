@@ -1,0 +1,55 @@
+/// Resource schema for AWS::IoTSiteWise::Portal
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTSiteWise::Portal"
+Properties: Props?
+class Props {
+    /// The service to use to authenticate users to the portal. Choose from
+    /// SSO or IAM. You can't change this value after you create a portal.
+    PortalAuthMode: String?
+    /// The ARN of the portal, which has the following format.
+    PortalArn: String?
+    /// The AWS SSO application generated client ID (used with AWS SSO APIs).
+    PortalClientId: String?
+    /// The AWS administrator's contact email address.
+    PortalContactEmail: String?
+    /// A description for the portal.
+    PortalDescription: String?
+    /// The ID of the portal.
+    PortalId: String?
+    /// A friendly name for the portal.
+    PortalName: String?
+    /// The public root URL for the AWS IoT AWS IoT SiteWise Monitor
+    /// application portal.
+    PortalStartUrl: String?
+    /// The ARN of a service role that allows the portal's users to access
+    /// your AWS IoT SiteWise resources on your behalf.
+    RoleArn: String?
+    /// The email address that sends alarm notifications.
+    NotificationSenderEmail: String?
+    /// Contains the configuration information of an alarm created in an AWS
+    /// IoT SiteWise Monitor portal. You can use the alarm to monitor an asset
+    /// property and get notified when the asset property value is outside a
+    /// specified range.
+    Alarms: Alarms?
+    /// A list of key-value pairs that contain metadata for the portal.
+    Tags: Listing<Tag>?
+}
+/// Contains the configuration information of an alarm created in an AWS
+/// IoT SiteWise Monitor portal. You can use the alarm to monitor an asset
+/// property and get notified when the asset property value is outside a
+/// specified range.
+class Alarms {
+    /// The ARN of the IAM role that allows the alarm to perform actions and
+    /// access AWS resources and services, such as AWS IoT Events.
+    AlarmRoleArn: String?
+    /// The ARN of the AWS Lambda function that manages alarm notifications.
+    /// For more information, see Managing alarm notifications in the AWS IoT
+    /// Events Developer Guide.
+    NotificationLambdaArn: String?
+}
+/// To add or update tag, provide both key and value. To delete tag,
+/// provide only tag key to be deleted.
+class Tag {
+    Key: String
+    Value: String
+}

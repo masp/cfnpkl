@@ -1,0 +1,29 @@
+/// Resource Type definition for AWS::SageMaker::ModelPackageGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::ModelPackageGroup"
+Properties: Props?
+class Props {
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    ModelPackageGroupArn: String(length <= 256 && length >= 1 && matches(Regex(#"arn:.*"#)))?
+    ModelPackageGroupName: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*$"#)))?
+    ModelPackageGroupDescription: String(length <= 1024 && matches(Regex(#"[\p{L}\p{M}\p{Z}\p{S}\p{N}\p{P}]*"#)))?
+    ModelPackageGroupPolicy: Mapping | String | *Null
+    /// The time at which the model package group was created.
+    CreationTime: String?
+    /// The status of a modelpackage group job.
+    ModelPackageGroupStatus: "Pending" | "InProgress" | "Completed" | "Failed" | "Deleting" | "DeleteFailed" | *Null
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+}

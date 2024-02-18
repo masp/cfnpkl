@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::WAF::Rule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAF::Rule"
+Properties: Props?
+class Props {
+    Id: String?
+    MetricName: String?
+    Name: String?
+    Predicates: Listing<Predicate>?
+}
+class Predicate {
+    DataId: String
+    Negated: Boolean
+    Type: String
+}

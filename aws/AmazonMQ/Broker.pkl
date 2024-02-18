@@ -1,0 +1,76 @@
+/// Resource Type definition for AWS::AmazonMQ::Broker
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AmazonMQ::Broker"
+Properties: Props?
+class Props {
+    SecurityGroups: Listing<String>?
+    DataReplicationPrimaryBrokerArn: String?
+    Configuration: ConfigurationId?
+    AuthenticationStrategy: String?
+    Users: Listing<User>?
+    SubnetIds: Listing<String>?
+    StompEndpoints: Listing<String>?
+    MqttEndpoints: Listing<String>?
+    AmqpEndpoints: Listing<String>?
+    DeploymentMode: String?
+    EngineType: String?
+    EncryptionOptions: EncryptionOptions?
+    Tags: Listing<TagsEntry>?
+    ConfigurationRevision: Int?
+    StorageType: String?
+    EngineVersion: String?
+    MaintenanceWindowStartTime: MaintenanceWindow?
+    HostInstanceType: String?
+    AutoMinorVersionUpgrade: Boolean?
+    Logs: LogList?
+    ConfigurationId: String?
+    DataReplicationMode: String?
+    BrokerName: String?
+    WssEndpoints: Listing<String>?
+    IpAddresses: Listing<String>?
+    OpenWireEndpoints: Listing<String>?
+    LdapServerMetadata: LdapServerMetadata?
+    PubliclyAccessible: Boolean?
+    Id: String?
+    Arn: String?
+}
+class ConfigurationId {
+    Revision: Int
+    Id: String
+}
+class User {
+    ConsoleAccess: Boolean?
+    Username: String
+    Groups: Listing<String>?
+    Password: String
+}
+class EncryptionOptions {
+    KmsKeyId: String?
+    UseAwsOwnedKey: Boolean
+}
+class TagsEntry {
+    Value: String
+    Key: String
+}
+class MaintenanceWindow {
+    DayOfWeek: String
+    TimeOfDay: String
+    TimeZone: String
+}
+class LogList {
+    Audit: Boolean?
+    General: Boolean?
+}
+class LdapServerMetadata {
+    Hosts: Listing<String>
+    UserRoleName: String?
+    UserSearchMatching: String
+    RoleName: String?
+    UserBase: String
+    UserSearchSubtree: Boolean?
+    RoleSearchMatching: String
+    ServiceAccountUsername: String
+    RoleBase: String
+    ServiceAccountPassword: String
+    RoleSearchSubtree: Boolean?
+}

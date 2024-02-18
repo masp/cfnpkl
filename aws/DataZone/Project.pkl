@@ -1,0 +1,27 @@
+/// Amazon DataZone projects are business use case–based groupings of
+/// people, assets (data), and tools used to simplify access to the AWS
+/// analytics.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataZone::Project"
+Properties: Props?
+class Props {
+    /// The timestamp of when the project was created.
+    CreatedAt: String?
+    /// The Amazon DataZone user who created the project.
+    CreatedBy: String?
+    /// The description of the Amazon DataZone project.
+    Description: String(length <= 2048)?
+    /// The identifier of the Amazon DataZone domain in which the project was
+    /// created.
+    DomainId: String(matches(Regex(#"^dzd[-_][a-zA-Z0-9_-]{1,36}$"#)))?
+    /// The ID of the Amazon DataZone domain in which this project is created.
+    DomainIdentifier: String(matches(Regex(#"^dzd[-_][a-zA-Z0-9_-]{1,36}$"#)))?
+    /// The glossary terms that can be used in this Amazon DataZone project.
+    GlossaryTerms: Listing<String(matches(Regex(#"^[a-zA-Z0-9_-]{1,36}$"#)))>?
+    /// The ID of the Amazon DataZone project.
+    Id: String(matches(Regex(#"^[a-zA-Z0-9_-]{1,36}$"#)))?
+    /// The timestamp of when the project was last updated.
+    LastUpdatedAt: String?
+    /// The name of the Amazon DataZone project.
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[\w -]+$"#)))?
+}

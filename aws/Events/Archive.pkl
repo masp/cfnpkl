@@ -1,0 +1,12 @@
+/// Resource Type definition for AWS::Events::Archive
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Events::Archive"
+Properties: Props?
+class Props {
+    ArchiveName: String(length <= 48 && length >= 1)?
+    SourceArn: String?
+    Description: String?
+    EventPattern: Mapping?
+    Arn: String?
+    RetentionDays: Int?
+}

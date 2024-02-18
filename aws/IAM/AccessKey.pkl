@@ -1,0 +1,11 @@
+/// Resource Type definition for AWS::IAM::AccessKey
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IAM::AccessKey"
+Properties: Props?
+class Props {
+    Id: String?
+    SecretAccessKey: String?
+    Serial: Int?
+    Status: String?
+    UserName: String?
+}

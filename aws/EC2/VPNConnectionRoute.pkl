@@ -1,0 +1,11 @@
+/// Resource Type definition for AWS::EC2::VPNConnectionRoute
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VPNConnectionRoute"
+Properties: Props?
+class Props {
+    /// The CIDR block associated with the local subnet of the customer
+    /// network.
+    DestinationCidrBlock: String?
+    /// The ID of the VPN connection.
+    VpnConnectionId: String?
+}

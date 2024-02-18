@@ -1,0 +1,21 @@
+/// Resource schema for
+/// AWS::Route53Resolver::ResolverQueryLoggingConfigAssociation.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53Resolver::ResolverQueryLoggingConfigAssociation"
+Properties: Props?
+class Props {
+    /// Id
+    Id: String(length <= 64 && length >= 1)?
+    /// ResolverQueryLogConfigId
+    ResolverQueryLogConfigId: String(length <= 64 && length >= 1)?
+    /// ResourceId
+    ResourceId: String(length <= 64 && length >= 1)?
+    /// ResolverQueryLogConfigAssociationStatus
+    Status: "CREATING" | "ACTIVE" | "ACTION_NEEDED" | "DELETING" | "FAILED" | "OVERRIDDEN" | *Null
+    /// ResolverQueryLogConfigAssociationError
+    Error: "NONE" | "DESTINATION_NOT_FOUND" | "ACCESS_DENIED" | *Null
+    /// ResolverQueryLogConfigAssociationErrorMessage
+    ErrorMessage: String?
+    /// Rfc3339TimeString
+    CreationTime: String(length <= 40 && length >= 20)?
+}

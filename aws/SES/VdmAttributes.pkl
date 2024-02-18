@@ -1,0 +1,22 @@
+/// Resource Type definition for AWS::SES::VdmAttributes
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SES::VdmAttributes"
+Properties: Props?
+class Props {
+    /// Unique identifier for this resource
+    VdmAttributesResourceId: String?
+    DashboardAttributes: DashboardAttributes?
+    GuardianAttributes: GuardianAttributes?
+}
+/// Preferences regarding the Dashboard feature.
+class DashboardAttributes {
+    /// Whether emails sent from this account have engagement tracking
+    /// enabled.
+    EngagementMetrics: String(matches(Regex(#"ENABLED|DISABLED"#)))?
+}
+/// Preferences regarding the Guardian feature.
+class GuardianAttributes {
+    /// Whether emails sent from this account have optimized delivery
+    /// algorithm enabled.
+    OptimizedSharedDelivery: String(matches(Regex(#"ENABLED|DISABLED"#)))?
+}

@@ -1,0 +1,38 @@
+/// Resource Type definition for AWS::DocDB::DBCluster
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DocDB::DBCluster"
+Properties: Props?
+class Props {
+    StorageEncrypted: Boolean?
+    RestoreToTime: String?
+    SnapshotIdentifier: String?
+    Port: Int?
+    DBClusterIdentifier: String?
+    PreferredBackupWindow: String?
+    ClusterResourceId: String?
+    Endpoint: String?
+    VpcSecurityGroupIds: Listing<String>?
+    CopyTagsToSnapshot: Boolean?
+    RestoreType: String?
+    Tags: Listing<Tag>?
+    EngineVersion: String?
+    StorageType: String?
+    KmsKeyId: String?
+    AvailabilityZones: Listing<String>?
+    PreferredMaintenanceWindow: String?
+    DBSubnetGroupName: String?
+    DeletionProtection: Boolean?
+    UseLatestRestorableTime: Boolean?
+    MasterUserPassword: String?
+    SourceDBClusterIdentifier: String?
+    MasterUsername: String?
+    ReadEndpoint: String?
+    DBClusterParameterGroupName: String?
+    BackupRetentionPeriod: Int?
+    Id: String?
+    EnableCloudwatchLogsExports: Listing<String>?
+}
+class Tag {
+    Value: String
+    Key: String
+}

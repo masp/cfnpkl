@@ -1,0 +1,36 @@
+/// Resource Type definition for AWS::CloudFront::CachePolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::CachePolicy"
+Properties: Props?
+class Props {
+    CachePolicyConfig: CachePolicyConfig?
+    Id: String?
+    LastModifiedTime: String?
+}
+class CachePolicyConfig {
+    Comment: String?
+    DefaultTTL: Float
+    MaxTTL: Float
+    MinTTL: Float
+    Name: String
+    ParametersInCacheKeyAndForwardedToOrigin: ParametersInCacheKeyAndForwardedToOrigin
+}
+class ParametersInCacheKeyAndForwardedToOrigin {
+    CookiesConfig: CookiesConfig
+    EnableAcceptEncodingBrotli: Boolean?
+    EnableAcceptEncodingGzip: Boolean
+    HeadersConfig: HeadersConfig
+    QueryStringsConfig: QueryStringsConfig
+}
+class CookiesConfig {
+    CookieBehavior: String(matches(Regex(#"^(none|whitelist|allExcept|all)$"#)))
+    Cookies: Listing<String>?
+}
+class HeadersConfig {
+    HeaderBehavior: String(matches(Regex(#"^(none|whitelist)$"#)))
+    Headers: Listing<String>?
+}
+class QueryStringsConfig {
+    QueryStringBehavior: String(matches(Regex(#"^(none|whitelist|allExcept|all)$"#)))
+    QueryStrings: Listing<String>?
+}

@@ -1,0 +1,19 @@
+/// Resource Type Definition for AWS:IdentityStore::GroupMembership
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IdentityStore::GroupMembership"
+Properties: Props?
+class Props {
+    /// The unique identifier for a group in the identity store.
+    GroupId: String(length <= 47 && length >= 1 && matches(Regex(#"^([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"#)))?
+    /// The globally unique identifier for the identity store.
+    IdentityStoreId: String(length <= 36 && length >= 1 && matches(Regex(#"^d-[0-9a-f]{10}$|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"#)))?
+    /// An object containing the identifier of a group member.
+    MemberId: MemberId?
+    /// The identifier for a GroupMembership in the identity store.
+    MembershipId: String(length <= 47 && length >= 1 && matches(Regex(#"^([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"#)))?
+}
+/// An object containing the identifier of a group member.
+class MemberId {
+    /// The identifier for a user in the identity store.
+    UserId: String(length <= 47 && length >= 1 && matches(Regex(#"^([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"#)))
+}

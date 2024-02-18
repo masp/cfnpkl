@@ -1,0 +1,19 @@
+/// Resource Type definition for AWS::WAF::WebACL
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAF::WebACL"
+Properties: Props?
+class Props {
+    Id: String?
+    DefaultAction: WafAction?
+    MetricName: String?
+    Name: String?
+    Rules: Listing<ActivatedRule>?
+}
+class WafAction {
+    Type: String
+}
+class ActivatedRule {
+    Action: WafAction?
+    Priority: Int
+    RuleId: String
+}

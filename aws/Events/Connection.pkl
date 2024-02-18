@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::Events::Connection.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Events::Connection"
+Properties: Props?
+class Props {
+    /// Name of the connection.
+    Name: String(length <= 64 && length >= 1)?
+    /// The arn of the connection resource.
+    Arn: String?
+    /// The arn of the secrets manager secret created in the customer account.
+    SecretArn: String?
+    /// Description of the connection.
+    Description: String(length <= 512)?
+    AuthorizationType: "API_KEY" | "BASIC" | "OAUTH_CLIENT_CREDENTIALS" | *Null
+    AuthParameters: Mapping | Mapping | Mapping | *Null
+}

@@ -1,0 +1,50 @@
+/// A target group is a collection of targets, or compute resources, that
+/// run your application or service. A target group can only be used by a
+/// single service.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::VpcLattice::TargetGroup"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:targetgroup/tg-[0-9a-z]{17}$"#)))?
+    Config: TargetGroupConfig?
+    CreatedAt: String?
+    Id: String(length <= 20 && length >= 20 && matches(Regex(#"^tg-[0-9a-z]{17}$"#)))?
+    LastUpdatedAt: String?
+    Name: String(length <= 128 && length >= 3 && matches(Regex(#"^(?!tg-)(?![-])(?!.*[-]$)(?!.*[-]{2})[a-z0-9-]+$"#)))?
+    Status: "CREATE_IN_PROGRESS" | "ACTIVE" | "DELETE_IN_PROGRESS" | "CREATE_FAILED" | "DELETE_FAILED" | *Null
+    Type: "IP" | "LAMBDA" | "INSTANCE" | "ALB" | *Null
+    Targets: Listing<Target>?
+    Tags: Listing<Tag>?
+}
+class TargetGroupConfig {
+    Port: Int?
+    Protocol: "HTTP" | "HTTPS" | *Null
+    ProtocolVersion: "HTTP1" | "HTTP2" | "GRPC" | *Null
+    IpAddressType: "IPV4" | "IPV6" | *Null
+    LambdaEventStructureVersion: "V1" | "V2" | *Null
+    VpcIdentifier: String(length <= 2048 && length >= 5 && matches(Regex(#"^vpc-(([0-9a-z]{8})|([0-9a-z]{17}))$"#)))?
+    HealthCheck: HealthCheckConfig?
+}
+class HealthCheckConfig {
+    Enabled: Boolean?
+    Protocol: "HTTP" | "HTTPS" | *Null
+    ProtocolVersion: "HTTP1" | "HTTP2" | "GRPC" | *Null
+    Port: Int?
+    Path: String(length <= 2048 && length >= 0 && matches(Regex(#"(^/[a-zA-Z0-9@:%_+.~#?&/=-]*$|(^$))"#)))?
+    HealthCheckIntervalSeconds: Int?
+    HealthCheckTimeoutSeconds: Int?
+    HealthyThresholdCount: Int?
+    UnhealthyThresholdCount: Int?
+    Matcher: Matcher?
+}
+class Matcher {
+    HttpCode: String(length <= 2000 && length >= 3 && matches(Regex(#"^[0-9-,]+$"#)))
+}
+class Target {
+    Id: String
+    Port: Int?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

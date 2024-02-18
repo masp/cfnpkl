@@ -1,0 +1,93 @@
+/// Resource schema for AWS::ImageBuilder::ImageRecipe
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ImageBuilder::ImageRecipe"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the image recipe.
+    Arn: String?
+    /// The name of the image recipe.
+    Name: String?
+    /// The description of the image recipe.
+    Description: String?
+    /// The version of the image recipe.
+    Version: String?
+    /// The components of the image recipe.
+    Components: Listing<ComponentConfiguration>?
+    /// The block device mappings to apply when creating images from this
+    /// recipe.
+    BlockDeviceMappings: Listing<InstanceBlockDeviceMapping>?
+    /// The parent image of the image recipe.
+    ParentImage: String?
+    /// The working directory to be used during build and test workflows.
+    WorkingDirectory: String?
+    /// Specify additional settings and launch scripts for your build
+    /// instances.
+    AdditionalInstanceConfiguration: AdditionalInstanceConfiguration?
+    /// The tags of the image recipe.
+    Tags: Mapping?
+}
+/// Configuration details of the component.
+class ComponentConfiguration {
+    /// The Amazon Resource Name (ARN) of the component.
+    ComponentArn: String?
+    /// A group of parameter settings that are used to configure the component
+    /// for a specific recipe.
+    Parameters: Listing<ComponentParameter>?
+}
+/// Contains a key/value pair that sets the named component parameter.
+class ComponentParameter {
+    /// The name of the component parameter to set.
+    Name: String
+    /// Sets the value for the named component parameter.
+    Value: Listing<String>
+}
+/// Defines block device mappings for the instance used to configure your
+/// image.
+class InstanceBlockDeviceMapping {
+    /// The device to which these mappings apply.
+    DeviceName: String?
+    /// Use to manage instance ephemeral devices.
+    VirtualName: String?
+    /// Use to remove a mapping from the parent image.
+    NoDevice: String?
+    /// Use to manage Amazon EBS-specific configuration for this mapping.
+    Ebs: EbsInstanceBlockDeviceSpecification?
+}
+/// Amazon EBS-specific block device mapping specifications.
+class EbsInstanceBlockDeviceSpecification {
+    /// Use to configure device encryption.
+    Encrypted: Boolean?
+    /// Use to configure delete on termination of the associated device.
+    DeleteOnTermination: Boolean?
+    /// Use to configure device IOPS.
+    Iops: Int?
+    /// Use to configure the KMS key to use when encrypting the device.
+    KmsKeyId: String?
+    /// The snapshot that defines the device contents.
+    SnapshotId: String?
+    /// For GP3 volumes only - The throughput in MiB/s that the volume
+    /// supports.
+    Throughput: Int?
+    /// Use to override the device's volume size.
+    VolumeSize: Int?
+    /// Use to override the device's volume type.
+    VolumeType: "standard" | "io1" | "io2" | "gp2" | "gp3" | "sc1" | "st1" | *Null
+}
+/// Specify additional settings and launch scripts for your build
+/// instances.
+class AdditionalInstanceConfiguration {
+    /// Contains settings for the SSM agent on your build instance.
+    SystemsManagerAgent: SystemsManagerAgent?
+    /// Use this property to provide commands or a command script to run when
+    /// you launch your build instance.
+    UserDataOverride: String?
+}
+/// Contains settings for the SSM agent on your build instance.
+class SystemsManagerAgent {
+    /// Controls whether the SSM agent is removed from your final build image,
+    /// prior to creating the new AMI. If this is set to true, then the agent
+    /// is removed from the final image. If it's set to false, then the agent
+    /// is left in, so that it is included in the new AMI. The default value
+    /// is false.
+    UninstallAfterBuild: Boolean?
+}

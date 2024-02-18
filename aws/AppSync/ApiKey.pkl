@@ -1,0 +1,12 @@
+/// Resource Type definition for AWS::AppSync::ApiKey
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppSync::ApiKey"
+Properties: Props?
+class Props {
+    ApiKey: String?
+    Description: String?
+    ApiKeyId: String?
+    Expires: Float?
+    Arn: String?
+    ApiId: String?
+}

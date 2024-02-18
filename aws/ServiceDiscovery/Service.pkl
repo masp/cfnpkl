@@ -1,0 +1,37 @@
+/// Resource Type definition for AWS::ServiceDiscovery::Service
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceDiscovery::Service"
+Properties: Props?
+class Props {
+    Type: String?
+    Description: String?
+    HealthCheckCustomConfig: HealthCheckCustomConfig?
+    DnsConfig: DnsConfig?
+    Id: String?
+    NamespaceId: String?
+    HealthCheckConfig: HealthCheckConfig?
+    Arn: String?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class HealthCheckCustomConfig {
+    FailureThreshold: Float?
+}
+class DnsConfig {
+    DnsRecords: Listing<DnsRecord>
+    RoutingPolicy: String?
+    NamespaceId: String?
+}
+class DnsRecord {
+    TTL: Float
+    Type: String
+}
+class HealthCheckConfig {
+    Type: String
+    ResourcePath: String?
+    FailureThreshold: Float?
+}
+class Tag {
+    Value: String
+    Key: String
+}

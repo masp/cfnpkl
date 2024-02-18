@@ -1,0 +1,75 @@
+/// Resource Type definition for AWS::ElasticLoadBalancing::LoadBalancer
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElasticLoadBalancing::LoadBalancer"
+Properties: Props?
+class Props {
+    SecurityGroups: Listing<String>?
+    ConnectionDrainingPolicy: ConnectionDrainingPolicy?
+    Policies: Listing<Policies>?
+    Scheme: String?
+    AvailabilityZones: Listing<String>?
+    SourceSecurityGroupOwnerAlias: String?
+    HealthCheck: HealthCheck?
+    CanonicalHostedZoneNameID: String?
+    CanonicalHostedZoneName: String?
+    DNSName: String?
+    AccessLoggingPolicy: AccessLoggingPolicy?
+    Instances: Listing<String>?
+    LoadBalancerName: String?
+    Listeners: Listing<Listeners>?
+    Subnets: Listing<String>?
+    CrossZone: Boolean?
+    AppCookieStickinessPolicy: Listing<AppCookieStickinessPolicy>?
+    LBCookieStickinessPolicy: Listing<LBCookieStickinessPolicy>?
+    Id: String?
+    SourceSecurityGroupGroupName: String?
+    ConnectionSettings: ConnectionSettings?
+    Tags: Listing<Tag>?
+}
+class ConnectionDrainingPolicy {
+    Enabled: Boolean
+    Timeout: Int?
+}
+class Policies {
+    Attributes: Listing<Mapping>
+    PolicyType: String
+    LoadBalancerPorts: Listing<String>?
+    PolicyName: String
+    InstancePorts: Listing<String>?
+}
+class HealthCheck {
+    Target: String
+    UnhealthyThreshold: String
+    Timeout: String
+    HealthyThreshold: String
+    Interval: String
+}
+class AccessLoggingPolicy {
+    Enabled: Boolean
+    S3BucketName: String
+    EmitInterval: Int?
+    S3BucketPrefix: String?
+}
+class Listeners {
+    PolicyNames: Listing<String>?
+    InstancePort: String
+    LoadBalancerPort: String
+    Protocol: String
+    SSLCertificateId: String?
+    InstanceProtocol: String?
+}
+class AppCookieStickinessPolicy {
+    CookieName: String
+    PolicyName: String
+}
+class LBCookieStickinessPolicy {
+    CookieExpirationPeriod: String?
+    PolicyName: String?
+}
+class ConnectionSettings {
+    IdleTimeout: Int
+}
+class Tag {
+    Value: String
+    Key: String
+}

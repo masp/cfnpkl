@@ -1,0 +1,36 @@
+/// A resource schema representing a Lake Formation Data Cells Filter.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LakeFormation::DataCellsFilter"
+Properties: Props?
+class Props {
+    /// The Catalog Id of the Table on which to create a Data Cells Filter.
+    TableCatalogId: String(length <= 12 && length >= 12)?
+    /// The name of the Database that the Table resides in.
+    DatabaseName: String(length <= 255 && length >= 1)?
+    /// The name of the Table to create a Data Cells Filter for.
+    TableName: String(length <= 255 && length >= 1)?
+    /// The desired name of the Data Cells Filter.
+    Name: String(length <= 255 && length >= 1)?
+    /// An object representing the Data Cells Filter's Row Filter. Either a
+    /// Filter Expression or a Wildcard is required
+    RowFilter: RowFilter?
+    /// A list of columns to be included in this Data Cells Filter.
+    ColumnNames: Listing<String(length <= 255 && length >= 1)>?
+    /// An object representing the Data Cells Filter's Columns. Either Column
+    /// Names or a Wildcard is required
+    ColumnWildcard: ColumnWildcard?
+}
+/// An object representing the Data Cells Filter's Row Filter. Either a
+/// Filter Expression or a Wildcard is required.
+class RowFilter {
+    /// A PartiQL predicate.
+    FilterExpression: String?
+    /// An empty object representing a row wildcard.
+    AllRowsWildcard: Mapping?
+}
+/// An object representing the Data Cells Filter's Columns. Either Column
+/// Names or a Wildcard is required.
+class ColumnWildcard {
+    /// A list of column names to be excluded from the Data Cells Filter.
+    ExcludedColumnNames: Listing<String(length <= 255 && length >= 1)>?
+}

@@ -1,0 +1,39 @@
+/// Resource Type definition for AWS::AppSync::SourceApiAssociation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppSync::SourceApiAssociation"
+Properties: Props?
+class Props {
+    /// Identifier of the Source GraphQLApi to associate. It could be either
+    /// GraphQLApi ApiId or ARN
+    SourceApiIdentifier: String?
+    /// Identifier of the Merged GraphQLApi to associate. It could be either
+    /// GraphQLApi ApiId or ARN
+    MergedApiIdentifier: String?
+    /// Description of the SourceApiAssociation.
+    Description: String?
+    /// Customized configuration for SourceApiAssociation.
+    SourceApiAssociationConfig: SourceApiAssociationConfig?
+    /// Id of the SourceApiAssociation.
+    AssociationId: String?
+    /// ARN of the SourceApiAssociation.
+    AssociationArn: String?
+    /// GraphQLApiId of the source API in the association.
+    SourceApiId: String?
+    /// ARN of the source API in the association.
+    SourceApiArn: String(matches(Regex(#"^arn:aws(-(cn|us-gov))?:[a-z-]+:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))?
+    /// GraphQLApiId of the Merged API in the association.
+    MergedApiId: String?
+    /// ARN of the Merged API in the association.
+    MergedApiArn: String(matches(Regex(#"^arn:aws(-(cn|us-gov))?:[a-z-]+:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))?
+    /// Current status of SourceApiAssociation.
+    SourceApiAssociationStatus: "MERGE_SCHEDULED" | "MERGE_FAILED" | "MERGE_SUCCESS" | "MERGE_IN_PROGRESS" | "AUTO_MERGE_SCHEDULE_FAILED" | "DELETION_SCHEDULED" | "DELETION_IN_PROGRESS" | "DELETION_FAILED" | *Null
+    /// Current SourceApiAssociation status details.
+    SourceApiAssociationStatusDetail: String?
+    /// Date of last schema successful merge.
+    LastSuccessfulMergeDate: String?
+}
+class SourceApiAssociationConfig {
+    /// Configuration of the merged behavior for the association. For example
+    /// when it could be auto or has to be manual.
+    MergeType: "AUTO_MERGE" | "MANUAL_MERGE" | *Null
+}

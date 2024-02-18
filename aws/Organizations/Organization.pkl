@@ -1,0 +1,24 @@
+/// Resource schema for AWS::Organizations::Organization
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Organizations::Organization"
+Properties: Props?
+class Props {
+    /// The unique identifier (ID) of an organization.
+    Id: String(matches(Regex(#"^o-[a-z0-9]{10,32}$"#)))?
+    /// The Amazon Resource Name (ARN) of an organization.
+    Arn: String(matches(Regex(#"^arn:aws.*:organizations::\d{12}:organization\/o-[a-z0-9]{10,32}"#)))?
+    /// Specifies the feature set supported by the new organization. Each
+    /// feature set supports different levels of functionality.
+    FeatureSet: "ALL" | "CONSOLIDATED_BILLING" | *Null
+    /// The Amazon Resource Name (ARN) of the account that is designated as
+    /// the management account for the organization.
+    ManagementAccountArn: String(matches(Regex(#"^arn:aws.*:organizations::\d{12}:account\/o-[a-z0-9]{10,32}\/\d{12}"#)))?
+    /// The unique identifier (ID) of the management account of an
+    /// organization.
+    ManagementAccountId: String(matches(Regex(#"^\d{12}$"#)))?
+    /// The email address that is associated with the AWS account that is
+    /// designated as the management account for the organization.
+    ManagementAccountEmail: String(length <= 64 && length >= 6 && matches(Regex(#"[^\s@]+@[^\s@]+\.[^\s@]+"#)))?
+    /// The unique identifier (ID) for the root.
+    RootId: String(length <= 64 && matches(Regex(#"^r-[0-9a-z]{4,32}$"#)))?
+}

@@ -1,0 +1,81 @@
+/// The AWS::EC2::VerifiedAccessTrustProvider type describes a verified
+/// access trust provider
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VerifiedAccessTrustProvider"
+Properties: Props?
+class Props {
+    /// Type of trust provider. Possible values: user|device
+    TrustProviderType: String?
+    /// The type of device-based trust provider. Possible values:
+    /// jamf|crowdstrike
+    DeviceTrustProviderType: String?
+    /// The type of device-based trust provider. Possible values: oidc|iam-
+    /// identity-center
+    UserTrustProviderType: String?
+    OidcOptions: OidcOptions?
+    DeviceOptions: DeviceOptions?
+    /// The identifier to be used when working with policy rules.
+    PolicyReferenceName: String?
+    /// The creation time.
+    CreationTime: String?
+    /// The last updated time.
+    LastUpdatedTime: String?
+    /// The ID of the Amazon Web Services Verified Access trust provider.
+    VerifiedAccessTrustProviderId: String?
+    /// A description for the Amazon Web Services Verified Access trust
+    /// provider.
+    Description: String?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The configuration options for customer provided KMS encryption.
+    SseSpecification: SseSpecification?
+}
+/// The OpenID Connect details for an oidc -type, user-identity based
+/// trust provider.
+class OidcOptions {
+    /// The OIDC issuer.
+    Issuer: String?
+    /// The OIDC authorization endpoint.
+    AuthorizationEndpoint: String?
+    /// The OIDC token endpoint.
+    TokenEndpoint: String?
+    /// The OIDC user info endpoint.
+    UserInfoEndpoint: String?
+    /// The client identifier.
+    ClientId: String?
+    /// The client secret.
+    ClientSecret: String?
+    /// OpenID Connect (OIDC) scopes are used by an application during
+    /// authentication to authorize access to details of a user. Each scope
+    /// returns a specific set of user attributes.
+    Scope: String?
+}
+/// The options for device identity based trust providers.
+class DeviceOptions {
+    /// The ID of the tenant application with the device-identity provider.
+    TenantId: String?
+    /// URL Verified Access will use to verify authenticity of the device
+    /// tokens.
+    PublicSigningKeyUrl: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}
+/// The configuration options for customer provided KMS encryption.
+class SseSpecification {
+    /// KMS Key Arn used to encrypt the group policy
+    KmsKeyArn: String?
+    /// Whether to encrypt the policy with the provided key or disable
+    /// encryption
+    CustomerManagedKeyEnabled: Boolean?
+}

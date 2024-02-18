@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::EC2::RouteTable
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::RouteTable"
+Properties: Props?
+class Props {
+    /// The route table ID.
+    RouteTableId: String?
+    /// Any tags assigned to the route table.
+    Tags: Listing<Tag>?
+    /// The ID of the VPC.
+    VpcId: String?
+}
+class Tag {
+    Key: String
+    Value: String
+}

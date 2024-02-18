@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::Glue::TableOptimizer
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::TableOptimizer"
+Properties: Props?
+class Props {
+    DatabaseName: String?
+    TableName: String?
+    Type: String?
+    TableOptimizerConfiguration: TableOptimizerConfiguration?
+    Id: String?
+    CatalogId: String?
+}
+class TableOptimizerConfiguration {
+    Enabled: Boolean?
+    RoleArn: String?
+}

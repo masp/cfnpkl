@@ -1,0 +1,211 @@
+/// Resource Type definition for AWS::EC2::SpotFleet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::SpotFleet"
+Properties: Props?
+class Props {
+    SpotFleetRequestConfigData: SpotFleetRequestConfigData?
+    Id: String?
+}
+class SpotFleetRequestConfigData {
+    Context: String?
+    SpotMaxTotalPrice: String?
+    ExcessCapacityTerminationPolicy: "Default" | "NoTermination" | "default" | "noTermination" | *Null
+    TagSpecifications: Listing<SpotFleetTagSpecification>?
+    InstancePoolsToUseCount: Int?
+    LaunchTemplateConfigs: Listing<LaunchTemplateConfig>?
+    TargetCapacityUnitType: "vcpu" | "memory-mib" | "units" | *Null
+    IamFleetRole: String
+    SpotMaintenanceStrategies: SpotMaintenanceStrategies?
+    TerminateInstancesWithExpiration: Boolean?
+    ValidUntil: String?
+    OnDemandMaxTotalPrice: String?
+    OnDemandAllocationStrategy: String?
+    SpotPrice: String?
+    AllocationStrategy: "capacityOptimized" | "capacityOptimizedPrioritized" | "diversified" | "lowestPrice" | "priceCapacityOptimized" | *Null
+    OnDemandTargetCapacity: Int?
+    Type: "maintain" | "request" | *Null
+    LaunchSpecifications: Listing<SpotFleetLaunchSpecification>?
+    InstanceInterruptionBehavior: "hibernate" | "stop" | "terminate" | *Null
+    LoadBalancersConfig: LoadBalancersConfig?
+    ValidFrom: String?
+    ReplaceUnhealthyInstances: Boolean?
+    TargetCapacity: Int
+}
+class SpotFleetTagSpecification {
+    ResourceType: "client-vpn-endpoint" | "customer-gateway" | "dedicated-host" | "dhcp-options" | "egress-only-internet-gateway" | "elastic-gpu" | "elastic-ip" | "export-image-task" | "export-instance-task" | "fleet" | "fpga-image" | "host-reservation" | "image" | "import-image-task" | "import-snapshot-task" | "instance" | "internet-gateway" | "key-pair" | "launch-template" | "local-gateway-route-table-vpc-association" | "natgateway" | "network-acl" | "network-insights-analysis" | "network-insights-path" | "network-interface" | "placement-group" | "reserved-instances" | "route-table" | "security-group" | "snapshot" | "spot-fleet-request" | "spot-instances-request" | "subnet" | "traffic-mirror-filter" | "traffic-mirror-session" | "traffic-mirror-target" | "transit-gateway" | "transit-gateway-attachment" | "transit-gateway-connect-peer" | "transit-gateway-multicast-domain" | "transit-gateway-route-table" | "volume" | "vpc" | "vpc-flow-log" | "vpc-peering-connection" | "vpn-connection" | "vpn-gateway" | *Null
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class LaunchTemplateConfig {
+    LaunchTemplateSpecification: FleetLaunchTemplateSpecification?
+    Overrides: Listing<LaunchTemplateOverrides>?
+}
+class FleetLaunchTemplateSpecification {
+    LaunchTemplateName: String(length <= 128 && length >= 3 && matches(Regex(#"[a-zA-Z0-9\(\)\.\-/_]+"#)))?
+    Version: String
+    LaunchTemplateId: String?
+}
+class LaunchTemplateOverrides {
+    SpotPrice: String?
+    WeightedCapacity: Float?
+    Priority: Float?
+    AvailabilityZone: String?
+    SubnetId: String?
+    InstanceRequirements: InstanceRequirementsRequest?
+    InstanceType: String?
+}
+class InstanceRequirementsRequest {
+    LocalStorageTypes: Listing<"hdd" | "ssd">?
+    InstanceGenerations: Listing<"current" | "previous">?
+    NetworkInterfaceCount: NetworkInterfaceCountRequest?
+    MemoryGiBPerVCpu: MemoryGiBPerVCpuRequest?
+    AcceleratorTypes: Listing<"gpu" | "fpga" | "inference">?
+    VCpuCount: VCpuCountRangeRequest?
+    ExcludedInstanceTypes: Listing<String(length <= 30 && length >= 1 && matches(Regex(#"[a-zA-Z0-9\.\*]+"#)))>?
+    AcceleratorManufacturers: Listing<"amazon-web-services" | "amd" | "habana" | "nvidia" | "xilinx">?
+    AllowedInstanceTypes: Listing<String(length <= 30 && length >= 1 && matches(Regex(#"[a-zA-Z0-9\.\*]+"#)))>?
+    LocalStorage: "included" | "required" | "excluded" | *Null
+    CpuManufacturers: Listing<"intel" | "amd" | "amazon-web-services">?
+    NetworkBandwidthGbps: NetworkBandwidthGbpsRequest?
+    AcceleratorCount: AcceleratorCountRequest?
+    BareMetal: "included" | "required" | "excluded" | *Null
+    RequireHibernateSupport: Boolean?
+    SpotMaxPricePercentageOverLowestPrice: Int?
+    BaselineEbsBandwidthMbps: BaselineEbsBandwidthMbpsRequest?
+    OnDemandMaxPricePercentageOverLowestPrice: Int?
+    AcceleratorNames: Listing<"a10g" | "a100" | "h100" | "inferentia" | "k520" | "k80" | "m60" | "radeon-pro-v520" | "t4" | "t4g" | "vu9p" | "v100">?
+    AcceleratorTotalMemoryMiB: AcceleratorTotalMemoryMiBRequest?
+    BurstablePerformance: "included" | "required" | "excluded" | *Null
+    MemoryMiB: MemoryMiBRequest?
+    TotalLocalStorageGB: TotalLocalStorageGBRequest?
+}
+class NetworkInterfaceCountRequest {
+    Min: Int?
+    Max: Int?
+}
+class MemoryGiBPerVCpuRequest {
+    Min: Float?
+    Max: Float?
+}
+class VCpuCountRangeRequest {
+    Min: Int?
+    Max: Int?
+}
+class NetworkBandwidthGbpsRequest {
+    Min: Float?
+    Max: Float?
+}
+class AcceleratorCountRequest {
+    Min: Int?
+    Max: Int?
+}
+class BaselineEbsBandwidthMbpsRequest {
+    Min: Int?
+    Max: Int?
+}
+class AcceleratorTotalMemoryMiBRequest {
+    Min: Int?
+    Max: Int?
+}
+class MemoryMiBRequest {
+    Min: Int?
+    Max: Int?
+}
+class TotalLocalStorageGBRequest {
+    Min: Float?
+    Max: Float?
+}
+class SpotMaintenanceStrategies {
+    CapacityRebalance: SpotCapacityRebalance?
+}
+class SpotCapacityRebalance {
+    TerminationDelay: Int?
+    ReplacementStrategy: "launch" | "launch-before-terminate" | *Null
+}
+class SpotFleetLaunchSpecification {
+    SecurityGroups: Listing<GroupIdentifier>?
+    TagSpecifications: Listing<SpotFleetTagSpecification>?
+    UserData: String?
+    BlockDeviceMappings: Listing<BlockDeviceMapping>?
+    IamInstanceProfile: IamInstanceProfileSpecification?
+    KernelId: String?
+    SubnetId: String?
+    EbsOptimized: Boolean?
+    KeyName: String?
+    RamdiskId: String?
+    SpotPrice: String?
+    WeightedCapacity: Float?
+    Placement: SpotPlacement?
+    NetworkInterfaces: Listing<InstanceNetworkInterfaceSpecification>?
+    ImageId: String
+    InstanceRequirements: InstanceRequirementsRequest?
+    InstanceType: String?
+    Monitoring: SpotFleetMonitoring?
+}
+class GroupIdentifier {
+    GroupId: String
+}
+class BlockDeviceMapping {
+    Ebs: EbsBlockDevice?
+    NoDevice: String?
+    VirtualName: String?
+    DeviceName: String
+}
+class EbsBlockDevice {
+    SnapshotId: String?
+    VolumeType: "gp2" | "gp3" | "io1" | "io2" | "sc1" | "st1" | "standard" | *Null
+    Encrypted: Boolean?
+    Iops: Int?
+    VolumeSize: Int?
+    DeleteOnTermination: Boolean?
+}
+class IamInstanceProfileSpecification {
+    Arn: String?
+}
+class SpotPlacement {
+    GroupName: String?
+    Tenancy: "dedicated" | "default" | "host" | *Null
+    AvailabilityZone: String?
+}
+class InstanceNetworkInterfaceSpecification {
+    Description: String?
+    PrivateIpAddresses: Listing<PrivateIpAddressSpecification>?
+    SecondaryPrivateIpAddressCount: Int?
+    DeviceIndex: Int?
+    Groups: Listing<String>?
+    Ipv6AddressCount: Int?
+    Ipv6Addresses: Listing<InstanceIpv6Address>?
+    SubnetId: String?
+    AssociatePublicIpAddress: Boolean?
+    NetworkInterfaceId: String?
+    DeleteOnTermination: Boolean?
+}
+class PrivateIpAddressSpecification {
+    PrivateIpAddress: String
+    Primary: Boolean?
+}
+class InstanceIpv6Address {
+    Ipv6Address: String
+}
+class SpotFleetMonitoring {
+    Enabled: Boolean?
+}
+class LoadBalancersConfig {
+    ClassicLoadBalancersConfig: ClassicLoadBalancersConfig?
+    TargetGroupsConfig: TargetGroupsConfig?
+}
+class ClassicLoadBalancersConfig {
+    ClassicLoadBalancers: Listing<ClassicLoadBalancer>
+}
+class ClassicLoadBalancer {
+    Name: String
+}
+class TargetGroupsConfig {
+    TargetGroups: Listing<TargetGroup>
+}
+class TargetGroup {
+    Arn: String
+}

@@ -1,0 +1,36 @@
+/// Resource schema for AWS::MediaPackage::PackagingGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaPackage::PackagingGroup"
+Properties: Props?
+class Props {
+    /// The ID of the PackagingGroup.
+    Id: String(length <= 256 && length >= 1 && matches(Regex(#"\A[0-9a-zA-Z-_]+\Z"#)))?
+    /// The ARN of the PackagingGroup.
+    Arn: String?
+    /// The fully qualified domain name for Assets in the PackagingGroup.
+    DomainName: String?
+    /// CDN Authorization
+    Authorization: Authorization?
+    /// A collection of tags associated with a resource
+    Tags: Listing<Tag>?
+    /// The configuration parameters for egress access logging.
+    EgressAccessLogs: LogConfiguration?
+}
+class Authorization {
+    /// The Amazon Resource Name (ARN) for the secret in AWS Secrets Manager
+    /// that is used for CDN authorization.
+    CdnIdentifierSecret: String
+    /// The Amazon Resource Name (ARN) for the IAM role that allows
+    /// MediaPackage to communicate with AWS Secrets Manager.
+    SecretsRoleArn: String
+}
+class Tag {
+    Key: String
+    Value: String
+}
+class LogConfiguration {
+    /// Sets a custom AWS CloudWatch log group name for egress logs. If a log
+    /// group name isn't specified, the default name is used:
+    /// /aws/MediaPackage/VodEgressAccessLogs.
+    LogGroupName: String(length <= 512 && length >= 1 && matches(Regex(#"\A\/aws\/MediaPackage\/[0-9a-zA-Z-_\/\.#]+\Z"#)))?
+}

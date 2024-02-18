@@ -1,0 +1,32 @@
+/// The AWS::EC2::TransitGatewayMulticastGroupMember registers and
+/// deregisters members and sources (network interfaces) with the transit
+/// gateway multicast group
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::TransitGatewayMulticastGroupMember"
+Properties: Props?
+class Props {
+    /// The IP address assigned to the transit gateway multicast group.
+    GroupIpAddress: String?
+    /// The ID of the transit gateway attachment.
+    TransitGatewayAttachmentId: String?
+    /// The ID of the transit gateway multicast domain.
+    TransitGatewayMulticastDomainId: String?
+    /// The ID of the subnet.
+    SubnetId: String?
+    /// The ID of the resource.
+    ResourceId: String?
+    /// The type of resource, for example a VPC attachment.
+    ResourceType: String?
+    /// The ID of the transit gateway attachment.
+    NetworkInterfaceId: String?
+    /// Indicates that the resource is a transit gateway multicast group
+    /// member.
+    GroupMember: Boolean?
+    /// Indicates that the resource is a transit gateway multicast group
+    /// member.
+    GroupSource: Boolean?
+    /// The member type (for example, static).
+    MemberType: String?
+    /// The source type.
+    SourceType: String?
+}

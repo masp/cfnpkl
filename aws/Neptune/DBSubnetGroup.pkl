@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::Neptune::DBSubnetGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Neptune::DBSubnetGroup"
+Properties: Props?
+class Props {
+    Id: String?
+    DBSubnetGroupName: String?
+    DBSubnetGroupDescription: String?
+    SubnetIds: Listing<String>?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

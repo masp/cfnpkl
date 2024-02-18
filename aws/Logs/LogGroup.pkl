@@ -1,0 +1,40 @@
+/// Resource schema for AWS::Logs::LogGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Logs::LogGroup"
+Properties: Props?
+class Props {
+    /// The name of the log group. If you don't specify a name, AWS
+    /// CloudFormation generates a unique ID for the log group.
+    LogGroupName: String(length <= 512 && length >= 1 && matches(Regex(#"^[.\-_/#A-Za-z0-9]{1,512}\Z"#)))?
+    /// The Amazon Resource Name (ARN) of the CMK to use when encrypting log
+    /// data.
+    KmsKeyId: String(length <= 256 && matches(Regex(#"^arn:[a-z0-9-]+:kms:[a-z0-9-]+:\d{12}:(key|alias)/.+\Z"#)))?
+    /// The body of the policy document you want to use for this topic.  You
+    /// can only add one policy per topic.  The policy must be in JSON string
+    /// format.  Length Constraints: Maximum length of 30720
+    DataProtectionPolicy: Mapping?
+    /// The class of the log group. Possible values are: STANDARD and
+    /// INFREQUENT_ACCESS, with STANDARD being the default class
+    LogGroupClass: "STANDARD" | "INFREQUENT_ACCESS" | *Null
+    /// The number of days to retain the log events in the specified log
+    /// group. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180,
+    /// 365, 400, 545, 731, 1096, 1827, and 3653.
+    RetentionInDays: Int?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The CloudWatch log group ARN.
+    Arn: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., :, /, =, +, - and @.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length. You can use any of the following
+    /// characters: the set of Unicode letters, digits, whitespace, _, ., :,
+    /// /, =, +, - and @.
+    Value: String(length <= 256 && length >= 0)
+}

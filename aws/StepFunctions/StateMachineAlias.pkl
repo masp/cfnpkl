@@ -1,0 +1,38 @@
+/// Resource schema for StateMachineAlias
+extends ".../AWS/Resource.pkl"
+Type = "AWS::StepFunctions::StateMachineAlias"
+Properties: Props?
+class Props {
+    /// The ARN of the alias.
+    Arn: String(length <= 2048 && length >= 1)?
+    /// The alias name.
+    Name: String(length <= 80 && length >= 1)?
+    /// An optional description of the alias.
+    Description: String(length <= 256 && length >= 1)?
+    RoutingConfiguration: Listing<RoutingConfigurationVersion>?
+    DeploymentPreference: DeploymentPreference?
+}
+class RoutingConfigurationVersion {
+    /// The Amazon Resource Name (ARN) that identifies one or two state
+    /// machine versions defined in the routing configuration.
+    StateMachineVersionArn: String(length <= 2048 && length >= 1)
+    /// The percentage of traffic you want to route to the state machine
+    /// version. The sum of the weights in the routing configuration must be
+    /// equal to 100.
+    Weight: Int
+}
+/// The settings to enable gradual state machine deployments.
+class DeploymentPreference {
+    StateMachineVersionArn: String(length <= 2048 && length >= 1)
+    /// The type of deployment to perform.
+    Type: "LINEAR" | "ALL_AT_ONCE" | "CANARY"
+    /// The percentage of traffic to shift to the new version in each
+    /// increment.
+    Percentage: Int?
+    /// The time in minutes between each traffic shifting increment.
+    Interval: Int?
+    /// A list of CloudWatch alarm names that will be monitored during the
+    /// deployment. The deployment will fail and rollback if any alarms go
+    /// into ALARM state.
+    Alarms: Listing<String(length <= 256 && length >= 1)>?
+}

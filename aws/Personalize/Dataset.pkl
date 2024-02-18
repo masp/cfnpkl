@@ -1,0 +1,39 @@
+/// Resource schema for AWS::Personalize::Dataset.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Personalize::Dataset"
+Properties: Props?
+class Props {
+    /// The name for the dataset
+    Name: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))?
+    /// The ARN of the dataset
+    DatasetArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))?
+    /// The type of dataset
+    DatasetType: "Interactions" | "Items" | "Users"(length <= 256) | *Null
+    /// The Amazon Resource Name (ARN) of the dataset group to add the dataset
+    /// to
+    DatasetGroupArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))?
+    /// The ARN of the schema to associate with the dataset. The schema
+    /// defines the dataset fields.
+    SchemaArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))?
+    DatasetImportJob: DatasetImportJob?
+}
+/// Initial DatasetImportJob for the created dataset
+class DatasetImportJob {
+    /// The name for the dataset import job.
+    JobName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))?
+    /// The ARN of the dataset import job
+    DatasetImportJobArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))?
+    /// The ARN of the dataset that receives the imported data
+    DatasetArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))?
+    /// The Amazon S3 bucket that contains the training data to import.
+    DataSource: DataSource?
+    /// The ARN of the IAM role that has permissions to read from the Amazon
+    /// S3 data source.
+    RoleArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+"#)))?
+}
+/// The Amazon S3 bucket that contains the training data to import.
+class DataSource {
+    /// The path to the Amazon S3 bucket where the data that you want to
+    /// upload to your dataset is stored.
+    DataLocation: String(length <= 256 && matches(Regex(#"(s3|http|https)://.+"#)))?
+}

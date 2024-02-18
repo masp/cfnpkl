@@ -1,0 +1,82 @@
+/// Resource Type definition for AWS::ElasticLoadBalancingV2::Listener
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElasticLoadBalancingV2::Listener"
+Properties: Props?
+class Props {
+    SslPolicy: String?
+    LoadBalancerArn: String?
+    DefaultActions: Listing<Action>?
+    Port: Int?
+    Certificates: Listing<Certificate>?
+    Protocol: String?
+    ListenerArn: String?
+    AlpnPolicy: Listing<String>?
+    MutualAuthentication: MutualAuthentication?
+}
+class Action {
+    Order: Int?
+    TargetGroupArn: String?
+    FixedResponseConfig: FixedResponseConfig?
+    AuthenticateCognitoConfig: AuthenticateCognitoConfig?
+    Type: String
+    RedirectConfig: RedirectConfig?
+    ForwardConfig: ForwardConfig?
+    AuthenticateOidcConfig: AuthenticateOidcConfig?
+}
+class FixedResponseConfig {
+    ContentType: String?
+    StatusCode: String
+    MessageBody: String?
+}
+class AuthenticateCognitoConfig {
+    OnUnauthenticatedRequest: String?
+    UserPoolClientId: String
+    UserPoolDomain: String
+    SessionTimeout: String?
+    Scope: String?
+    SessionCookieName: String?
+    UserPoolArn: String
+    AuthenticationRequestExtraParams: Mapping?
+}
+class RedirectConfig {
+    Path: String?
+    Query: String?
+    Port: String?
+    Host: String?
+    Protocol: String?
+    StatusCode: String
+}
+class ForwardConfig {
+    TargetGroupStickinessConfig: TargetGroupStickinessConfig?
+    TargetGroups: Listing<TargetGroupTuple>?
+}
+class TargetGroupStickinessConfig {
+    Enabled: Boolean?
+    DurationSeconds: Int?
+}
+class TargetGroupTuple {
+    TargetGroupArn: String?
+    Weight: Int?
+}
+class AuthenticateOidcConfig {
+    OnUnauthenticatedRequest: String?
+    TokenEndpoint: String
+    SessionTimeout: String?
+    Scope: String?
+    Issuer: String
+    ClientSecret: String?
+    UserInfoEndpoint: String
+    ClientId: String
+    AuthorizationEndpoint: String
+    SessionCookieName: String?
+    UseExistingClientSecret: Boolean?
+    AuthenticationRequestExtraParams: Mapping?
+}
+class Certificate {
+    CertificateArn: String?
+}
+class MutualAuthentication {
+    Mode: String?
+    TrustStoreArn: String?
+    IgnoreClientCertificateExpiry: Boolean?
+}

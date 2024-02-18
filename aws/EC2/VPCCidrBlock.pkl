@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::EC2::VPCCidrBlock
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VPCCidrBlock"
+Properties: Props?
+class Props {
+    Ipv6NetmaskLength: Int?
+    Ipv6IpamPoolId: String?
+    VpcId: String?
+    Ipv4NetmaskLength: Int?
+    CidrBlock: String?
+    Ipv4IpamPoolId: String?
+    Ipv6Pool: String?
+    Id: String?
+    Ipv6CidrBlock: String?
+    AmazonProvidedIpv6CidrBlock: Boolean?
+}

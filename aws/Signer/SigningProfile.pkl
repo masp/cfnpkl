@@ -1,0 +1,32 @@
+/// A signing profile is a signing template that can be used to carry out
+/// a pre-defined signing job.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Signer::SigningProfile"
+Properties: Props?
+class Props {
+    /// A name for the signing profile. AWS CloudFormation generates a unique
+    /// physical ID and uses that ID for the signing profile name.
+    ProfileName: String?
+    /// A version for the signing profile. AWS Signer generates a unique
+    /// version for each profile of the same profile name.
+    ProfileVersion: String(matches(Regex(#"^[0-9a-zA-Z]{10}$"#)))?
+    /// The Amazon Resource Name (ARN) of the specified signing profile.
+    Arn: String(matches(Regex(#"^arn:aws(-(cn|us-gov))?:[a-z-]+:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))?
+    /// The Amazon Resource Name (ARN) of the specified signing profile
+    /// version.
+    ProfileVersionArn: String(matches(Regex(#"^arn:aws(-(cn|us-gov))?:[a-z-]+:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))?
+    /// Signature validity period of the profile.
+    SignatureValidityPeriod: SignatureValidityPeriod?
+    /// The ID of the target signing platform.
+    PlatformId: "AWSLambda-SHA384-ECDSA" | "Notation-OCI-SHA384-ECDSA" | *Null
+    /// A list of tags associated with the signing profile.
+    Tags: Listing<Tag>?
+}
+class SignatureValidityPeriod {
+    Value: Int?
+    Type: "DAYS" | "MONTHS" | "YEARS" | *Null
+}
+class Tag {
+    Key: String(length <= 127 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z+-=._:/]+$"#)))?
+    Value: String(length <= 255 && length >= 1)?
+}

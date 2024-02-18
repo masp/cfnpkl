@@ -1,0 +1,30 @@
+/// Resource schema for AWS::MediaConnect::Gateway
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaConnect::Gateway"
+Properties: Props?
+class Props {
+    /// The name of the gateway. This name can not be modified after the
+    /// gateway is created.
+    Name: String?
+    /// The Amazon Resource Name (ARN) of the gateway.
+    GatewayArn: String?
+    /// The current status of the gateway.
+    GatewayState: "CREATING" | "ACTIVE" | "UPDATING" | "ERROR" | "DELETING" | "DELETED" | *Null
+    /// The range of IP addresses that contribute content or initiate output
+    /// requests for flows communicating with this gateway. These IP addresses
+    /// should be in the form of a Classless Inter-Domain Routing (CIDR)
+    /// block; for example, 10.0.0.0/16.
+    EgressCidrBlocks: Listing<String>?
+    /// The list of networks in the gateway.
+    Networks: Listing<GatewayNetwork>?
+}
+/// The network settings for a gateway.
+class GatewayNetwork {
+    /// The name of the network. This name is used to reference the network
+    /// and must be unique among networks in this gateway.
+    Name: String
+    /// A unique IP address range to use for this network. These IP addresses
+    /// should be in the form of a Classless Inter-Domain Routing (CIDR)
+    /// block; for example, 10.0.0.0/16.
+    CidrBlock: String
+}

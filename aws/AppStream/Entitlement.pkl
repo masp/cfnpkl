@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::AppStream::Entitlement
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppStream::Entitlement"
+Properties: Props?
+class Props {
+    Name: String?
+    StackName: String?
+    Description: String?
+    AppVisibility: String?
+    Attributes: Listing<Attribute>?
+    CreatedTime: String?
+    LastModifiedTime: String?
+}
+class Attribute {
+    Name: String
+    Value: String
+}

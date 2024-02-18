@@ -1,0 +1,51 @@
+/// Resource schema for AWS::MediaLive::Multiplex
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaLive::Multiplex"
+Properties: Props?
+class Props {
+    /// The unique arn of the multiplex.
+    Arn: String?
+    /// A list of availability zones for the multiplex.
+    AvailabilityZones: Listing<String>?
+    /// A list of the multiplex output destinations.
+    Destinations: Listing<MultiplexOutputDestination>?
+    /// The unique id of the multiplex.
+    Id: String?
+    /// Configuration for a multiplex event.
+    MultiplexSettings: MultiplexSettings?
+    /// Name of multiplex.
+    Name: String?
+    /// The number of currently healthy pipelines.
+    PipelinesRunningCount: Int?
+    /// The number of programs in the multiplex.
+    ProgramCount: Int?
+    State: "CREATING" | "CREATE_FAILED" | "IDLE" | "STARTING" | "RUNNING" | "RECOVERING" | "STOPPING" | "DELETING" | "DELETED" | *Null
+    /// A collection of key-value pairs.
+    Tags: Listing<Tags>?
+}
+/// Multiplex MediaConnect output destination settings.
+class MultiplexOutputDestination {
+    /// Multiplex MediaConnect output destination settings.
+    MultiplexMediaConnectOutputDestinationSettings: MultiplexMediaConnectOutputDestinationSettings?
+}
+/// Multiplex MediaConnect output destination settings.
+class MultiplexMediaConnectOutputDestinationSettings {
+    /// The MediaConnect entitlement ARN available as a Flow source.
+    EntitlementArn: String(length >= 1)?
+}
+/// A key-value pair to associate with a resource.
+class MultiplexSettings {
+    /// Maximum video buffer delay in milliseconds.
+    MaximumVideoBufferDelayMilliseconds: Int?
+    /// Transport stream bit rate.
+    TransportStreamBitrate: Int
+    /// Transport stream ID.
+    TransportStreamId: Int
+    /// Transport stream reserved bit rate.
+    TransportStreamReservedBitrate: Int?
+}
+/// A key-value pair to associate with a resource.
+class Tags {
+    Key: String?
+    Value: String?
+}

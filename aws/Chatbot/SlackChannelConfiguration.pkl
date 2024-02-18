@@ -1,0 +1,28 @@
+/// Resource schema for AWS::Chatbot::SlackChannelConfiguration.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Chatbot::SlackChannelConfiguration"
+Properties: Props?
+class Props {
+    /// The id of the Slack workspace
+    SlackWorkspaceId: String(length <= 256 && length >= 1 && matches(Regex(#"^[0-9A-Z]{1,255}$"#)))?
+    /// The id of the Slack channel
+    SlackChannelId: String(length <= 256 && length >= 1 && matches(Regex(#"^[A-Za-z0-9]+$"#)))?
+    /// The name of the configuration
+    ConfigurationName: String(length <= 128 && length >= 1 && matches(Regex(#"^[A-Za-z0-9-_]+$"#)))?
+    /// The ARN of the IAM role that defines the permissions for AWS Chatbot
+    IamRoleArn: String(matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))?
+    /// ARNs of SNS topics which delivers notifications to AWS Chatbot, for
+    /// example CloudWatch alarm notifications.
+    SnsTopicArns: Listing<String(matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))>?
+    /// Specifies the logging level for this configuration:ERROR,INFO or NONE.
+    /// This property affects the log entries pushed to Amazon CloudWatch logs
+    LoggingLevel: String(matches(Regex(#"^(ERROR|INFO|NONE)$"#)))?
+    /// Amazon Resource Name (ARN) of the configuration
+    Arn: String(matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:chatbot:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))?
+    /// The list of IAM policy ARNs that are applied as channel guardrails.
+    /// The AWS managed 'AdministratorAccess' policy is applied as a default
+    /// if this is not set.
+    GuardrailPolicies: Listing<String(matches(Regex(#"^(^$|arn:aws:iam:[A-Za-z0-9_\/.-]{0,63}:[A-Za-z0-9_\/.-]{0,63}:[A-Za-z0-9][A-Za-z0-9:_\/+=,@.-]{0,1023})$"#)))>?
+    /// Enables use of a user role requirement in your chat configuration
+    UserRoleRequired: Boolean?
+}

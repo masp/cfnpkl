@@ -1,0 +1,36 @@
+/// AWS Ground Station Mission Profile resource type for CloudFormation.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GroundStation::MissionProfile"
+Properties: Props?
+class Props {
+    /// A name used to identify a mission profile.
+    Name: String(matches(Regex(#"^[ a-zA-Z0-9_:-]{1,256}$"#)))?
+    /// Pre-pass time needed before the contact.
+    ContactPrePassDurationSeconds: Int?
+    /// Post-pass time needed after the contact.
+    ContactPostPassDurationSeconds: Int?
+    /// Visibilities with shorter duration than the specified minimum viable
+    /// contact duration will be ignored when searching for available
+    /// contacts.
+    MinimumViableContactDurationSeconds: Int?
+    /// The ARN of a KMS Key used for encrypting data during transmission from
+    /// the source to destination locations.
+    StreamsKmsKey: Mapping | Mapping | *Null
+    /// The ARN of the KMS Key or Alias Key role used to define permissions on
+    /// KMS Key usage.
+    StreamsKmsRole: String?
+    DataflowEdges: Listing<DataflowEdge>?
+    TrackingConfigArn: String?
+    Tags: Listing<Tag>?
+    Id: String?
+    Arn: String?
+    Region: String?
+}
+class DataflowEdge {
+    Source: String?
+    Destination: String?
+}
+class Tag {
+    Key: String(matches(Regex(#"^[ a-zA-Z0-9\+\-=._:/@]{1,128}$"#)))
+    Value: String(matches(Regex(#"^[ a-zA-Z0-9\+\-=._:/@]{1,256}$"#)))
+}

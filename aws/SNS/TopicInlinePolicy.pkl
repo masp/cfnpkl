@@ -1,0 +1,12 @@
+/// Schema for AWS::SNS::TopicInlinePolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SNS::TopicInlinePolicy"
+Properties: Props?
+class Props {
+    /// A policy document that contains permissions to add to the specified
+    /// SNS topics.
+    PolicyDocument: Mapping?
+    /// The Amazon Resource Name (ARN) of the topic to which you want to add
+    /// the policy.
+    TopicArn: String?
+}

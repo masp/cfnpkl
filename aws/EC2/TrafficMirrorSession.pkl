@@ -1,0 +1,19 @@
+/// Resource Type definition for AWS::EC2::TrafficMirrorSession
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::TrafficMirrorSession"
+Properties: Props?
+class Props {
+    Id: String?
+    TrafficMirrorTargetId: String?
+    Description: String?
+    SessionNumber: Int?
+    VirtualNetworkId: Int?
+    PacketLength: Int?
+    NetworkInterfaceId: String?
+    TrafficMirrorFilterId: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

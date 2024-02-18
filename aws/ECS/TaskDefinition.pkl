@@ -1,0 +1,242 @@
+/// Resource Schema describing various properties for ECS TaskDefinition
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ECS::TaskDefinition"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the Amazon ECS task definition
+    TaskDefinitionArn: String?
+    Family: String?
+    ContainerDefinitions: Listing<ContainerDefinition>?
+    Cpu: String?
+    ExecutionRoleArn: String?
+    EphemeralStorage: EphemeralStorage?
+    InferenceAccelerators: Listing<InferenceAccelerator>?
+    Memory: String?
+    NetworkMode: String?
+    PlacementConstraints: Listing<TaskDefinitionPlacementConstraint>?
+    ProxyConfiguration: ProxyConfiguration?
+    RequiresCompatibilities: Listing<String>?
+    TaskRoleArn: String?
+    Volumes: Listing<Volume>?
+    PidMode: String?
+    RuntimePlatform: RuntimePlatform?
+    IpcMode: String?
+    Tags: Listing<Tag>?
+}
+/// List of container definitions that are passed to the Docker daemon on
+/// a container instance
+class ContainerDefinition {
+    Command: Listing<String>?
+    Cpu: Int?
+    CredentialSpecs: Listing<String>?
+    DependsOn: Listing<ContainerDependency>?
+    DisableNetworking: Boolean?
+    DnsSearchDomains: Listing<String>?
+    DnsServers: Listing<String>?
+    DockerLabels: Mapping?
+    DockerSecurityOptions: Listing<String>?
+    EntryPoint: Listing<String>?
+    /// The environment variables to pass to a container
+    Environment: Listing<KeyValuePair>?
+    /// The list of one or more files that contain the environment variables
+    /// to pass to a container
+    EnvironmentFiles: Listing<EnvironmentFile>?
+    Essential: Boolean?
+    ExtraHosts: Listing<HostEntry>?
+    FirelensConfiguration: FirelensConfiguration?
+    HealthCheck: HealthCheck?
+    Hostname: String?
+    /// The image used to start a container. This string is passed directly to
+    /// the Docker daemon.
+    Image: String
+    Links: Listing<String>?
+    LinuxParameters: LinuxParameters?
+    LogConfiguration: LogConfiguration?
+    /// The amount (in MiB) of memory to present to the container. If your
+    /// container attempts to exceed the memory specified here, the container
+    /// is killed.
+    Memory: Int?
+    MemoryReservation: Int?
+    MountPoints: Listing<MountPoint>?
+    /// The name of a container. Up to 255 letters (uppercase and lowercase),
+    /// numbers, hyphens, and underscores are allowed
+    Name: String
+    /// Port mappings allow containers to access ports on the host container
+    /// instance to send or receive traffic.
+    PortMappings: Listing<PortMapping>?
+    Privileged: Boolean?
+    ReadonlyRootFilesystem: Boolean?
+    RepositoryCredentials: RepositoryCredentials?
+    ResourceRequirements: Listing<ResourceRequirement>?
+    Secrets: Listing<Secret>?
+    StartTimeout: Int?
+    StopTimeout: Int?
+    Ulimits: Listing<Ulimit>?
+    User: String?
+    VolumesFrom: Listing<VolumeFrom>?
+    WorkingDirectory: String?
+    Interactive: Boolean?
+    PseudoTerminal: Boolean?
+    SystemControls: Listing<SystemControl>?
+}
+class ContainerDependency {
+    ContainerName: String?
+    Condition: String?
+}
+class KeyValuePair {
+    Name: String?
+    Value: String?
+}
+class EnvironmentFile {
+    Value: String?
+    Type: String?
+}
+class HostEntry {
+    Hostname: String?
+    IpAddress: String?
+}
+class FirelensConfiguration {
+    Type: String?
+    Options: Mapping?
+}
+/// The health check command and associated configuration parameters for
+/// the container.
+class HealthCheck {
+    /// A string array representing the command that the container runs to
+    /// determine if it is healthy.
+    Command: Listing<String>?
+    /// The time period in seconds between each health check execution. You
+    /// may specify between 5 and 300 seconds. The default value is 30
+    /// seconds.
+    Interval: Int?
+    /// The time period in seconds to wait for a health check to succeed
+    /// before it is considered a failure. You may specify between 2 and 60
+    /// seconds. The default value is 5 seconds.
+    Timeout: Int?
+    /// The number of times to retry a failed health check before the
+    /// container is considered unhealthy. You may specify between 1 and 10
+    /// retries. The default value is three retries.
+    Retries: Int?
+    /// The optional grace period within which to provide containers time to
+    /// bootstrap before failed health checks count towards the maximum number
+    /// of retries. You may specify between 0 and 300 seconds. The startPeriod
+    /// is disabled by default.
+    StartPeriod: Int?
+}
+class LinuxParameters {
+    Capabilities: KernelCapabilities?
+    Devices: Listing<Device>?
+    InitProcessEnabled: Boolean?
+    MaxSwap: Int?
+    SharedMemorySize: Int?
+    Swappiness: Int?
+    Tmpfs: Listing<Tmpfs>?
+}
+class KernelCapabilities {
+    Add: Listing<String>?
+    Drop: Listing<String>?
+}
+class Device {
+    ContainerPath: String?
+    HostPath: String?
+    Permissions: Listing<String>?
+}
+class Tmpfs {
+    ContainerPath: String?
+    MountOptions: Listing<String>?
+    Size: Int
+}
+class LogConfiguration {
+    LogDriver: String
+    Options: Mapping?
+    SecretOptions: Listing<Secret>?
+}
+class Secret {
+    Name: String
+    ValueFrom: String
+}
+class MountPoint {
+    ContainerPath: String?
+    ReadOnly: Boolean?
+    SourceVolume: String?
+}
+class PortMapping {
+    Name: String?
+    ContainerPort: Int?
+    ContainerPortRange: String?
+    HostPort: Int?
+    Protocol: String?
+    AppProtocol: "http" | "http2" | "grpc" | *Null
+}
+class RepositoryCredentials {
+    CredentialsParameter: String?
+}
+class ResourceRequirement {
+    Type: String
+    Value: String
+}
+class Ulimit {
+    HardLimit: Int
+    Name: String
+    SoftLimit: Int
+}
+class VolumeFrom {
+    ReadOnly: Boolean?
+    SourceContainer: String?
+}
+class SystemControl {
+    Namespace: String?
+    Value: String?
+}
+class EphemeralStorage {
+    SizeInGiB: Int?
+}
+class InferenceAccelerator {
+    DeviceName: String?
+    DeviceType: String?
+}
+class TaskDefinitionPlacementConstraint {
+    Type: String
+    Expression: String?
+}
+class ProxyConfiguration {
+    ContainerName: String
+    ProxyConfigurationProperties: Listing<KeyValuePair>?
+    Type: String?
+}
+class Volume {
+    ConfiguredAtLaunch: Boolean?
+    DockerVolumeConfiguration: DockerVolumeConfiguration?
+    EFSVolumeConfiguration: EFSVolumeConfiguration?
+    Host: HostVolumeProperties?
+    Name: String?
+}
+class DockerVolumeConfiguration {
+    Autoprovision: Boolean?
+    Driver: String?
+    DriverOpts: Mapping?
+    Labels: Mapping?
+    Scope: String?
+}
+class EFSVolumeConfiguration {
+    FilesystemId: String
+    RootDirectory: String?
+    TransitEncryption: "ENABLED" | "DISABLED" | *Null
+    TransitEncryptionPort: Int?
+    AuthorizationConfig: AuthorizationConfig?
+}
+class AuthorizationConfig {
+    IAM: "ENABLED" | "DISABLED" | *Null
+    AccessPointId: String?
+}
+class HostVolumeProperties {
+    SourcePath: String?
+}
+class RuntimePlatform {
+    CpuArchitecture: String?
+    OperatingSystemFamily: String?
+}
+class Tag {
+    Key: String?
+    Value: String?
+}

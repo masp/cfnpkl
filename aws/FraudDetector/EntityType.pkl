@@ -1,0 +1,22 @@
+/// An entity type for fraud detector.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FraudDetector::EntityType"
+Properties: Props?
+class Props {
+    /// The name of the entity type.
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[0-9a-z_-]+$"#)))?
+    /// Tags associated with this entity type.
+    Tags: Listing<Tag>?
+    /// The entity type description.
+    Description: String(length <= 128 && length >= 1)?
+    /// The entity type ARN.
+    Arn: String?
+    /// The timestamp when the entity type was created.
+    CreatedTime: String?
+    /// The timestamp when the entity type was last updated.
+    LastUpdatedTime: String?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

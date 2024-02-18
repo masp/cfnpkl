@@ -1,0 +1,9 @@
+/// Resource Type definition for AWS::Inspector::AssessmentTarget
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Inspector::AssessmentTarget"
+Properties: Props?
+class Props {
+    Arn: String?
+    AssessmentTargetName: String?
+    ResourceGroupArn: String?
+}

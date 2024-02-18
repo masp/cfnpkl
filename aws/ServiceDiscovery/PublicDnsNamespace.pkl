@@ -1,0 +1,26 @@
+/// Resource Type definition for AWS::ServiceDiscovery::PublicDnsNamespace
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceDiscovery::PublicDnsNamespace"
+Properties: Props?
+class Props {
+    Description: String?
+    HostedZoneId: String?
+    Id: String?
+    Arn: String?
+    Properties: Properties?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class Properties {
+    DnsProperties: PublicDnsPropertiesMutable?
+}
+class PublicDnsPropertiesMutable {
+    SOA: SOA?
+}
+class SOA {
+    TTL: Float?
+}
+class Tag {
+    Value: String
+    Key: String
+}

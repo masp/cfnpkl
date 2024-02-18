@@ -1,0 +1,37 @@
+/// Resource Type definition for AWS::CodeCommit::Repository
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodeCommit::Repository"
+Properties: Props?
+class Props {
+    CloneUrlHttp: String?
+    KmsKeyId: String?
+    CloneUrlSsh: String?
+    RepositoryName: String?
+    Triggers: Listing<RepositoryTrigger>?
+    Id: String?
+    Arn: String?
+    Code: Code?
+    RepositoryDescription: String?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class RepositoryTrigger {
+    CustomData: String?
+    Events: Listing<String>
+    Branches: Listing<String>?
+    DestinationArn: String
+    Name: String
+}
+class Code {
+    S3: S3
+    BranchName: String?
+}
+class S3 {
+    ObjectVersion: String?
+    Bucket: String
+    Key: String
+}
+class Tag {
+    Value: String
+    Key: String
+}

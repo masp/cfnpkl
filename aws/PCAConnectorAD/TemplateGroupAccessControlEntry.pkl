@@ -1,0 +1,15 @@
+/// Definition of AWS::PCAConnectorAD::TemplateGroupAccessControlEntry
+/// Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::PCAConnectorAD::TemplateGroupAccessControlEntry"
+Properties: Props?
+class Props {
+    AccessRights: AccessRights?
+    GroupDisplayName: String(length <= 256 && length >= 0 && matches(Regex(#"^[\x20-\x7E]+$"#)))?
+    GroupSecurityIdentifier: String(length <= 256 && length >= 7 && matches(Regex(#"^S-[0-9]-([0-9]+-){1,14}[0-9]+$"#)))?
+    TemplateArn: String(length <= 200 && length >= 5 && matches(Regex(#"^arn:[\w-]+:pca-connector-ad:[\w-]+:[0-9]+:connector(\/[\w-]+)\/template(\/[\w-]+)$"#)))?
+}
+class AccessRights {
+    Enroll: "ALLOW" | "DENY" | *Null
+    AutoEnroll: "ALLOW" | "DENY" | *Null
+}

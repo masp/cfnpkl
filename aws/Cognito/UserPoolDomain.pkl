@@ -1,0 +1,14 @@
+/// Resource Type definition for AWS::Cognito::UserPoolDomain
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cognito::UserPoolDomain"
+Properties: Props?
+class Props {
+    CloudFrontDistribution: String?
+    UserPoolId: String?
+    Id: String?
+    Domain: String?
+    CustomDomainConfig: CustomDomainConfigType?
+}
+class CustomDomainConfigType {
+    CertificateArn: String?
+}

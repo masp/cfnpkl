@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::WAFRegional::RateBasedRule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAFRegional::RateBasedRule"
+Properties: Props?
+class Props {
+    Id: String?
+    MetricName: String?
+    RateLimit: Int?
+    MatchPredicates: Listing<Predicate>?
+    RateKey: String?
+    Name: String?
+}
+class Predicate {
+    Type: String
+    DataId: String
+    Negated: Boolean
+}

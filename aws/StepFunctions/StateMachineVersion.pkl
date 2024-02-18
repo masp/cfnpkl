@@ -1,0 +1,10 @@
+/// Resource schema for StateMachineVersion
+extends ".../AWS/Resource.pkl"
+Type = "AWS::StepFunctions::StateMachineVersion"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 1)?
+    StateMachineArn: String(length <= 2048 && length >= 1)?
+    StateMachineRevisionId: String(length <= 2048 && length >= 1)?
+    Description: String(length <= 2048 && length >= 1)?
+}

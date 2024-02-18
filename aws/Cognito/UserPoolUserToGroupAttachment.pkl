@@ -1,0 +1,10 @@
+/// Resource Type definition for
+/// AWS::Cognito::UserPoolUserToGroupAttachment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cognito::UserPoolUserToGroupAttachment"
+Properties: Props?
+class Props {
+    UserPoolId: String?
+    Username: String?
+    GroupName: String?
+}

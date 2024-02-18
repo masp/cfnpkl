@@ -1,0 +1,16 @@
+/// AWS::RoboMaker::Robot resource creates an AWS RoboMaker Robot.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RoboMaker::Robot"
+Properties: Props?
+class Props {
+    Arn: String(matches(Regex(#"arn:[\w+=/,.@-]+:[\w+=/,.@-]+:[\w+=/,.@-]*:[0-9]*:[\w+=,.@-]+(/[\w+=,.@-]+)*"#)))?
+    /// The Amazon Resource Name (ARN) of the fleet.
+    Fleet: String(length <= 1224 && length >= 1)?
+    /// The target architecture of the robot.
+    Architecture: "X86_64" | "ARM64" | "ARMHF" | *Null
+    /// The Greengrass group id.
+    GreengrassGroupId: String(length <= 1224 && length >= 1)?
+    Tags: Mapping?
+    /// The name for the robot.
+    Name: String(length <= 255 && length >= 1)?
+}

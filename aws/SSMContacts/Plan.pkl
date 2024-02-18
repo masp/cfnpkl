@@ -1,0 +1,25 @@
+/// Engagement Plan for a SSM Incident Manager Contact.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSMContacts::Plan"
+Properties: Props?
+class Props {
+    /// Contact ID for the AWS SSM Incident Manager Contact to associate the
+    /// plan.
+    ContactId: String(matches(Regex(#"arn:[-\w+=\/,.@]+:[-\w+=\/,.@]+:[-\w+=\/,.@]*:[0-9]+:([\w+=\/,.@:-]+)*"#)))?
+    /// The stages that an escalation plan or engagement plan engages contacts
+    /// and contact methods in.
+    Stages: Listing<Stage>?
+    /// Rotation Ids to associate with Oncall Contact for engagement.
+    RotationIds: Listing<String>?
+    /// The Amazon Resource Name (ARN) of the contact.
+    Arn: String?
+}
+/// A set amount of time that an escalation plan or engagement plan
+/// engages the specified contacts or contact methods.
+class Stage {
+    /// The time to wait until beginning the next stage.
+    DurationInMinutes: Int
+    /// The contacts or contact methods that the escalation plan or engagement
+    /// plan is engaging.
+    Targets: Listing<Mapping | Mapping>?
+}

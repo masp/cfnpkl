@@ -1,0 +1,17 @@
+/// The AWS::Macie::Session resource specifies a new Amazon Macie session.
+/// A session is an object that represents the Amazon Macie service. A
+/// session is required for Amazon Macie to become operational.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Macie::Session"
+Properties: Props?
+class Props {
+    /// AWS account ID of customer
+    AwsAccountId: String?
+    /// A enumeration value that specifies the status of the Macie Session.
+    Status: "ENABLED" | "PAUSED" | *Null
+    /// A enumeration value that specifies how frequently finding updates are
+    /// published.
+    FindingPublishingFrequency: "FIFTEEN_MINUTES" | "ONE_HOUR" | "SIX_HOURS" | *Null
+    /// Service role used by Macie
+    ServiceRole: String?
+}

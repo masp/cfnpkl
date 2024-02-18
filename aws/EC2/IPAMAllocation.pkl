@@ -1,0 +1,16 @@
+/// Resource Schema of AWS::EC2::IPAMAllocation Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::IPAMAllocation"
+Properties: Props?
+class Props {
+    /// Id of the allocation.
+    IpamPoolAllocationId: String?
+    /// Id of the IPAM Pool.
+    IpamPoolId: String?
+    Cidr: String?
+    /// The desired netmask length of the allocation. If set, IPAM will choose
+    /// a block of free space with this size and return the CIDR representing
+    /// it.
+    NetmaskLength: Int?
+    Description: String?
+}

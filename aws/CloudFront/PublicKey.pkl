@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::CloudFront::PublicKey
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::PublicKey"
+Properties: Props?
+class Props {
+    CreatedTime: String?
+    Id: String?
+    PublicKeyConfig: PublicKeyConfig?
+}
+class PublicKeyConfig {
+    CallerReference: String
+    Comment: String?
+    EncodedKey: String
+    Name: String
+}

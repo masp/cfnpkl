@@ -1,0 +1,32 @@
+/// Resource schema for AWS::DataSync::Agent.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataSync::Agent"
+Properties: Props?
+class Props {
+    /// The name configured for the agent. Text reference used to identify the
+    /// agent in the console.
+    AgentName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))?
+    /// Activation key of the Agent.
+    ActivationKey: String(length <= 29 && matches(Regex(#"[A-Z0-9]{5}(-[A-Z0-9]{5}){4}"#)))?
+    /// The ARNs of the security group used to protect your data transfer task
+    /// subnets.
+    SecurityGroupArns: Listing<String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):ec2:[a-z\-0-9]*:[0-9]{12}:security-group/.*$"#)))>?
+    /// The ARNs of the subnets in which DataSync will create elastic network
+    /// interfaces for each data transfer task.
+    SubnetArns: Listing<String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):ec2:[a-z\-0-9]*:[0-9]{12}:subnet/.*$"#)))>?
+    /// The ID of the VPC endpoint that the agent has access to.
+    VpcEndpointId: String(matches(Regex(#"^vpce-[0-9a-f]{17}$"#)))?
+    /// The service endpoints that the agent will connect to.
+    EndpointType: "FIPS" | "PUBLIC" | "PRIVATE_LINK" | *Null
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The DataSync Agent ARN.
+    AgentArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:agent/agent-[0-9a-z]{17}$"#)))?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for an AWS resource tag.
+    Key: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:/-]+$"#)))
+    /// The value for an AWS resource tag.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))
+}

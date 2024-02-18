@@ -1,0 +1,28 @@
+/// Resource schema for AWS::Route53Resolver::ResolverQueryLoggingConfig.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53Resolver::ResolverQueryLoggingConfig"
+Properties: Props?
+class Props {
+    /// ResourceId
+    Id: String(length <= 64 && length >= 1)?
+    /// AccountId
+    OwnerId: String(length <= 32 && length >= 12)?
+    /// ResolverQueryLogConfigStatus, possible values are CREATING, CREATED,
+    /// DELETED AND FAILED.
+    Status: "CREATING" | "CREATED" | "DELETING" | "FAILED" | *Null
+    /// ShareStatus, possible values are NOT_SHARED, SHARED_WITH_ME,
+    /// SHARED_BY_ME.
+    ShareStatus: "NOT_SHARED" | "SHARED_WITH_ME" | "SHARED_BY_ME" | *Null
+    /// Count
+    AssociationCount: Int?
+    /// Arn
+    Arn: String(length <= 600 && length >= 1)?
+    /// ResolverQueryLogConfigName
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"(?!^[0-9]+$)([a-zA-Z0-9\-_' ']+)"#)))?
+    /// The id of the creator request.
+    CreatorRequestId: String(length <= 255 && length >= 1)?
+    /// destination arn
+    DestinationArn: String(length <= 600 && length >= 1)?
+    /// Rfc3339TimeString
+    CreationTime: String(length <= 40 && length >= 20)?
+}

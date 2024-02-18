@@ -1,0 +1,21 @@
+/// Resource Type definition for AWS::SageMaker::ImageVersion
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::ImageVersion"
+Properties: Props?
+class Props {
+    ImageName: String(length <= 63 && length >= 1 && matches(Regex(#"^[A-Za-z0-9]([-.]?[A-Za-z0-9])*$"#)))?
+    ImageArn: String(length <= 256 && length >= 1 && matches(Regex(#"^arn:aws(-[\w]+)*:sagemaker:[a-z0-9\-]*:[0-9]{12}:image\/[a-zA-Z0-9]([-.]?[a-zA-Z0-9])*$"#)))?
+    ImageVersionArn: String(length <= 256 && length >= 1 && matches(Regex(#"^arn:aws(-[\w]+)*:sagemaker:[a-z0-9\-]*:[0-9]{12}:image-version\/[a-zA-Z0-9]([-.]?[a-zA-Z0-9])*\/[0-9]+$"#)))?
+    BaseImage: String(length <= 255 && length >= 1 && matches(Regex(#".+"#)))?
+    ContainerImage: String(length <= 255 && length >= 1 && matches(Regex(#".+"#)))?
+    Version: Int?
+    Alias: String(length <= 128 && length >= 1 && matches(Regex(#"(?!^[.-])^([a-zA-Z0-9-_.]+)$"#)))?
+    Aliases: Listing<String(length <= 128 && length >= 1 && matches(Regex(#"(?!^[.-])^([a-zA-Z0-9-_.]+)$"#)))>?
+    VendorGuidance: "NOT_PROVIDED" | "STABLE" | "TO_BE_ARCHIVED" | "ARCHIVED" | *Null
+    JobType: "TRAINING" | "INFERENCE" | "NOTEBOOK_KERNEL" | *Null
+    MLFramework: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z]+ ?\d+\.\d+(\.\d+)?$"#)))?
+    ProgrammingLang: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z]+ ?\d+\.\d+(\.\d+)?$"#)))?
+    Processor: "CPU" | "GPU" | *Null
+    Horovod: Boolean?
+    ReleaseNotes: String(length <= 255 && length >= 1 && matches(Regex(#".*"#)))?
+}

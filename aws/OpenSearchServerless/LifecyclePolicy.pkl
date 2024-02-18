@@ -1,0 +1,13 @@
+/// Amazon OpenSearchServerless lifecycle policy resource
+extends ".../AWS/Resource.pkl"
+Type = "AWS::OpenSearchServerless::LifecyclePolicy"
+Properties: Props?
+class Props {
+    /// The name of the policy
+    Name: String(length <= 32 && length >= 3 && matches(Regex(#"^[a-z][a-z0-9-]+$"#)))?
+    Type: "retention" | *Null
+    /// The description of the policy
+    Description: String(length <= 1000 && length >= 0)?
+    /// The JSON policy document that is the content for the policy
+    Policy: String(length <= 20480 && length >= 1 && matches(Regex(#"[\u0009\u000A\u000D\u0020-\u007E\u00A1-\u00FF]+"#)))?
+}

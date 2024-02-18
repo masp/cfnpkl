@@ -1,0 +1,12 @@
+import ".../aws/s3/Bucket.pkl"
+
+Resources {
+    ["Bucket"] = new Bucket {
+        Properties {
+            BucketName = "mybucket"
+            AccelerateConfiguration = new Bucket.AccelerateConfiguration {
+                AccelerationStatus = "Enabled"
+            }
+        }
+    }
+}

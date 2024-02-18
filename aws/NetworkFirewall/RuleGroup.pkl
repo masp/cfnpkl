@@ -1,0 +1,106 @@
+/// Resource type definition for AWS::NetworkFirewall::RuleGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkFirewall::RuleGroup"
+Properties: Props?
+class Props {
+    RuleGroupName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]+$"#)))?
+    RuleGroupArn: String(length <= 256 && length >= 1 && matches(Regex(#"^(arn:aws.*)$"#)))?
+    RuleGroupId: String(length <= 36 && length >= 36 && matches(Regex(#"^([0-9a-f]{8})-([0-9a-f]{4}-){3}([0-9a-f]{12})$"#)))?
+    RuleGroup: RuleGroup?
+    Type: "STATELESS" | "STATEFUL" | *Null
+    Capacity: Int?
+    Description: String(length <= 512 && length >= 1 && matches(Regex(#"^.*$"#)))?
+    Tags: Listing<Tag>?
+}
+class RuleGroup {
+    RuleVariables: RuleVariables?
+    ReferenceSets: ReferenceSets?
+    RulesSource: RulesSource
+    StatefulRuleOptions: StatefulRuleOptions?
+}
+class RuleVariables {
+    IPSets: Mapping?
+    PortSets: Mapping?
+}
+class ReferenceSets {
+    IPSetReferences: Mapping?
+}
+class RulesSource {
+    RulesString: String(length <= 1000000 && length >= 0)?
+    RulesSourceList: RulesSourceList?
+    StatefulRules: Listing<StatefulRule>?
+    StatelessRulesAndCustomActions: StatelessRulesAndCustomActions?
+}
+class RulesSourceList {
+    Targets: Listing<String>
+    TargetTypes: Listing<"TLS_SNI" | "HTTP_HOST">
+    GeneratedRulesType: "ALLOWLIST" | "DENYLIST"
+}
+class StatefulRule {
+    Action: "PASS" | "DROP" | "ALERT" | "REJECT"
+    Header: Header
+    RuleOptions: Listing<RuleOption>
+}
+class Header {
+    Protocol: "IP" | "TCP" | "UDP" | "ICMP" | "HTTP" | "FTP" | "TLS" | "SMB" | "DNS" | "DCERPC" | "SSH" | "SMTP" | "IMAP" | "MSN" | "KRB5" | "IKEV2" | "TFTP" | "NTP" | "DHCP"
+    Source: String(length <= 1024 && length >= 1 && matches(Regex(#"^.*$"#)))
+    SourcePort: String(length <= 1024 && length >= 1 && matches(Regex(#"^.*$"#)))
+    Direction: "FORWARD" | "ANY"
+    Destination: String(length <= 1024 && length >= 1 && matches(Regex(#"^.*$"#)))
+    DestinationPort: String(length <= 1024 && length >= 1 && matches(Regex(#"^.*$"#)))
+}
+class RuleOption {
+    Keyword: String(length <= 128 && length >= 1 && matches(Regex(#"^.*$"#)))
+    Settings: Listing<String(length <= 8192 && length >= 1 && matches(Regex(#"^.*$"#)))>?
+}
+class StatelessRulesAndCustomActions {
+    StatelessRules: Listing<StatelessRule>
+    CustomActions: Listing<CustomAction>?
+}
+class StatelessRule {
+    RuleDefinition: RuleDefinition
+    Priority: Int
+}
+class RuleDefinition {
+    MatchAttributes: MatchAttributes
+    Actions: Listing<String>
+}
+class MatchAttributes {
+    Sources: Listing<Address>?
+    Destinations: Listing<Address>?
+    SourcePorts: Listing<PortRange>?
+    DestinationPorts: Listing<PortRange>?
+    Protocols: Listing<Int>?
+    TCPFlags: Listing<TCPFlagField>?
+}
+class Address {
+    AddressDefinition: String(length <= 255 && length >= 1 && matches(Regex(#"^([a-fA-F\d:\.]+/\d{1,3})$"#)))
+}
+class PortRange {
+    FromPort: Int
+    ToPort: Int
+}
+class TCPFlagField {
+    Flags: Listing<"FIN" | "SYN" | "RST" | "PSH" | "ACK" | "URG" | "ECE" | "CWR">
+    Masks: Listing<"FIN" | "SYN" | "RST" | "PSH" | "ACK" | "URG" | "ECE" | "CWR">?
+}
+class CustomAction {
+    ActionName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    ActionDefinition: ActionDefinition
+}
+class ActionDefinition {
+    PublishMetricAction: PublishMetricAction?
+}
+class PublishMetricAction {
+    Dimensions: Listing<Dimension>
+}
+class Dimension {
+    Value: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-_ ]+$"#)))
+}
+class StatefulRuleOptions {
+    RuleOrder: "DEFAULT_ACTION_ORDER" | "STRICT_ORDER" | *Null
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^.*$"#)))
+    Value: String(length <= 255 && length >= 0 && matches(Regex(#"^.*$"#)))
+}

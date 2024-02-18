@@ -1,0 +1,2542 @@
+/// Definition of the AWS::QuickSight::Analysis Resource Type.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::QuickSight::Analysis"
+Properties: Props?
+class Props {
+    AnalysisId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))?
+    Arn: String?
+    AwsAccountId: String(length <= 12 && length >= 12 && matches(Regex(#"^[0-9]{12}$"#)))?
+    CreatedTime: String?
+    DataSetArns: Listing<String>?
+    Definition: AnalysisDefinition?
+    Errors: Listing<AnalysisError>?
+    LastUpdatedTime: String?
+    Name: String(length <= 2048 && length >= 1)?
+    Parameters: Parameters?
+    Permissions: Listing<ResourcePermission>?
+    Sheets: Listing<Sheet>?
+    SourceEntity: AnalysisSourceEntity?
+    Status: "CREATION_IN_PROGRESS" | "CREATION_SUCCESSFUL" | "CREATION_FAILED" | "UPDATE_IN_PROGRESS" | "UPDATE_SUCCESSFUL" | "UPDATE_FAILED" | "DELETED" | *Null
+    Tags: Listing<Tag>?
+    ThemeArn: String?
+    ValidationStrategy: ValidationStrategy?
+}
+class AnalysisDefinition {
+    DataSetIdentifierDeclarations: Listing<DataSetIdentifierDeclaration>
+    Sheets: Listing<SheetDefinition>?
+    CalculatedFields: Listing<CalculatedField>?
+    ParameterDeclarations: Listing<ParameterDeclaration>?
+    FilterGroups: Listing<FilterGroup>?
+    ColumnConfigurations: Listing<ColumnConfiguration>?
+    AnalysisDefaults: AnalysisDefaults?
+    Options: AssetOptions?
+}
+class DataSetIdentifierDeclaration {
+    Identifier: String(length <= 2048 && length >= 1)
+    DataSetArn: String
+}
+class SheetDefinition {
+    SheetId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 1024 && length >= 1)?
+    Description: String(length <= 1024 && length >= 1)?
+    Name: String(length <= 2048 && length >= 1)?
+    ParameterControls: Listing<ParameterControl>?
+    FilterControls: Listing<FilterControl>?
+    Visuals: Listing<Visual>?
+    TextBoxes: Listing<SheetTextBox>?
+    Layouts: Listing<Layout>?
+    SheetControlLayouts: Listing<SheetControlLayout>?
+    ContentType: "PAGINATED" | "INTERACTIVE" | *Null
+}
+class ParameterControl {
+    DateTimePicker: ParameterDateTimePickerControl?
+    List: ParameterListControl?
+    Dropdown: ParameterDropDownControl?
+    TextField: ParameterTextFieldControl?
+    TextArea: ParameterTextAreaControl?
+    Slider: ParameterSliderControl?
+}
+class ParameterDateTimePickerControl {
+    ParameterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    DisplayOptions: DateTimePickerControlDisplayOptions?
+}
+class DateTimePickerControlDisplayOptions {
+    TitleOptions: LabelOptions?
+    DateTimeFormat: String(length <= 128 && length >= 1)?
+    InfoIconLabelOptions: SheetControlInfoIconLabelOptions?
+}
+class LabelOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    FontConfiguration: FontConfiguration?
+    CustomLabel: String?
+}
+class FontConfiguration {
+    FontSize: FontSize?
+    FontDecoration: "UNDERLINE" | "NONE" | *Null
+    FontColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    FontWeight: FontWeight?
+    FontStyle: "NORMAL" | "ITALIC" | *Null
+}
+class FontSize {
+    Relative: "EXTRA_SMALL" | "SMALL" | "MEDIUM" | "LARGE" | "EXTRA_LARGE" | *Null
+}
+class FontWeight {
+    Name: "NORMAL" | "BOLD" | *Null
+}
+class SheetControlInfoIconLabelOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    InfoIconText: String(length <= 100 && length >= 1)?
+}
+class ParameterListControl {
+    ParameterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    DisplayOptions: ListControlDisplayOptions?
+    Type: "MULTI_SELECT" | "SINGLE_SELECT" | *Null
+    SelectableValues: ParameterSelectableValues?
+    CascadingControlConfiguration: CascadingControlConfiguration?
+}
+class ListControlDisplayOptions {
+    SearchOptions: ListControlSearchOptions?
+    SelectAllOptions: ListControlSelectAllOptions?
+    TitleOptions: LabelOptions?
+    InfoIconLabelOptions: SheetControlInfoIconLabelOptions?
+}
+class ListControlSearchOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class ListControlSelectAllOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class ParameterSelectableValues {
+    Values: Listing<String>?
+    LinkToDataSetColumn: ColumnIdentifier?
+}
+class ColumnIdentifier {
+    DataSetIdentifier: String(length <= 2048 && length >= 1)
+    ColumnName: String(length <= 127 && length >= 1)
+}
+class CascadingControlConfiguration {
+    SourceControls: Listing<CascadingControlSource>?
+}
+class CascadingControlSource {
+    SourceSheetControlId: String?
+    ColumnToMatch: ColumnIdentifier?
+}
+class ParameterDropDownControl {
+    ParameterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    DisplayOptions: DropDownControlDisplayOptions?
+    Type: "MULTI_SELECT" | "SINGLE_SELECT" | *Null
+    SelectableValues: ParameterSelectableValues?
+    CascadingControlConfiguration: CascadingControlConfiguration?
+}
+class DropDownControlDisplayOptions {
+    SelectAllOptions: ListControlSelectAllOptions?
+    TitleOptions: LabelOptions?
+    InfoIconLabelOptions: SheetControlInfoIconLabelOptions?
+}
+class ParameterTextFieldControl {
+    ParameterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    DisplayOptions: TextFieldControlDisplayOptions?
+}
+class TextFieldControlDisplayOptions {
+    TitleOptions: LabelOptions?
+    PlaceholderOptions: TextControlPlaceholderOptions?
+    InfoIconLabelOptions: SheetControlInfoIconLabelOptions?
+}
+class TextControlPlaceholderOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class ParameterTextAreaControl {
+    ParameterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    Delimiter: String(length <= 2048 && length >= 1)?
+    DisplayOptions: TextAreaControlDisplayOptions?
+}
+class TextAreaControlDisplayOptions {
+    TitleOptions: LabelOptions?
+    PlaceholderOptions: TextControlPlaceholderOptions?
+    InfoIconLabelOptions: SheetControlInfoIconLabelOptions?
+}
+class ParameterSliderControl {
+    ParameterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    DisplayOptions: SliderControlDisplayOptions?
+    MaximumValue: Float
+    MinimumValue: Float
+    StepSize: Float
+}
+class SliderControlDisplayOptions {
+    TitleOptions: LabelOptions?
+    InfoIconLabelOptions: SheetControlInfoIconLabelOptions?
+}
+class FilterControl {
+    DateTimePicker: FilterDateTimePickerControl?
+    List: FilterListControl?
+    Dropdown: FilterDropDownControl?
+    TextField: FilterTextFieldControl?
+    TextArea: FilterTextAreaControl?
+    Slider: FilterSliderControl?
+    RelativeDateTime: FilterRelativeDateTimeControl?
+}
+class FilterDateTimePickerControl {
+    FilterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceFilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    DisplayOptions: DateTimePickerControlDisplayOptions?
+    Type: "SINGLE_VALUED" | "DATE_RANGE" | *Null
+}
+class FilterListControl {
+    FilterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceFilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    DisplayOptions: ListControlDisplayOptions?
+    Type: "MULTI_SELECT" | "SINGLE_SELECT" | *Null
+    SelectableValues: FilterSelectableValues?
+    CascadingControlConfiguration: CascadingControlConfiguration?
+}
+class FilterSelectableValues {
+    Values: Listing<String>?
+}
+class FilterDropDownControl {
+    FilterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceFilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    DisplayOptions: DropDownControlDisplayOptions?
+    Type: "MULTI_SELECT" | "SINGLE_SELECT" | *Null
+    SelectableValues: FilterSelectableValues?
+    CascadingControlConfiguration: CascadingControlConfiguration?
+}
+class FilterTextFieldControl {
+    FilterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceFilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    DisplayOptions: TextFieldControlDisplayOptions?
+}
+class FilterTextAreaControl {
+    FilterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceFilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Delimiter: String(length <= 2048 && length >= 1)?
+    DisplayOptions: TextAreaControlDisplayOptions?
+}
+class FilterSliderControl {
+    FilterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceFilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    DisplayOptions: SliderControlDisplayOptions?
+    Type: "SINGLE_POINT" | "RANGE" | *Null
+    MaximumValue: Float
+    MinimumValue: Float
+    StepSize: Float
+}
+class FilterRelativeDateTimeControl {
+    FilterControlId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: String(length <= 2048 && length >= 1)
+    SourceFilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    DisplayOptions: RelativeDateTimeControlDisplayOptions?
+}
+class RelativeDateTimeControlDisplayOptions {
+    TitleOptions: LabelOptions?
+    DateTimeFormat: String(length <= 128 && length >= 1)?
+    InfoIconLabelOptions: SheetControlInfoIconLabelOptions?
+}
+class Visual {
+    TableVisual: TableVisual?
+    PivotTableVisual: PivotTableVisual?
+    BarChartVisual: BarChartVisual?
+    KPIVisual: KPIVisual?
+    PieChartVisual: PieChartVisual?
+    GaugeChartVisual: GaugeChartVisual?
+    LineChartVisual: LineChartVisual?
+    HeatMapVisual: HeatMapVisual?
+    TreeMapVisual: TreeMapVisual?
+    GeospatialMapVisual: GeospatialMapVisual?
+    FilledMapVisual: FilledMapVisual?
+    FunnelChartVisual: FunnelChartVisual?
+    ScatterPlotVisual: ScatterPlotVisual?
+    ComboChartVisual: ComboChartVisual?
+    BoxPlotVisual: BoxPlotVisual?
+    WaterfallVisual: WaterfallVisual?
+    HistogramVisual: HistogramVisual?
+    WordCloudVisual: WordCloudVisual?
+    InsightVisual: InsightVisual?
+    SankeyDiagramVisual: SankeyDiagramVisual?
+    CustomContentVisual: CustomContentVisual?
+    EmptyVisual: EmptyVisual?
+    RadarChartVisual: RadarChartVisual?
+}
+class TableVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: TableConfiguration?
+    ConditionalFormatting: TableConditionalFormatting?
+    Actions: Listing<VisualCustomAction>?
+}
+class VisualTitleLabelOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    FormatText: ShortFormatText?
+}
+class ShortFormatText {
+    PlainText: String(length <= 512 && length >= 1)?
+    RichText: String(length <= 1024 && length >= 1)?
+}
+class VisualSubtitleLabelOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    FormatText: LongFormatText?
+}
+class LongFormatText {
+    PlainText: String(length <= 1024 && length >= 1)?
+    RichText: String(length <= 2048 && length >= 1)?
+}
+class TableConfiguration {
+    FieldWells: TableFieldWells?
+    SortConfiguration: TableSortConfiguration?
+    TableOptions: TableOptions?
+    TotalOptions: TotalOptions?
+    FieldOptions: TableFieldOptions?
+    PaginatedReportOptions: TablePaginatedReportOptions?
+    TableInlineVisualizations: Listing<TableInlineVisualization>?
+}
+class TableFieldWells {
+    TableAggregatedFieldWells: TableAggregatedFieldWells?
+    TableUnaggregatedFieldWells: TableUnaggregatedFieldWells?
+}
+class TableAggregatedFieldWells {
+    GroupBy: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+}
+class DimensionField {
+    NumericalDimensionField: NumericalDimensionField?
+    CategoricalDimensionField: CategoricalDimensionField?
+    DateDimensionField: DateDimensionField?
+}
+class NumericalDimensionField {
+    FieldId: String(length <= 512 && length >= 1)
+    Column: ColumnIdentifier
+    HierarchyId: String(length <= 512 && length >= 1)?
+    FormatConfiguration: NumberFormatConfiguration?
+}
+class NumberFormatConfiguration {
+    FormatConfiguration: NumericFormatConfiguration?
+}
+class NumericFormatConfiguration {
+    NumberDisplayFormatConfiguration: NumberDisplayFormatConfiguration?
+    CurrencyDisplayFormatConfiguration: CurrencyDisplayFormatConfiguration?
+    PercentageDisplayFormatConfiguration: PercentageDisplayFormatConfiguration?
+}
+class NumberDisplayFormatConfiguration {
+    Prefix: String(length <= 128 && length >= 1)?
+    Suffix: String(length <= 128 && length >= 1)?
+    SeparatorConfiguration: NumericSeparatorConfiguration?
+    DecimalPlacesConfiguration: DecimalPlacesConfiguration?
+    NumberScale: "NONE" | "AUTO" | "THOUSANDS" | "MILLIONS" | "BILLIONS" | "TRILLIONS" | *Null
+    NegativeValueConfiguration: NegativeValueConfiguration?
+    NullValueFormatConfiguration: NullValueFormatConfiguration?
+}
+class NumericSeparatorConfiguration {
+    DecimalSeparator: "COMMA" | "DOT" | "SPACE" | *Null
+    ThousandsSeparator: ThousandSeparatorOptions?
+}
+class ThousandSeparatorOptions {
+    Symbol: "COMMA" | "DOT" | "SPACE" | *Null
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class DecimalPlacesConfiguration {
+    DecimalPlaces: Float
+}
+class NegativeValueConfiguration {
+    DisplayMode: "POSITIVE" | "NEGATIVE"
+}
+class NullValueFormatConfiguration {
+    NullString: String(length <= 128 && length >= 1)
+}
+class CurrencyDisplayFormatConfiguration {
+    Prefix: String(length <= 128 && length >= 1)?
+    Suffix: String(length <= 128 && length >= 1)?
+    SeparatorConfiguration: NumericSeparatorConfiguration?
+    Symbol: String(matches(Regex(#"[A-Z]{3}"#)))?
+    DecimalPlacesConfiguration: DecimalPlacesConfiguration?
+    NumberScale: "NONE" | "AUTO" | "THOUSANDS" | "MILLIONS" | "BILLIONS" | "TRILLIONS" | *Null
+    NegativeValueConfiguration: NegativeValueConfiguration?
+    NullValueFormatConfiguration: NullValueFormatConfiguration?
+}
+class PercentageDisplayFormatConfiguration {
+    Prefix: String(length <= 128 && length >= 1)?
+    Suffix: String(length <= 128 && length >= 1)?
+    SeparatorConfiguration: NumericSeparatorConfiguration?
+    DecimalPlacesConfiguration: DecimalPlacesConfiguration?
+    NegativeValueConfiguration: NegativeValueConfiguration?
+    NullValueFormatConfiguration: NullValueFormatConfiguration?
+}
+class CategoricalDimensionField {
+    FieldId: String(length <= 512 && length >= 1)
+    Column: ColumnIdentifier
+    HierarchyId: String(length <= 512 && length >= 1)?
+    FormatConfiguration: StringFormatConfiguration?
+}
+class StringFormatConfiguration {
+    NullValueFormatConfiguration: NullValueFormatConfiguration?
+    NumericFormatConfiguration: NumericFormatConfiguration?
+}
+class DateDimensionField {
+    FieldId: String(length <= 512 && length >= 1)
+    Column: ColumnIdentifier
+    DateGranularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND" | *Null
+    HierarchyId: String(length <= 512 && length >= 1)?
+    FormatConfiguration: DateTimeFormatConfiguration?
+}
+class DateTimeFormatConfiguration {
+    DateTimeFormat: String(length <= 128 && length >= 1)?
+    NullValueFormatConfiguration: NullValueFormatConfiguration?
+    NumericFormatConfiguration: NumericFormatConfiguration?
+}
+class MeasureField {
+    NumericalMeasureField: NumericalMeasureField?
+    CategoricalMeasureField: CategoricalMeasureField?
+    DateMeasureField: DateMeasureField?
+    CalculatedMeasureField: CalculatedMeasureField?
+}
+class NumericalMeasureField {
+    FieldId: String(length <= 512 && length >= 1)
+    Column: ColumnIdentifier
+    AggregationFunction: NumericalAggregationFunction?
+    FormatConfiguration: NumberFormatConfiguration?
+}
+class NumericalAggregationFunction {
+    SimpleNumericalAggregation: "SUM" | "AVERAGE" | "MIN" | "MAX" | "COUNT" | "DISTINCT_COUNT" | "VAR" | "VARP" | "STDEV" | "STDEVP" | "MEDIAN" | *Null
+    PercentileAggregation: PercentileAggregation?
+}
+class PercentileAggregation {
+    PercentileValue: Float?
+}
+class CategoricalMeasureField {
+    FieldId: String(length <= 512 && length >= 1)
+    Column: ColumnIdentifier
+    AggregationFunction: "COUNT" | "DISTINCT_COUNT" | *Null
+    FormatConfiguration: StringFormatConfiguration?
+}
+class DateMeasureField {
+    FieldId: String(length <= 512 && length >= 1)
+    Column: ColumnIdentifier
+    AggregationFunction: "COUNT" | "DISTINCT_COUNT" | "MIN" | "MAX" | *Null
+    FormatConfiguration: DateTimeFormatConfiguration?
+}
+class CalculatedMeasureField {
+    FieldId: String(length <= 512 && length >= 1)
+    Expression: String(length <= 4096 && length >= 1)
+}
+class TableUnaggregatedFieldWells {
+    Values: Listing<UnaggregatedField>?
+}
+class UnaggregatedField {
+    FieldId: String(length <= 512 && length >= 1)
+    Column: ColumnIdentifier
+    FormatConfiguration: FormatConfiguration?
+}
+class FormatConfiguration {
+    StringFormatConfiguration: StringFormatConfiguration?
+    NumberFormatConfiguration: NumberFormatConfiguration?
+    DateTimeFormatConfiguration: DateTimeFormatConfiguration?
+}
+class TableSortConfiguration {
+    RowSort: Listing<FieldSortOptions>?
+    PaginationConfiguration: PaginationConfiguration?
+}
+class FieldSortOptions {
+    FieldSort: FieldSort?
+    ColumnSort: ColumnSort?
+}
+class FieldSort {
+    FieldId: String(length <= 512 && length >= 1)
+    Direction: "ASC" | "DESC"
+}
+class ColumnSort {
+    SortBy: ColumnIdentifier
+    Direction: "ASC" | "DESC"
+    AggregationFunction: AggregationFunction?
+}
+class AggregationFunction {
+    NumericalAggregationFunction: NumericalAggregationFunction?
+    CategoricalAggregationFunction: "COUNT" | "DISTINCT_COUNT" | *Null
+    DateAggregationFunction: "COUNT" | "DISTINCT_COUNT" | "MIN" | "MAX" | *Null
+    AttributeAggregationFunction: AttributeAggregationFunction?
+}
+class AttributeAggregationFunction {
+    SimpleAttributeAggregation: "UNIQUE_VALUE" | *Null
+    ValueForMultipleValues: String?
+}
+class PaginationConfiguration {
+    PageSize: Float
+    PageNumber: Float
+}
+class TableOptions {
+    Orientation: "VERTICAL" | "HORIZONTAL" | *Null
+    HeaderStyle: TableCellStyle?
+    CellStyle: TableCellStyle?
+    RowAlternateColorOptions: RowAlternateColorOptions?
+}
+class TableCellStyle {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    FontConfiguration: FontConfiguration?
+    TextWrap: "NONE" | "WRAP" | *Null
+    HorizontalTextAlignment: "LEFT" | "CENTER" | "RIGHT" | "AUTO" | *Null
+    VerticalTextAlignment: "TOP" | "MIDDLE" | "BOTTOM" | "AUTO" | *Null
+    BackgroundColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    Height: Float?
+    Border: GlobalTableBorderOptions?
+}
+class GlobalTableBorderOptions {
+    UniformBorder: TableBorderOptions?
+    SideSpecificBorder: TableSideBorderOptions?
+}
+class TableBorderOptions {
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    Thickness: Float?
+    Style: "NONE" | "SOLID" | *Null
+}
+class TableSideBorderOptions {
+    InnerVertical: TableBorderOptions?
+    InnerHorizontal: TableBorderOptions?
+    Left: TableBorderOptions?
+    Right: TableBorderOptions?
+    Top: TableBorderOptions?
+    Bottom: TableBorderOptions?
+}
+class RowAlternateColorOptions {
+    Status: "ENABLED" | "DISABLED" | *Null
+    RowAlternateColors: Listing<String(matches(Regex(#"^#[A-F0-9]{6}$"#)))>?
+    UsePrimaryBackgroundColor: "ENABLED" | "DISABLED" | *Null
+}
+class TotalOptions {
+    TotalsVisibility: "HIDDEN" | "VISIBLE" | *Null
+    Placement: "START" | "END" | "AUTO" | *Null
+    ScrollStatus: "PINNED" | "SCROLLED" | *Null
+    CustomLabel: String?
+    TotalCellStyle: TableCellStyle?
+    TotalAggregationOptions: Listing<TotalAggregationOption>?
+}
+class TotalAggregationOption {
+    FieldId: String(length <= 512 && length >= 1)
+    TotalAggregationFunction: TotalAggregationFunction
+}
+class TotalAggregationFunction {
+    SimpleTotalAggregationFunction: "DEFAULT" | "SUM" | "AVERAGE" | "MIN" | "MAX" | "NONE" | *Null
+}
+class TableFieldOptions {
+    SelectedFieldOptions: Listing<TableFieldOption>?
+    Order: Listing<String(length <= 512 && length >= 1)>?
+    PinnedFieldOptions: TablePinnedFieldOptions?
+}
+class TableFieldOption {
+    FieldId: String(length <= 512 && length >= 1)
+    /// String based length that is composed of value and unit in px
+    Width: String?
+    CustomLabel: String(length <= 2048 && length >= 1)?
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    URLStyling: TableFieldURLConfiguration?
+}
+class TableFieldURLConfiguration {
+    LinkConfiguration: TableFieldLinkConfiguration?
+    ImageConfiguration: TableFieldImageConfiguration?
+}
+class TableFieldLinkConfiguration {
+    Target: "NEW_TAB" | "NEW_WINDOW" | "SAME_TAB"
+    Content: TableFieldLinkContentConfiguration
+}
+class TableFieldLinkContentConfiguration {
+    CustomTextContent: TableFieldCustomTextContent?
+    CustomIconContent: TableFieldCustomIconContent?
+}
+class TableFieldCustomTextContent {
+    Value: String?
+    FontConfiguration: FontConfiguration
+}
+class TableFieldCustomIconContent {
+    Icon: "LINK" | *Null
+}
+class TableFieldImageConfiguration {
+    SizingOptions: TableCellImageSizingConfiguration?
+}
+class TableCellImageSizingConfiguration {
+    TableCellImageScalingConfiguration: "FIT_TO_CELL_HEIGHT" | "FIT_TO_CELL_WIDTH" | "DO_NOT_SCALE" | *Null
+}
+class TablePinnedFieldOptions {
+    PinnedLeftFields: Listing<String(length <= 512 && length >= 1)>?
+}
+class TablePaginatedReportOptions {
+    VerticalOverflowVisibility: "HIDDEN" | "VISIBLE" | *Null
+    OverflowColumnHeaderVisibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class TableInlineVisualization {
+    DataBars: DataBarsOptions?
+}
+class DataBarsOptions {
+    FieldId: String(length <= 512 && length >= 1)
+    PositiveColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    NegativeColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+}
+class TableConditionalFormatting {
+    ConditionalFormattingOptions: Listing<TableConditionalFormattingOption>?
+}
+class TableConditionalFormattingOption {
+    Cell: TableCellConditionalFormatting?
+    Row: TableRowConditionalFormatting?
+}
+class TableCellConditionalFormatting {
+    FieldId: String(length <= 512 && length >= 1)
+    TextFormat: TextConditionalFormat?
+}
+class TextConditionalFormat {
+    BackgroundColor: ConditionalFormattingColor?
+    TextColor: ConditionalFormattingColor?
+    Icon: ConditionalFormattingIcon?
+}
+class ConditionalFormattingColor {
+    Solid: ConditionalFormattingSolidColor?
+    Gradient: ConditionalFormattingGradientColor?
+}
+class ConditionalFormattingSolidColor {
+    Expression: String(length <= 4096 && length >= 1)
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+}
+class ConditionalFormattingGradientColor {
+    Expression: String(length <= 4096 && length >= 1)
+    Color: GradientColor
+}
+class GradientColor {
+    Stops: Listing<GradientStop>?
+}
+class GradientStop {
+    GradientOffset: Float
+    DataValue: Float?
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+}
+class ConditionalFormattingIcon {
+    IconSet: ConditionalFormattingIconSet?
+    CustomCondition: ConditionalFormattingCustomIconCondition?
+}
+class ConditionalFormattingIconSet {
+    Expression: String(length <= 4096 && length >= 1)
+    IconSetType: "PLUS_MINUS" | "CHECK_X" | "THREE_COLOR_ARROW" | "THREE_GRAY_ARROW" | "CARET_UP_MINUS_DOWN" | "THREE_SHAPE" | "THREE_CIRCLE" | "FLAGS" | "BARS" | "FOUR_COLOR_ARROW" | "FOUR_GRAY_ARROW" | *Null
+}
+class ConditionalFormattingCustomIconCondition {
+    Expression: String(length <= 4096 && length >= 1)
+    IconOptions: ConditionalFormattingCustomIconOptions
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    DisplayConfiguration: ConditionalFormattingIconDisplayConfiguration?
+}
+class ConditionalFormattingCustomIconOptions {
+    Icon: "CARET_UP" | "CARET_DOWN" | "PLUS" | "MINUS" | "ARROW_UP" | "ARROW_DOWN" | "ARROW_LEFT" | "ARROW_UP_LEFT" | "ARROW_DOWN_LEFT" | "ARROW_RIGHT" | "ARROW_UP_RIGHT" | "ARROW_DOWN_RIGHT" | "FACE_UP" | "FACE_DOWN" | "FACE_FLAT" | "ONE_BAR" | "TWO_BAR" | "THREE_BAR" | "CIRCLE" | "TRIANGLE" | "SQUARE" | "FLAG" | "THUMBS_UP" | "THUMBS_DOWN" | "CHECKMARK" | "X" | *Null
+    UnicodeIcon: String(matches(Regex(#"^[^\u0000-\u00FF]$"#)))?
+}
+class ConditionalFormattingIconDisplayConfiguration {
+    IconDisplayOption: "ICON_ONLY" | *Null
+}
+class TableRowConditionalFormatting {
+    BackgroundColor: ConditionalFormattingColor?
+    TextColor: ConditionalFormattingColor?
+}
+class VisualCustomAction {
+    CustomActionId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String(length <= 256 && length >= 1)
+    Status: "ENABLED" | "DISABLED" | *Null
+    Trigger: "DATA_POINT_CLICK" | "DATA_POINT_MENU"
+    ActionOperations: Listing<VisualCustomActionOperation>
+}
+class VisualCustomActionOperation {
+    FilterOperation: CustomActionFilterOperation?
+    NavigationOperation: CustomActionNavigationOperation?
+    URLOperation: CustomActionURLOperation?
+    SetParametersOperation: CustomActionSetParametersOperation?
+}
+class CustomActionFilterOperation {
+    SelectedFieldsConfiguration: FilterOperationSelectedFieldsConfiguration
+    TargetVisualsConfiguration: FilterOperationTargetVisualsConfiguration
+}
+class FilterOperationSelectedFieldsConfiguration {
+    SelectedFields: Listing<String(length <= 512 && length >= 1)>?
+    SelectedFieldOptions: "ALL_FIELDS" | *Null
+    SelectedColumns: Listing<ColumnIdentifier>?
+}
+class FilterOperationTargetVisualsConfiguration {
+    SameSheetTargetVisualConfiguration: SameSheetTargetVisualConfiguration?
+}
+class SameSheetTargetVisualConfiguration {
+    TargetVisuals: Listing<String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))>?
+    TargetVisualOptions: "ALL_VISUALS" | *Null
+}
+class CustomActionNavigationOperation {
+    LocalNavigationConfiguration: LocalNavigationConfiguration?
+}
+class LocalNavigationConfiguration {
+    TargetSheetId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+}
+class CustomActionURLOperation {
+    URLTemplate: String(length <= 2048 && length >= 1)
+    URLTarget: "NEW_TAB" | "NEW_WINDOW" | "SAME_TAB"
+}
+class CustomActionSetParametersOperation {
+    ParameterValueConfigurations: Listing<SetParameterValueConfiguration>
+}
+class SetParameterValueConfiguration {
+    DestinationParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    Value: DestinationParameterValueConfiguration
+}
+class DestinationParameterValueConfiguration {
+    CustomValuesConfiguration: CustomValuesConfiguration?
+    SelectAllValueOptions: "ALL_VALUES" | *Null
+    SourceParameterName: String?
+    SourceField: String(length <= 512 && length >= 1)?
+    SourceColumn: ColumnIdentifier?
+}
+class CustomValuesConfiguration {
+    IncludeNullValue: Boolean?
+    CustomValues: CustomParameterValues
+}
+class CustomParameterValues {
+    StringValues: Listing<String>?
+    IntegerValues: Listing<Float>?
+    DecimalValues: Listing<Float>?
+    DateTimeValues: Listing<String>?
+}
+class PivotTableVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: PivotTableConfiguration?
+    ConditionalFormatting: PivotTableConditionalFormatting?
+    Actions: Listing<VisualCustomAction>?
+}
+class PivotTableConfiguration {
+    FieldWells: PivotTableFieldWells?
+    SortConfiguration: PivotTableSortConfiguration?
+    TableOptions: PivotTableOptions?
+    TotalOptions: PivotTableTotalOptions?
+    FieldOptions: PivotTableFieldOptions?
+    PaginatedReportOptions: PivotTablePaginatedReportOptions?
+}
+class PivotTableFieldWells {
+    PivotTableAggregatedFieldWells: PivotTableAggregatedFieldWells?
+}
+class PivotTableAggregatedFieldWells {
+    Rows: Listing<DimensionField>?
+    Columns: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+}
+class PivotTableSortConfiguration {
+    FieldSortOptions: Listing<PivotFieldSortOptions>?
+}
+class PivotFieldSortOptions {
+    FieldId: String(length <= 512 && length >= 1)
+    SortBy: PivotTableSortBy
+}
+class PivotTableSortBy {
+    Field: FieldSort?
+    Column: ColumnSort?
+    DataPath: DataPathSort?
+}
+class DataPathSort {
+    Direction: "ASC" | "DESC"
+    SortPaths: Listing<DataPathValue>
+}
+class DataPathValue {
+    FieldId: String(length <= 512 && length >= 1)?
+    FieldValue: String(length <= 2048 && length >= 0)?
+    DataPathType: DataPathType?
+}
+class DataPathType {
+    PivotTableDataPathType: "HIERARCHY_ROWS_LAYOUT_COLUMN" | "MULTIPLE_ROW_METRICS_COLUMN" | "EMPTY_COLUMN_HEADER" | "COUNT_METRIC_COLUMN" | *Null
+}
+class PivotTableOptions {
+    MetricPlacement: "ROW" | "COLUMN" | *Null
+    SingleMetricVisibility: "HIDDEN" | "VISIBLE" | *Null
+    ColumnNamesVisibility: "HIDDEN" | "VISIBLE" | *Null
+    ToggleButtonsVisibility: "HIDDEN" | "VISIBLE" | *Null
+    ColumnHeaderStyle: TableCellStyle?
+    RowHeaderStyle: TableCellStyle?
+    CellStyle: TableCellStyle?
+    RowFieldNamesStyle: TableCellStyle?
+    RowAlternateColorOptions: RowAlternateColorOptions?
+    CollapsedRowDimensionsVisibility: "HIDDEN" | "VISIBLE" | *Null
+    RowsLayout: "TABULAR" | "HIERARCHY" | *Null
+    RowsLabelOptions: PivotTableRowsLabelOptions?
+    /// String based length that is composed of value and unit in px
+    DefaultCellWidth: String?
+}
+class PivotTableRowsLabelOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    CustomLabel: String(length <= 1024 && length >= 1)?
+}
+class PivotTableTotalOptions {
+    RowSubtotalOptions: SubtotalOptions?
+    ColumnSubtotalOptions: SubtotalOptions?
+    RowTotalOptions: PivotTotalOptions?
+    ColumnTotalOptions: PivotTotalOptions?
+}
+class SubtotalOptions {
+    TotalsVisibility: "HIDDEN" | "VISIBLE" | *Null
+    CustomLabel: String?
+    FieldLevel: "ALL" | "CUSTOM" | "LAST" | *Null
+    FieldLevelOptions: Listing<PivotTableFieldSubtotalOptions>?
+    TotalCellStyle: TableCellStyle?
+    ValueCellStyle: TableCellStyle?
+    MetricHeaderCellStyle: TableCellStyle?
+    StyleTargets: Listing<TableStyleTarget>?
+}
+class PivotTableFieldSubtotalOptions {
+    FieldId: String(length <= 512 && length >= 1)?
+}
+class TableStyleTarget {
+    CellType: "TOTAL" | "METRIC_HEADER" | "VALUE"
+}
+class PivotTotalOptions {
+    TotalsVisibility: "HIDDEN" | "VISIBLE" | *Null
+    Placement: "START" | "END" | "AUTO" | *Null
+    ScrollStatus: "PINNED" | "SCROLLED" | *Null
+    CustomLabel: String?
+    TotalCellStyle: TableCellStyle?
+    ValueCellStyle: TableCellStyle?
+    MetricHeaderCellStyle: TableCellStyle?
+    TotalAggregationOptions: Listing<TotalAggregationOption>?
+}
+class PivotTableFieldOptions {
+    SelectedFieldOptions: Listing<PivotTableFieldOption>?
+    DataPathOptions: Listing<PivotTableDataPathOption>?
+    CollapseStateOptions: Listing<PivotTableFieldCollapseStateOption>?
+}
+class PivotTableFieldOption {
+    FieldId: String(length <= 512 && length >= 1)
+    CustomLabel: String(length <= 2048 && length >= 1)?
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class PivotTableDataPathOption {
+    DataPathList: Listing<DataPathValue>
+    /// String based length that is composed of value and unit in px
+    Width: String?
+}
+class PivotTableFieldCollapseStateOption {
+    Target: PivotTableFieldCollapseStateTarget
+    State: "COLLAPSED" | "EXPANDED" | *Null
+}
+class PivotTableFieldCollapseStateTarget {
+    FieldId: String?
+    FieldDataPathValues: Listing<DataPathValue>?
+}
+class PivotTablePaginatedReportOptions {
+    VerticalOverflowVisibility: "HIDDEN" | "VISIBLE" | *Null
+    OverflowColumnHeaderVisibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class PivotTableConditionalFormatting {
+    ConditionalFormattingOptions: Listing<PivotTableConditionalFormattingOption>?
+}
+class PivotTableConditionalFormattingOption {
+    Cell: PivotTableCellConditionalFormatting?
+}
+class PivotTableCellConditionalFormatting {
+    FieldId: String(length <= 512 && length >= 1)
+    TextFormat: TextConditionalFormat?
+    Scope: PivotTableConditionalFormattingScope?
+    Scopes: Listing<PivotTableConditionalFormattingScope>?
+}
+class PivotTableConditionalFormattingScope {
+    Role: "FIELD" | "FIELD_TOTAL" | "GRAND_TOTAL" | *Null
+}
+class BarChartVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: BarChartConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class BarChartConfiguration {
+    FieldWells: BarChartFieldWells?
+    SortConfiguration: BarChartSortConfiguration?
+    Orientation: "HORIZONTAL" | "VERTICAL" | *Null
+    BarsArrangement: "CLUSTERED" | "STACKED" | "STACKED_PERCENT" | *Null
+    VisualPalette: VisualPalette?
+    SmallMultiplesOptions: SmallMultiplesOptions?
+    CategoryAxis: AxisDisplayOptions?
+    CategoryLabelOptions: ChartAxisLabelOptions?
+    ValueAxis: AxisDisplayOptions?
+    ValueLabelOptions: ChartAxisLabelOptions?
+    ColorLabelOptions: ChartAxisLabelOptions?
+    Legend: LegendOptions?
+    DataLabels: DataLabelOptions?
+    Tooltip: TooltipOptions?
+    ReferenceLines: Listing<ReferenceLine>?
+    ContributionAnalysisDefaults: Listing<ContributionAnalysisDefault>?
+}
+class BarChartFieldWells {
+    BarChartAggregatedFieldWells: BarChartAggregatedFieldWells?
+}
+class BarChartAggregatedFieldWells {
+    Category: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+    Colors: Listing<DimensionField>?
+    SmallMultiples: Listing<DimensionField>?
+}
+class BarChartSortConfiguration {
+    CategorySort: Listing<FieldSortOptions>?
+    CategoryItemsLimit: ItemsLimitConfiguration?
+    ColorSort: Listing<FieldSortOptions>?
+    ColorItemsLimit: ItemsLimitConfiguration?
+    SmallMultiplesSort: Listing<FieldSortOptions>?
+    SmallMultiplesLimitConfiguration: ItemsLimitConfiguration?
+}
+class ItemsLimitConfiguration {
+    ItemsLimit: Float?
+    OtherCategories: "INCLUDE" | "EXCLUDE" | *Null
+}
+class VisualPalette {
+    ChartColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    ColorMap: Listing<DataPathColor>?
+}
+class DataPathColor {
+    Element: DataPathValue
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))
+    TimeGranularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND" | *Null
+}
+class SmallMultiplesOptions {
+    MaxVisibleRows: Float?
+    MaxVisibleColumns: Float?
+    PanelConfiguration: PanelConfiguration?
+    XAxis: SmallMultiplesAxisProperties?
+    YAxis: SmallMultiplesAxisProperties?
+}
+class PanelConfiguration {
+    Title: PanelTitleOptions?
+    BorderVisibility: "HIDDEN" | "VISIBLE" | *Null
+    /// String based length that is composed of value and unit in px
+    BorderThickness: String?
+    BorderStyle: "SOLID" | "DASHED" | "DOTTED" | *Null
+    BorderColor: String(matches(Regex(#"^#[A-F0-9]{6}(?:[A-F0-9]{2})?$"#)))?
+    GutterVisibility: "HIDDEN" | "VISIBLE" | *Null
+    /// String based length that is composed of value and unit in px
+    GutterSpacing: String?
+    BackgroundVisibility: "HIDDEN" | "VISIBLE" | *Null
+    BackgroundColor: String(matches(Regex(#"^#[A-F0-9]{6}(?:[A-F0-9]{2})?$"#)))?
+}
+class PanelTitleOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    FontConfiguration: FontConfiguration?
+    HorizontalTextAlignment: "LEFT" | "CENTER" | "RIGHT" | "AUTO" | *Null
+}
+class SmallMultiplesAxisProperties {
+    Scale: "SHARED" | "INDEPENDENT" | *Null
+    Placement: "OUTSIDE" | "INSIDE" | *Null
+}
+class AxisDisplayOptions {
+    TickLabelOptions: AxisTickLabelOptions?
+    AxisLineVisibility: "HIDDEN" | "VISIBLE" | *Null
+    GridLineVisibility: "HIDDEN" | "VISIBLE" | *Null
+    DataOptions: AxisDataOptions?
+    ScrollbarOptions: ScrollBarOptions?
+    /// String based length that is composed of value and unit in px
+    AxisOffset: String?
+}
+class AxisTickLabelOptions {
+    LabelOptions: LabelOptions?
+    RotationAngle: Float?
+}
+class AxisDataOptions {
+    NumericAxisOptions: NumericAxisOptions?
+    DateAxisOptions: DateAxisOptions?
+}
+class NumericAxisOptions {
+    Scale: AxisScale?
+    Range: AxisDisplayRange?
+}
+class AxisScale {
+    Linear: AxisLinearScale?
+    Logarithmic: AxisLogarithmicScale?
+}
+class AxisLinearScale {
+    StepCount: Float?
+    StepSize: Float?
+}
+class AxisLogarithmicScale {
+    Base: Float?
+}
+class AxisDisplayRange {
+    MinMax: AxisDisplayMinMaxRange?
+    DataDriven: Mapping?
+}
+class AxisDisplayMinMaxRange {
+    Minimum: Float?
+    Maximum: Float?
+}
+class DateAxisOptions {
+    MissingDateVisibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class ScrollBarOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    VisibleRange: VisibleRangeOptions?
+}
+class VisibleRangeOptions {
+    PercentRange: PercentVisibleRange?
+}
+class PercentVisibleRange {
+    From: Float?
+    To: Float?
+}
+class ChartAxisLabelOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    SortIconVisibility: "HIDDEN" | "VISIBLE" | *Null
+    AxisLabelOptions: Listing<AxisLabelOptions>?
+}
+class AxisLabelOptions {
+    FontConfiguration: FontConfiguration?
+    CustomLabel: String?
+    ApplyTo: AxisLabelReferenceOptions?
+}
+class AxisLabelReferenceOptions {
+    FieldId: String(length <= 512 && length >= 1)
+    Column: ColumnIdentifier
+}
+class LegendOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    Title: LabelOptions?
+    Position: "AUTO" | "RIGHT" | "BOTTOM" | "TOP" | *Null
+    /// String based length that is composed of value and unit in px
+    Width: String?
+    /// String based length that is composed of value and unit in px
+    Height: String?
+}
+class DataLabelOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    CategoryLabelVisibility: "HIDDEN" | "VISIBLE" | *Null
+    MeasureLabelVisibility: "HIDDEN" | "VISIBLE" | *Null
+    DataLabelTypes: Listing<DataLabelType>?
+    Position: "INSIDE" | "OUTSIDE" | "LEFT" | "TOP" | "BOTTOM" | "RIGHT" | *Null
+    LabelContent: "VALUE" | "PERCENT" | "VALUE_AND_PERCENT" | *Null
+    LabelFontConfiguration: FontConfiguration?
+    LabelColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    Overlap: "DISABLE_OVERLAP" | "ENABLE_OVERLAP" | *Null
+    TotalsVisibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class DataLabelType {
+    FieldLabelType: FieldLabelType?
+    DataPathLabelType: DataPathLabelType?
+    RangeEndsLabelType: RangeEndsLabelType?
+    MinimumLabelType: MinimumLabelType?
+    MaximumLabelType: MaximumLabelType?
+}
+class FieldLabelType {
+    FieldId: String(length <= 512 && length >= 1)?
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class DataPathLabelType {
+    FieldId: String(length <= 512 && length >= 1)?
+    FieldValue: String(length <= 2048 && length >= 0)?
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class RangeEndsLabelType {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class MinimumLabelType {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class MaximumLabelType {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class TooltipOptions {
+    TooltipVisibility: "HIDDEN" | "VISIBLE" | *Null
+    SelectedTooltipType: "BASIC" | "DETAILED" | *Null
+    FieldBasedTooltip: FieldBasedTooltip?
+}
+class FieldBasedTooltip {
+    AggregationVisibility: "HIDDEN" | "VISIBLE" | *Null
+    TooltipTitleType: "NONE" | "PRIMARY_VALUE" | *Null
+    TooltipFields: Listing<TooltipItem>?
+}
+class TooltipItem {
+    FieldTooltipItem: FieldTooltipItem?
+    ColumnTooltipItem: ColumnTooltipItem?
+}
+class FieldTooltipItem {
+    FieldId: String(length <= 512 && length >= 1)
+    Label: String?
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class ColumnTooltipItem {
+    Column: ColumnIdentifier
+    Label: String?
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    Aggregation: AggregationFunction?
+}
+class ReferenceLine {
+    Status: "ENABLED" | "DISABLED" | *Null
+    DataConfiguration: ReferenceLineDataConfiguration
+    StyleConfiguration: ReferenceLineStyleConfiguration?
+    LabelConfiguration: ReferenceLineLabelConfiguration?
+}
+class ReferenceLineDataConfiguration {
+    StaticConfiguration: ReferenceLineStaticDataConfiguration?
+    DynamicConfiguration: ReferenceLineDynamicDataConfiguration?
+    AxisBinding: "PRIMARY_YAXIS" | "SECONDARY_YAXIS" | *Null
+    SeriesType: "BAR" | "LINE" | *Null
+}
+class ReferenceLineStaticDataConfiguration {
+    Value: Float
+}
+class ReferenceLineDynamicDataConfiguration {
+    Column: ColumnIdentifier
+    MeasureAggregationFunction: AggregationFunction?
+    Calculation: NumericalAggregationFunction
+}
+class ReferenceLineStyleConfiguration {
+    Pattern: "SOLID" | "DASHED" | "DOTTED" | *Null
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+}
+class ReferenceLineLabelConfiguration {
+    ValueLabelConfiguration: ReferenceLineValueLabelConfiguration?
+    CustomLabelConfiguration: ReferenceLineCustomLabelConfiguration?
+    FontConfiguration: FontConfiguration?
+    FontColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    HorizontalPosition: "LEFT" | "CENTER" | "RIGHT" | *Null
+    VerticalPosition: "ABOVE" | "BELOW" | *Null
+}
+class ReferenceLineValueLabelConfiguration {
+    RelativePosition: "BEFORE_CUSTOM_LABEL" | "AFTER_CUSTOM_LABEL" | *Null
+    FormatConfiguration: NumericFormatConfiguration?
+}
+class ReferenceLineCustomLabelConfiguration {
+    CustomLabel: String(matches(Regex(#".*\S.*"#)))
+}
+class ContributionAnalysisDefault {
+    MeasureFieldId: String(length <= 512 && length >= 1)
+    ContributorDimensions: Listing<ColumnIdentifier>
+}
+class ColumnHierarchy {
+    ExplicitHierarchy: ExplicitHierarchy?
+    DateTimeHierarchy: DateTimeHierarchy?
+    PredefinedHierarchy: PredefinedHierarchy?
+}
+class ExplicitHierarchy {
+    HierarchyId: String(length <= 512 && length >= 1)
+    Columns: Listing<ColumnIdentifier>
+    DrillDownFilters: Listing<DrillDownFilter>?
+}
+class DrillDownFilter {
+    NumericEqualityFilter: NumericEqualityDrillDownFilter?
+    CategoryFilter: CategoryDrillDownFilter?
+    TimeRangeFilter: TimeRangeDrillDownFilter?
+}
+class NumericEqualityDrillDownFilter {
+    Column: ColumnIdentifier
+    Value: Float
+}
+class CategoryDrillDownFilter {
+    Column: ColumnIdentifier
+    CategoryValues: Listing<String(length <= 512 && length >= 0)>
+}
+class TimeRangeDrillDownFilter {
+    Column: ColumnIdentifier
+    RangeMinimum: String
+    RangeMaximum: String
+    TimeGranularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND"
+}
+class DateTimeHierarchy {
+    HierarchyId: String(length <= 512 && length >= 1)
+    DrillDownFilters: Listing<DrillDownFilter>?
+}
+class PredefinedHierarchy {
+    HierarchyId: String(length <= 512 && length >= 1)
+    Columns: Listing<ColumnIdentifier>
+    DrillDownFilters: Listing<DrillDownFilter>?
+}
+class KPIVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: KPIConfiguration?
+    ConditionalFormatting: KPIConditionalFormatting?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class KPIConfiguration {
+    FieldWells: KPIFieldWells?
+    SortConfiguration: KPISortConfiguration?
+    KPIOptions: KPIOptions?
+}
+class KPIFieldWells {
+    Values: Listing<MeasureField>?
+    TargetValues: Listing<MeasureField>?
+    TrendGroups: Listing<DimensionField>?
+}
+class KPISortConfiguration {
+    TrendGroupSort: Listing<FieldSortOptions>?
+}
+class KPIOptions {
+    ProgressBar: ProgressBarOptions?
+    TrendArrows: TrendArrowOptions?
+    SecondaryValue: SecondaryValueOptions?
+    Comparison: ComparisonConfiguration?
+    PrimaryValueDisplayType: "HIDDEN" | "COMPARISON" | "ACTUAL" | *Null
+    PrimaryValueFontConfiguration: FontConfiguration?
+    SecondaryValueFontConfiguration: FontConfiguration?
+    Sparkline: KPISparklineOptions?
+    VisualLayoutOptions: KPIVisualLayoutOptions?
+}
+class ProgressBarOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class TrendArrowOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class SecondaryValueOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class ComparisonConfiguration {
+    ComparisonMethod: "DIFFERENCE" | "PERCENT_DIFFERENCE" | "PERCENT" | *Null
+    ComparisonFormat: ComparisonFormatConfiguration?
+}
+class ComparisonFormatConfiguration {
+    NumberDisplayFormatConfiguration: NumberDisplayFormatConfiguration?
+    PercentageDisplayFormatConfiguration: PercentageDisplayFormatConfiguration?
+}
+class KPISparklineOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    Type: "LINE" | "AREA"
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    TooltipVisibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class KPIVisualLayoutOptions {
+    StandardLayout: KPIVisualStandardLayout?
+}
+class KPIVisualStandardLayout {
+    Type: "CLASSIC" | "VERTICAL"
+}
+class KPIConditionalFormatting {
+    ConditionalFormattingOptions: Listing<KPIConditionalFormattingOption>?
+}
+class KPIConditionalFormattingOption {
+    PrimaryValue: KPIPrimaryValueConditionalFormatting?
+    ProgressBar: KPIProgressBarConditionalFormatting?
+    ActualValue: KPIActualValueConditionalFormatting?
+    ComparisonValue: KPIComparisonValueConditionalFormatting?
+}
+class KPIPrimaryValueConditionalFormatting {
+    TextColor: ConditionalFormattingColor?
+    Icon: ConditionalFormattingIcon?
+}
+class KPIProgressBarConditionalFormatting {
+    ForegroundColor: ConditionalFormattingColor?
+}
+class KPIActualValueConditionalFormatting {
+    TextColor: ConditionalFormattingColor?
+    Icon: ConditionalFormattingIcon?
+}
+class KPIComparisonValueConditionalFormatting {
+    TextColor: ConditionalFormattingColor?
+    Icon: ConditionalFormattingIcon?
+}
+class PieChartVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: PieChartConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class PieChartConfiguration {
+    FieldWells: PieChartFieldWells?
+    SortConfiguration: PieChartSortConfiguration?
+    DonutOptions: DonutOptions?
+    SmallMultiplesOptions: SmallMultiplesOptions?
+    CategoryLabelOptions: ChartAxisLabelOptions?
+    ValueLabelOptions: ChartAxisLabelOptions?
+    Legend: LegendOptions?
+    DataLabels: DataLabelOptions?
+    Tooltip: TooltipOptions?
+    VisualPalette: VisualPalette?
+    ContributionAnalysisDefaults: Listing<ContributionAnalysisDefault>?
+}
+class PieChartFieldWells {
+    PieChartAggregatedFieldWells: PieChartAggregatedFieldWells?
+}
+class PieChartAggregatedFieldWells {
+    Category: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+    SmallMultiples: Listing<DimensionField>?
+}
+class PieChartSortConfiguration {
+    CategorySort: Listing<FieldSortOptions>?
+    CategoryItemsLimit: ItemsLimitConfiguration?
+    SmallMultiplesSort: Listing<FieldSortOptions>?
+    SmallMultiplesLimitConfiguration: ItemsLimitConfiguration?
+}
+class DonutOptions {
+    ArcOptions: ArcOptions?
+    DonutCenterOptions: DonutCenterOptions?
+}
+class ArcOptions {
+    ArcThickness: "SMALL" | "MEDIUM" | "LARGE" | "WHOLE" | *Null
+}
+class DonutCenterOptions {
+    LabelVisibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class GaugeChartVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: GaugeChartConfiguration?
+    ConditionalFormatting: GaugeChartConditionalFormatting?
+    Actions: Listing<VisualCustomAction>?
+}
+class GaugeChartConfiguration {
+    FieldWells: GaugeChartFieldWells?
+    GaugeChartOptions: GaugeChartOptions?
+    DataLabels: DataLabelOptions?
+    TooltipOptions: TooltipOptions?
+    VisualPalette: VisualPalette?
+}
+class GaugeChartFieldWells {
+    Values: Listing<MeasureField>?
+    TargetValues: Listing<MeasureField>?
+}
+class GaugeChartOptions {
+    PrimaryValueDisplayType: "HIDDEN" | "COMPARISON" | "ACTUAL" | *Null
+    Comparison: ComparisonConfiguration?
+    ArcAxis: ArcAxisConfiguration?
+    Arc: ArcConfiguration?
+    PrimaryValueFontConfiguration: FontConfiguration?
+}
+class ArcAxisConfiguration {
+    Range: ArcAxisDisplayRange?
+    ReserveRange: Float?
+}
+class ArcAxisDisplayRange {
+    Min: Float?
+    Max: Float?
+}
+class ArcConfiguration {
+    ArcAngle: Float?
+    ArcThickness: "SMALL" | "MEDIUM" | "LARGE" | *Null
+}
+class GaugeChartConditionalFormatting {
+    ConditionalFormattingOptions: Listing<GaugeChartConditionalFormattingOption>?
+}
+class GaugeChartConditionalFormattingOption {
+    PrimaryValue: GaugeChartPrimaryValueConditionalFormatting?
+    Arc: GaugeChartArcConditionalFormatting?
+}
+class GaugeChartPrimaryValueConditionalFormatting {
+    TextColor: ConditionalFormattingColor?
+    Icon: ConditionalFormattingIcon?
+}
+class GaugeChartArcConditionalFormatting {
+    ForegroundColor: ConditionalFormattingColor?
+}
+class LineChartVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: LineChartConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class LineChartConfiguration {
+    FieldWells: LineChartFieldWells?
+    SortConfiguration: LineChartSortConfiguration?
+    ForecastConfigurations: Listing<ForecastConfiguration>?
+    Type: "LINE" | "AREA" | "STACKED_AREA" | *Null
+    SmallMultiplesOptions: SmallMultiplesOptions?
+    XAxisDisplayOptions: AxisDisplayOptions?
+    XAxisLabelOptions: ChartAxisLabelOptions?
+    PrimaryYAxisDisplayOptions: LineSeriesAxisDisplayOptions?
+    PrimaryYAxisLabelOptions: ChartAxisLabelOptions?
+    SecondaryYAxisDisplayOptions: LineSeriesAxisDisplayOptions?
+    SecondaryYAxisLabelOptions: ChartAxisLabelOptions?
+    DefaultSeriesSettings: LineChartDefaultSeriesSettings?
+    Series: Listing<SeriesItem>?
+    Legend: LegendOptions?
+    DataLabels: DataLabelOptions?
+    ReferenceLines: Listing<ReferenceLine>?
+    Tooltip: TooltipOptions?
+    ContributionAnalysisDefaults: Listing<ContributionAnalysisDefault>?
+    VisualPalette: VisualPalette?
+}
+class LineChartFieldWells {
+    LineChartAggregatedFieldWells: LineChartAggregatedFieldWells?
+}
+class LineChartAggregatedFieldWells {
+    Category: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+    Colors: Listing<DimensionField>?
+    SmallMultiples: Listing<DimensionField>?
+}
+class LineChartSortConfiguration {
+    CategorySort: Listing<FieldSortOptions>?
+    CategoryItemsLimitConfiguration: ItemsLimitConfiguration?
+    ColorItemsLimitConfiguration: ItemsLimitConfiguration?
+    SmallMultiplesSort: Listing<FieldSortOptions>?
+    SmallMultiplesLimitConfiguration: ItemsLimitConfiguration?
+}
+class ForecastConfiguration {
+    ForecastProperties: TimeBasedForecastProperties?
+    Scenario: ForecastScenario?
+}
+class TimeBasedForecastProperties {
+    PeriodsForward: Float?
+    PeriodsBackward: Float?
+    UpperBoundary: Float?
+    LowerBoundary: Float?
+    PredictionInterval: Float?
+    Seasonality: Float?
+}
+class ForecastScenario {
+    WhatIfPointScenario: WhatIfPointScenario?
+    WhatIfRangeScenario: WhatIfRangeScenario?
+}
+class WhatIfPointScenario {
+    Date: String
+    Value: Float
+}
+class WhatIfRangeScenario {
+    StartDate: String
+    EndDate: String
+    Value: Float
+}
+class LineSeriesAxisDisplayOptions {
+    AxisOptions: AxisDisplayOptions?
+    MissingDataConfigurations: Listing<MissingDataConfiguration>?
+}
+class MissingDataConfiguration {
+    TreatmentOption: "INTERPOLATE" | "SHOW_AS_ZERO" | "SHOW_AS_BLANK" | *Null
+}
+class LineChartDefaultSeriesSettings {
+    AxisBinding: "PRIMARY_YAXIS" | "SECONDARY_YAXIS" | *Null
+    LineStyleSettings: LineChartLineStyleSettings?
+    MarkerStyleSettings: LineChartMarkerStyleSettings?
+}
+class LineChartLineStyleSettings {
+    LineVisibility: "HIDDEN" | "VISIBLE" | *Null
+    LineInterpolation: "LINEAR" | "SMOOTH" | "STEPPED" | *Null
+    LineStyle: "SOLID" | "DOTTED" | "DASHED" | *Null
+    /// String based length that is composed of value and unit in px
+    LineWidth: String?
+}
+class LineChartMarkerStyleSettings {
+    MarkerVisibility: "HIDDEN" | "VISIBLE" | *Null
+    MarkerShape: "CIRCLE" | "TRIANGLE" | "SQUARE" | "DIAMOND" | "ROUNDED_SQUARE" | *Null
+    /// String based length that is composed of value and unit in px
+    MarkerSize: String?
+    MarkerColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+}
+class SeriesItem {
+    FieldSeriesItem: FieldSeriesItem?
+    DataFieldSeriesItem: DataFieldSeriesItem?
+}
+class FieldSeriesItem {
+    FieldId: String(length <= 512 && length >= 1)
+    AxisBinding: "PRIMARY_YAXIS" | "SECONDARY_YAXIS"
+    Settings: LineChartSeriesSettings?
+}
+class LineChartSeriesSettings {
+    LineStyleSettings: LineChartLineStyleSettings?
+    MarkerStyleSettings: LineChartMarkerStyleSettings?
+}
+class DataFieldSeriesItem {
+    FieldId: String(length <= 512 && length >= 1)
+    FieldValue: String?
+    AxisBinding: "PRIMARY_YAXIS" | "SECONDARY_YAXIS"
+    Settings: LineChartSeriesSettings?
+}
+class HeatMapVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: HeatMapConfiguration?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+    Actions: Listing<VisualCustomAction>?
+}
+class HeatMapConfiguration {
+    FieldWells: HeatMapFieldWells?
+    SortConfiguration: HeatMapSortConfiguration?
+    RowLabelOptions: ChartAxisLabelOptions?
+    ColumnLabelOptions: ChartAxisLabelOptions?
+    ColorScale: ColorScale?
+    Legend: LegendOptions?
+    DataLabels: DataLabelOptions?
+    Tooltip: TooltipOptions?
+}
+class HeatMapFieldWells {
+    HeatMapAggregatedFieldWells: HeatMapAggregatedFieldWells?
+}
+class HeatMapAggregatedFieldWells {
+    Rows: Listing<DimensionField>?
+    Columns: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+}
+class HeatMapSortConfiguration {
+    HeatMapRowSort: Listing<FieldSortOptions>?
+    HeatMapColumnSort: Listing<FieldSortOptions>?
+    HeatMapRowItemsLimitConfiguration: ItemsLimitConfiguration?
+    HeatMapColumnItemsLimitConfiguration: ItemsLimitConfiguration?
+}
+class ColorScale {
+    Colors: Listing<DataColor>
+    ColorFillType: "DISCRETE" | "GRADIENT"
+    NullValueColor: DataColor?
+}
+class DataColor {
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    DataValue: Float?
+}
+class TreeMapVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: TreeMapConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class TreeMapConfiguration {
+    FieldWells: TreeMapFieldWells?
+    SortConfiguration: TreeMapSortConfiguration?
+    GroupLabelOptions: ChartAxisLabelOptions?
+    SizeLabelOptions: ChartAxisLabelOptions?
+    ColorLabelOptions: ChartAxisLabelOptions?
+    ColorScale: ColorScale?
+    Legend: LegendOptions?
+    DataLabels: DataLabelOptions?
+    Tooltip: TooltipOptions?
+}
+class TreeMapFieldWells {
+    TreeMapAggregatedFieldWells: TreeMapAggregatedFieldWells?
+}
+class TreeMapAggregatedFieldWells {
+    Groups: Listing<DimensionField>?
+    Sizes: Listing<MeasureField>?
+    Colors: Listing<MeasureField>?
+}
+class TreeMapSortConfiguration {
+    TreeMapSort: Listing<FieldSortOptions>?
+    TreeMapGroupItemsLimitConfiguration: ItemsLimitConfiguration?
+}
+class GeospatialMapVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: GeospatialMapConfiguration?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+    Actions: Listing<VisualCustomAction>?
+}
+class GeospatialMapConfiguration {
+    FieldWells: GeospatialMapFieldWells?
+    Legend: LegendOptions?
+    Tooltip: TooltipOptions?
+    WindowOptions: GeospatialWindowOptions?
+    MapStyleOptions: GeospatialMapStyleOptions?
+    PointStyleOptions: GeospatialPointStyleOptions?
+    VisualPalette: VisualPalette?
+}
+class GeospatialMapFieldWells {
+    GeospatialMapAggregatedFieldWells: GeospatialMapAggregatedFieldWells?
+}
+class GeospatialMapAggregatedFieldWells {
+    Geospatial: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+    Colors: Listing<DimensionField>?
+}
+class GeospatialWindowOptions {
+    Bounds: GeospatialCoordinateBounds?
+    MapZoomMode: "AUTO" | "MANUAL" | *Null
+}
+class GeospatialCoordinateBounds {
+    North: Float
+    South: Float
+    West: Float
+    East: Float
+}
+class GeospatialMapStyleOptions {
+    BaseMapStyle: "LIGHT_GRAY" | "DARK_GRAY" | "STREET" | "IMAGERY" | *Null
+}
+class GeospatialPointStyleOptions {
+    SelectedPointStyle: "POINT" | "CLUSTER" | "HEATMAP" | *Null
+    ClusterMarkerConfiguration: ClusterMarkerConfiguration?
+    HeatmapConfiguration: GeospatialHeatmapConfiguration?
+}
+class ClusterMarkerConfiguration {
+    ClusterMarker: ClusterMarker?
+}
+class ClusterMarker {
+    SimpleClusterMarker: SimpleClusterMarker?
+}
+class SimpleClusterMarker {
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+}
+class GeospatialHeatmapConfiguration {
+    HeatmapColor: GeospatialHeatmapColorScale?
+}
+class GeospatialHeatmapColorScale {
+    Colors: Listing<GeospatialHeatmapDataColor>?
+}
+class GeospatialHeatmapDataColor {
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))
+}
+class FilledMapVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: FilledMapConfiguration?
+    ConditionalFormatting: FilledMapConditionalFormatting?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+    Actions: Listing<VisualCustomAction>?
+}
+class FilledMapConfiguration {
+    FieldWells: FilledMapFieldWells?
+    SortConfiguration: FilledMapSortConfiguration?
+    Legend: LegendOptions?
+    Tooltip: TooltipOptions?
+    WindowOptions: GeospatialWindowOptions?
+    MapStyleOptions: GeospatialMapStyleOptions?
+}
+class FilledMapFieldWells {
+    FilledMapAggregatedFieldWells: FilledMapAggregatedFieldWells?
+}
+class FilledMapAggregatedFieldWells {
+    Geospatial: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+}
+class FilledMapSortConfiguration {
+    CategorySort: Listing<FieldSortOptions>?
+}
+class FilledMapConditionalFormatting {
+    ConditionalFormattingOptions: Listing<FilledMapConditionalFormattingOption>
+}
+class FilledMapConditionalFormattingOption {
+    Shape: FilledMapShapeConditionalFormatting
+}
+class FilledMapShapeConditionalFormatting {
+    FieldId: String(length <= 512 && length >= 1)
+    Format: ShapeConditionalFormat?
+}
+class ShapeConditionalFormat {
+    BackgroundColor: ConditionalFormattingColor
+}
+class FunnelChartVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: FunnelChartConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class FunnelChartConfiguration {
+    FieldWells: FunnelChartFieldWells?
+    SortConfiguration: FunnelChartSortConfiguration?
+    CategoryLabelOptions: ChartAxisLabelOptions?
+    ValueLabelOptions: ChartAxisLabelOptions?
+    Tooltip: TooltipOptions?
+    DataLabelOptions: FunnelChartDataLabelOptions?
+    VisualPalette: VisualPalette?
+}
+class FunnelChartFieldWells {
+    FunnelChartAggregatedFieldWells: FunnelChartAggregatedFieldWells?
+}
+class FunnelChartAggregatedFieldWells {
+    Category: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+}
+class FunnelChartSortConfiguration {
+    CategorySort: Listing<FieldSortOptions>?
+    CategoryItemsLimit: ItemsLimitConfiguration?
+}
+class FunnelChartDataLabelOptions {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    CategoryLabelVisibility: "HIDDEN" | "VISIBLE" | *Null
+    MeasureLabelVisibility: "HIDDEN" | "VISIBLE" | *Null
+    Position: "INSIDE" | "OUTSIDE" | "LEFT" | "TOP" | "BOTTOM" | "RIGHT" | *Null
+    LabelFontConfiguration: FontConfiguration?
+    LabelColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    MeasureDataLabelStyle: "VALUE_ONLY" | "PERCENTAGE_BY_FIRST_STAGE" | "PERCENTAGE_BY_PREVIOUS_STAGE" | "VALUE_AND_PERCENTAGE_BY_FIRST_STAGE" | "VALUE_AND_PERCENTAGE_BY_PREVIOUS_STAGE" | *Null
+}
+class ScatterPlotVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: ScatterPlotConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class ScatterPlotConfiguration {
+    FieldWells: ScatterPlotFieldWells?
+    XAxisLabelOptions: ChartAxisLabelOptions?
+    XAxisDisplayOptions: AxisDisplayOptions?
+    YAxisLabelOptions: ChartAxisLabelOptions?
+    YAxisDisplayOptions: AxisDisplayOptions?
+    Legend: LegendOptions?
+    DataLabels: DataLabelOptions?
+    Tooltip: TooltipOptions?
+    VisualPalette: VisualPalette?
+}
+class ScatterPlotFieldWells {
+    ScatterPlotCategoricallyAggregatedFieldWells: ScatterPlotCategoricallyAggregatedFieldWells?
+    ScatterPlotUnaggregatedFieldWells: ScatterPlotUnaggregatedFieldWells?
+}
+class ScatterPlotCategoricallyAggregatedFieldWells {
+    XAxis: Listing<MeasureField>?
+    YAxis: Listing<MeasureField>?
+    Category: Listing<DimensionField>?
+    Size: Listing<MeasureField>?
+    Label: Listing<DimensionField>?
+}
+class ScatterPlotUnaggregatedFieldWells {
+    XAxis: Listing<DimensionField>?
+    YAxis: Listing<DimensionField>?
+    Size: Listing<MeasureField>?
+    Category: Listing<DimensionField>?
+    Label: Listing<DimensionField>?
+}
+class ComboChartVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: ComboChartConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class ComboChartConfiguration {
+    FieldWells: ComboChartFieldWells?
+    SortConfiguration: ComboChartSortConfiguration?
+    BarsArrangement: "CLUSTERED" | "STACKED" | "STACKED_PERCENT" | *Null
+    CategoryAxis: AxisDisplayOptions?
+    CategoryLabelOptions: ChartAxisLabelOptions?
+    PrimaryYAxisDisplayOptions: AxisDisplayOptions?
+    PrimaryYAxisLabelOptions: ChartAxisLabelOptions?
+    SecondaryYAxisDisplayOptions: AxisDisplayOptions?
+    SecondaryYAxisLabelOptions: ChartAxisLabelOptions?
+    ColorLabelOptions: ChartAxisLabelOptions?
+    Legend: LegendOptions?
+    BarDataLabels: DataLabelOptions?
+    LineDataLabels: DataLabelOptions?
+    Tooltip: TooltipOptions?
+    ReferenceLines: Listing<ReferenceLine>?
+    VisualPalette: VisualPalette?
+}
+class ComboChartFieldWells {
+    ComboChartAggregatedFieldWells: ComboChartAggregatedFieldWells?
+}
+class ComboChartAggregatedFieldWells {
+    Category: Listing<DimensionField>?
+    BarValues: Listing<MeasureField>?
+    Colors: Listing<DimensionField>?
+    LineValues: Listing<MeasureField>?
+}
+class ComboChartSortConfiguration {
+    CategorySort: Listing<FieldSortOptions>?
+    CategoryItemsLimit: ItemsLimitConfiguration?
+    ColorSort: Listing<FieldSortOptions>?
+    ColorItemsLimit: ItemsLimitConfiguration?
+}
+class BoxPlotVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: BoxPlotChartConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class BoxPlotChartConfiguration {
+    FieldWells: BoxPlotFieldWells?
+    SortConfiguration: BoxPlotSortConfiguration?
+    BoxPlotOptions: BoxPlotOptions?
+    CategoryAxis: AxisDisplayOptions?
+    CategoryLabelOptions: ChartAxisLabelOptions?
+    PrimaryYAxisDisplayOptions: AxisDisplayOptions?
+    PrimaryYAxisLabelOptions: ChartAxisLabelOptions?
+    Legend: LegendOptions?
+    Tooltip: TooltipOptions?
+    ReferenceLines: Listing<ReferenceLine>?
+    VisualPalette: VisualPalette?
+}
+class BoxPlotFieldWells {
+    BoxPlotAggregatedFieldWells: BoxPlotAggregatedFieldWells?
+}
+class BoxPlotAggregatedFieldWells {
+    GroupBy: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+}
+class BoxPlotSortConfiguration {
+    CategorySort: Listing<FieldSortOptions>?
+    PaginationConfiguration: PaginationConfiguration?
+}
+class BoxPlotOptions {
+    StyleOptions: BoxPlotStyleOptions?
+    OutlierVisibility: "HIDDEN" | "VISIBLE" | *Null
+    AllDataPointsVisibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class BoxPlotStyleOptions {
+    FillStyle: "SOLID" | "TRANSPARENT" | *Null
+}
+class WaterfallVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: WaterfallChartConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class WaterfallChartConfiguration {
+    FieldWells: WaterfallChartFieldWells?
+    SortConfiguration: WaterfallChartSortConfiguration?
+    WaterfallChartOptions: WaterfallChartOptions?
+    CategoryAxisLabelOptions: ChartAxisLabelOptions?
+    CategoryAxisDisplayOptions: AxisDisplayOptions?
+    PrimaryYAxisLabelOptions: ChartAxisLabelOptions?
+    PrimaryYAxisDisplayOptions: AxisDisplayOptions?
+    Legend: LegendOptions?
+    DataLabels: DataLabelOptions?
+    VisualPalette: VisualPalette?
+}
+class WaterfallChartFieldWells {
+    WaterfallChartAggregatedFieldWells: WaterfallChartAggregatedFieldWells?
+}
+class WaterfallChartAggregatedFieldWells {
+    Categories: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+    Breakdowns: Listing<DimensionField>?
+}
+class WaterfallChartSortConfiguration {
+    CategorySort: Listing<FieldSortOptions>?
+    BreakdownItemsLimit: ItemsLimitConfiguration?
+}
+class WaterfallChartOptions {
+    TotalBarLabel: String?
+}
+class HistogramVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: HistogramConfiguration?
+    Actions: Listing<VisualCustomAction>?
+}
+class HistogramConfiguration {
+    FieldWells: HistogramFieldWells?
+    XAxisDisplayOptions: AxisDisplayOptions?
+    XAxisLabelOptions: ChartAxisLabelOptions?
+    YAxisDisplayOptions: AxisDisplayOptions?
+    BinOptions: HistogramBinOptions?
+    DataLabels: DataLabelOptions?
+    Tooltip: TooltipOptions?
+    VisualPalette: VisualPalette?
+}
+class HistogramFieldWells {
+    HistogramAggregatedFieldWells: HistogramAggregatedFieldWells?
+}
+class HistogramAggregatedFieldWells {
+    Values: Listing<MeasureField>?
+}
+class HistogramBinOptions {
+    SelectedBinType: "BIN_COUNT" | "BIN_WIDTH" | *Null
+    BinCount: BinCountOptions?
+    BinWidth: BinWidthOptions?
+    StartValue: Float?
+}
+class BinCountOptions {
+    Value: Float?
+}
+class BinWidthOptions {
+    Value: Float?
+    BinCountLimit: Float?
+}
+class WordCloudVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: WordCloudChartConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class WordCloudChartConfiguration {
+    FieldWells: WordCloudFieldWells?
+    SortConfiguration: WordCloudSortConfiguration?
+    CategoryLabelOptions: ChartAxisLabelOptions?
+    WordCloudOptions: WordCloudOptions?
+}
+class WordCloudFieldWells {
+    WordCloudAggregatedFieldWells: WordCloudAggregatedFieldWells?
+}
+class WordCloudAggregatedFieldWells {
+    GroupBy: Listing<DimensionField>?
+    Size: Listing<MeasureField>?
+}
+class WordCloudSortConfiguration {
+    CategoryItemsLimit: ItemsLimitConfiguration?
+    CategorySort: Listing<FieldSortOptions>?
+}
+class WordCloudOptions {
+    WordOrientation: "HORIZONTAL" | "HORIZONTAL_AND_VERTICAL" | *Null
+    WordScaling: "EMPHASIZE" | "NORMAL" | *Null
+    CloudLayout: "FLUID" | "NORMAL" | *Null
+    WordCasing: "LOWER_CASE" | "EXISTING_CASE" | *Null
+    WordPadding: "NONE" | "SMALL" | "MEDIUM" | "LARGE" | *Null
+    MaximumStringLength: Float?
+}
+class InsightVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    InsightConfiguration: InsightConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    DataSetIdentifier: String(length <= 2048 && length >= 1)
+}
+class InsightConfiguration {
+    Computations: Listing<Computation>?
+    CustomNarrative: CustomNarrativeOptions?
+}
+class Computation {
+    TopBottomRanked: TopBottomRankedComputation?
+    TopBottomMovers: TopBottomMoversComputation?
+    TotalAggregation: TotalAggregationComputation?
+    MaximumMinimum: MaximumMinimumComputation?
+    MetricComparison: MetricComparisonComputation?
+    PeriodOverPeriod: PeriodOverPeriodComputation?
+    PeriodToDate: PeriodToDateComputation?
+    GrowthRate: GrowthRateComputation?
+    UniqueValues: UniqueValuesComputation?
+    Forecast: ForecastComputation?
+}
+class TopBottomRankedComputation {
+    ComputationId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String?
+    Category: DimensionField?
+    Value: MeasureField?
+    ResultSize: Float?
+    Type: "TOP" | "BOTTOM"
+}
+class TopBottomMoversComputation {
+    ComputationId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String?
+    Time: DimensionField?
+    Category: DimensionField?
+    Value: MeasureField?
+    MoverSize: Float?
+    SortOrder: "PERCENT_DIFFERENCE" | "ABSOLUTE_DIFFERENCE" | *Null
+    Type: "TOP" | "BOTTOM"
+}
+class TotalAggregationComputation {
+    ComputationId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String?
+    Value: MeasureField?
+}
+class MaximumMinimumComputation {
+    ComputationId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String?
+    Time: DimensionField?
+    Value: MeasureField?
+    Type: "MAXIMUM" | "MINIMUM"
+}
+class MetricComparisonComputation {
+    ComputationId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String?
+    Time: DimensionField?
+    FromValue: MeasureField?
+    TargetValue: MeasureField?
+}
+class PeriodOverPeriodComputation {
+    ComputationId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String?
+    Time: DimensionField?
+    Value: MeasureField?
+}
+class PeriodToDateComputation {
+    ComputationId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String?
+    Time: DimensionField?
+    Value: MeasureField?
+    PeriodTimeGranularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND" | *Null
+}
+class GrowthRateComputation {
+    ComputationId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String?
+    Time: DimensionField?
+    Value: MeasureField?
+    PeriodSize: Float?
+}
+class UniqueValuesComputation {
+    ComputationId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String?
+    Category: DimensionField?
+}
+class ForecastComputation {
+    ComputationId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Name: String?
+    Time: DimensionField?
+    Value: MeasureField?
+    PeriodsForward: Float?
+    PeriodsBackward: Float?
+    UpperBoundary: Float?
+    LowerBoundary: Float?
+    PredictionInterval: Float?
+    Seasonality: "AUTOMATIC" | "CUSTOM" | *Null
+    CustomSeasonalityValue: Float?
+}
+class CustomNarrativeOptions {
+    Narrative: String(length <= 150000 && length >= 0)
+}
+class SankeyDiagramVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: SankeyDiagramChartConfiguration?
+    Actions: Listing<VisualCustomAction>?
+}
+class SankeyDiagramChartConfiguration {
+    FieldWells: SankeyDiagramFieldWells?
+    SortConfiguration: SankeyDiagramSortConfiguration?
+    DataLabels: DataLabelOptions?
+}
+class SankeyDiagramFieldWells {
+    SankeyDiagramAggregatedFieldWells: SankeyDiagramAggregatedFieldWells?
+}
+class SankeyDiagramAggregatedFieldWells {
+    Source: Listing<DimensionField>?
+    Destination: Listing<DimensionField>?
+    Weight: Listing<MeasureField>?
+}
+class SankeyDiagramSortConfiguration {
+    WeightSort: Listing<FieldSortOptions>?
+    SourceItemsLimit: ItemsLimitConfiguration?
+    DestinationItemsLimit: ItemsLimitConfiguration?
+}
+class CustomContentVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: CustomContentConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    DataSetIdentifier: String(length <= 2048 && length >= 1)
+}
+class CustomContentConfiguration {
+    ContentUrl: String(length <= 2048 && length >= 1)?
+    ContentType: "IMAGE" | "OTHER_EMBEDDED_CONTENT" | *Null
+    ImageScaling: "FIT_TO_HEIGHT" | "FIT_TO_WIDTH" | "DO_NOT_SCALE" | "SCALE_TO_VISUAL" | *Null
+}
+class EmptyVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    DataSetIdentifier: String(length <= 2048 && length >= 1)
+    Actions: Listing<VisualCustomAction>?
+}
+class RadarChartVisual {
+    VisualId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Title: VisualTitleLabelOptions?
+    Subtitle: VisualSubtitleLabelOptions?
+    ChartConfiguration: RadarChartConfiguration?
+    Actions: Listing<VisualCustomAction>?
+    ColumnHierarchies: Listing<ColumnHierarchy>?
+}
+class RadarChartConfiguration {
+    FieldWells: RadarChartFieldWells?
+    SortConfiguration: RadarChartSortConfiguration?
+    Shape: "CIRCLE" | "POLYGON" | *Null
+    BaseSeriesSettings: RadarChartSeriesSettings?
+    StartAngle: Float?
+    VisualPalette: VisualPalette?
+    AlternateBandColorsVisibility: "HIDDEN" | "VISIBLE" | *Null
+    AlternateBandEvenColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    AlternateBandOddColor: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))?
+    CategoryAxis: AxisDisplayOptions?
+    CategoryLabelOptions: ChartAxisLabelOptions?
+    ColorAxis: AxisDisplayOptions?
+    ColorLabelOptions: ChartAxisLabelOptions?
+    Legend: LegendOptions?
+    AxesRangeScale: "AUTO" | "INDEPENDENT" | "SHARED" | *Null
+}
+class RadarChartFieldWells {
+    RadarChartAggregatedFieldWells: RadarChartAggregatedFieldWells?
+}
+class RadarChartAggregatedFieldWells {
+    Category: Listing<DimensionField>?
+    Color: Listing<DimensionField>?
+    Values: Listing<MeasureField>?
+}
+class RadarChartSortConfiguration {
+    CategorySort: Listing<FieldSortOptions>?
+    CategoryItemsLimit: ItemsLimitConfiguration?
+    ColorSort: Listing<FieldSortOptions>?
+    ColorItemsLimit: ItemsLimitConfiguration?
+}
+class RadarChartSeriesSettings {
+    AreaStyleSettings: RadarChartAreaStyleSettings?
+}
+class RadarChartAreaStyleSettings {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class SheetTextBox {
+    SheetTextBoxId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Content: String(length <= 150000 && length >= 0)?
+}
+class Layout {
+    Configuration: LayoutConfiguration
+}
+class LayoutConfiguration {
+    GridLayout: GridLayoutConfiguration?
+    FreeFormLayout: FreeFormLayoutConfiguration?
+    SectionBasedLayout: SectionBasedLayoutConfiguration?
+}
+class GridLayoutConfiguration {
+    Elements: Listing<GridLayoutElement>
+    CanvasSizeOptions: GridLayoutCanvasSizeOptions?
+}
+class GridLayoutElement {
+    ElementId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    ElementType: "VISUAL" | "FILTER_CONTROL" | "PARAMETER_CONTROL" | "TEXT_BOX"
+    ColumnIndex: Float?
+    ColumnSpan: Float
+    RowIndex: Float?
+    RowSpan: Float
+}
+class GridLayoutCanvasSizeOptions {
+    ScreenCanvasSizeOptions: GridLayoutScreenCanvasSizeOptions?
+}
+class GridLayoutScreenCanvasSizeOptions {
+    ResizeOption: "FIXED" | "RESPONSIVE"
+    /// String based length that is composed of value and unit in px
+    OptimizedViewPortWidth: String?
+}
+class FreeFormLayoutConfiguration {
+    Elements: Listing<FreeFormLayoutElement>
+    CanvasSizeOptions: FreeFormLayoutCanvasSizeOptions?
+}
+class FreeFormLayoutElement {
+    ElementId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    ElementType: "VISUAL" | "FILTER_CONTROL" | "PARAMETER_CONTROL" | "TEXT_BOX"
+    /// String based length that is composed of value and unit in px
+    XAxisLocation: String
+    /// String based length that is composed of value and unit in px with
+    /// Integer.MAX_VALUE as maximum value
+    YAxisLocation: String
+    /// String based length that is composed of value and unit in px
+    Width: String
+    /// String based length that is composed of value and unit in px
+    Height: String
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    RenderingRules: Listing<SheetElementRenderingRule>?
+    BorderStyle: FreeFormLayoutElementBorderStyle?
+    SelectedBorderStyle: FreeFormLayoutElementBorderStyle?
+    BackgroundStyle: FreeFormLayoutElementBackgroundStyle?
+    LoadingAnimation: LoadingAnimation?
+}
+class SheetElementRenderingRule {
+    Expression: String(length <= 4096 && length >= 1)
+    ConfigurationOverrides: SheetElementConfigurationOverrides
+}
+class SheetElementConfigurationOverrides {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class FreeFormLayoutElementBorderStyle {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}(?:[A-F0-9]{2})?$"#)))?
+}
+class FreeFormLayoutElementBackgroundStyle {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}(?:[A-F0-9]{2})?$"#)))?
+}
+class LoadingAnimation {
+    Visibility: "HIDDEN" | "VISIBLE" | *Null
+}
+class FreeFormLayoutCanvasSizeOptions {
+    ScreenCanvasSizeOptions: FreeFormLayoutScreenCanvasSizeOptions?
+}
+class FreeFormLayoutScreenCanvasSizeOptions {
+    /// String based length that is composed of value and unit in px
+    OptimizedViewPortWidth: String
+}
+class SectionBasedLayoutConfiguration {
+    HeaderSections: Listing<HeaderFooterSectionConfiguration>
+    BodySections: Listing<BodySectionConfiguration>
+    FooterSections: Listing<HeaderFooterSectionConfiguration>
+    CanvasSizeOptions: SectionBasedLayoutCanvasSizeOptions
+}
+class HeaderFooterSectionConfiguration {
+    SectionId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Layout: SectionLayoutConfiguration
+    Style: SectionStyle?
+}
+class SectionLayoutConfiguration {
+    FreeFormLayout: FreeFormSectionLayoutConfiguration
+}
+class FreeFormSectionLayoutConfiguration {
+    Elements: Listing<FreeFormLayoutElement>
+}
+class SectionStyle {
+    /// String based length that is composed of value and unit in px
+    Height: String?
+    Padding: Spacing?
+}
+class Spacing {
+    /// String based length that is composed of value and unit
+    Top: String?
+    /// String based length that is composed of value and unit
+    Bottom: String?
+    /// String based length that is composed of value and unit
+    Left: String?
+    /// String based length that is composed of value and unit
+    Right: String?
+}
+class BodySectionConfiguration {
+    SectionId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Content: BodySectionContent
+    Style: SectionStyle?
+    PageBreakConfiguration: SectionPageBreakConfiguration?
+}
+class BodySectionContent {
+    Layout: SectionLayoutConfiguration?
+}
+class SectionPageBreakConfiguration {
+    After: SectionAfterPageBreak?
+}
+class SectionAfterPageBreak {
+    Status: "ENABLED" | "DISABLED" | *Null
+}
+class SectionBasedLayoutCanvasSizeOptions {
+    PaperCanvasSizeOptions: SectionBasedLayoutPaperCanvasSizeOptions?
+}
+class SectionBasedLayoutPaperCanvasSizeOptions {
+    PaperSize: "US_LETTER" | "US_LEGAL" | "US_TABLOID_LEDGER" | "A0" | "A1" | "A2" | "A3" | "A4" | "A5" | "JIS_B4" | "JIS_B5" | *Null
+    PaperOrientation: "PORTRAIT" | "LANDSCAPE" | *Null
+    PaperMargin: Spacing?
+}
+class SheetControlLayout {
+    Configuration: SheetControlLayoutConfiguration
+}
+class SheetControlLayoutConfiguration {
+    GridLayout: GridLayoutConfiguration?
+}
+class CalculatedField {
+    DataSetIdentifier: String(length <= 2048 && length >= 1)
+    Name: String(length <= 127 && length >= 1)
+    Expression: String(length <= 32000 && length >= 1)
+}
+class ParameterDeclaration {
+    StringParameterDeclaration: StringParameterDeclaration?
+    DecimalParameterDeclaration: DecimalParameterDeclaration?
+    IntegerParameterDeclaration: IntegerParameterDeclaration?
+    DateTimeParameterDeclaration: DateTimeParameterDeclaration?
+}
+class StringParameterDeclaration {
+    ParameterValueType: "MULTI_VALUED" | "SINGLE_VALUED"
+    Name: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    DefaultValues: StringDefaultValues?
+    ValueWhenUnset: StringValueWhenUnsetConfiguration?
+    MappedDataSetParameters: Listing<MappedDataSetParameter>?
+}
+class StringDefaultValues {
+    DynamicValue: DynamicDefaultValue?
+    StaticValues: Listing<String>?
+}
+class DynamicDefaultValue {
+    UserNameColumn: ColumnIdentifier?
+    GroupNameColumn: ColumnIdentifier?
+    DefaultValueColumn: ColumnIdentifier
+}
+class StringValueWhenUnsetConfiguration {
+    ValueWhenUnsetOption: "RECOMMENDED_VALUE" | "NULL" | *Null
+    CustomValue: String?
+}
+class MappedDataSetParameter {
+    DataSetIdentifier: String(length <= 2048 && length >= 1)
+    DataSetParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+}
+class DecimalParameterDeclaration {
+    ParameterValueType: "MULTI_VALUED" | "SINGLE_VALUED"
+    Name: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    DefaultValues: DecimalDefaultValues?
+    ValueWhenUnset: DecimalValueWhenUnsetConfiguration?
+    MappedDataSetParameters: Listing<MappedDataSetParameter>?
+}
+class DecimalDefaultValues {
+    DynamicValue: DynamicDefaultValue?
+    StaticValues: Listing<Float>?
+}
+class DecimalValueWhenUnsetConfiguration {
+    ValueWhenUnsetOption: "RECOMMENDED_VALUE" | "NULL" | *Null
+    CustomValue: Float?
+}
+class IntegerParameterDeclaration {
+    ParameterValueType: "MULTI_VALUED" | "SINGLE_VALUED"
+    Name: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    DefaultValues: IntegerDefaultValues?
+    ValueWhenUnset: IntegerValueWhenUnsetConfiguration?
+    MappedDataSetParameters: Listing<MappedDataSetParameter>?
+}
+class IntegerDefaultValues {
+    DynamicValue: DynamicDefaultValue?
+    StaticValues: Listing<Float>?
+}
+class IntegerValueWhenUnsetConfiguration {
+    ValueWhenUnsetOption: "RECOMMENDED_VALUE" | "NULL" | *Null
+    CustomValue: Float?
+}
+class DateTimeParameterDeclaration {
+    Name: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))
+    DefaultValues: DateTimeDefaultValues?
+    TimeGranularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND" | *Null
+    ValueWhenUnset: DateTimeValueWhenUnsetConfiguration?
+    MappedDataSetParameters: Listing<MappedDataSetParameter>?
+}
+class DateTimeDefaultValues {
+    DynamicValue: DynamicDefaultValue?
+    StaticValues: Listing<String>?
+    RollingDate: RollingDateConfiguration?
+}
+class RollingDateConfiguration {
+    DataSetIdentifier: String(length <= 2048 && length >= 1)?
+    Expression: String(length <= 4096 && length >= 1)
+}
+class DateTimeValueWhenUnsetConfiguration {
+    ValueWhenUnsetOption: "RECOMMENDED_VALUE" | "NULL" | *Null
+    CustomValue: String?
+}
+class FilterGroup {
+    FilterGroupId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Filters: Listing<Filter>
+    ScopeConfiguration: FilterScopeConfiguration
+    Status: "ENABLED" | "DISABLED" | *Null
+    CrossDataset: "ALL_DATASETS" | "SINGLE_DATASET"
+}
+class Filter {
+    CategoryFilter: CategoryFilter?
+    NumericRangeFilter: NumericRangeFilter?
+    NumericEqualityFilter: NumericEqualityFilter?
+    TimeEqualityFilter: TimeEqualityFilter?
+    TimeRangeFilter: TimeRangeFilter?
+    RelativeDatesFilter: RelativeDatesFilter?
+    TopBottomFilter: TopBottomFilter?
+}
+class CategoryFilter {
+    FilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Column: ColumnIdentifier
+    Configuration: CategoryFilterConfiguration
+}
+class CategoryFilterConfiguration {
+    FilterListConfiguration: FilterListConfiguration?
+    CustomFilterListConfiguration: CustomFilterListConfiguration?
+    CustomFilterConfiguration: CustomFilterConfiguration?
+}
+class FilterListConfiguration {
+    MatchOperator: "EQUALS" | "DOES_NOT_EQUAL" | "CONTAINS" | "DOES_NOT_CONTAIN" | "STARTS_WITH" | "ENDS_WITH"
+    CategoryValues: Listing<String(length <= 512 && length >= 0)>?
+    SelectAllOptions: "FILTER_ALL_VALUES" | *Null
+    NullOption: "ALL_VALUES" | "NULLS_ONLY" | "NON_NULLS_ONLY" | *Null
+}
+class CustomFilterListConfiguration {
+    MatchOperator: "EQUALS" | "DOES_NOT_EQUAL" | "CONTAINS" | "DOES_NOT_CONTAIN" | "STARTS_WITH" | "ENDS_WITH"
+    CategoryValues: Listing<String(length <= 512 && length >= 0)>?
+    SelectAllOptions: "FILTER_ALL_VALUES" | *Null
+    NullOption: "ALL_VALUES" | "NULLS_ONLY" | "NON_NULLS_ONLY"
+}
+class CustomFilterConfiguration {
+    MatchOperator: "EQUALS" | "DOES_NOT_EQUAL" | "CONTAINS" | "DOES_NOT_CONTAIN" | "STARTS_WITH" | "ENDS_WITH"
+    CategoryValue: String(length <= 512 && length >= 0)?
+    SelectAllOptions: "FILTER_ALL_VALUES" | *Null
+    ParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))?
+    NullOption: "ALL_VALUES" | "NULLS_ONLY" | "NON_NULLS_ONLY"
+}
+class NumericRangeFilter {
+    FilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Column: ColumnIdentifier
+    IncludeMinimum: Boolean?
+    IncludeMaximum: Boolean?
+    RangeMinimum: NumericRangeFilterValue?
+    RangeMaximum: NumericRangeFilterValue?
+    SelectAllOptions: "FILTER_ALL_VALUES" | *Null
+    AggregationFunction: AggregationFunction?
+    NullOption: "ALL_VALUES" | "NULLS_ONLY" | "NON_NULLS_ONLY"
+}
+class NumericRangeFilterValue {
+    StaticValue: Float?
+    Parameter: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))?
+}
+class NumericEqualityFilter {
+    FilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Column: ColumnIdentifier
+    Value: Float?
+    SelectAllOptions: "FILTER_ALL_VALUES" | *Null
+    MatchOperator: "EQUALS" | "DOES_NOT_EQUAL"
+    AggregationFunction: AggregationFunction?
+    ParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))?
+    NullOption: "ALL_VALUES" | "NULLS_ONLY" | "NON_NULLS_ONLY"
+}
+class TimeEqualityFilter {
+    FilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Column: ColumnIdentifier
+    Value: String?
+    ParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))?
+    TimeGranularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND" | *Null
+    RollingDate: RollingDateConfiguration?
+}
+class TimeRangeFilter {
+    FilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Column: ColumnIdentifier
+    IncludeMinimum: Boolean?
+    IncludeMaximum: Boolean?
+    RangeMinimumValue: TimeRangeFilterValue?
+    RangeMaximumValue: TimeRangeFilterValue?
+    NullOption: "ALL_VALUES" | "NULLS_ONLY" | "NON_NULLS_ONLY"
+    ExcludePeriodConfiguration: ExcludePeriodConfiguration?
+    TimeGranularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND" | *Null
+}
+class TimeRangeFilterValue {
+    StaticValue: String?
+    RollingDate: RollingDateConfiguration?
+    Parameter: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))?
+}
+class ExcludePeriodConfiguration {
+    Amount: Float
+    Granularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND"
+    Status: "ENABLED" | "DISABLED" | *Null
+}
+class RelativeDatesFilter {
+    FilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Column: ColumnIdentifier
+    AnchorDateConfiguration: AnchorDateConfiguration
+    MinimumGranularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND" | *Null
+    TimeGranularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND"
+    RelativeDateType: "PREVIOUS" | "THIS" | "LAST" | "NOW" | "NEXT"
+    RelativeDateValue: Float?
+    ParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))?
+    NullOption: "ALL_VALUES" | "NULLS_ONLY" | "NON_NULLS_ONLY"
+    ExcludePeriodConfiguration: ExcludePeriodConfiguration?
+}
+class AnchorDateConfiguration {
+    AnchorOption: "NOW" | *Null
+    ParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))?
+}
+class TopBottomFilter {
+    FilterId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Column: ColumnIdentifier
+    Limit: Float?
+    AggregationSortConfigurations: Listing<AggregationSortConfiguration>
+    TimeGranularity: "YEAR" | "QUARTER" | "MONTH" | "WEEK" | "DAY" | "HOUR" | "MINUTE" | "SECOND" | "MILLISECOND" | *Null
+    ParameterName: String(length <= 2048 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]+$"#)))?
+}
+class AggregationSortConfiguration {
+    Column: ColumnIdentifier
+    SortDirection: "ASC" | "DESC"
+    AggregationFunction: AggregationFunction?
+}
+class FilterScopeConfiguration {
+    SelectedSheets: SelectedSheetsFilterScopeConfiguration?
+    AllSheets: Mapping?
+}
+class SelectedSheetsFilterScopeConfiguration {
+    SheetVisualScopingConfigurations: Listing<SheetVisualScopingConfiguration>?
+}
+class SheetVisualScopingConfiguration {
+    SheetId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))
+    Scope: "ALL_VISUALS" | "SELECTED_VISUALS"
+    VisualIds: Listing<String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))>?
+}
+class ColumnConfiguration {
+    Column: ColumnIdentifier
+    FormatConfiguration: FormatConfiguration?
+    Role: "DIMENSION" | "MEASURE" | *Null
+    ColorsConfiguration: ColorsConfiguration?
+}
+class ColorsConfiguration {
+    CustomColors: Listing<CustomColor>?
+}
+class CustomColor {
+    FieldValue: String(length <= 2048 && length >= 0)?
+    Color: String(matches(Regex(#"^#[A-F0-9]{6}$"#)))
+    SpecialValue: "EMPTY" | "NULL" | "OTHER" | *Null
+}
+class AnalysisDefaults {
+    DefaultNewSheetConfiguration: DefaultNewSheetConfiguration
+}
+class DefaultNewSheetConfiguration {
+    InteractiveLayoutConfiguration: DefaultInteractiveLayoutConfiguration?
+    PaginatedLayoutConfiguration: DefaultPaginatedLayoutConfiguration?
+    SheetContentType: "PAGINATED" | "INTERACTIVE" | *Null
+}
+class DefaultInteractiveLayoutConfiguration {
+    Grid: DefaultGridLayoutConfiguration?
+    FreeForm: DefaultFreeFormLayoutConfiguration?
+}
+class DefaultGridLayoutConfiguration {
+    CanvasSizeOptions: GridLayoutCanvasSizeOptions
+}
+class DefaultFreeFormLayoutConfiguration {
+    CanvasSizeOptions: FreeFormLayoutCanvasSizeOptions
+}
+class DefaultPaginatedLayoutConfiguration {
+    SectionBased: DefaultSectionBasedLayoutConfiguration?
+}
+class DefaultSectionBasedLayoutConfiguration {
+    CanvasSizeOptions: SectionBasedLayoutCanvasSizeOptions
+}
+class AssetOptions {
+    Timezone: String?
+    WeekStart: "SUNDAY" | "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | *Null
+}
+class AnalysisError {
+    Type: "ACCESS_DENIED" | "SOURCE_NOT_FOUND" | "DATA_SET_NOT_FOUND" | "INTERNAL_FAILURE" | "PARAMETER_VALUE_INCOMPATIBLE" | "PARAMETER_TYPE_INVALID" | "PARAMETER_NOT_FOUND" | "COLUMN_TYPE_MISMATCH" | "COLUMN_GEOGRAPHIC_ROLE_MISMATCH" | "COLUMN_REPLACEMENT_MISSING" | *Null
+    Message: String(matches(Regex(#".*\S.*"#)))?
+    ViolatedEntities: Listing<Entity>?
+}
+class Entity {
+    Path: String(matches(Regex(#".*\S.*"#)))?
+}
+class Parameters {
+    StringParameters: Listing<StringParameter>?
+    IntegerParameters: Listing<IntegerParameter>?
+    DecimalParameters: Listing<DecimalParameter>?
+    DateTimeParameters: Listing<DateTimeParameter>?
+}
+class StringParameter {
+    Name: String(matches(Regex(#".*\S.*"#)))
+    Values: Listing<String>
+}
+class IntegerParameter {
+    Name: String(matches(Regex(#".*\S.*"#)))
+    Values: Listing<Float>
+}
+class DecimalParameter {
+    Name: String(matches(Regex(#".*\S.*"#)))
+    Values: Listing<Float>
+}
+class DateTimeParameter {
+    Name: String(matches(Regex(#".*\S.*"#)))
+    Values: Listing<String>
+}
+class ResourcePermission {
+    Principal: String(length <= 256 && length >= 1)
+    Actions: Listing<String>
+}
+class Sheet {
+    SheetId: String(length <= 512 && length >= 1 && matches(Regex(#"[\w\-]+"#)))?
+    Name: String(length <= 2048 && length >= 1)?
+}
+class AnalysisSourceEntity {
+    SourceTemplate: AnalysisSourceTemplate?
+}
+class AnalysisSourceTemplate {
+    DataSetReferences: Listing<DataSetReference>
+    Arn: String
+}
+class DataSetReference {
+    DataSetPlaceholder: String(matches(Regex(#".*\S.*"#)))
+    DataSetArn: String
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}
+class ValidationStrategy {
+    Mode: "STRICT" | "LENIENT"
+}

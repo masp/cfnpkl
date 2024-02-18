@@ -1,0 +1,73 @@
+/// Resource Type definition for AWS::Evidently::Launch.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Evidently::Launch"
+Properties: Props?
+class Props {
+    Arn: String(matches(Regex(#"arn:[^:]*:[^:]*:[^:]*:[^:]*:project/[-a-zA-Z0-9._]*/launch/[-a-zA-Z0-9._]*"#)))?
+    Name: String(length <= 127 && length >= 1 && matches(Regex(#"[-a-zA-Z0-9._]*"#)))?
+    Project: String(length <= 2048 && length >= 0 && matches(Regex(#"([-a-zA-Z0-9._]*)|(arn:[^:]*:[^:]*:[^:]*:[^:]*:project/[-a-zA-Z0-9._]*)"#)))?
+    Description: String(length <= 160 && length >= 0)?
+    RandomizationSalt: String(length <= 127 && length >= 0 && matches(Regex(#".*"#)))?
+    ScheduledSplitsConfig: Listing<StepConfig>?
+    Groups: Listing<LaunchGroupObject>?
+    MetricMonitors: Listing<MetricDefinitionObject>?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// Start or Stop Launch Launch. Default is not started.
+    ExecutionStatus: ExecutionStatusObject?
+}
+class StepConfig {
+    StartTime: String
+    GroupWeights: Listing<GroupToWeight>
+    SegmentOverrides: Listing<SegmentOverride>?
+}
+class GroupToWeight {
+    GroupName: String(length <= 127 && length >= 1 && matches(Regex(#"[-a-zA-Z0-9._]*"#)))
+    SplitWeight: Int
+}
+class SegmentOverride {
+    Segment: String(length <= 2048 && length >= 1 && matches(Regex(#"([-a-zA-Z0-9._]*)|(arn:[^:]*:[^:]*:[^:]*:[^:]*:segment/[-a-zA-Z0-9._]*)"#)))
+    EvaluationOrder: Int
+    Weights: Listing<GroupToWeight>
+}
+class LaunchGroupObject {
+    GroupName: String(length <= 127 && length >= 1 && matches(Regex(#"[-a-zA-Z0-9._]*"#)))
+    Description: String(length <= 160 && length >= 0)?
+    Feature: String
+    Variation: String
+}
+class MetricDefinitionObject {
+    MetricName: String(length <= 255 && length >= 1 && matches(Regex(#"^[\S]+$"#)))
+    /// The JSON path to reference the entity id in the event.
+    EntityIdKey: String
+    /// The JSON path to reference the numerical metric value in the event.
+    ValueKey: String
+    /// Event patterns have the same structure as the events they match. Rules
+    /// use event patterns to select events. An event pattern either matches
+    /// an event or it doesn't.
+    EventPattern: String?
+    UnitLabel: String(length <= 256 && length >= 1 && matches(Regex(#".*"#)))?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z+-=._:/]+$"#)))
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}
+class ExecutionStatusObject {
+    /// Provide START or STOP action to apply on a launch
+    Status: String
+    /// Provide CANCELLED or COMPLETED as the launch desired state. Defaults
+    /// to Completed if not provided.
+    DesiredState: String?
+    /// Provide a reason for stopping the launch. Defaults to empty if not
+    /// provided.
+    Reason: String?
+}

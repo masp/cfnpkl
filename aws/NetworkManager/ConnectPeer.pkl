@@ -1,0 +1,70 @@
+/// AWS::NetworkManager::ConnectPeer Resource Type Definition.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkManager::ConnectPeer"
+Properties: Props?
+class Props {
+    /// The IP address of the Connect peer.
+    PeerAddress: String?
+    /// The IP address of a core network.
+    CoreNetworkAddress: String?
+    /// Bgp options for connect peer.
+    BgpOptions: BgpOptions?
+    /// The inside IP addresses used for a Connect peer configuration.
+    InsideCidrBlocks: Listing<String>?
+    /// The ID of the core network.
+    CoreNetworkId: String?
+    /// The ID of the attachment to connect.
+    ConnectAttachmentId: String?
+    /// The ID of the Connect peer.
+    ConnectPeerId: String?
+    /// The Connect peer Regions where edges are located.
+    EdgeLocation: String?
+    /// State of the connect peer.
+    State: String?
+    /// Connect peer creation time.
+    CreatedAt: String?
+    /// Configuration of the connect peer.
+    Configuration: ConnectPeerConfiguration?
+    /// The subnet ARN for the connect peer.
+    SubnetArn: String?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// Bgp options
+class BgpOptions {
+    PeerAsn: Float?
+}
+class ConnectPeerConfiguration {
+    /// The IP address of a core network.
+    CoreNetworkAddress: String?
+    /// The IP address of the Connect peer.
+    PeerAddress: String?
+    /// The inside IP addresses used for a Connect peer configuration.
+    InsideCidrBlocks: Listing<String>?
+    Protocol: String?
+    BgpConfigurations: Listing<ConnectPeerBgpConfiguration>?
+}
+/// Bgp configuration for connect peer
+class ConnectPeerBgpConfiguration {
+    /// The ASN of the Coret Network.
+    CoreNetworkAsn: Float?
+    /// The ASN of the Connect peer.
+    PeerAsn: Float?
+    /// The address of a core network.
+    CoreNetworkAddress: String?
+    /// The address of a core network Connect peer.
+    PeerAddress: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String
+}

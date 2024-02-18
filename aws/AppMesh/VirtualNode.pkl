@@ -1,0 +1,205 @@
+/// Resource Type definition for AWS::AppMesh::VirtualNode
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppMesh::VirtualNode"
+Properties: Props?
+class Props {
+    Uid: String?
+    MeshName: String?
+    MeshOwner: String?
+    ResourceOwner: String?
+    Id: String?
+    Arn: String?
+    Spec: VirtualNodeSpec?
+    VirtualNodeName: String?
+    Tags: Listing<Tag>?
+}
+class VirtualNodeSpec {
+    Logging: Logging?
+    Backends: Listing<Backend>?
+    Listeners: Listing<Listener>?
+    BackendDefaults: BackendDefaults?
+    ServiceDiscovery: ServiceDiscovery?
+}
+class Logging {
+    AccessLog: AccessLog?
+}
+class AccessLog {
+    File: FileAccessLog?
+}
+class FileAccessLog {
+    Path: String
+    Format: LoggingFormat?
+}
+class LoggingFormat {
+    Text: String?
+    Json: Listing<JsonFormatRef>?
+}
+class JsonFormatRef {
+    Value: String
+    Key: String
+}
+class Backend {
+    VirtualService: VirtualServiceBackend?
+}
+class VirtualServiceBackend {
+    VirtualServiceName: String
+    ClientPolicy: ClientPolicy?
+}
+class ClientPolicy {
+    TLS: ClientPolicyTls?
+}
+class ClientPolicyTls {
+    Validation: TlsValidationContext
+    Ports: Listing<Int>?
+    Enforce: Boolean?
+    Certificate: ClientTlsCertificate?
+}
+class TlsValidationContext {
+    SubjectAlternativeNames: SubjectAlternativeNames?
+    Trust: TlsValidationContextTrust
+}
+class SubjectAlternativeNames {
+    Match: SubjectAlternativeNameMatchers
+}
+class SubjectAlternativeNameMatchers {
+    Exact: Listing<String>?
+}
+class TlsValidationContextTrust {
+    SDS: TlsValidationContextSdsTrust?
+    ACM: TlsValidationContextAcmTrust?
+    File: TlsValidationContextFileTrust?
+}
+class TlsValidationContextSdsTrust {
+    SecretName: String
+}
+class TlsValidationContextAcmTrust {
+    CertificateAuthorityArns: Listing<String>
+}
+class TlsValidationContextFileTrust {
+    CertificateChain: String
+}
+class ClientTlsCertificate {
+    File: ListenerTlsFileCertificate?
+    SDS: ListenerTlsSdsCertificate?
+}
+class ListenerTlsFileCertificate {
+    CertificateChain: String
+    PrivateKey: String
+}
+class ListenerTlsSdsCertificate {
+    SecretName: String
+}
+class Listener {
+    ConnectionPool: VirtualNodeConnectionPool?
+    Timeout: ListenerTimeout?
+    HealthCheck: HealthCheck?
+    TLS: ListenerTls?
+    PortMapping: PortMapping
+    OutlierDetection: OutlierDetection?
+}
+class VirtualNodeConnectionPool {
+    TCP: VirtualNodeTcpConnectionPool?
+    HTTP: VirtualNodeHttpConnectionPool?
+    HTTP2: VirtualNodeHttp2ConnectionPool?
+    GRPC: VirtualNodeGrpcConnectionPool?
+}
+class VirtualNodeTcpConnectionPool {
+    MaxConnections: Int
+}
+class VirtualNodeHttpConnectionPool {
+    MaxConnections: Int
+    MaxPendingRequests: Int?
+}
+class VirtualNodeHttp2ConnectionPool {
+    MaxRequests: Int
+}
+class VirtualNodeGrpcConnectionPool {
+    MaxRequests: Int
+}
+class ListenerTimeout {
+    TCP: TcpTimeout?
+    HTTP: HttpTimeout?
+    HTTP2: HttpTimeout?
+    GRPC: GrpcTimeout?
+}
+class TcpTimeout {
+    Idle: Duration?
+}
+class Duration {
+    Value: Int
+    Unit: String
+}
+class HttpTimeout {
+    PerRequest: Duration?
+    Idle: Duration?
+}
+class GrpcTimeout {
+    PerRequest: Duration?
+    Idle: Duration?
+}
+class HealthCheck {
+    Path: String?
+    UnhealthyThreshold: Int
+    Port: Int?
+    HealthyThreshold: Int
+    TimeoutMillis: Int
+    Protocol: String
+    IntervalMillis: Int
+}
+class ListenerTls {
+    Validation: ListenerTlsValidationContext?
+    Mode: String
+    Certificate: ListenerTlsCertificate
+}
+class ListenerTlsValidationContext {
+    SubjectAlternativeNames: SubjectAlternativeNames?
+    Trust: ListenerTlsValidationContextTrust
+}
+class ListenerTlsValidationContextTrust {
+    File: TlsValidationContextFileTrust?
+    SDS: TlsValidationContextSdsTrust?
+}
+class ListenerTlsCertificate {
+    SDS: ListenerTlsSdsCertificate?
+    ACM: ListenerTlsAcmCertificate?
+    File: ListenerTlsFileCertificate?
+}
+class ListenerTlsAcmCertificate {
+    CertificateArn: String
+}
+class PortMapping {
+    Protocol: String
+    Port: Int
+}
+class OutlierDetection {
+    MaxEjectionPercent: Int
+    BaseEjectionDuration: Duration
+    MaxServerErrors: Int
+    Interval: Duration
+}
+class BackendDefaults {
+    ClientPolicy: ClientPolicy?
+}
+class ServiceDiscovery {
+    DNS: DnsServiceDiscovery?
+    AWSCloudMap: AwsCloudMapServiceDiscovery?
+}
+class DnsServiceDiscovery {
+    Hostname: String
+    IpPreference: String?
+    ResponseType: String?
+}
+class AwsCloudMapServiceDiscovery {
+    Attributes: Listing<AwsCloudMapInstanceAttribute>?
+    NamespaceName: String
+    ServiceName: String
+    IpPreference: String?
+}
+class AwsCloudMapInstanceAttribute {
+    Value: String
+    Key: String
+}
+class Tag {
+    Value: String
+    Key: String
+}

@@ -1,0 +1,21 @@
+/// Resource Type definition for AWS::SES::Template
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SES::Template"
+Properties: Props?
+class Props {
+    Id: String?
+    Template: Template?
+}
+/// The content of the email, composed of a subject line, an HTML part,
+/// and a text-only part
+class Template {
+    /// The name of the template.
+    TemplateName: String(length <= 64 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]{1,64}$"#)))?
+    /// The subject line of the email.
+    SubjectPart: String
+    /// The email body that is visible to recipients whose email clients do
+    /// not display HTML content.
+    TextPart: String?
+    /// The HTML body of the email.
+    HtmlPart: String?
+}

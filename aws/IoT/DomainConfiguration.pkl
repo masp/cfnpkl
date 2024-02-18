@@ -1,0 +1,34 @@
+/// Create and manage a Domain Configuration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::DomainConfiguration"
+Properties: Props?
+class Props {
+    DomainConfigurationName: String(length <= 128 && length >= 1 && matches(Regex(#"^[\w.-]+$"#)))?
+    AuthorizerConfig: AuthorizerConfig?
+    DomainName: String(length <= 253 && length >= 1)?
+    ServerCertificateArns: Listing<String(length <= 2048 && length >= 1 && matches(Regex(#"^arn:aws(-cn|-us-gov|-iso-b|-iso)?:acm:[a-z]{2}-(gov-|iso-|isob-)?[a-z]{4,9}-\d{1}:\d{12}:certificate/[a-zA-Z0-9/-]+$"#)))>?
+    ServiceType: "DATA" | "CREDENTIAL_PROVIDER" | "JOBS" | *Null
+    ValidationCertificateArn: String(matches(Regex(#"^arn:aws(-cn|-us-gov|-iso-b|-iso)?:acm:[a-z]{2}-(gov-|iso-|isob-)?[a-z]{4,9}-\d{1}:\d{12}:certificate/[a-zA-Z0-9/-]+$"#)))?
+    Arn: String?
+    DomainConfigurationStatus: "ENABLED" | "DISABLED" | *Null
+    DomainType: "ENDPOINT" | "AWS_MANAGED" | "CUSTOMER_MANAGED" | *Null
+    ServerCertificates: Listing<ServerCertificateSummary>?
+    TlsConfig: TlsConfig?
+    Tags: Listing<Tag>?
+}
+class AuthorizerConfig {
+    AllowAuthorizerOverride: Boolean?
+    DefaultAuthorizerName: String(length <= 128 && length >= 1 && matches(Regex(#"^[\w=,@-]+$"#)))?
+}
+class ServerCertificateSummary {
+    ServerCertificateArn: String(length <= 2048 && length >= 1 && matches(Regex(#"^arn:aws(-cn|-us-gov|-iso-b|-iso)?:acm:[a-z]{2}-(gov-|iso-|isob-)?[a-z]{4,9}-\d{1}:\d{12}:certificate/[a-zA-Z0-9/-]+$"#)))?
+    ServerCertificateStatus: "INVALID" | "VALID" | *Null
+    ServerCertificateStatusDetail: String?
+}
+class TlsConfig {
+    SecurityPolicy: String(length <= 128)?
+}
+class Tag {
+    Key: String
+    Value: String
+}

@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::WAF::SqlInjectionMatchSet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAF::SqlInjectionMatchSet"
+Properties: Props?
+class Props {
+    Id: String?
+    Name: String?
+    SqlInjectionMatchTuples: Listing<SqlInjectionMatchTuple>?
+}
+class SqlInjectionMatchTuple {
+    FieldToMatch: FieldToMatch
+    TextTransformation: String
+}
+class FieldToMatch {
+    Data: String?
+    Type: String
+}

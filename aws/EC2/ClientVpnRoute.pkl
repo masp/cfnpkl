@@ -1,0 +1,11 @@
+/// Resource Type definition for AWS::EC2::ClientVpnRoute
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::ClientVpnRoute"
+Properties: Props?
+class Props {
+    Id: String?
+    ClientVpnEndpointId: String?
+    TargetVpcSubnetId: String?
+    Description: String?
+    DestinationCidrBlock: String?
+}

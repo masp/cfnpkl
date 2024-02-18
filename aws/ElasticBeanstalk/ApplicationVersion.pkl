@@ -1,0 +1,21 @@
+/// Resource Type definition for AWS::ElasticBeanstalk::ApplicationVersion
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElasticBeanstalk::ApplicationVersion"
+Properties: Props?
+class Props {
+    Id: String?
+    /// The name of the Elastic Beanstalk application that is associated with
+    /// this application version.
+    ApplicationName: String?
+    /// A description of this application version.
+    Description: String?
+    /// The Amazon S3 bucket and key that identify the location of the source
+    /// bundle for this version.
+    SourceBundle: SourceBundle?
+}
+class SourceBundle {
+    /// The Amazon S3 bucket where the data is located.
+    S3Bucket: String
+    /// The Amazon S3 key where the data is located.
+    S3Key: String
+}

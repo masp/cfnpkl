@@ -1,0 +1,35 @@
+/// Resource Type definition for AWS::Transfer::Agreement
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Transfer::Agreement"
+Properties: Props?
+class Props {
+    /// A textual description for the agreement.
+    Description: String(length <= 200 && length >= 1 && matches(Regex(#"^[\w\- ]*$"#)))?
+    /// A unique identifier for the server.
+    ServerId: String(length <= 19 && length >= 19 && matches(Regex(#"^s-([0-9a-f]{17})$"#)))?
+    /// A unique identifier for the local profile.
+    LocalProfileId: String(length <= 19 && length >= 19 && matches(Regex(#"^p-([0-9a-f]{17})$"#)))?
+    /// A unique identifier for the partner profile.
+    PartnerProfileId: String(length <= 19 && length >= 19 && matches(Regex(#"^p-([0-9a-f]{17})$"#)))?
+    /// Specifies the base directory for the agreement.
+    BaseDirectory: String(length <= 1024 && matches(Regex(#"^$|/.*"#)))?
+    /// Specifies the access role for the agreement.
+    AccessRole: String(length <= 2048 && length >= 20 && matches(Regex(#"arn:.*role/.*"#)))?
+    /// Specifies the status of the agreement.
+    Status: "ACTIVE" | "INACTIVE" | *Null
+    /// Key-value pairs that can be used to group and search for agreements.
+    /// Tags are metadata attached to agreements for any purpose.
+    Tags: Listing<Tag>?
+    /// A unique identifier for the agreement.
+    AgreementId: String(length <= 19 && length >= 19 && matches(Regex(#"^a-([0-9a-f]{17})$"#)))?
+    /// Specifies the unique Amazon Resource Name (ARN) for the agreement.
+    Arn: String(length <= 1600 && length >= 20 && matches(Regex(#"arn:.*"#)))?
+}
+/// Creates a key-value pair for a specific resource.
+class Tag {
+    /// The name assigned to the tag that you create.
+    Key: String(length <= 128 && length >= 1)
+    /// Contains one or more values that you assigned to the key name you
+    /// create.
+    Value: String(length <= 256 && length >= 0)
+}

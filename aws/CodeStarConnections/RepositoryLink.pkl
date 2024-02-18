@@ -1,0 +1,42 @@
+/// Schema for AWS::CodeStarConnections::RepositoryLink resource which is
+/// used to aggregate repository metadata relevant to synchronizing source
+/// provider content to AWS Resources.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodeStarConnections::RepositoryLink"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the CodeStarConnection. The ARN is
+    /// used as the connection reference when the connection is shared between
+    /// AWS services.
+    ConnectionArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):.+:.+:[0-9]{12}:.+"#)))?
+    /// The name of the external provider where your third-party code
+    /// repository is configured.
+    ProviderType: String(matches(Regex(#"^(GitHub|Bitbucket|GitHubEnterprise|GitLab)$"#)))?
+    /// the ID of the entity that owns the repository.
+    OwnerId: String(matches(Regex(#"[a-za-z0-9_\.-]+"#)))?
+    /// The repository for which the link is being created.
+    RepositoryName: String(matches(Regex(#"[a-za-z0-9_\.-]+"#)))?
+    /// The ARN of the KMS key that the customer can optionally specify to use
+    /// to encrypt RepositoryLink properties. If not specified, a default key
+    /// will be used.
+    EncryptionKeyArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):.+:.+:[0-9]{12}:.+"#)))?
+    /// A UUID that uniquely identifies the RepositoryLink.
+    RepositoryLinkId: String(matches(Regex(#"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"#)))?
+    /// A unique Amazon Resource Name (ARN) to designate the repository link.
+    RepositoryLinkArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):.+:.+:[0-9]{12}:.+"#)))?
+    /// Specifies the tags applied to a RepositoryLink.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, , ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, , ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

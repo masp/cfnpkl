@@ -1,0 +1,46 @@
+/// Resource schema for AWS::DataSync::LocationEFS.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataSync::LocationEFS"
+Properties: Props?
+class Props {
+    Ec2Config: Ec2Config?
+    /// The Amazon Resource Name (ARN) for the Amazon EFS file system.
+    EfsFilesystemArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):elasticfilesystem:[a-z\-0-9]*:[0-9]{12}:file-system/fs-.*$"#)))?
+    /// The Amazon Resource Name (ARN) for the Amazon EFS Access point that
+    /// DataSync uses when accessing the EFS file system.
+    AccessPointArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):elasticfilesystem:[a-z\-0-9]+:[0-9]{12}:access-point/fsap-[0-9a-f]{8,40}$"#)))?
+    /// The Amazon Resource Name (ARN) of the AWS IAM role that the DataSync
+    /// will assume when mounting the EFS file system.
+    FileSystemAccessRoleArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):iam::[0-9]{12}:role/.*$"#)))?
+    /// Protocol that is used for encrypting the traffic exchanged between the
+    /// DataSync Agent and the EFS file system.
+    InTransitEncryption: "NONE" | "TLS1_2" | *Null
+    /// A subdirectory in the location's path. This subdirectory in the EFS
+    /// file system is used to read data from the EFS source location or write
+    /// data to the EFS destination.
+    Subdirectory: String(length <= 4096 && matches(Regex(#"^[a-zA-Z0-9_\-\+\./\(\)\$\p{Zs}]+$"#)))?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the Amazon EFS file system location
+    /// that is created.
+    LocationArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:location/loc-[0-9a-z]{17}$"#)))?
+    /// The URL of the EFS location that was described.
+    LocationUri: String(length <= 4356 && matches(Regex(#"^(efs|nfs|s3|smb|fsxw)://[a-zA-Z0-9.\-/]+$"#)))?
+}
+/// The subnet and security group that DataSync uses to access target EFS
+/// file system.
+class Ec2Config {
+    /// The Amazon Resource Names (ARNs) of the security groups that are
+    /// configured for the Amazon EC2 resource.
+    SecurityGroupArns: Listing<String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):ec2:[a-z\-0-9]*:[0-9]{12}:security-group/.*$"#)))>
+    /// The ARN of the subnet that DataSync uses to access the target EFS file
+    /// system.
+    SubnetArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):ec2:[a-z\-0-9]*:[0-9]{12}:subnet/.*$"#)))
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for an AWS resource tag.
+    Key: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:/-]+$"#)))
+    /// The value for an AWS resource tag.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))
+}

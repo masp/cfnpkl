@@ -1,0 +1,121 @@
+/// Resource schema for AWS::DataBrew::Dataset.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataBrew::Dataset"
+Properties: Props?
+class Props {
+    /// Dataset name
+    Name: String(length <= 255 && length >= 1)?
+    /// Dataset format
+    Format: "CSV" | "JSON" | "PARQUET" | "EXCEL" | "ORC" | *Null
+    /// Format options for dataset
+    FormatOptions: FormatOptions?
+    /// Input
+    Input: Input?
+    /// PathOptions
+    PathOptions: PathOptions?
+    Tags: Listing<Tag>?
+}
+/// Format options for dataset
+class FormatOptions {
+    Json: JsonOptions?
+    Excel: Mapping | Mapping | *Null
+    Csv: CsvOptions?
+}
+/// Json options
+class JsonOptions {
+    MultiLine: Boolean?
+}
+/// Csv options
+class CsvOptions {
+    Delimiter: String(length <= 1 && length >= 1)?
+    HeaderRow: Boolean?
+}
+/// Input
+class Input {
+    S3InputDefinition: S3Location?
+    DataCatalogInputDefinition: DataCatalogInputDefinition?
+    DatabaseInputDefinition: DatabaseInputDefinition?
+    Metadata: Metadata?
+}
+/// Input location
+class S3Location {
+    Bucket: String
+    Key: String?
+}
+class DataCatalogInputDefinition {
+    /// Catalog id
+    CatalogId: String?
+    /// Database name
+    DatabaseName: String?
+    /// Table name
+    TableName: String?
+    TempDirectory: S3Location?
+}
+class DatabaseInputDefinition {
+    /// Glue connection name
+    GlueConnectionName: String
+    /// Database table name
+    DatabaseTableName: String?
+    TempDirectory: S3Location?
+    /// Custom SQL to run against the provided AWS Glue connection. This SQL
+    /// will be used as the input for DataBrew projects and jobs.
+    QueryString: String?
+}
+class Metadata {
+    /// Arn of the source of the dataset. For e.g.: AppFlow Flow ARN.
+    SourceArn: String?
+}
+/// Path options for dataset
+class PathOptions {
+    FilesLimit: FilesLimit?
+    LastModifiedDateCondition: FilterExpression?
+    Parameters: Listing<PathParameter>?
+}
+class FilesLimit {
+    /// Maximum number of files
+    MaxFiles: Int
+    /// Ordered by
+    OrderedBy: "LAST_MODIFIED_DATE" | *Null
+    /// Order
+    Order: "ASCENDING" | "DESCENDING" | *Null
+}
+class FilterExpression {
+    /// Filtering expression for a parameter
+    Expression: String(length <= 1024 && length >= 4 && matches(Regex(#"^[><0-9A-Za-z_.,:)(!= ]+$"#)))
+    ValuesMap: Listing<FilterValue>
+}
+/// A key-value pair to associate expression variable names with their
+/// values
+class FilterValue {
+    /// Variable name
+    ValueReference: String(length <= 128 && length >= 2 && matches(Regex(#"^:[A-Za-z0-9_]+$"#)))
+    Value: String(length <= 1024 && length >= 0)
+}
+/// A key-value pair to associate dataset parameter name with its
+/// definition.
+class PathParameter {
+    PathParameterName: String(length <= 255 && length >= 1)
+    DatasetParameter: DatasetParameter
+}
+class DatasetParameter {
+    Name: String(length <= 255 && length >= 1)
+    /// Parameter type
+    Type: "String" | "Number" | "Datetime"
+    DatetimeOptions: DatetimeOptions?
+    /// Add the value of this parameter as a column in a dataset.
+    CreateColumn: Boolean?
+    Filter: FilterExpression?
+}
+class DatetimeOptions {
+    /// Date/time format of a date parameter
+    Format: String(length <= 100 && length >= 2)
+    /// Timezone offset
+    TimezoneOffset: String(length <= 6 && length >= 1 && matches(Regex(#"^(Z|[-+](\d|\d{2}|\d{2}:?\d{2}))$"#)))?
+    /// Locale code for a date parameter
+    LocaleCode: String(length <= 100 && length >= 2 && matches(Regex(#"^[A-Za-z0-9_\.#@\-]+$"#)))?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

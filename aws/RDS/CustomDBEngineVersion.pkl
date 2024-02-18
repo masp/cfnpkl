@@ -1,0 +1,52 @@
+/// The AWS::RDS::CustomDBEngineVersion resource creates an Amazon RDS
+/// custom DB engine version.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RDS::CustomDBEngineVersion"
+Properties: Props?
+class Props {
+    /// The name of an Amazon S3 bucket that contains database installation
+    /// files for your CEV. For example, a valid bucket name is `my-custom-
+    /// installation-files`.
+    DatabaseInstallationFilesS3BucketName: String(length <= 63 && length >= 3)?
+    /// The Amazon S3 directory that contains the database installation files
+    /// for your CEV. For example, a valid bucket name is `123456789012/cev1`.
+    /// If this setting isn't specified, no prefix is assumed.
+    DatabaseInstallationFilesS3Prefix: String(length <= 255 && length >= 1)?
+    /// An optional description of your CEV.
+    Description: String(length <= 1000 && length >= 1)?
+    /// The database engine to use for your custom engine version (CEV). The
+    /// only supported value is `custom-oracle-ee`.
+    Engine: String(length <= 35 && length >= 1)?
+    /// The name of your CEV. The name format is 19.customized_string . For
+    /// example, a valid name is 19.my_cev1. This setting is required for RDS
+    /// Custom for Oracle, but optional for Amazon RDS. The combination of
+    /// Engine and EngineVersion is unique per customer per Region.
+    EngineVersion: String(length <= 60 && length >= 1)?
+    /// The AWS KMS key identifier for an encrypted CEV. A symmetric KMS key
+    /// is required for RDS Custom, but optional for Amazon RDS.
+    KMSKeyId: String(length <= 2048 && length >= 1)?
+    /// The CEV manifest, which is a JSON document that describes the
+    /// installation .zip files stored in Amazon S3. Specify the name/value
+    /// pairs in a file or a quoted string. RDS Custom applies the patches in
+    /// the order in which they are listed.
+    Manifest: String(length <= 51000 && length >= 1)?
+    /// The ARN of the custom engine version.
+    DBEngineVersionArn: String?
+    /// The availability status to be assigned to the CEV.
+    Status: "available" | "inactive" | "inactive-except-restore" | *Null
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)?
+}

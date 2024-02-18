@@ -1,0 +1,56 @@
+/// The `AWS::Redshift::EventSubscription` resource creates an Amazon
+/// Redshift Event Subscription.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Redshift::EventSubscription"
+Properties: Props?
+class Props {
+    /// The name of the Amazon Redshift event notification subscription
+    SubscriptionName: String(matches(Regex(#"^(?=^[a-z][a-z0-9]*(-[a-z0-9]+)*$).{1,255}$"#)))?
+    /// The Amazon Resource Name (ARN) of the Amazon SNS topic used to
+    /// transmit the event notifications.
+    SnsTopicArn: String?
+    /// The type of source that will be generating the events.
+    SourceType: "cluster" | "cluster-parameter-group" | "cluster-security-group" | "cluster-snapshot" | "scheduled-action" | *Null
+    /// A list of one or more identifiers of Amazon Redshift source objects.
+    SourceIds: Listing<String>?
+    /// Specifies the Amazon Redshift event categories to be published by the
+    /// event notification subscription.
+    EventCategories: Listing<"configuration" | "management" | "monitoring" | "security" | "pending">?
+    /// Specifies the Amazon Redshift event severity to be published by the
+    /// event notification subscription.
+    Severity: "ERROR" | "INFO" | *Null
+    /// A boolean value; set to true to activate the subscription, and set to
+    /// false to create the subscription but not activate it.
+    Enabled: Boolean?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The AWS account associated with the Amazon Redshift event notification
+    /// subscription.
+    CustomerAwsId: String?
+    /// The name of the Amazon Redshift event notification subscription.
+    CustSubscriptionId: String?
+    /// The status of the Amazon Redshift event notification subscription.
+    Status: "active" | "no-permission" | "topic-not-exist" | *Null
+    /// The date and time the Amazon Redshift event notification subscription
+    /// was created.
+    SubscriptionCreationTime: String?
+    /// A list of the sources that publish events to the Amazon Redshift event
+    /// notification subscription.
+    SourceIdsList: Listing<String>?
+    /// The list of Amazon Redshift event categories specified in the event
+    /// notification subscription.
+    EventCategoriesList: Listing<String>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

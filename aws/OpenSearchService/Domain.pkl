@@ -1,0 +1,143 @@
+/// An example resource schema demonstrating some basic constructs and
+/// validation rules.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::OpenSearchService::Domain"
+Properties: Props?
+class Props {
+    ClusterConfig: ClusterConfig?
+    DomainName: String?
+    AccessPolicies: Mapping?
+    IPAddressType: String?
+    EngineVersion: String?
+    AdvancedOptions: Mapping?
+    LogPublishingOptions: Mapping?
+    SnapshotOptions: SnapshotOptions?
+    VPCOptions: VPCOptions?
+    NodeToNodeEncryptionOptions: NodeToNodeEncryptionOptions?
+    DomainEndpointOptions: DomainEndpointOptions?
+    CognitoOptions: CognitoOptions?
+    AdvancedSecurityOptions: AdvancedSecurityOptionsInput?
+    DomainEndpoint: String?
+    DomainEndpointV2: String?
+    DomainEndpoints: Mapping?
+    EBSOptions: EBSOptions?
+    Id: String?
+    Arn: String?
+    DomainArn: String?
+    EncryptionAtRestOptions: EncryptionAtRestOptions?
+    /// An arbitrary set of tags (key-value pairs) for this Domain.
+    Tags: Listing<Tag>?
+    ServiceSoftwareOptions: ServiceSoftwareOptions?
+    OffPeakWindowOptions: OffPeakWindowOptions?
+    SoftwareUpdateOptions: SoftwareUpdateOptions?
+}
+class ClusterConfig {
+    InstanceCount: Int?
+    WarmEnabled: Boolean?
+    WarmCount: Int?
+    DedicatedMasterEnabled: Boolean?
+    ZoneAwarenessConfig: ZoneAwarenessConfig?
+    DedicatedMasterCount: Int?
+    InstanceType: String?
+    WarmType: String?
+    ZoneAwarenessEnabled: Boolean?
+    DedicatedMasterType: String?
+    MultiAZWithStandbyEnabled: Boolean?
+    ColdStorageOptions: ColdStorageOptions?
+}
+class ZoneAwarenessConfig {
+    AvailabilityZoneCount: Int?
+}
+class ColdStorageOptions {
+    Enabled: Boolean?
+}
+class SnapshotOptions {
+    AutomatedSnapshotStartHour: Int?
+}
+class VPCOptions {
+    SecurityGroupIds: Listing<String>?
+    SubnetIds: Listing<String>?
+}
+class NodeToNodeEncryptionOptions {
+    Enabled: Boolean?
+}
+class DomainEndpointOptions {
+    CustomEndpointCertificateArn: String?
+    CustomEndpointEnabled: Boolean?
+    EnforceHTTPS: Boolean?
+    CustomEndpoint: String?
+    TLSSecurityPolicy: String?
+}
+class CognitoOptions {
+    Enabled: Boolean?
+    IdentityPoolId: String?
+    UserPoolId: String?
+    RoleArn: String?
+}
+class AdvancedSecurityOptionsInput {
+    Enabled: Boolean?
+    MasterUserOptions: MasterUserOptions?
+    InternalUserDatabaseEnabled: Boolean?
+    AnonymousAuthEnabled: Boolean?
+    SAMLOptions: SAMLOptions?
+    AnonymousAuthDisableDate: String?
+}
+class MasterUserOptions {
+    MasterUserPassword: String?
+    MasterUserName: String?
+    MasterUserARN: String?
+}
+class SAMLOptions {
+    Enabled: Boolean?
+    Idp: Idp?
+    MasterUserName: String?
+    MasterBackendRole: String?
+    SubjectKey: String?
+    RolesKey: String?
+    SessionTimeoutMinutes: Int?
+}
+class Idp {
+    MetadataContent: String(length <= 1048576 && length >= 1)
+    EntityId: String
+}
+class EBSOptions {
+    EBSEnabled: Boolean?
+    VolumeType: String?
+    Iops: Int?
+    VolumeSize: Int?
+    Throughput: Int?
+}
+class EncryptionAtRestOptions {
+    KmsKeyId: String?
+    Enabled: Boolean?
+}
+class Tag {
+    /// The key of the tag.
+    Value: String(length <= 256 && length >= 0)
+    /// The value of the tag.
+    Key: String(length <= 128 && length >= 0)
+}
+class ServiceSoftwareOptions {
+    CurrentVersion: String?
+    NewVersion: String?
+    UpdateAvailable: Boolean?
+    Cancellable: Boolean?
+    UpdateStatus: String?
+    Description: String?
+    AutomatedUpdateDate: String?
+    OptionalDeployment: Boolean?
+}
+class OffPeakWindowOptions {
+    Enabled: Boolean?
+    OffPeakWindow: OffPeakWindow?
+}
+class OffPeakWindow {
+    WindowStartTime: WindowStartTime?
+}
+class WindowStartTime {
+    Hours: Int
+    Minutes: Int
+}
+class SoftwareUpdateOptions {
+    AutoSoftwareUpdateEnabled: Boolean?
+}

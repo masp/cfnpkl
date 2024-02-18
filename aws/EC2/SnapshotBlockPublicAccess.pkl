@@ -1,0 +1,10 @@
+/// Resource Type definition for AWS::EC2::SnapshotBlockPublicAccess
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::SnapshotBlockPublicAccess"
+Properties: Props?
+class Props {
+    /// The state of EBS Snapshot Block Public Access.
+    State: "block-all-sharing" | "block-new-sharing" | *Null
+    /// The identifier for the specified AWS account.
+    AccountId: String?
+}

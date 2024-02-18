@@ -1,0 +1,31 @@
+/// Resource type definition for AWS::RAM::Permission
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RAM::Permission"
+Properties: Props?
+class Props {
+    Arn: String?
+    /// The name of the permission.
+    Name: String?
+    /// Version of the permission.
+    Version: String?
+    /// Set to true to use this as the default permission.
+    IsResourceTypeDefault: Boolean?
+    PermissionType: String?
+    /// The resource type this permission can be used with.
+    ResourceType: String?
+    /// Policy template for the permission.
+    PolicyTemplate: Mapping?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

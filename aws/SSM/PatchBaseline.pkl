@@ -1,0 +1,80 @@
+/// Resource Type definition for AWS::SSM::PatchBaseline
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSM::PatchBaseline"
+Properties: Props?
+class Props {
+    /// The ID of the patch baseline.
+    Id: String(length <= 128 && length >= 20 && matches(Regex(#"^[a-zA-Z0-9_\-:/]{20,128}$"#)))?
+    /// Set the baseline as default baseline. Only registering to default
+    /// patch baseline is allowed.
+    DefaultBaseline: Boolean?
+    /// Defines the operating system the patch baseline applies to. The
+    /// Default value is WINDOWS.
+    OperatingSystem: "WINDOWS" | "AMAZON_LINUX" | "AMAZON_LINUX_2" | "AMAZON_LINUX_2022" | "AMAZON_LINUX_2023" | "UBUNTU" | "REDHAT_ENTERPRISE_LINUX" | "SUSE" | "CENTOS" | "ORACLE_LINUX" | "DEBIAN" | "MACOS" | "RASPBIAN" | "ROCKY_LINUX" | *Null
+    /// The description of the patch baseline.
+    Description: String(length <= 1024 && length >= 1)?
+    ApprovalRules: RuleGroup?
+    /// Information about the patches to use to update the instances,
+    /// including target operating systems and source repository. Applies to
+    /// Linux instances only.
+    Sources: Listing<PatchSource>?
+    /// The name of the patch baseline.
+    Name: String(length <= 128 && length >= 3 && matches(Regex(#"^[a-zA-Z0-9_\-.]{3,128}$"#)))?
+    /// A list of explicitly rejected patches for the baseline.
+    RejectedPatches: Listing<String(length <= 100 && length >= 1)>?
+    /// A list of explicitly approved patches for the baseline.
+    ApprovedPatches: Listing<String(length <= 100 && length >= 1)>?
+    /// The action for Patch Manager to take on patches included in the
+    /// RejectedPackages list.
+    RejectedPatchesAction: "ALLOW_AS_DEPENDENCY" | "BLOCK" | *Null
+    /// PatchGroups is used to associate instances with a specific patch
+    /// baseline
+    PatchGroups: Listing<String(length <= 256 && length >= 1)>?
+    /// Defines the compliance level for approved patches. This means that if
+    /// an approved patch is reported as missing, this is the severity of the
+    /// compliance violation. The default value is UNSPECIFIED.
+    ApprovedPatchesComplianceLevel: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "INFORMATIONAL" | "UNSPECIFIED" | *Null
+    /// Indicates whether the list of approved patches includes non-security
+    /// updates that should be applied to the instances. The default value is
+    /// 'false'. Applies to Linux instances only.
+    ApprovedPatchesEnableNonSecurity: Boolean?
+    /// A set of global filters used to include patches in the baseline.
+    GlobalFilters: PatchFilterGroup?
+    /// Optional metadata that you assign to a resource. Tags enable you to
+    /// categorize a resource in different ways.
+    Tags: Listing<Tag>?
+}
+/// A set of rules defining the approval rules for a patch baseline.
+class RuleGroup {
+    PatchRules: Listing<Rule>?
+}
+/// Defines an approval rule for a patch baseline.
+class Rule {
+    ApproveUntilDate: String(length <= 10 && length >= 0)?
+    EnableNonSecurity: Boolean?
+    PatchFilterGroup: PatchFilterGroup?
+    ApproveAfterDays: Int?
+    ComplianceLevel: "CRITICAL" | "HIGH" | "INFORMATIONAL" | "LOW" | "MEDIUM" | "UNSPECIFIED" | *Null
+}
+/// The patch filter group that defines the criteria for the rule.
+class PatchFilterGroup {
+    PatchFilters: Listing<PatchFilter>?
+}
+/// Defines which patches should be included in a patch baseline.
+class PatchFilter {
+    Values: Listing<String(length <= 64 && length >= 1)>?
+    Key: "ADVISORY_ID" | "ARCH" | "BUGZILLA_ID" | "CLASSIFICATION" | "CVE_ID" | "EPOCH" | "MSRC_SEVERITY" | "NAME" | "PATCH_ID" | "PATCH_SET" | "PRIORITY" | "PRODUCT" | "PRODUCT_FAMILY" | "RELEASE" | "REPOSITORY" | "SECTION" | "SECURITY" | "SEVERITY" | "VERSION" | *Null
+}
+/// Information about the patches to use to update the instances,
+/// including target operating systems and source repository. Applies to
+/// Linux instances only.
+class PatchSource {
+    Products: Listing<String(length <= 128 && length >= 1)>?
+    Configuration: String(length <= 1024 && length >= 1)?
+    Name: String(matches(Regex(#"^[a-zA-Z0-9_\-.]{3,50}$"#)))?
+}
+/// Metadata that you assign to your AWS resources.
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

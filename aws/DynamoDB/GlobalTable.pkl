@@ -1,0 +1,107 @@
+/// Version: None. Resource Type definition for AWS::DynamoDB::GlobalTable
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DynamoDB::GlobalTable"
+Properties: Props?
+class Props {
+    Arn: String?
+    StreamArn: String?
+    AttributeDefinitions: Listing<AttributeDefinition>?
+    BillingMode: String?
+    GlobalSecondaryIndexes: Listing<GlobalSecondaryIndex>?
+    KeySchema: Listing<KeySchema>?
+    LocalSecondaryIndexes: Listing<LocalSecondaryIndex>?
+    WriteProvisionedThroughputSettings: WriteProvisionedThroughputSettings?
+    Replicas: Listing<ReplicaSpecification>?
+    SSESpecification: SSESpecification?
+    StreamSpecification: StreamSpecification?
+    TableName: String?
+    TableId: String?
+    TimeToLiveSpecification: TimeToLiveSpecification?
+}
+class AttributeDefinition {
+    AttributeName: String(length <= 255 && length >= 1)
+    AttributeType: String
+}
+class GlobalSecondaryIndex {
+    IndexName: String(length <= 255 && length >= 3)
+    KeySchema: Listing<KeySchema>
+    Projection: Projection
+    WriteProvisionedThroughputSettings: WriteProvisionedThroughputSettings?
+}
+class KeySchema {
+    AttributeName: String(length <= 255 && length >= 1)
+    KeyType: String
+}
+class Projection {
+    NonKeyAttributes: Listing<String>?
+    ProjectionType: String?
+}
+class WriteProvisionedThroughputSettings {
+    WriteCapacityAutoScalingSettings: CapacityAutoScalingSettings?
+}
+class CapacityAutoScalingSettings {
+    MinCapacity: Int
+    MaxCapacity: Int
+    SeedCapacity: Int?
+    TargetTrackingScalingPolicyConfiguration: TargetTrackingScalingPolicyConfiguration
+}
+class TargetTrackingScalingPolicyConfiguration {
+    DisableScaleIn: Boolean?
+    ScaleInCooldown: Int?
+    ScaleOutCooldown: Int?
+    TargetValue: Float
+}
+class LocalSecondaryIndex {
+    IndexName: String(length <= 255 && length >= 3)
+    KeySchema: Listing<KeySchema>
+    Projection: Projection
+}
+class ReplicaSpecification {
+    Region: String
+    GlobalSecondaryIndexes: Listing<ReplicaGlobalSecondaryIndexSpecification>?
+    ContributorInsightsSpecification: ContributorInsightsSpecification?
+    PointInTimeRecoverySpecification: PointInTimeRecoverySpecification?
+    TableClass: String?
+    DeletionProtectionEnabled: Boolean?
+    SSESpecification: ReplicaSSESpecification?
+    Tags: Listing<Tag>?
+    ReadProvisionedThroughputSettings: ReadProvisionedThroughputSettings?
+    KinesisStreamSpecification: KinesisStreamSpecification?
+}
+class ReplicaGlobalSecondaryIndexSpecification {
+    IndexName: String(length <= 255 && length >= 3)
+    ContributorInsightsSpecification: ContributorInsightsSpecification?
+    ReadProvisionedThroughputSettings: ReadProvisionedThroughputSettings?
+}
+class ContributorInsightsSpecification {
+    Enabled: Boolean
+}
+class ReadProvisionedThroughputSettings {
+    ReadCapacityUnits: Int?
+    ReadCapacityAutoScalingSettings: CapacityAutoScalingSettings?
+}
+class PointInTimeRecoverySpecification {
+    PointInTimeRecoveryEnabled: Boolean?
+}
+class ReplicaSSESpecification {
+    KMSMasterKeyId: String
+}
+class Tag {
+    Key: String
+    Value: String
+}
+class KinesisStreamSpecification {
+    StreamArn: String
+    ApproximateCreationDateTimePrecision: "MICROSECOND" | "MILLISECOND" | *Null
+}
+class SSESpecification {
+    SSEEnabled: Boolean
+    SSEType: String?
+}
+class StreamSpecification {
+    StreamViewType: String
+}
+class TimeToLiveSpecification {
+    AttributeName: String?
+    Enabled: Boolean
+}

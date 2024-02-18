@@ -1,0 +1,62 @@
+/// The ``AWS::ApiGateway::ApiKey`` resource creates a unique key that you
+/// can distribute to clients who are executing API Gateway ``Method``
+/// resources that require an API key. To specify which API key clients
+/// must use, map the API key with the ``RestApi`` and ``Stage`` resources
+/// that include the methods that require a key.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::ApiKey"
+Properties: Props?
+class Props {
+    APIKeyId: String?
+    /// An MKT customer identifier, when integrating with the AWS SaaS
+    /// Marketplace.
+    CustomerId: String?
+    /// The description of the ApiKey.
+    Description: String?
+    /// Specifies whether the ApiKey can be used by callers.
+    Enabled: Boolean?
+    /// Specifies whether (``true``) or not (``false``) the key identifier is
+    /// distinct from the created API key value. This parameter is deprecated
+    /// and should not be used.
+    GenerateDistinctId: Boolean?
+    /// A name for the API key. If you don't specify a name, CFN generates a
+    /// unique physical ID and uses that ID for the API key name. For more
+    /// information, see [Name Type](https://docs.aws.amazon.com/AWSCloudForma
+    /// tion/latest/UserGuide/aws-properties-name.html).  If you specify a
+    /// name, you cannot perform updates that require replacement of this
+    /// resource. You can perform updates that require no or some
+    /// interruption. If you must replace the resource, specify a new name.
+    Name: String?
+    /// DEPRECATED FOR USAGE PLANS - Specifies stages associated with the API
+    /// key.
+    StageKeys: Listing<StageKey>?
+    /// The key-value map of strings. The valid character set is
+    /// [a-zA-Z+-=._:/]. The tag key can be up to 128 characters and must not
+    /// start with ``aws:``. The tag value can be up to 256 characters.
+    Tags: Listing<Tag>?
+    /// Specifies a value of the API key.
+    Value: String?
+}
+/// ``StageKey`` is a property of the [AWS::ApiGateway::ApiKey](https://do
+/// cs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-
+/// apigateway-apikey.html) resource that specifies the stage to associate
+/// with the API key. This association allows only clients with the key to
+/// make requests to methods in that stage.
+class StageKey {
+    /// The string identifier of the associated RestApi.
+    RestApiId: String?
+    /// The stage name associated with the stage key.
+    StageName: String?
+}
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256)
+}

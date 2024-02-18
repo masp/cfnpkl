@@ -1,0 +1,51 @@
+/// Subscription targets enables one to access the data to which you have
+/// subscribed in your projects.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataZone::SubscriptionTarget"
+Properties: Props?
+class Props {
+    /// The asset types that can be included in the subscription target.
+    ApplicableAssetTypes: Listing<String(length <= 256 && length >= 1 && matches(Regex(#"^[^\.]*"#)))>?
+    /// The authorized principals of the subscription target.
+    AuthorizedPrincipals: Listing<String(matches(Regex(#"^[a-zA-Z0-9:/_-]*$"#)))>?
+    /// The timestamp of when the subscription target was created.
+    CreatedAt: String?
+    /// The Amazon DataZone user who created the subscription target.
+    CreatedBy: String?
+    /// The ID of the Amazon DataZone domain in which subscription target is
+    /// created.
+    DomainId: String(matches(Regex(#"^dzd[-_][a-zA-Z0-9_-]{1,36}$"#)))?
+    /// The ID of the Amazon DataZone domain in which subscription target
+    /// would be created.
+    DomainIdentifier: String(matches(Regex(#"^dzd[-_][a-zA-Z0-9_-]{1,36}$"#)))?
+    /// The ID of the environment in which subscription target is created.
+    EnvironmentId: String(matches(Regex(#"^[a-zA-Z0-9_-]{1,36}$"#)))?
+    /// The ID of the environment in which subscription target would be
+    /// created.
+    EnvironmentIdentifier: String(matches(Regex(#"^[a-zA-Z0-9_-]{1,36}$"#)))?
+    /// The ID of the subscription target.
+    Id: String(matches(Regex(#"^[a-zA-Z0-9_-]{1,36}$"#)))?
+    /// The manage access role that is used to create the subscription target.
+    ManageAccessRole: String?
+    /// The name of the subscription target.
+    Name: String(length <= 256 && length >= 1)?
+    /// The identifier of the project specified in the subscription target.
+    ProjectId: String(matches(Regex(#"^[a-zA-Z0-9_-]{1,36}$"#)))?
+    /// The provider of the subscription target.
+    Provider: String?
+    /// The configuration of the subscription target.
+    SubscriptionTargetConfig: Listing<SubscriptionTargetForm>?
+    /// The type of the subscription target.
+    Type: String?
+    /// The timestamp of when the subscription target was updated.
+    UpdatedAt: String?
+    /// The Amazon DataZone user who updated the subscription target.
+    UpdatedBy: String?
+}
+/// The details of the subscription target configuration.
+class SubscriptionTargetForm {
+    /// The form name included in the subscription target configuration.
+    FormName: String(length <= 128 && length >= 1 && matches(Regex(#"^(?![0-9_])\w+$|^_\w*[a-zA-Z0-9]\w*$"#)))
+    /// The content of the subscription target configuration.
+    Content: String
+}

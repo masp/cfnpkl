@@ -1,0 +1,53 @@
+/// Resource Type definition for AWS::Transfer::Certificate
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Transfer::Certificate"
+Properties: Props?
+class Props {
+    /// Specifies the usage type for the certificate.
+    Usage: "SIGNING" | "ENCRYPTION" | *Null
+    /// Specifies the certificate body to be imported.
+    Certificate: String(length <= 16384 && length >= 1 && matches(Regex(#"^[	
+ -ÿ]*"#)))?
+    /// Specifies the certificate chain to be imported.
+    CertificateChain: String(length <= 2097152 && length >= 1 && matches(Regex(#"^[	
+ -ÿ]*"#)))?
+    /// Specifies the private key for the certificate.
+    PrivateKey: String(length <= 16384 && length >= 1 && matches(Regex(#"^[	
+ -ÿ]*"#)))?
+    /// Specifies the active date for the certificate.
+    ActiveDate: String?
+    /// Specifies the inactive date for the certificate.
+    InactiveDate: String?
+    /// A textual description for the certificate.
+    Description: String(length <= 200 && length >= 1 && matches(Regex(#"^[\w\- ]*$"#)))?
+    /// Key-value pairs that can be used to group and search for certificates.
+    /// Tags are metadata attached to certificates for any purpose.
+    Tags: Listing<Tag>?
+    /// Specifies the unique Amazon Resource Name (ARN) for the agreement.
+    Arn: String(length <= 1600 && length >= 20 && matches(Regex(#"arn:.*"#)))?
+    /// A unique identifier for the certificate.
+    CertificateId: String(length <= 22 && length >= 22 && matches(Regex(#"^cert-([0-9a-f]{17})$"#)))?
+    /// A status description for the certificate.
+    Status: "ACTIVE" | "PENDING" | "INACTIVE" | *Null
+    /// Describing the type of certificate. With or without a private key.
+    Type: "CERTIFICATE" | "CERTIFICATE_WITH_PRIVATE_KEY" | *Null
+    /// Specifies Certificate's serial.
+    Serial: String(length <= 48 && length >= 0 && matches(Regex(#"^[\p{XDigit}{2}:?]*"#)))?
+    /// Specifies the not before date for the certificate.
+    NotBeforeDate: String?
+    /// Specifies the not after date for the certificate.
+    NotAfterDate: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

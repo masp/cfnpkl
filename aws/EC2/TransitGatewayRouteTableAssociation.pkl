@@ -1,0 +1,10 @@
+/// Resource Type definition for
+/// AWS::EC2::TransitGatewayRouteTableAssociation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::TransitGatewayRouteTableAssociation"
+Properties: Props?
+class Props {
+    Id: String?
+    TransitGatewayRouteTableId: String?
+    TransitGatewayAttachmentId: String?
+}

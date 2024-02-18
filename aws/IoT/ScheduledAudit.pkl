@@ -1,0 +1,34 @@
+/// Scheduled audits can be used to specify the checks you want to perform
+/// during an audit and how often the audit should be run.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::ScheduledAudit"
+Properties: Props?
+class Props {
+    /// The name you want to give to the scheduled audit.
+    ScheduledAuditName: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9:_-]+"#)))?
+    /// How often the scheduled audit takes place. Can be one of DAILY,
+    /// WEEKLY, BIWEEKLY, or MONTHLY.
+    Frequency: "DAILY" | "WEEKLY" | "BIWEEKLY" | "MONTHLY" | *Null
+    /// The day of the month on which the scheduled audit takes place. Can be
+    /// 1 through 31 or LAST. This field is required if the frequency
+    /// parameter is set to MONTHLY.
+    DayOfMonth: String(matches(Regex(#"^([1-9]|[12][0-9]|3[01])$|^LAST$|^UNSET_VALUE$"#)))?
+    /// The day of the week on which the scheduled audit takes place. Can be
+    /// one of SUN, MON, TUE,WED, THU, FRI, or SAT. This field is required if
+    /// the frequency parameter is set to WEEKLY or BIWEEKLY.
+    DayOfWeek: "SUN" | "MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT" | "UNSET_VALUE" | *Null
+    /// Which checks are performed during the scheduled audit. Checks must be
+    /// enabled for your account.
+    TargetCheckNames: Listing<String>?
+    /// The ARN (Amazon resource name) of the scheduled audit.
+    ScheduledAuditArn: String(length <= 2048 && length >= 20)?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The tag's key.
+    Key: String(length <= 128 && length >= 1)
+    /// The tag's value.
+    Value: String(length <= 256 && length >= 1)
+}

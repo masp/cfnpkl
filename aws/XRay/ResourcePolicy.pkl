@@ -1,0 +1,15 @@
+/// This schema provides construct and validation rules for AWS-XRay
+/// Resource Policy resource parameters.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::XRay::ResourcePolicy"
+Properties: Props?
+class Props {
+    /// The name of the resource policy. Must be unique within a specific AWS
+    /// account.
+    PolicyName: String(length <= 128 && length >= 1 && matches(Regex(#"[\w+=,.@-]+"#)))?
+    /// The resource policy document, which can be up to 5kb in size.
+    PolicyDocument: String(length <= 5120 && length >= 1)?
+    /// A flag to indicate whether to bypass the resource policy lockout
+    /// safety check
+    BypassPolicyLockoutCheck: Boolean?
+}

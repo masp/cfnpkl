@@ -1,0 +1,19 @@
+/// Resource Type definition for AWS::RAM::ResourceShare
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RAM::ResourceShare"
+Properties: Props?
+class Props {
+    PermissionArns: Listing<String>?
+    Principals: Listing<String>?
+    AllowExternalPrincipals: Boolean?
+    Id: String?
+    Arn: String?
+    ResourceArns: Listing<String>?
+    Sources: Listing<String>?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

@@ -1,0 +1,18 @@
+/// Definition of AWS::BackupGateway::Hypervisor Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::BackupGateway::Hypervisor"
+Properties: Props?
+class Props {
+    Host: String(length <= 128 && length >= 3 && matches(Regex(#"^.+$"#)))?
+    HypervisorArn: String(length <= 500 && length >= 50 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov):backup-gateway(:[a-zA-Z-0-9]+){3}\/[a-zA-Z-0-9]+$"#)))?
+    KmsKeyArn: String(length <= 500 && length >= 50 && matches(Regex(#"^(^arn:(aws|aws-cn|aws-us-gov):kms:([a-zA-Z0-9-]+):([0-9]+):(key|alias)/(\S+)$)|(^alias/(\S+)$)$"#)))?
+    LogGroupArn: String(length <= 2048 && length >= 0 && matches(Regex(#"^$|^arn:(aws|aws-cn|aws-us-gov):logs:([a-zA-Z0-9-]+):([0-9]+):log-group:[a-zA-Z0-9_\-\/\.]+:\*$"#)))?
+    Name: String(length <= 100 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]*$"#)))?
+    Password: String(length <= 100 && length >= 1 && matches(Regex(#"^[ -~]+$"#)))?
+    Tags: Listing<Tag>?
+    Username: String(length <= 100 && length >= 1 && matches(Regex(#"^[ -\.0-\[\]-~]*[!-\.0-\[\]-~][ -\.0-\[\]-~]*$"#)))?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+    Value: String(length <= 256 && length >= 0 && matches(Regex(#"^[^\x00]*$"#)))
+}

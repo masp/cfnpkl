@@ -1,0 +1,18 @@
+/// Resource Type definition for AWS::SNS::Subscription
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SNS::Subscription"
+Properties: Props?
+class Props {
+    ReplayPolicy: Mapping?
+    RawMessageDelivery: Boolean?
+    Endpoint: String?
+    FilterPolicy: Mapping?
+    TopicArn: String?
+    RedrivePolicy: Mapping?
+    DeliveryPolicy: Mapping?
+    Region: String?
+    SubscriptionRoleArn: String?
+    FilterPolicyScope: String?
+    Id: String?
+    Protocol: String?
+}

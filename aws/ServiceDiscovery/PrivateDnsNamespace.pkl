@@ -1,0 +1,28 @@
+/// Resource Type definition for
+/// AWS::ServiceDiscovery::PrivateDnsNamespace
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceDiscovery::PrivateDnsNamespace"
+Properties: Props?
+class Props {
+    Description: String?
+    HostedZoneId: String?
+    Vpc: String?
+    Id: String?
+    Arn: String?
+    Properties: Properties?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class Properties {
+    DnsProperties: PrivateDnsPropertiesMutable?
+}
+class PrivateDnsPropertiesMutable {
+    SOA: SOA?
+}
+class SOA {
+    TTL: Float?
+}
+class Tag {
+    Value: String
+    Key: String
+}

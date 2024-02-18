@@ -1,0 +1,36 @@
+/// Resource schema for AWS::SageMaker::DeviceFleet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::DeviceFleet"
+Properties: Props?
+class Props {
+    /// Description for the edge device fleet
+    Description: String(length <= 800 && length >= 0 && matches(Regex(#"[\S\s]+"#)))?
+    /// The name of the edge device fleet
+    DeviceFleetName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*_*[a-zA-Z0-9])*$"#)))?
+    /// S3 bucket and an ecryption key id (if available) to store outputs for
+    /// the fleet
+    OutputConfig: EdgeOutputConfig?
+    /// Role associated with the device fleet
+    RoleArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:aws[a-z\-]*:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    /// Associate tags with the resource
+    Tags: Listing<Tag>?
+}
+class EdgeOutputConfig {
+    /// The Amazon Simple Storage (S3) bucket URI
+    S3OutputLocation: String(length <= 1024 && matches(Regex(#"^s3://([^/]+)/?(.*)$"#)))
+    /// The KMS key id used for encryption on the S3 bucket
+    KmsKeyId: String(length <= 2048 && length >= 1 && matches(Regex(#"[a-zA-Z0-9:_-]+"#)))?
+}
+/// Key-value pair to associate as a tag for the resource
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^((?!aws:)[\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+    /// The key value of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+}

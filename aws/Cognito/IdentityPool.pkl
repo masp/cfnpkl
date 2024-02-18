@@ -1,0 +1,33 @@
+/// Resource Type definition for AWS::Cognito::IdentityPool
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cognito::IdentityPool"
+Properties: Props?
+class Props {
+    PushSync: PushSync?
+    CognitoIdentityProviders: Listing<CognitoIdentityProvider>?
+    DeveloperProviderName: String?
+    CognitoStreams: CognitoStreams?
+    SupportedLoginProviders: Mapping?
+    Name: String?
+    CognitoEvents: Mapping?
+    Id: String?
+    IdentityPoolName: String?
+    AllowUnauthenticatedIdentities: Boolean?
+    SamlProviderARNs: Listing<String>?
+    OpenIdConnectProviderARNs: Listing<String>?
+    AllowClassicFlow: Boolean?
+}
+class PushSync {
+    ApplicationArns: Listing<String>?
+    RoleArn: String?
+}
+class CognitoIdentityProvider {
+    ServerSideTokenCheck: Boolean?
+    ProviderName: String
+    ClientId: String
+}
+class CognitoStreams {
+    StreamingStatus: String?
+    StreamName: String?
+    RoleArn: String?
+}

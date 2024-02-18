@@ -1,0 +1,82 @@
+/// Resource Type definition for AWS::ElastiCache::ReplicationGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElastiCache::ReplicationGroup"
+Properties: Props?
+class Props {
+    PreferredCacheClusterAZs: Listing<String>?
+    ReaderEndPointPort: String?
+    NodeGroupConfiguration: Listing<NodeGroupConfiguration>?
+    SnapshotArns: Listing<String>?
+    ConfigurationEndPointPort: String?
+    Port: Int?
+    NumNodeGroups: Int?
+    NotificationTopicArn: String?
+    AutomaticFailoverEnabled: Boolean?
+    ReplicasPerNodeGroup: Int?
+    TransitEncryptionEnabled: Boolean?
+    Engine: String?
+    Tags: Listing<Tag>?
+    PrimaryEndPointAddress: String?
+    GlobalReplicationGroupId: String?
+    ConfigurationEndPointAddress: String?
+    EngineVersion: String?
+    KmsKeyId: String?
+    PrimaryClusterId: String?
+    ReadEndPointPorts: String?
+    AutoMinorVersionUpgrade: Boolean?
+    SecurityGroupIds: Listing<String>?
+    SnapshotWindow: String?
+    TransitEncryptionMode: String?
+    SnapshotRetentionLimit: Int?
+    ReadEndPointAddressesList: Listing<String>?
+    SnapshottingClusterId: String?
+    IpDiscovery: String?
+    ReadEndPointAddresses: String?
+    PrimaryEndPointPort: String?
+    CacheSecurityGroupNames: Listing<String>?
+    ClusterMode: String?
+    ReadEndPointPortsList: Listing<String>?
+    SnapshotName: String?
+    ReplicationGroupDescription: String?
+    ReaderEndPointAddress: String?
+    MultiAZEnabled: Boolean?
+    NetworkType: String?
+    ReplicationGroupId: String?
+    NumCacheClusters: Int?
+    CacheSubnetGroupName: String?
+    CacheParameterGroupName: String?
+    PreferredMaintenanceWindow: String?
+    AtRestEncryptionEnabled: Boolean?
+    CacheNodeType: String?
+    UserGroupIds: Listing<String>?
+    AuthToken: String?
+    DataTieringEnabled: Boolean?
+    LogDeliveryConfigurations: Listing<LogDeliveryConfigurationRequest>?
+}
+class NodeGroupConfiguration {
+    Slots: String?
+    PrimaryAvailabilityZone: String?
+    ReplicaAvailabilityZones: Listing<String>?
+    NodeGroupId: String?
+    ReplicaCount: Int?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class LogDeliveryConfigurationRequest {
+    LogType: String
+    LogFormat: String
+    DestinationType: String
+    DestinationDetails: DestinationDetails
+}
+class DestinationDetails {
+    CloudWatchLogsDetails: CloudWatchLogsDestinationDetails?
+    KinesisFirehoseDetails: KinesisFirehoseDestinationDetails?
+}
+class CloudWatchLogsDestinationDetails {
+    LogGroup: String
+}
+class KinesisFirehoseDestinationDetails {
+    DeliveryStream: String
+}

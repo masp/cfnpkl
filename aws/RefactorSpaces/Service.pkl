@@ -1,0 +1,33 @@
+/// Definition of AWS::RefactorSpaces::Service Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RefactorSpaces::Service"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:refactor-spaces:[a-zA-Z0-9\-]+:\w{12}:[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    ApplicationIdentifier: String(length <= 14 && length >= 14 && matches(Regex(#"^app-([0-9A-Za-z]{10}$)"#)))?
+    Description: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-_\s\.\!\*\#\@\']+$"#)))?
+    EndpointType: "LAMBDA" | "URL" | *Null
+    EnvironmentIdentifier: String(length <= 14 && length >= 14 && matches(Regex(#"^env-([0-9A-Za-z]{10}$)"#)))?
+    LambdaEndpoint: LambdaEndpointInput?
+    Name: String(length <= 63 && length >= 3 && matches(Regex(#"^(?!svc-)[a-zA-Z0-9]+[a-zA-Z0-9-_ ]+$"#)))?
+    ServiceIdentifier: String(length <= 14 && length >= 14 && matches(Regex(#"^svc-([0-9A-Za-z]{10}$)"#)))?
+    UrlEndpoint: UrlEndpointInput?
+    VpcId: String(length <= 21 && length >= 12 && matches(Regex(#"^vpc-[-a-f0-9]{8}([-a-f0-9]{9})?$"#)))?
+    /// Metadata that you can assign to help organize the frameworks that you
+    /// create. Each tag is a key-value pair.
+    Tags: Listing<Tag>?
+}
+class LambdaEndpointInput {
+    Arn: String(length <= 2048 && length >= 1 && matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:lambda:[a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}:\d{12}:function:[a-zA-Z0-9-_]+(:(\$LATEST|[a-zA-Z0-9-_]+))?$"#)))
+}
+class UrlEndpointInput {
+    HealthUrl: String(length <= 2048 && length >= 1 && matches(Regex(#"^https?://[-a-zA-Z0-9+\x38@#/%?=~_|!:,.;]*[-a-zA-Z0-9+\x38@#/%=~_|]$"#)))?
+    Url: String(length <= 2048 && length >= 1 && matches(Regex(#"^https?://[-a-zA-Z0-9+\x38@#/%?=~_|!:,.;]*[-a-zA-Z0-9+\x38@#/%=~_|]$"#)))
+}
+/// A label for tagging Environment resource
+class Tag {
+    /// A string used to identify this tag
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:).+"#)))
+    /// A string containing the value for the tag
+    Value: String(length <= 256 && length >= 0)
+}

@@ -1,0 +1,31 @@
+/// Resource Type definition for AWS::AppStream::AppBlockBuilder.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppStream::AppBlockBuilder"
+Properties: Props?
+class Props {
+    Name: String?
+    Arn: String?
+    Description: String?
+    DisplayName: String?
+    Platform: String?
+    AccessEndpoints: Listing<AccessEndpoint>?
+    Tags: Listing<Tag>?
+    VpcConfig: VpcConfig?
+    EnableDefaultInternetAccess: Boolean?
+    IamRoleArn: String?
+    CreatedTime: String?
+    InstanceType: String?
+    AppBlockArns: Listing<String>?
+}
+class AccessEndpoint {
+    EndpointType: String
+    VpceId: String
+}
+class Tag {
+    Key: String
+    Value: String
+}
+class VpcConfig {
+    SecurityGroupIds: Listing<String>?
+    SubnetIds: Listing<String>?
+}

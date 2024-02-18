@@ -1,0 +1,91 @@
+/// Resource schema for AWS::MediaLive::Multiplexprogram
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaLive::Multiplexprogram"
+Properties: Props?
+class Props {
+    /// The MediaLive channel associated with the program.
+    ChannelId: String?
+    /// The ID of the multiplex that the program belongs to.
+    MultiplexId: String?
+    /// The settings for this multiplex program.
+    MultiplexProgramSettings: MultiplexProgramSettings?
+    /// The settings for this multiplex program.
+    PreferredChannelPipeline: "CURRENTLY_ACTIVE" | "PIPELINE_0" | "PIPELINE_1" | *Null
+    /// The packet identifier map for this multiplex program.
+    PacketIdentifiersMap: MultiplexProgramPacketIdentifiersMap?
+    /// Contains information about the current sources for the specified
+    /// program in the specified multiplex. Keep in mind that each multiplex
+    /// pipeline connects to both pipelines in a given source channel (the
+    /// channel identified by the program). But only one of those channel
+    /// pipelines is ever active at one time.
+    PipelineDetails: Listing<MultiplexProgramPipelineDetail>?
+    /// The name of the multiplex program.
+    ProgramName: String?
+}
+/// Multiplex Program settings configuration.
+class MultiplexProgramSettings {
+    PreferredChannelPipeline: "CURRENTLY_ACTIVE" | "PIPELINE_0" | "PIPELINE_1" | *Null
+    /// Unique program number.
+    ProgramNumber: Int
+    /// Transport stream service descriptor configuration for the Multiplex
+    /// program.
+    ServiceDescriptor: MultiplexProgramServiceDescriptor?
+    /// Program video settings configuration.
+    VideoSettings: MultiplexVideoSettings0 | MultiplexVideoSettings1 | *Null
+}
+/// Transport stream service descriptor configuration for the Multiplex
+/// program.
+class MultiplexProgramServiceDescriptor {
+    /// Name of the provider.
+    ProviderName: String(length <= 256 && length >= 1)
+    /// Name of the service.
+    ServiceName: String(length <= 256 && length >= 1)
+}
+class MultiplexVideoSettings0 {
+    /// The constant bitrate configuration for the video encode. When this
+    /// field is defined, StatmuxSettings must be undefined.
+    ConstantBitrate: Int
+}
+class MultiplexVideoSettings1 {
+    /// Statmux rate control settings. When this field is defined,
+    /// ConstantBitrate must be undefined.
+    StatmuxSettings: MultiplexStatmuxVideoSettings
+}
+/// Statmux rate control settings
+class MultiplexStatmuxVideoSettings {
+    /// Maximum statmux bitrate.
+    MaximumBitrate: Int?
+    /// Minimum statmux bitrate.
+    MinimumBitrate: Int?
+    /// The purpose of the priority is to use a combination of the\nmultiplex
+    /// rate control algorithm and the QVBR capability of the\nencoder to
+    /// prioritize the video quality of some channels in a\nmultiplex over
+    /// others.  Channels that have a higher priority will\nget higher video
+    /// quality at the expense of the video quality of\nother channels in the
+    /// multiplex with lower priority.
+    Priority: Int?
+}
+/// Packet identifiers map for a given Multiplex program.
+class MultiplexProgramPacketIdentifiersMap {
+    AudioPids: Listing<Int>?
+    DvbSubPids: Listing<Int>?
+    DvbTeletextPid: Int?
+    EtvPlatformPid: Int?
+    EtvSignalPid: Int?
+    KlvDataPids: Listing<Int>?
+    PcrPid: Int?
+    PmtPid: Int?
+    PrivateMetadataPid: Int?
+    Scte27Pids: Listing<Int>?
+    Scte35Pid: Int?
+    TimedMetadataPid: Int?
+    VideoPid: Int?
+}
+/// The current source for one of the pipelines in the multiplex.
+class MultiplexProgramPipelineDetail {
+    /// Identifies the channel pipeline that is currently active for the
+    /// pipeline (identified by PipelineId) in the multiplex.
+    ActiveChannelPipeline: String?
+    /// Identifies a specific pipeline in the multiplex.
+    PipelineId: String?
+}

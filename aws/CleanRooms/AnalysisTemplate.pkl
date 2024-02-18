@@ -1,0 +1,38 @@
+/// Represents a stored analysis within a collaboration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CleanRooms::AnalysisTemplate"
+Properties: Props?
+class Props {
+    Arn: String(length <= 200)?
+    CollaborationArn: String(length <= 100)?
+    CollaborationIdentifier: String(length <= 36 && length >= 36 && matches(Regex(#"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"#)))?
+    /// An arbitrary set of tags (key-value pairs) for this cleanrooms
+    /// analysis template.
+    Tags: Listing<Tag>?
+    /// The member who can query can provide this placeholder for a literal
+    /// data value in an analysis template
+    AnalysisParameters: Listing<AnalysisParameter>?
+    AnalysisTemplateIdentifier: String(length <= 36 && length >= 36 && matches(Regex(#"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"#)))?
+    Description: String(length <= 255 && matches(Regex(#"^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDBFF-\uDC00\uDFFF\t\r\n]*$"#)))?
+    MembershipArn: String(length <= 100)?
+    MembershipIdentifier: String(length <= 36 && length >= 36 && matches(Regex(#"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"#)))?
+    Name: String(length <= 128 && matches(Regex(#"^[a-zA-Z0-9_](([a-zA-Z0-9_ ]+-)*([a-zA-Z0-9_ ]+))?$"#)))?
+    Schema: AnalysisSchema?
+    Source: AnalysisSource?
+    Format: "SQL" | *Null
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}
+class AnalysisParameter {
+    DefaultValue: String(length <= 250 && length >= 0)?
+    Name: String(length <= 100 && length >= 1 && matches(Regex(#"[0-9a-zA-Z_]+"#)))
+    Type: "SMALLINT" | "INTEGER" | "BIGINT" | "DECIMAL" | "REAL" | "DOUBLE_PRECISION" | "BOOLEAN" | "CHAR" | "VARCHAR" | "DATE" | "TIMESTAMP" | "TIMESTAMPTZ" | "TIME" | "TIMETZ" | "VARBYTE"
+}
+class AnalysisSchema {
+    ReferencedTables: Listing<String(length <= 128 && matches(Regex(#"^[a-zA-Z0-9_](([a-zA-Z0-9_ ]+-)*([a-zA-Z0-9_ ]+))?$"#)))>
+}
+class AnalysisSource {
+    Text: String(length <= 15000 && length >= 0)
+}

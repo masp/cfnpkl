@@ -1,0 +1,10 @@
+/// Definition of AWS::MediaTailor::ChannelPolicy Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaTailor::ChannelPolicy"
+Properties: Props?
+class Props {
+    ChannelName: String?
+    /// <p>The IAM policy for the channel. IAM policies are used to control
+    /// access to your channel.</p>
+    Policy: Mapping | String | *Null
+}

@@ -1,0 +1,46 @@
+/// Resource Type definition for AWS::ElastiCache::User
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElastiCache::User"
+Properties: Props?
+class Props {
+    /// Indicates the user status. Can be "active", "modifying" or "deleting".
+    Status: String?
+    /// The ID of the user.
+    UserId: String(matches(Regex(#"[a-z][a-z0-9\\-]*"#)))?
+    /// The username of the user.
+    UserName: String?
+    /// Must be redis.
+    Engine: "redis" | *Null
+    /// Access permissions string used for this user account.
+    AccessString: String?
+    /// Indicates a password is not required for this user account.
+    NoPasswordRequired: Boolean?
+    /// Passwords used for this user account. You can create up to two
+    /// passwords for each user.
+    Passwords: Listing<String>?
+    /// The Amazon Resource Name (ARN) of the user account.
+    Arn: String?
+    AuthenticationMode: AuthenticationMode?
+    /// An array of key-value pairs to apply to this user.
+    Tags: Listing<Tag>?
+}
+class AuthenticationMode {
+    /// Authentication Type
+    Type: "password" | "no-password-required" | "iam"
+    /// Passwords used for this user account. You can create up to two
+    /// passwords for each user.
+    Passwords: Listing<String>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with 'aws:'. You
+    /// can use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z0-9 _\.\/=+:\-@]*$"#)))
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length. You can use any of the following
+    /// characters: the set of Unicode letters, digits, whitespace, _, ., /,
+    /// =, +, and -.
+    Value: String(length <= 256 && length >= 0 && matches(Regex(#"^[a-zA-Z0-9 _\.\/=+:\-@]*$"#)))?
+}

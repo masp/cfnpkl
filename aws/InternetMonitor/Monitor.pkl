@@ -1,0 +1,49 @@
+/// Represents a monitor, which defines the monitoring boundaries for
+/// measurements that Internet Monitor publishes information about for an
+/// application
+extends ".../AWS/Resource.pkl"
+Type = "AWS::InternetMonitor::Monitor"
+Properties: Props?
+class Props {
+    CreatedAt: String(matches(Regex(#"^([0-2]\d{3})-(0[0-9]|1[0-2])-([0-2]\d|3[01])T([01]\d|2[0-4]):([0-5]\d):([0-6]\d)((\.\d{3})?)Z$"#)))?
+    ModifiedAt: String(matches(Regex(#"^([0-2]\d{3})-(0[0-9]|1[0-2])-([0-2]\d|3[01])T([01]\d|2[0-4]):([0-5]\d):([0-6]\d)((\.\d{3})?)Z$"#)))?
+    MonitorArn: String(length <= 512 && length >= 20 && matches(Regex(#"^arn:.*"#)))?
+    MonitorName: String(length <= 255 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_.-]+$"#)))?
+    ProcessingStatus: "OK" | "INACTIVE" | "COLLECTING_DATA" | "INSUFFICIENT_DATA" | "FAULT_SERVICE" | "FAULT_ACCESS_CLOUDWATCH" | *Null
+    ProcessingStatusInfo: String?
+    Resources: Listing<String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:.*"#)))>?
+    ResourcesToAdd: Listing<String(length <= 2048 && length >= 20)>?
+    ResourcesToRemove: Listing<String(length <= 2048 && length >= 20)>?
+    Status: "PENDING" | "ACTIVE" | "INACTIVE" | "ERROR" | *Null
+    Tags: Listing<Tag>?
+    MaxCityNetworksToMonitor: Int?
+    TrafficPercentageToMonitor: Int?
+    InternetMeasurementsLogDelivery: InternetMeasurementsLogDelivery?
+    HealthEventsConfig: HealthEventsConfig?
+}
+/// The metadata that you apply to the cluster to help you categorize and
+/// organize them. Each tag consists of a key and an optional value, both
+/// of which you define.
+class Tag {
+    Key: String?
+    Value: String?
+}
+class InternetMeasurementsLogDelivery {
+    S3Config: S3Config?
+}
+class S3Config {
+    BucketName: String(length >= 3)?
+    BucketPrefix: String?
+    LogDeliveryStatus: "ENABLED" | "DISABLED" | *Null
+}
+class HealthEventsConfig {
+    AvailabilityScoreThreshold: Float?
+    PerformanceScoreThreshold: Float?
+    AvailabilityLocalHealthEventsConfig: LocalHealthEventsConfig?
+    PerformanceLocalHealthEventsConfig: LocalHealthEventsConfig?
+}
+class LocalHealthEventsConfig {
+    Status: "ENABLED" | "DISABLED" | *Null
+    HealthScoreThreshold: Float?
+    MinTrafficImpact: Float?
+}

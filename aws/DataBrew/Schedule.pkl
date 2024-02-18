@@ -1,0 +1,17 @@
+/// Resource schema for AWS::DataBrew::Schedule.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataBrew::Schedule"
+Properties: Props?
+class Props {
+    JobNames: Listing<String(length <= 255 && length >= 1)>?
+    /// Schedule cron
+    CronExpression: String(length <= 512 && length >= 1)?
+    /// Schedule Name
+    Name: String(length <= 255 && length >= 1)?
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

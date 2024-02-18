@@ -1,0 +1,213 @@
+/// Represents a template that defines certificate configurations, both
+/// for issuance and client handling
+extends ".../AWS/Resource.pkl"
+Type = "AWS::PCAConnectorAD::Template"
+Properties: Props?
+class Props {
+    ConnectorArn: String(length <= 200 && length >= 5 && matches(Regex(#"^arn:[\w-]+:pca-connector-ad:[\w-]+:[0-9]+:connector\/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$"#)))?
+    Definition: TemplateDefinition0 | TemplateDefinition1 | TemplateDefinition2 | *Null
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^(?!^\s+$)((?![\x5c'\x2b,;<=>#\x22])([\x20-\x7E]))+$"#)))?
+    ReenrollAllCertificateHolders: Boolean?
+    Tags: Mapping?
+    TemplateArn: String(length <= 200 && length >= 5 && matches(Regex(#"^arn:[\w-]+:pca-connector-ad:[\w-]+:[0-9]+:connector\/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}\/template\/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$"#)))?
+}
+class TemplateDefinition0 {
+    TemplateV2: TemplateV2
+}
+class TemplateV2 {
+    CertificateValidity: CertificateValidity
+    SupersededTemplates: Listing<String(length <= 64 && length >= 1 && matches(Regex(#"^(?!^\s+$)((?![\x5c'\x2b,;<=>#\x22])([\x20-\x7E]))+$"#)))>?
+    PrivateKeyAttributes: PrivateKeyAttributesV2
+    PrivateKeyFlags: PrivateKeyFlagsV2
+    EnrollmentFlags: EnrollmentFlagsV2
+    SubjectNameFlags: SubjectNameFlagsV2
+    GeneralFlags: GeneralFlagsV2
+    Extensions: ExtensionsV2
+}
+class CertificateValidity {
+    ValidityPeriod: ValidityPeriod
+    RenewalPeriod: ValidityPeriod
+}
+class ValidityPeriod {
+    PeriodType: "HOURS" | "DAYS" | "WEEKS" | "MONTHS" | "YEARS"
+    Period: Float
+}
+class PrivateKeyAttributesV2 {
+    MinimalKeyLength: Float
+    KeySpec: "KEY_EXCHANGE" | "SIGNATURE"
+    CryptoProviders: Listing<String(length <= 100 && length >= 1)>?
+}
+class PrivateKeyFlagsV2 {
+    ExportableKey: Boolean?
+    StrongKeyProtectionRequired: Boolean?
+    ClientVersion: "WINDOWS_SERVER_2003" | "WINDOWS_SERVER_2008" | "WINDOWS_SERVER_2008_R2" | "WINDOWS_SERVER_2012" | "WINDOWS_SERVER_2012_R2" | "WINDOWS_SERVER_2016"
+}
+class EnrollmentFlagsV2 {
+    IncludeSymmetricAlgorithms: Boolean?
+    UserInteractionRequired: Boolean?
+    RemoveInvalidCertificateFromPersonalStore: Boolean?
+    NoSecurityExtension: Boolean?
+    EnableKeyReuseOnNtTokenKeysetStorageFull: Boolean?
+}
+class SubjectNameFlagsV2 {
+    SanRequireDomainDns: Boolean?
+    SanRequireSpn: Boolean?
+    SanRequireDirectoryGuid: Boolean?
+    SanRequireUpn: Boolean?
+    SanRequireEmail: Boolean?
+    SanRequireDns: Boolean?
+    RequireDnsAsCn: Boolean?
+    RequireEmail: Boolean?
+    RequireCommonName: Boolean?
+    RequireDirectoryPath: Boolean?
+}
+class GeneralFlagsV2 {
+    AutoEnrollment: Boolean?
+    MachineType: Boolean?
+}
+class ExtensionsV2 {
+    KeyUsage: KeyUsage
+    ApplicationPolicies: ApplicationPolicies?
+}
+class KeyUsage {
+    Critical: Boolean?
+    UsageFlags: KeyUsageFlags
+}
+class KeyUsageFlags {
+    DigitalSignature: Boolean?
+    NonRepudiation: Boolean?
+    KeyEncipherment: Boolean?
+    DataEncipherment: Boolean?
+    KeyAgreement: Boolean?
+}
+class ApplicationPolicies {
+    Critical: Boolean?
+    Policies: Listing<ApplicationPolicy0 | ApplicationPolicy1>
+}
+class ApplicationPolicy0 {
+    PolicyType: "ALL_APPLICATION_POLICIES" | "ANY_PURPOSE" | "ATTESTATION_IDENTITY_KEY_CERTIFICATE" | "CERTIFICATE_REQUEST_AGENT" | "CLIENT_AUTHENTICATION" | "CODE_SIGNING" | "CTL_USAGE" | "DIGITAL_RIGHTS" | "DIRECTORY_SERVICE_EMAIL_REPLICATION" | "DISALLOWED_LIST" | "DNS_SERVER_TRUST" | "DOCUMENT_ENCRYPTION" | "DOCUMENT_SIGNING" | "DYNAMIC_CODE_GENERATOR" | "EARLY_LAUNCH_ANTIMALWARE_DRIVER" | "EMBEDDED_WINDOWS_SYSTEM_COMPONENT_VERIFICATION" | "ENCLAVE" | "ENCRYPTING_FILE_SYSTEM" | "ENDORSEMENT_KEY_CERTIFICATE" | "FILE_RECOVERY" | "HAL_EXTENSION" | "IP_SECURITY_END_SYSTEM" | "IP_SECURITY_IKE_INTERMEDIATE" | "IP_SECURITY_TUNNEL_TERMINATION" | "IP_SECURITY_USER" | "ISOLATED_USER_MODE" | "KDC_AUTHENTICATION" | "KERNEL_MODE_CODE_SIGNING" | "KEY_PACK_LICENSES" | "KEY_RECOVERY" | "KEY_RECOVERY_AGENT" | "LICENSE_SERVER_VERIFICATION" | "LIFETIME_SIGNING" | "MICROSOFT_PUBLISHER" | "MICROSOFT_TIME_STAMPING" | "MICROSOFT_TRUST_LIST_SIGNING" | "OCSP_SIGNING" | "OEM_WINDOWS_SYSTEM_COMPONENT_VERIFICATION" | "PLATFORM_CERTIFICATE" | "PREVIEW_BUILD_SIGNING" | "PRIVATE_KEY_ARCHIVAL" | "PROTECTED_PROCESS_LIGHT_VERIFICATION" | "PROTECTED_PROCESS_VERIFICATION" | "QUALIFIED_SUBORDINATION" | "REVOKED_LIST_SIGNER" | "ROOT_PROGRAM_AUTO_UPDATE_CA_REVOCATION" | "ROOT_PROGRAM_AUTO_UPDATE_END_REVOCATION" | "ROOT_PROGRAM_NO_OSCP_FAILOVER_TO_CRL" | "ROOT_LIST_SIGNER" | "SECURE_EMAIL" | "SERVER_AUTHENTICATION" | "SMART_CARD_LOGIN" | "SPC_ENCRYPTED_DIGEST_RETRY_COUNT" | "SPC_RELAXED_PE_MARKER_CHECK" | "TIME_STAMPING" | "WINDOWS_HARDWARE_DRIVER_ATTESTED_VERIFICATION" | "WINDOWS_HARDWARE_DRIVER_EXTENDED_VERIFICATION" | "WINDOWS_HARDWARE_DRIVER_VERIFICATION" | "WINDOWS_HELLO_RECOVERY_KEY_ENCRYPTION" | "WINDOWS_KITS_COMPONENT" | "WINDOWS_RT_VERIFICATION" | "WINDOWS_SOFTWARE_EXTENSION_VERIFICATION" | "WINDOWS_STORE" | "WINDOWS_SYSTEM_COMPONENT_VERIFICATION" | "WINDOWS_TCB_COMPONENT" | "WINDOWS_THIRD_PARTY_APPLICATION_COMPONENT" | "WINDOWS_UPDATE"
+}
+class ApplicationPolicy1 {
+    PolicyObjectIdentifier: String(length <= 64 && length >= 1 && matches(Regex(#"^([0-2])\.([0-9]|([0-3][0-9]))(\.([0-9]+)){0,126}$"#)))
+}
+class TemplateDefinition1 {
+    TemplateV3: TemplateV3
+}
+class TemplateV3 {
+    CertificateValidity: CertificateValidity
+    SupersededTemplates: Listing<String(length <= 64 && length >= 1 && matches(Regex(#"^(?!^\s+$)((?![\x5c'\x2b,;<=>#\x22])([\x20-\x7E]))+$"#)))>?
+    PrivateKeyAttributes: PrivateKeyAttributesV3
+    PrivateKeyFlags: PrivateKeyFlagsV3
+    EnrollmentFlags: EnrollmentFlagsV3
+    SubjectNameFlags: SubjectNameFlagsV3
+    GeneralFlags: GeneralFlagsV3
+    HashAlgorithm: "SHA256" | "SHA384" | "SHA512"
+    Extensions: ExtensionsV3
+}
+class PrivateKeyAttributesV3 {
+    MinimalKeyLength: Float
+    KeySpec: "KEY_EXCHANGE" | "SIGNATURE"
+    CryptoProviders: Listing<String(length <= 100 && length >= 1)>?
+    KeyUsageProperty: KeyUsageProperty0 | KeyUsageProperty1
+    Algorithm: "RSA" | "ECDH_P256" | "ECDH_P384" | "ECDH_P521"
+}
+class KeyUsageProperty0 {
+    PropertyType: "ALL"
+}
+class KeyUsageProperty1 {
+    PropertyFlags: KeyUsagePropertyFlags
+}
+class KeyUsagePropertyFlags {
+    Decrypt: Boolean?
+    KeyAgreement: Boolean?
+    Sign: Boolean?
+}
+class PrivateKeyFlagsV3 {
+    ExportableKey: Boolean?
+    StrongKeyProtectionRequired: Boolean?
+    RequireAlternateSignatureAlgorithm: Boolean?
+    ClientVersion: "WINDOWS_SERVER_2008" | "WINDOWS_SERVER_2008_R2" | "WINDOWS_SERVER_2012" | "WINDOWS_SERVER_2012_R2" | "WINDOWS_SERVER_2016"
+}
+class EnrollmentFlagsV3 {
+    IncludeSymmetricAlgorithms: Boolean?
+    UserInteractionRequired: Boolean?
+    RemoveInvalidCertificateFromPersonalStore: Boolean?
+    NoSecurityExtension: Boolean?
+    EnableKeyReuseOnNtTokenKeysetStorageFull: Boolean?
+}
+class SubjectNameFlagsV3 {
+    SanRequireDomainDns: Boolean?
+    SanRequireSpn: Boolean?
+    SanRequireDirectoryGuid: Boolean?
+    SanRequireUpn: Boolean?
+    SanRequireEmail: Boolean?
+    SanRequireDns: Boolean?
+    RequireDnsAsCn: Boolean?
+    RequireEmail: Boolean?
+    RequireCommonName: Boolean?
+    RequireDirectoryPath: Boolean?
+}
+class GeneralFlagsV3 {
+    AutoEnrollment: Boolean?
+    MachineType: Boolean?
+}
+class ExtensionsV3 {
+    KeyUsage: KeyUsage
+    ApplicationPolicies: ApplicationPolicies?
+}
+class TemplateDefinition2 {
+    TemplateV4: TemplateV4
+}
+class TemplateV4 {
+    CertificateValidity: CertificateValidity
+    SupersededTemplates: Listing<String(length <= 64 && length >= 1 && matches(Regex(#"^(?!^\s+$)((?![\x5c'\x2b,;<=>#\x22])([\x20-\x7E]))+$"#)))>?
+    PrivateKeyAttributes: PrivateKeyAttributesV4
+    PrivateKeyFlags: PrivateKeyFlagsV4
+    EnrollmentFlags: EnrollmentFlagsV4
+    SubjectNameFlags: SubjectNameFlagsV4
+    GeneralFlags: GeneralFlagsV4
+    HashAlgorithm: "SHA256" | "SHA384" | "SHA512" | *Null
+    Extensions: ExtensionsV4
+}
+class PrivateKeyAttributesV4 {
+    MinimalKeyLength: Float
+    KeySpec: "KEY_EXCHANGE" | "SIGNATURE"
+    CryptoProviders: Listing<String(length <= 100 && length >= 1)>?
+    KeyUsageProperty: KeyUsageProperty0 | KeyUsageProperty1 | *Null
+    Algorithm: "RSA" | "ECDH_P256" | "ECDH_P384" | "ECDH_P521" | *Null
+}
+class PrivateKeyFlagsV4 {
+    ExportableKey: Boolean?
+    StrongKeyProtectionRequired: Boolean?
+    RequireAlternateSignatureAlgorithm: Boolean?
+    RequireSameKeyRenewal: Boolean?
+    UseLegacyProvider: Boolean?
+    ClientVersion: "WINDOWS_SERVER_2012" | "WINDOWS_SERVER_2012_R2" | "WINDOWS_SERVER_2016"
+}
+class EnrollmentFlagsV4 {
+    IncludeSymmetricAlgorithms: Boolean?
+    UserInteractionRequired: Boolean?
+    RemoveInvalidCertificateFromPersonalStore: Boolean?
+    NoSecurityExtension: Boolean?
+    EnableKeyReuseOnNtTokenKeysetStorageFull: Boolean?
+}
+class SubjectNameFlagsV4 {
+    SanRequireDomainDns: Boolean?
+    SanRequireSpn: Boolean?
+    SanRequireDirectoryGuid: Boolean?
+    SanRequireUpn: Boolean?
+    SanRequireEmail: Boolean?
+    SanRequireDns: Boolean?
+    RequireDnsAsCn: Boolean?
+    RequireEmail: Boolean?
+    RequireCommonName: Boolean?
+    RequireDirectoryPath: Boolean?
+}
+class GeneralFlagsV4 {
+    AutoEnrollment: Boolean?
+    MachineType: Boolean?
+}
+class ExtensionsV4 {
+    KeyUsage: KeyUsage
+    ApplicationPolicies: ApplicationPolicies?
+}

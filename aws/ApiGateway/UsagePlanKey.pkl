@@ -1,0 +1,16 @@
+/// The ``AWS::ApiGateway::UsagePlanKey`` resource associates an API key
+/// with a usage plan. This association determines which users the usage
+/// plan is applied to.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::UsagePlanKey"
+Properties: Props?
+class Props {
+    /// The Id of the UsagePlanKey resource.
+    KeyId: String?
+    /// The type of a UsagePlanKey resource for a plan customer.
+    KeyType: "API_KEY" | *Null
+    /// The Id of the UsagePlan resource representing the usage plan
+    /// containing the UsagePlanKey resource representing a plan customer.
+    UsagePlanId: String?
+    Id: String?
+}

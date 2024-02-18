@@ -1,0 +1,100 @@
+/// Resource schema for AWS::MediaConnect::Bridge
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaConnect::Bridge"
+Properties: Props?
+class Props {
+    /// The name of the bridge.
+    Name: String?
+    /// The Amazon Resource Number (ARN) of the bridge.
+    BridgeArn: String?
+    /// The placement Amazon Resource Number (ARN) of the bridge.
+    PlacementArn: String?
+    BridgeState: "CREATING" | "STANDBY" | "STARTING" | "DEPLOYING" | "ACTIVE" | "STOPPING" | "DELETING" | "DELETED" | "START_FAILED" | "START_PENDING" | "UPDATING" | *Null
+    SourceFailoverConfig: FailoverConfig?
+    /// The outputs on this bridge.
+    Outputs: Listing<BridgeOutput>?
+    /// The sources on this bridge.
+    Sources: Listing<BridgeSource>?
+    IngressGatewayBridge: IngressGatewayBridge?
+    EgressGatewayBridge: EgressGatewayBridge?
+}
+/// The settings for source failover.
+class FailoverConfig {
+    State: "ENABLED" | "DISABLED" | *Null
+    /// The type of failover you choose for this flow. FAILOVER allows
+    /// switching between different streams.
+    FailoverMode: "FAILOVER"
+    /// The priority you want to assign to a source. You can have a primary
+    /// stream and a backup stream or two equally prioritized streams.
+    SourcePriority: SourcePriority?
+}
+/// The priority you want to assign to a source. You can have a primary
+/// stream and a backup stream or two equally prioritized streams.
+class SourcePriority {
+    /// The name of the source you choose as the primary source for this flow.
+    PrimarySource: String?
+}
+/// The output of the bridge.
+class BridgeOutput {
+    NetworkOutput: BridgeNetworkOutput?
+}
+/// The output of the bridge. A network output is delivered to your
+/// premises.
+class BridgeNetworkOutput {
+    /// The network output name.
+    Name: String
+    /// The network output protocol.
+    Protocol: "rtp-fec" | "rtp" | "udp"
+    /// The network output IP Address.
+    IpAddress: String
+    /// The network output port.
+    Port: Int
+    /// The network output's gateway network name.
+    NetworkName: String
+    /// The network output TTL.
+    Ttl: Int
+}
+/// The bridge's source.
+class BridgeSource {
+    FlowSource: BridgeFlowSource?
+    NetworkSource: BridgeNetworkSource?
+}
+/// The source of the bridge. A flow source originates in MediaConnect as
+/// an existing cloud flow.
+class BridgeFlowSource {
+    /// The name of the flow source.
+    Name: String
+    /// The ARN of the cloud flow used as a source of this bridge.
+    FlowArn: String
+    /// The name of the VPC interface attachment to use for this source.
+    FlowVpcInterfaceAttachment: VpcInterfaceAttachment?
+}
+/// The settings for attaching a VPC interface to an resource.
+class VpcInterfaceAttachment {
+    /// The name of the VPC interface to use for this resource.
+    VpcInterfaceName: String?
+}
+/// The source of the bridge. A network source originates at your
+/// premises.
+class BridgeNetworkSource {
+    /// The name of the network source.
+    Name: String
+    /// The network source protocol.
+    Protocol: "rtp-fec" | "rtp" | "udp"
+    /// The network source multicast IP.
+    MulticastIp: String
+    /// The network source port.
+    Port: Int
+    /// The network source's gateway network name.
+    NetworkName: String
+}
+class IngressGatewayBridge {
+    /// The maximum expected bitrate of the ingress bridge.
+    MaxBitrate: Int
+    /// The maximum number of outputs on the ingress bridge.
+    MaxOutputs: Int
+}
+class EgressGatewayBridge {
+    /// The maximum expected bitrate of the egress bridge.
+    MaxBitrate: Int
+}

@@ -1,0 +1,40 @@
+/// Resource Type definition for AWS::DataPipeline::Pipeline
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataPipeline::Pipeline"
+Properties: Props?
+class Props {
+    PipelineTags: Listing<PipelineTag>?
+    ParameterObjects: Listing<ParameterObject>?
+    Description: String?
+    Activate: Boolean?
+    PipelineObjects: Listing<PipelineObject>?
+    Id: String?
+    ParameterValues: Listing<ParameterValue>?
+    Name: String?
+}
+class PipelineTag {
+    Value: String
+    Key: String
+}
+class ParameterObject {
+    Attributes: Listing<ParameterAttribute>
+    Id: String
+}
+class ParameterAttribute {
+    StringValue: String
+    Key: String
+}
+class PipelineObject {
+    Fields: Listing<Field>
+    Id: String
+    Name: String
+}
+class Field {
+    RefValue: String?
+    StringValue: String?
+    Key: String
+}
+class ParameterValue {
+    StringValue: String
+    Id: String
+}

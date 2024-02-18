@@ -1,0 +1,14 @@
+/// The ``AWS::ApiGateway::Resource`` resource creates a resource in an
+/// API.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::Resource"
+Properties: Props?
+class Props {
+    ResourceId: String?
+    /// The string identifier of the associated RestApi.
+    RestApiId: String?
+    /// The parent resource's identifier.
+    ParentId: String?
+    /// The last path segment for this resource.
+    PathPart: String?
+}

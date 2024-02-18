@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::Greengrass::LoggerDefinitionVersion
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Greengrass::LoggerDefinitionVersion"
+Properties: Props?
+class Props {
+    Id: String?
+    LoggerDefinitionId: String?
+    Loggers: Listing<Logger>?
+}
+class Logger {
+    Space: Int?
+    Type: String
+    Level: String
+    Id: String
+    Component: String
+}

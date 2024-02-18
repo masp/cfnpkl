@@ -1,0 +1,120 @@
+/// A WAFv2 Logging Configuration Resource Provider
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAFv2::LoggingConfiguration"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the web ACL that you want to
+    /// associate with LogDestinationConfigs.
+    ResourceArn: String?
+    /// The Amazon Resource Names (ARNs) of the logging destinations that you
+    /// want to associate with the web ACL.
+    LogDestinationConfigs: Listing<String>?
+    /// The parts of the request that you want to keep out of the logs. For
+    /// example, if you redact the HEADER field, the HEADER field in the
+    /// firehose will be xxx.
+    RedactedFields: Listing<FieldToMatch>?
+    /// Indicates whether the logging configuration was created by AWS
+    /// Firewall Manager, as part of an AWS WAF policy configuration. If true,
+    /// only Firewall Manager can modify or delete the configuration.
+    ManagedByFirewallManager: Boolean?
+    /// Filtering that specifies which web requests are kept in the logs and
+    /// which are dropped. You can filter on the rule action and on the web
+    /// request labels that were applied by matching rules during web ACL
+    /// evaluation.
+    LoggingFilter: LoggingFilter?
+}
+/// A key-value pair to associate with a resource.
+class FieldToMatch {
+    /// Inspect the request body as JSON. The request body immediately follows
+    /// the request headers. This is the part of a request that contains any
+    /// additional data that you want to send to your web server as the HTTP
+    /// request body, such as data from a form.
+    JsonBody: JsonBody?
+    /// Inspect the HTTP method. The method indicates the type of operation
+    /// that the request is asking the origin to perform.
+    Method: Mapping?
+    /// Inspect the query string. This is the part of a URL that appears after
+    /// a ? character, if any.
+    QueryString: Mapping?
+    /// Inspect a single header. Provide the name of the header to inspect,
+    /// for example, User-Agent or Referer. This setting isn't case sensitive.
+    SingleHeader: SingleHeader?
+    /// Inspect the request URI path. This is the part of a web request that
+    /// identifies a resource, for example, /images/daily-ad.jpg.
+    UriPath: Mapping?
+}
+/// Inspect the request body as JSON. The request body immediately follows
+/// the request headers. This is the part of a request that contains any
+/// additional data that you want to send to your web server as the HTTP
+/// request body, such as data from a form.
+class JsonBody {
+    /// What AWS WAF should do if it fails to completely parse the JSON body.
+    InvalidFallbackBehavior: "MATCH" | "NO_MATCH" | "EVALUATE_AS_STRING" | *Null
+    /// The patterns to look for in the JSON body. AWS WAF inspects the
+    /// results of these pattern matches against the rule inspection criteria.
+    MatchPattern: MatchPattern
+    /// The parts of the JSON to match against using the MatchPattern. If you
+    /// specify All, AWS WAF matches against keys and values.
+    MatchScope: "ALL" | "KEY" | "VALUE"
+}
+/// The patterns to look for in the JSON body. AWS WAF inspects the
+/// results of these pattern matches against the rule inspection criteria.
+class MatchPattern {
+    /// Match all of the elements. See also MatchScope in JsonBody. You must
+    /// specify either this setting or the IncludedPaths setting, but not
+    /// both.
+    All: Mapping?
+    /// Match only the specified include paths. See also MatchScope in
+    /// JsonBody.
+    IncludedPaths: Listing<String(matches(Regex(#"^[\/]+([^~]*(~[01])*)*{1,512}$"#)))>?
+}
+/// Inspect a single header. Provide the name of the header to inspect,
+/// for example, User-Agent or Referer. This setting isn't case sensitive.
+class SingleHeader {
+    /// The name of the query header to inspect.
+    Name: String
+}
+/// Filtering that specifies which web requests are kept in the logs and
+/// which are dropped. You can filter on the rule action and on the web
+/// request labels that were applied by matching rules during web ACL
+/// evaluation.
+class LoggingFilter {
+    /// Default handling for logs that don't match any of the specified
+    /// filtering conditions.
+    DefaultBehavior: "KEEP" | "DROP"
+    /// The filters that you want to apply to the logs.
+    Filters: Listing<Filter>
+}
+class Filter {
+    /// How to handle logs that satisfy the filter's conditions and
+    /// requirement.
+    Behavior: "KEEP" | "DROP"
+    /// Match conditions for the filter.
+    Conditions: Listing<Condition>
+    /// Logic to apply to the filtering conditions. You can specify that, in
+    /// order to satisfy the filter, a log must match all conditions or must
+    /// match at least one condition.
+    Requirement: "MEETS_ALL" | "MEETS_ANY"
+}
+class Condition {
+    /// A single action condition.
+    ActionCondition: ActionCondition?
+    /// A single label name condition.
+    LabelNameCondition: LabelNameCondition?
+}
+/// A single action condition.
+class ActionCondition {
+    /// Logic to apply to the filtering conditions. You can specify that, in
+    /// order to satisfy the filter, a log must match all conditions or must
+    /// match at least one condition.
+    Action: "ALLOW" | "BLOCK" | "COUNT" | "CAPTCHA" | "CHALLENGE" | "EXCLUDED_AS_COUNT"
+}
+/// A single label name condition.
+class LabelNameCondition {
+    /// The label name that a log record must contain in order to meet the
+    /// condition. This must be a fully qualified label name. Fully qualified
+    /// labels have a prefix, optional namespaces, and label name. The prefix
+    /// identifies the rule group or web ACL context of the rule that added
+    /// the label.
+    LabelName: String
+}

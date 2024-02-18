@@ -1,0 +1,13 @@
+/// This resource adds Key-Value metadata to a Schema version of Glue
+/// Schema Registry.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::SchemaVersionMetadata"
+Properties: Props?
+class Props {
+    /// Represents the version ID associated with the schema version.
+    SchemaVersionId: String(matches(Regex(#"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"#)))?
+    /// Metadata key
+    Key: String(length <= 128 && length >= 1)?
+    /// Metadata value
+    Value: String(length <= 256 && length >= 1)?
+}

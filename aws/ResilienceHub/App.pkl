@@ -1,0 +1,73 @@
+/// Resource Type Definition for AWS::ResilienceHub::App.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ResilienceHub::App"
+Properties: Props?
+class Props {
+    /// Name of the app.
+    Name: String(matches(Regex(#"^[A-Za-z0-9][A-Za-z0-9_\-]{1,59}$"#)))?
+    /// App description.
+    Description: String(length <= 500 && length >= 0)?
+    /// Amazon Resource Name (ARN) of the App.
+    AppArn: String(matches(Regex(#"^arn:(aws|aws-cn|aws-iso|aws-iso-[a-z]{1}|aws-us-gov):[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:([a-z]{2}-((iso[a-z]{0,1}-)|(gov-)){0,1}[a-z]+-[0-9]):[0-9]{12}:[A-Za-z0-9][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))?
+    /// Amazon Resource Name (ARN) of the Resiliency Policy.
+    ResiliencyPolicyArn: String(matches(Regex(#"^arn:(aws|aws-cn|aws-iso|aws-iso-[a-z]{1}|aws-us-gov):[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:([a-z]{2}-((iso[a-z]{0,1}-)|(gov-)){0,1}[a-z]+-[0-9]):[0-9]{12}:[A-Za-z0-9][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))?
+    Tags: Mapping?
+    /// A string containing full ResilienceHub app template body.
+    AppTemplateBody: String(length <= 409600 && length >= 0 && matches(Regex(#"^[\w\s:,-\.'\/{}\[\]:"]+$"#)))?
+    /// An array of ResourceMapping objects.
+    ResourceMappings: Listing<ResourceMapping>?
+    /// Assessment execution schedule.
+    AppAssessmentSchedule: "Disabled" | "Daily" | *Null
+    PermissionModel: PermissionModel?
+    /// The list of events you would like to subscribe and get notification
+    /// for.
+    EventSubscriptions: Listing<EventSubscription>?
+    /// Indicates if compliance drifts (deviations) were detected while
+    /// running an assessment for your application.
+    DriftStatus: "NotChecked" | "NotDetected" | "Detected" | *Null
+}
+/// Resource mapping is used to map logical resources from template to
+/// physical resource
+class ResourceMapping {
+    LogicalStackName: String?
+    MappingType: String(matches(Regex(#"CfnStack|Resource|Terraform|EKS"#)))
+    ResourceName: String(matches(Regex(#"^[A-Za-z0-9][A-Za-z0-9_\-]{1,59}$"#)))?
+    TerraformSourceName: String?
+    EksSourceName: String?
+    PhysicalResourceId: PhysicalResourceId
+}
+class PhysicalResourceId {
+    AwsAccountId: String(matches(Regex(#"^[0-9]{12}$"#)))?
+    AwsRegion: String(matches(Regex(#"^[a-z]{2}-((iso[a-z]{0,1}-)|(gov-)){0,1}[a-z]+-[0-9]$"#)))?
+    Identifier: String(length <= 255 && length >= 1)
+    Type: String(matches(Regex(#"Arn|Native"#)))
+}
+/// Defines the roles and credentials that AWS Resilience Hub would use
+/// while creating the application, importing its resources, and running
+/// an assessment.
+class PermissionModel {
+    /// Defines how AWS Resilience Hub scans your resources. It can scan for
+    /// the resources by using a pre-existing role in your AWS account, or by
+    /// using the credentials of the current IAM user.
+    Type: "LegacyIAMUser" | "RoleBased"
+    /// Existing AWS IAM role name in the primary AWS account that will be
+    /// assumed by AWS Resilience Hub Service Principle to obtain a read-only
+    /// access to your application resources while running an assessment.
+    InvokerRoleName: String(matches(Regex(#"((\u002F[\u0021-\u007E]+\u002F){1,511})?[A-Za-z0-9+=,.@_/-]{1,64}"#)))?
+    /// Defines a list of role Amazon Resource Names (ARNs) to be used in
+    /// other accounts. These ARNs are used for querying purposes while
+    /// importing resources and assessing your application.
+    CrossAccountRoleArns: Listing<String(matches(Regex(#"arn:(aws|aws-cn|aws-iso|aws-iso-[a-z]{1}|aws-us-gov):iam::[0-9]{12}:role\/(([\u0021-\u007E]+\u002F){1,511})?[A-Za-z0-9+=,.@_/-]{1,64}$"#)))>?
+}
+/// Indicates an event you would like to subscribe and get notification
+/// for.
+class EventSubscription {
+    /// Unique name to identify an event subscription.
+    Name: String(length <= 256)
+    /// The type of event you would like to subscribe and get notification
+    /// for.
+    EventType: "ScheduledAssessmentFailure" | "DriftDetected"
+    /// Amazon Resource Name (ARN) of the Amazon Simple Notification Service
+    /// topic.
+    SnsTopicArn: String(matches(Regex(#"^arn:(aws|aws-cn|aws-iso|aws-iso-[a-z]{1}|aws-us-gov):[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:([a-z]{2}-((iso[a-z]{0,1}-)|(gov-)){0,1}[a-z]+-[0-9]):[0-9]{12}:[A-Za-z0-9/][A-Za-z0-9:_/+.-]{0,1023}$"#)))?
+}

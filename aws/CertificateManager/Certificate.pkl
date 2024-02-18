@@ -1,0 +1,24 @@
+/// Resource Type definition for AWS::CertificateManager::Certificate
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CertificateManager::Certificate"
+Properties: Props?
+class Props {
+    CertificateAuthorityArn: String?
+    DomainValidationOptions: Listing<DomainValidationOption>?
+    CertificateTransparencyLoggingPreference: String?
+    DomainName: String?
+    ValidationMethod: String?
+    SubjectAlternativeNames: Listing<String>?
+    Id: String?
+    Tags: Listing<Tag>?
+    KeyAlgorithm: String?
+}
+class DomainValidationOption {
+    DomainName: String
+    ValidationDomain: String?
+    HostedZoneId: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

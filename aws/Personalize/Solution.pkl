@@ -1,0 +1,116 @@
+/// Resource schema for AWS::Personalize::Solution.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Personalize::Solution"
+Properties: Props?
+class Props {
+    /// The name for the solution
+    Name: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))?
+    SolutionArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))?
+    /// When your have multiple event types (using an EVENT_TYPE schema
+    /// field), this parameter specifies which event type (for example,
+    /// 'click' or 'like') is used for training the model. If you do not
+    /// provide an eventType, Amazon Personalize will use all interactions for
+    /// training with equal weight regardless of type.
+    EventType: String(length <= 256)?
+    /// The ARN of the dataset group that provides the training data.
+    DatasetGroupArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))?
+    /// Whether to perform automated machine learning (AutoML). The default is
+    /// false. For this case, you must specify recipeArn.
+    PerformAutoML: Boolean?
+    /// Whether to perform hyperparameter optimization (HPO) on the specified
+    /// or selected recipe. The default is false. When performing AutoML, this
+    /// parameter is always true and you should not set it to false.
+    PerformHPO: Boolean?
+    /// The ARN of the recipe to use for model training. Only specified when
+    /// performAutoML is false.
+    RecipeArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))?
+    SolutionConfig: SolutionConfig?
+}
+/// The configuration to use with the solution. When performAutoML is set
+/// to true, Amazon Personalize only evaluates the autoMLConfig section of
+/// the solution configuration.
+class SolutionConfig {
+    /// Lists the hyperparameter names and ranges.
+    AlgorithmHyperParameters: Mapping?
+    /// The AutoMLConfig object containing a list of recipes to search when
+    /// AutoML is performed.
+    AutoMLConfig: AutoMLConfig?
+    /// Only events with a value greater than or equal to this threshold are
+    /// used for training a model.
+    EventValueThreshold: String(length <= 256)?
+    /// Lists the feature transformation parameters.
+    FeatureTransformationParameters: Mapping?
+    /// Describes the properties for hyperparameter optimization (HPO)
+    HpoConfig: HpoConfig?
+}
+/// The AutoMLConfig object containing a list of recipes to search when
+/// AutoML is performed.
+class AutoMLConfig {
+    /// The metric to optimize.
+    MetricName: String(length <= 256)?
+    /// The list of candidate recipes.
+    RecipeList: Listing<String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))>?
+}
+/// Describes the properties for hyperparameter optimization (HPO)
+class HpoConfig {
+    /// The hyperparameters and their allowable ranges
+    AlgorithmHyperParameterRanges: AlgorithmHyperParameterRanges?
+    /// The metric to optimize during HPO.
+    HpoObjective: HpoObjective?
+    /// Describes the resource configuration for hyperparameter optimization
+    /// (HPO).
+    HpoResourceConfig: HpoResourceConfig?
+}
+/// The hyperparameters and their allowable ranges
+class AlgorithmHyperParameterRanges {
+    /// The categorical hyperparameters and their ranges.
+    CategoricalHyperParameterRanges: Listing<CategoricalHyperParameterRange>?
+    /// The continuous hyperparameters and their ranges.
+    ContinuousHyperParameterRanges: Listing<ContinuousHyperParameterRange>?
+    /// The integer hyperparameters and their ranges.
+    IntegerHyperParameterRanges: Listing<IntegerHyperParameterRange>?
+}
+/// Provides the name and values of a Categorical hyperparameter.
+class CategoricalHyperParameterRange {
+    /// The name of the hyperparameter.
+    Name: String(length <= 256)?
+    /// A list of the categories for the hyperparameter.
+    Values: Listing<String(length <= 1000)>?
+}
+/// Provides the name and range of a continuous hyperparameter.
+class ContinuousHyperParameterRange {
+    /// The name of the hyperparameter.
+    Name: String(length <= 256)?
+    /// The minimum allowable value for the hyperparameter.
+    MinValue: Float?
+    /// The maximum allowable value for the hyperparameter.
+    MaxValue: Float?
+}
+/// Provides the name and range of an integer-valued hyperparameter.
+class IntegerHyperParameterRange {
+    /// The name of the hyperparameter.
+    Name: String(length <= 256)?
+    /// The minimum allowable value for the hyperparameter.
+    MinValue: Int?
+    /// The maximum allowable value for the hyperparameter.
+    MaxValue: Int?
+}
+/// The metric to optimize during HPO.
+class HpoObjective {
+    /// The name of the metric
+    MetricName: String(length <= 256)?
+    /// The type of the metric. Valid values are Maximize and Minimize.
+    Type: "Maximize" | "Minimize" | *Null
+    /// A regular expression for finding the metric in the training job logs.
+    MetricRegex: String(length <= 256)?
+}
+/// Describes the resource configuration for hyperparameter optimization
+/// (HPO).
+class HpoResourceConfig {
+    /// The maximum number of training jobs when you create a solution
+    /// version. The maximum value for maxNumberOfTrainingJobs is 40.
+    MaxNumberOfTrainingJobs: String(length <= 256)?
+    /// The maximum number of parallel training jobs when you create a
+    /// solution version. The maximum value for maxParallelTrainingJobs is 10.
+    MaxParallelTrainingJobs: String(length <= 256)?
+}

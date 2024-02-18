@@ -1,0 +1,110 @@
+/// The AWS::SecurityHub::AutomationRule resource represents the
+/// Automation Rule in your account. One rule resource is created for each
+/// Automation Rule in which you configure rule criteria and actions.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SecurityHub::AutomationRule"
+Properties: Props?
+class Props {
+    /// An Automation Rule Arn is automatically created
+    RuleArn: String(matches(Regex(#"arn:aws\S*:securityhub:\S*"#)))?
+    /// Status of the Rule upon creation
+    RuleStatus: "ENABLED" | "DISABLED" | *Null
+    /// Rule order value
+    RuleOrder: Int?
+    /// Rule description
+    Description: String(length <= 1024 && length >= 1)?
+    /// Rule name
+    RuleName: String(length <= 256 && length >= 1)?
+    /// The date and time when Automation Rule was created
+    CreatedAt: String(matches(Regex(#"^(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1-2](\d)|[3][0-1])[T](?:([0-1](\d)|[2][0-3]):[0-5](\d):[0-5](\d)|23:59:60)(?:\.(\d)+)?([Z]|[+-](\d\d)(:?(\d\d))?)$"#)))?
+    /// The date and time when Automation Rule was last updated
+    UpdatedAt: String(matches(Regex(#"^(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1-2](\d)|[3][0-1])[T](?:([0-1](\d)|[2][0-3]):[0-5](\d):[0-5](\d)|23:59:60)(?:\.(\d)+)?([Z]|[+-](\d\d)(:?(\d\d))?)$"#)))?
+    /// The identifier by which created the rule
+    CreatedBy: String(length <= 256 && length >= 1)?
+    /// If Rule is a terminal rule
+    IsTerminal: Boolean?
+    Actions: Listing<AutomationRulesAction>?
+    /// The rule criteria for evaluating findings
+    Criteria: AutomationRulesFindingFilters?
+    Tags: Mapping?
+}
+class AutomationRulesAction {
+    Type: "FINDING_FIELDS_UPDATE"
+    FindingFieldsUpdate: AutomationRulesFindingFieldsUpdate
+}
+class AutomationRulesFindingFieldsUpdate {
+    Types: Listing<String(matches(Regex(#"^([^/]+)(/[^/]+){0,2}$"#)))>?
+    /// Severity of the finding
+    Severity: SeverityUpdate?
+    Confidence: Int?
+    Criticality: Int?
+    UserDefinedFields: Mapping?
+    VerificationState: "UNKNOWN" | "TRUE_POSITIVE" | "FALSE_POSITIVE" | "BENIGN_POSITIVE" | *Null
+    RelatedFindings: Listing<RelatedFinding>?
+    /// Note added to the finding
+    Note: NoteUpdate?
+    /// Workflow status set for the finding
+    Workflow: WorkflowUpdate?
+}
+class SeverityUpdate {
+    Product: Float?
+    Label: "INFORMATIONAL" | "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" | *Null
+    Normalized: Int?
+}
+class RelatedFinding {
+    ProductArn: String(length <= 2048 && length >= 12 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso-?[a-z]{0,2}):[A-Za-z0-9]{1,63}:[a-z]+-([a-z]{1,10}-)?[a-z]+-[0-9]+:([0-9]{12})?:.+$"#)))
+    Id: Mapping
+}
+class NoteUpdate {
+    Text: String(length <= 512 && length >= 1)
+    UpdatedBy: Mapping
+}
+class WorkflowUpdate {
+    Status: "NEW" | "NOTIFIED" | "RESOLVED" | "SUPPRESSED"
+}
+class AutomationRulesFindingFilters {
+    ProductArn: Listing<StringFilter>?
+    AwsAccountId: Listing<StringFilter>?
+    Id: Listing<StringFilter>?
+    GeneratorId: Listing<StringFilter>?
+    Type: Listing<StringFilter>?
+    FirstObservedAt: Listing<Mapping | Mapping>?
+    LastObservedAt: Listing<Mapping | Mapping>?
+    CreatedAt: Listing<Mapping | Mapping>?
+    UpdatedAt: Listing<Mapping | Mapping>?
+    Confidence: Listing<Mapping | Mapping>?
+    Criticality: Listing<Mapping | Mapping>?
+    Title: Listing<StringFilter>?
+    Description: Listing<StringFilter>?
+    SourceUrl: Listing<StringFilter>?
+    ProductName: Listing<StringFilter>?
+    CompanyName: Listing<StringFilter>?
+    SeverityLabel: Listing<StringFilter>?
+    ResourceType: Listing<StringFilter>?
+    ResourceId: Listing<StringFilter>?
+    ResourcePartition: Listing<StringFilter>?
+    ResourceRegion: Listing<StringFilter>?
+    ResourceTags: Listing<MapFilter>?
+    ResourceDetailsOther: Listing<MapFilter>?
+    ComplianceStatus: Listing<StringFilter>?
+    ComplianceSecurityControlId: Listing<StringFilter>?
+    ComplianceAssociatedStandardsId: Listing<StringFilter>?
+    VerificationState: Listing<StringFilter>?
+    WorkflowStatus: Listing<StringFilter>?
+    RecordState: Listing<StringFilter>?
+    RelatedFindingsProductArn: Listing<StringFilter>?
+    RelatedFindingsId: Listing<StringFilter>?
+    NoteText: Listing<StringFilter>?
+    NoteUpdatedAt: Listing<Mapping | Mapping>?
+    NoteUpdatedBy: Listing<StringFilter>?
+    UserDefinedFields: Listing<MapFilter>?
+}
+class StringFilter {
+    Comparison: "EQUALS" | "PREFIX" | "NOT_EQUALS" | "PREFIX_NOT_EQUALS" | "CONTAINS" | "NOT_CONTAINS"
+    Value: String
+}
+class MapFilter {
+    Comparison: "EQUALS" | "NOT_EQUALS" | "CONTAINS" | "NOT_CONTAINS"
+    Key: String
+    Value: String
+}

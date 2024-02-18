@@ -1,0 +1,31 @@
+/// Resource Type definition for AWS::FSx::StorageVirtualMachine
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FSx::StorageVirtualMachine"
+Properties: Props?
+class Props {
+    ResourceARN: String?
+    SvmAdminPassword: String?
+    StorageVirtualMachineId: String?
+    ActiveDirectoryConfiguration: ActiveDirectoryConfiguration?
+    RootVolumeSecurityStyle: String?
+    FileSystemId: String?
+    UUID: String?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class ActiveDirectoryConfiguration {
+    SelfManagedActiveDirectoryConfiguration: SelfManagedActiveDirectoryConfiguration?
+    NetBiosName: String?
+}
+class SelfManagedActiveDirectoryConfiguration {
+    FileSystemAdministratorsGroup: String?
+    UserName: String?
+    DomainName: String?
+    OrganizationalUnitDistinguishedName: String?
+    DnsIps: Listing<String>?
+    Password: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

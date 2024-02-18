@@ -1,0 +1,115 @@
+/// A storage lake of event data against which you can run complex SQL-
+/// based queries. An event data store can include events that you have
+/// logged on your account from the last 7 to 2557 or 3653 days (about
+/// seven or ten years) depending on the selected BillingMode.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudTrail::EventDataStore"
+Properties: Props?
+class Props {
+    /// The advanced event selectors that were used to select events for the
+    /// data store.
+    AdvancedEventSelectors: Listing<AdvancedEventSelector>?
+    /// The timestamp of the event data store's creation.
+    CreatedTimestamp: String?
+    /// The ARN of the event data store.
+    EventDataStoreArn: String?
+    /// Indicates whether federation is enabled on an event data store.
+    FederationEnabled: Boolean?
+    /// The ARN of the role used for event data store federation.
+    FederationRoleArn: String?
+    /// Indicates whether the event data store includes events from all
+    /// regions, or only from the region in which it was created.
+    MultiRegionEnabled: Boolean?
+    /// The name of the event data store.
+    Name: String?
+    /// Indicates that an event data store is collecting logged events for an
+    /// organization.
+    OrganizationEnabled: Boolean?
+    /// The mode that the event data store will use to charge for event
+    /// storage.
+    BillingMode: String?
+    /// The retention period, in days.
+    RetentionPeriod: Int?
+    /// The status of an event data store. Values are STARTING_INGESTION,
+    /// ENABLED, STOPPING_INGESTION, STOPPED_INGESTION and PENDING_DELETION.
+    Status: String?
+    /// Indicates whether the event data store is protected from termination.
+    TerminationProtectionEnabled: Boolean?
+    /// The timestamp showing when an event data store was updated, if
+    /// applicable. UpdatedTimestamp is always either the same or newer than
+    /// the time shown in CreatedTimestamp.
+    UpdatedTimestamp: String?
+    /// Specifies the KMS key ID to use to encrypt the events delivered by
+    /// CloudTrail. The value can be an alias name prefixed by 'alias/', a
+    /// fully specified ARN to an alias, a fully specified ARN to a key, or a
+    /// globally unique identifier.
+    KmsKeyId: String?
+    Tags: Listing<Tag>?
+    /// Lets you enable Insights event logging by specifying the Insights
+    /// selectors that you want to enable on an existing event data store.
+    /// Both InsightSelectors and InsightsDestination need to have a value in
+    /// order to enable Insights events on an event data store.
+    InsightSelectors: Listing<InsightSelector>?
+    /// Specifies the ARN of the event data store that will collect Insights
+    /// events. Both InsightSelectors and InsightsDestination need to have a
+    /// value in order to enable Insights events on an event data store
+    InsightsDestination: String?
+    /// Indicates whether the event data store is ingesting events.
+    IngestionEnabled: Boolean?
+}
+/// Advanced event selectors let you create fine-grained selectors for the
+/// following AWS CloudTrail event record ﬁelds. They help you control
+/// costs by logging only those events that are important to you.
+class AdvancedEventSelector {
+    /// An optional, descriptive name for an advanced event selector, such as
+    /// "Log data events for only two S3 buckets".
+    Name: String(length <= 1000 && length >= 1)?
+    /// Contains all selector statements in an advanced event selector.
+    FieldSelectors: Listing<AdvancedFieldSelector>
+}
+/// A single selector statement in an advanced event selector.
+class AdvancedFieldSelector {
+    /// A field in an event record on which to filter events to be logged.
+    /// Supported fields include readOnly, eventCategory, eventSource (for
+    /// management events), eventName, resources.type, and resources.ARN.
+    Field: String(length <= 1000 && length >= 1 && matches(Regex(#"([\w|\d|\.|_]+)"#)))
+    /// An operator that includes events that match the exact value of the
+    /// event record field specified as the value of Field. This is the only
+    /// valid operator that you can use with the readOnly, eventCategory, and
+    /// resources.type fields.
+    Equals: Listing<String(length <= 2048 && length >= 1 && matches(Regex(#"(.+)"#)))>?
+    /// An operator that includes events that match the first few characters
+    /// of the event record field specified as the value of Field.
+    StartsWith: Listing<String(length <= 2048 && length >= 1 && matches(Regex(#"(.+)"#)))>?
+    /// An operator that includes events that match the last few characters of
+    /// the event record field specified as the value of Field.
+    EndsWith: Listing<String(length <= 2048 && length >= 1 && matches(Regex(#"(.+)"#)))>?
+    /// An operator that excludes events that match the exact value of the
+    /// event record field specified as the value of Field.
+    NotEquals: Listing<String(length <= 2048 && length >= 1 && matches(Regex(#"(.+)"#)))>?
+    /// An operator that excludes events that match the first few characters
+    /// of the event record field specified as the value of Field.
+    NotStartsWith: Listing<String(length <= 2048 && length >= 1 && matches(Regex(#"(.+)"#)))>?
+    /// An operator that excludes events that match the last few characters of
+    /// the event record field specified as the value of Field.
+    NotEndsWith: Listing<String(length <= 2048 && length >= 1 && matches(Regex(#"(.+)"#)))>?
+}
+/// An arbitrary set of tags (key-value pairs) for this event data store.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String
+}
+/// A string that contains Insights types that are logged on an event data
+/// store.
+class InsightSelector {
+    /// The type of Insights to log on an event data store.
+    InsightType: String?
+}

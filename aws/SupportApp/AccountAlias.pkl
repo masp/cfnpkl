@@ -1,0 +1,11 @@
+/// An AWS Support App resource that creates, updates, reads, and deletes
+/// a customer's account alias.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SupportApp::AccountAlias"
+Properties: Props?
+class Props {
+    /// An account alias associated with a customer's account.
+    AccountAlias: String(length <= 30 && length >= 1 && matches(Regex(#"^[\w\- ]+$"#)))?
+    /// Unique identifier representing an alias tied to an account
+    AccountAliasResourceId: String(length <= 29 && length >= 29 && matches(Regex(#"^[\w\- ]+$"#)))?
+}

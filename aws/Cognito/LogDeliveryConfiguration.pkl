@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::Cognito::LogDeliveryConfiguration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cognito::LogDeliveryConfiguration"
+Properties: Props?
+class Props {
+    Id: String?
+    UserPoolId: String?
+    LogConfigurations: Listing<LogConfiguration>?
+}
+class LogConfiguration {
+    LogLevel: String?
+    EventSource: String?
+    CloudWatchLogsConfiguration: CloudWatchLogsConfiguration?
+}
+class CloudWatchLogsConfiguration {
+    LogGroupArn: String?
+}

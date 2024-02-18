@@ -1,0 +1,66 @@
+/// Resource Type definition for AWS::IoTAnalytics::Datastore
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTAnalytics::Datastore"
+Properties: Props?
+class Props {
+    DatastoreStorage: DatastoreStorage?
+    DatastoreName: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_]+"#)))?
+    DatastorePartitions: DatastorePartitions?
+    Id: String?
+    FileFormatConfiguration: FileFormatConfiguration?
+    RetentionPeriod: RetentionPeriod?
+    Tags: Listing<Tag>?
+}
+class DatastoreStorage {
+    ServiceManagedS3: Mapping?
+    CustomerManagedS3: CustomerManagedS3?
+    IotSiteWiseMultiLayerStorage: IotSiteWiseMultiLayerStorage?
+}
+class CustomerManagedS3 {
+    Bucket: String(length <= 255 && length >= 3 && matches(Regex(#"[a-zA-Z0-9.\-_]*"#)))
+    RoleArn: String(length <= 2048 && length >= 20)
+    KeyPrefix: String(length <= 255 && length >= 1 && matches(Regex(#"[a-zA-Z0-9!_.*'()/{}:-]*/"#)))?
+}
+class IotSiteWiseMultiLayerStorage {
+    CustomerManagedS3Storage: CustomerManagedS3Storage?
+}
+class CustomerManagedS3Storage {
+    Bucket: String(length <= 255 && length >= 3 && matches(Regex(#"[a-zA-Z0-9.\-_]*"#)))
+    KeyPrefix: String(length <= 255 && length >= 1 && matches(Regex(#"[a-zA-Z0-9!_.*'()/{}:-]*/"#)))?
+}
+class DatastorePartitions {
+    Partitions: Listing<DatastorePartition>?
+}
+class DatastorePartition {
+    Partition: Partition?
+    TimestampPartition: TimestampPartition?
+}
+class Partition {
+    AttributeName: String(matches(Regex(#"[a-zA-Z0-9_]+"#)))
+}
+class TimestampPartition {
+    AttributeName: String(matches(Regex(#"[a-zA-Z0-9_]+"#)))
+    TimestampFormat: String(matches(Regex(#"[a-zA-Z0-9\s\[\]_,.'/:-]*"#)))?
+}
+class FileFormatConfiguration {
+    JsonConfiguration: Mapping?
+    ParquetConfiguration: ParquetConfiguration?
+}
+class ParquetConfiguration {
+    SchemaDefinition: SchemaDefinition?
+}
+class SchemaDefinition {
+    Columns: Listing<Column>?
+}
+class Column {
+    Type: String
+    Name: String
+}
+class RetentionPeriod {
+    NumberOfDays: Int?
+    Unlimited: Boolean?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

@@ -1,0 +1,28 @@
+/// Resource Type definition for AWS::ApiGatewayV2::Integration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGatewayV2::Integration"
+Properties: Props?
+class Props {
+    Description: String?
+    TemplateSelectionExpression: String?
+    ConnectionType: String?
+    ResponseParameters: Mapping?
+    IntegrationMethod: String?
+    PassthroughBehavior: String?
+    RequestParameters: Mapping?
+    ConnectionId: String?
+    IntegrationUri: String?
+    PayloadFormatVersion: String?
+    CredentialsArn: String?
+    RequestTemplates: Mapping?
+    TimeoutInMillis: Int?
+    TlsConfig: TlsConfig?
+    ContentHandlingStrategy: String?
+    Id: String?
+    IntegrationSubtype: String?
+    ApiId: String?
+    IntegrationType: String?
+}
+class TlsConfig {
+    ServerNameToVerify: String?
+}

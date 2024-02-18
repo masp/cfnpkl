@@ -1,0 +1,12 @@
+/// An example resource schema demonstrating some basic constructs and
+/// validation rules.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Signer::ProfilePermission"
+Properties: Props?
+class Props {
+    ProfileName: String?
+    ProfileVersion: String(matches(Regex(#"^[0-9a-zA-Z]{10}$"#)))?
+    Action: String?
+    Principal: String?
+    StatementId: String?
+}

@@ -1,0 +1,55 @@
+/// Document Classifier enables training document classifier models.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Comprehend::DocumentClassifier"
+Properties: Props?
+class Props {
+    DataAccessRoleArn: String(length <= 2048 && length >= 20 && matches(Regex(#"arn:aws(-[^:]+)?:iam::[0-9]{12}:role/.+"#)))?
+    InputDataConfig: DocumentClassifierInputDataConfig?
+    OutputDataConfig: DocumentClassifierOutputDataConfig?
+    LanguageCode: "en" | "es" | "fr" | "it" | "de" | "pt" | *Null
+    ModelKmsKeyId: String(length <= 2048 && length >= 1)?
+    ModelPolicy: String(length <= 20000 && length >= 1 && matches(Regex(#"[\u0009\u000A\u000D\u0020-\u00FF]+"#)))?
+    DocumentClassifierName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*$"#)))?
+    Mode: "MULTI_CLASS" | "MULTI_LABEL" | *Null
+    Tags: Listing<Tag>?
+    VersionName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*$"#)))?
+    VolumeKmsKeyId: String(length <= 2048 && length >= 1)?
+    VpcConfig: VpcConfig?
+    Arn: String(length <= 256 && length >= 1 && matches(Regex(#"arn:aws(-[^:]+)?:comprehend:[a-zA-Z0-9-]*:[0-9]{12}:document-classifier/[a-zA-Z0-9](-*[a-zA-Z0-9])*(/version/[a-zA-Z0-9](-*[a-zA-Z0-9])*)?"#)))?
+}
+class DocumentClassifierInputDataConfig {
+    AugmentedManifests: Listing<AugmentedManifestsListItem>?
+    DataFormat: "COMPREHEND_CSV" | "AUGMENTED_MANIFEST" | *Null
+    LabelDelimiter: String(length <= 1 && length >= 1 && matches(Regex(#"^[ ~!@#$%^*\-_+=|\\:;\t>?/]$"#)))?
+    DocumentType: "PLAIN_TEXT_DOCUMENT" | "SEMI_STRUCTURED_DOCUMENT" | *Null
+    Documents: DocumentClassifierDocuments?
+    DocumentReaderConfig: DocumentReaderConfig?
+    S3Uri: String(length <= 1024 && matches(Regex(#"s3://[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9](/.*)?"#)))?
+    TestS3Uri: String(length <= 1024 && matches(Regex(#"s3://[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9](/.*)?"#)))?
+}
+class AugmentedManifestsListItem {
+    AttributeNames: Listing<String(matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*"#)))>
+    S3Uri: String(length <= 1024 && matches(Regex(#"s3://[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9](/.*)?"#)))
+    Split: "TRAIN" | "TEST" | *Null
+}
+class DocumentClassifierDocuments {
+    S3Uri: String(length <= 1024 && matches(Regex(#"s3://[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9](/.*)?"#)))
+    TestS3Uri: String(length <= 1024 && matches(Regex(#"s3://[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9](/.*)?"#)))?
+}
+class DocumentReaderConfig {
+    DocumentReadAction: "TEXTRACT_DETECT_DOCUMENT_TEXT" | "TEXTRACT_ANALYZE_DOCUMENT"
+    DocumentReadMode: "SERVICE_DEFAULT" | "FORCE_DOCUMENT_READ_ACTION" | *Null
+    FeatureTypes: Listing<"TABLES" | "FORMS">?
+}
+class DocumentClassifierOutputDataConfig {
+    KmsKeyId: String(length <= 2048 && length >= 1)?
+    S3Uri: String(length <= 1024 && matches(Regex(#"s3://[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9](/.*)?"#)))?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}
+class VpcConfig {
+    SecurityGroupIds: Listing<String(length <= 32 && length >= 1 && matches(Regex(#"[-0-9a-zA-Z]+"#)))>
+    Subnets: Listing<String(length <= 32 && length >= 1 && matches(Regex(#"[-0-9a-zA-Z]+"#)))>
+}

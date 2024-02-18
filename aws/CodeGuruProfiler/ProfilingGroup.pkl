@@ -1,0 +1,46 @@
+/// This resource schema represents the Profiling Group resource in the
+/// Amazon CodeGuru Profiler service.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodeGuruProfiler::ProfilingGroup"
+Properties: Props?
+class Props {
+    /// The name of the profiling group.
+    ProfilingGroupName: String(length <= 255 && length >= 1 && matches(Regex(#"^[\w-]+$"#)))?
+    /// The compute platform of the profiling group.
+    ComputePlatform: "Default" | "AWSLambda" | *Null
+    /// The agent permissions attached to this profiling group.
+    AgentPermissions: AgentPermissions?
+    /// Configuration for Notification Channels for Anomaly Detection feature
+    /// in CodeGuru Profiler which enables customers to detect anomalies in
+    /// the application profile for those methods that represent the highest
+    /// proportion of CPU time or latency
+    AnomalyDetectionNotificationConfiguration: Listing<Channel>?
+    /// The Amazon Resource Name (ARN) of the specified profiling group.
+    Arn: String(matches(Regex(#"^arn:aws([-\w]*):codeguru-profiler:(([a-z]+-)+[0-9]+):([0-9]{12}):profilingGroup/[^.]+$"#)))?
+    /// The tags associated with a profiling group.
+    Tags: Listing<Tag>?
+}
+/// The agent permissions attached to this profiling group.
+class AgentPermissions {
+    /// The principals for the agent permissions.
+    Principals: Listing<String(matches(Regex(#"^arn:aws([-\w]*):iam::([0-9]{12}):[\S]+$"#)))>
+}
+/// Notification medium for users to get alerted for events that occur in
+/// application profile. We support SNS topic as a notification channel.
+class Channel {
+    channelId: String(matches(Regex(#"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"#)))?
+    channelUri: String(matches(Regex(#"^arn:aws([-\w]*):[a-z-]+:(([a-z]+-)+[0-9]+)?:([0-9]{12}):[^.]+$"#)))
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. The
+    /// allowed characters across services are: letters, numbers, and spaces
+    /// representable in UTF-8, and the following characters: + - = . _ : / @.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length. The allowed characters across services
+    /// are: letters, numbers, and spaces representable in UTF-8, and the
+    /// following characters: + - = . _ : / @.
+    Value: String(length <= 256 && length >= 0)
+}

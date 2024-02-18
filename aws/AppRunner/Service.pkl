@@ -1,0 +1,161 @@
+/// The AWS::AppRunner::Service resource specifies an AppRunner Service.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppRunner::Service"
+Properties: Props?
+class Props {
+    /// The AppRunner Service Name.
+    ServiceName: String(length <= 40 && length >= 4 && matches(Regex(#"[A-Za-z0-9][A-Za-z0-9-_]{3,39}"#)))?
+    /// The AppRunner Service Id
+    ServiceId: String(length <= 32 && length >= 32)?
+    /// The Amazon Resource Name (ARN) of the AppRunner Service.
+    ServiceArn: String(length <= 1011 && length >= 1 && matches(Regex(#"arn:aws(-[\w]+)*:[a-z0-9-\\.]{0,63}:[a-z0-9-\\.]{0,63}:[0-9]{12}:(\w|\/|-){1,1011}"#)))?
+    /// The Service Url of the AppRunner Service.
+    ServiceUrl: String?
+    /// AppRunner Service status.
+    Status: String?
+    SourceConfiguration: SourceConfiguration?
+    InstanceConfiguration: InstanceConfiguration?
+    Tags: Listing<Tag>?
+    EncryptionConfiguration: EncryptionConfiguration?
+    HealthCheckConfiguration: HealthCheckConfiguration?
+    ObservabilityConfiguration: ServiceObservabilityConfiguration?
+    /// Autoscaling configuration ARN
+    AutoScalingConfigurationArn: String(length <= 1011 && length >= 1 && matches(Regex(#"arn:aws(-[\w]+)*:[a-z0-9-\\.]{0,63}:[a-z0-9-\\.]{0,63}:[0-9]{12}:(\w|\/|-){1,1011}"#)))?
+    NetworkConfiguration: NetworkConfiguration?
+}
+/// Source Code configuration
+class SourceConfiguration {
+    CodeRepository: CodeRepository?
+    ImageRepository: ImageRepository?
+    /// Auto Deployment enabled
+    AutoDeploymentsEnabled: Boolean?
+    AuthenticationConfiguration: AuthenticationConfiguration?
+}
+/// Source Code Repository
+class CodeRepository {
+    /// Repository Url
+    RepositoryUrl: String
+    SourceCodeVersion: SourceCodeVersion
+    CodeConfiguration: CodeConfiguration?
+    /// Source Directory
+    SourceDirectory: String(length <= 4096 && length >= 1 && matches(Regex(#"[^\x00]+"#)))?
+}
+/// Source Code Version
+class SourceCodeVersion {
+    /// Source Code Version Type
+    Type: "BRANCH"
+    /// Source Code Version Value
+    Value: String
+}
+/// Code Configuration
+class CodeConfiguration {
+    /// Configuration Source
+    ConfigurationSource: "REPOSITORY" | "API"
+    CodeConfigurationValues: CodeConfigurationValues?
+}
+/// Code Configuration Values
+class CodeConfigurationValues {
+    /// Runtime
+    Runtime: "PYTHON_3" | "NODEJS_12" | "NODEJS_14" | "CORRETTO_8" | "CORRETTO_11" | "NODEJS_16" | "GO_1" | "DOTNET_6" | "PHP_81" | "RUBY_31" | "PYTHON_311" | "NODEJS_18"
+    /// Build Command
+    BuildCommand: String?
+    /// Start Command
+    StartCommand: String?
+    /// Port
+    Port: String?
+    RuntimeEnvironmentVariables: Listing<KeyValuePair>?
+    /// The secrets and parameters that get referenced by your service as
+    /// environment variables
+    RuntimeEnvironmentSecrets: Listing<KeyValuePair>?
+}
+class KeyValuePair {
+    Name: String?
+    Value: String?
+}
+/// Image Repository
+class ImageRepository {
+    /// Image Identifier
+    ImageIdentifier: String(length <= 1024 && length >= 1 && matches(Regex(#"([0-9]{12}.dkr.ecr.[a-z\-]+-[0-9]{1}.amazonaws.com\/.*)|(^public\.ecr\.aws\/.+\/.+)"#)))
+    ImageConfiguration: ImageConfiguration?
+    /// Image Repository Type
+    ImageRepositoryType: "ECR" | "ECR_PUBLIC"
+}
+/// Image Configuration
+class ImageConfiguration {
+    /// Start Command
+    StartCommand: String?
+    /// Port
+    Port: String?
+    RuntimeEnvironmentVariables: Listing<KeyValuePair>?
+    /// The secrets and parameters that get referenced by your service as
+    /// environment variables
+    RuntimeEnvironmentSecrets: Listing<KeyValuePair>?
+}
+/// Authentication Configuration
+class AuthenticationConfiguration {
+    /// Connection Arn
+    ConnectionArn: String(length <= 1011 && length >= 1 && matches(Regex(#"arn:aws(-[\w]+)*:[a-z0-9-\\.]{0,63}:[a-z0-9-\\.]{0,63}:[0-9]{12}:(\w|\/|-){1,1011}"#)))?
+    /// Access Role Arn
+    AccessRoleArn: String(length <= 1024 && length >= 29 && matches(Regex(#"arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):iam::[0-9]{12}:role/[\w+=,.@-]{1,64}"#)))?
+}
+/// Instance Configuration
+class InstanceConfiguration {
+    /// CPU
+    Cpu: String(length <= 9 && length >= 3 && matches(Regex(#"256|512|1024|2048|4096|(0.25|0.5|1|2|4) vCPU"#)))?
+    /// Memory
+    Memory: String(length <= 6 && length >= 3 && matches(Regex(#"512|1024|2048|3072|4096|6144|8192|10240|12288|(0.5|1|2|3|4|6|8|10|12) GB"#)))?
+    /// Instance Role Arn
+    InstanceRoleArn: String(length <= 1024 && length >= 29 && matches(Regex(#"arn:(aws|aws-us-gov|aws-cn|aws-iso|aws-iso-b):iam::[0-9]{12}:role/[\w+=,.@-]{1,64}"#)))?
+}
+class Tag {
+    Key: String?
+    Value: String?
+}
+/// Encryption configuration (KMS key)
+class EncryptionConfiguration {
+    /// The KMS Key
+    KmsKey: String(length <= 256 && length >= 0 && matches(Regex(#"arn:aws(-[\w]+)*:kms:[a-z\-]+-[0-9]{1}:[0-9]{12}:key\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"#)))
+}
+/// Health check configuration
+class HealthCheckConfiguration {
+    /// Health Check Protocol
+    Protocol: "TCP" | "HTTP" | *Null
+    /// Health check Path
+    Path: String?
+    /// Health check Interval
+    Interval: Int?
+    /// Health check Timeout
+    Timeout: Int?
+    /// Health check Healthy Threshold
+    HealthyThreshold: Int?
+    /// Health check Unhealthy Threshold
+    UnhealthyThreshold: Int?
+}
+/// Service observability configuration
+class ServiceObservabilityConfiguration {
+    /// Observability enabled
+    ObservabilityEnabled: Boolean
+    /// The Amazon Resource Name (ARN) of the App Runner
+    /// ObservabilityConfiguration.
+    ObservabilityConfigurationArn: String(length <= 1011 && length >= 1 && matches(Regex(#"arn:aws(-[\w]+)*:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[0-9]{12}:(\w|/|-){1,1011}"#)))?
+}
+/// Network configuration
+class NetworkConfiguration {
+    EgressConfiguration: EgressConfiguration?
+    IngressConfiguration: IngressConfiguration?
+    /// App Runner service endpoint IP address type
+    IpAddressType: "IPV4" | "DUAL_STACK" | *Null
+}
+/// Network egress configuration
+class EgressConfiguration {
+    /// Network egress type.
+    EgressType: "DEFAULT" | "VPC"
+    /// The Amazon Resource Name (ARN) of the App Runner VpcConnector.
+    VpcConnectorArn: String(length <= 1011 && length >= 44 && matches(Regex(#"arn:aws(-[\w]+)*:[a-z0-9-\\.]{0,63}:[a-z0-9-\\.]{0,63}:[0-9]{12}:(\w|\/|-){1,1011}"#)))?
+}
+/// Network ingress configuration
+class IngressConfiguration {
+    /// It's set to true if the Apprunner service is publicly accessible. It's
+    /// set to false otherwise.
+    IsPubliclyAccessible: Boolean
+}

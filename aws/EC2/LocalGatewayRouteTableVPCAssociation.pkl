@@ -1,0 +1,23 @@
+/// Describes an association between a local gateway route table and a
+/// VPC.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::LocalGatewayRouteTableVPCAssociation"
+Properties: Props?
+class Props {
+    /// The ID of the local gateway.
+    LocalGatewayId: String?
+    /// The ID of the local gateway route table.
+    LocalGatewayRouteTableId: String?
+    /// The ID of the association.
+    LocalGatewayRouteTableVpcAssociationId: String?
+    /// The state of the association.
+    State: String?
+    /// The ID of the VPC.
+    VpcId: String?
+    /// The tags for the association.
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 127 && length >= 1 && matches(Regex(#"^(?!aws:.*)"#)))?
+    Value: String(length <= 255 && length >= 1 && matches(Regex(#"^(?!aws:.*)"#)))?
+}

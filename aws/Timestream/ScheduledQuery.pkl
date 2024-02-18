@@ -1,0 +1,130 @@
+/// The AWS::Timestream::ScheduledQuery resource creates a Timestream
+/// Scheduled Query.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Timestream::ScheduledQuery"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 1)?
+    ScheduledQueryName: String(length <= 64 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_.-]+"#)))?
+    QueryString: String(length <= 262144 && length >= 1)?
+    ScheduleConfiguration: ScheduleConfiguration?
+    NotificationConfiguration: NotificationConfiguration?
+    ClientToken: String(length <= 128 && length >= 32)?
+    ScheduledQueryExecutionRoleArn: String(length <= 2048 && length >= 1)?
+    TargetConfiguration: TargetConfiguration?
+    ErrorReportConfiguration: ErrorReportConfiguration?
+    KmsKeyId: String(length <= 2048 && length >= 1)?
+    /// The name of the scheduled query. Scheduled query names must be unique
+    /// within each Region.
+    SQName: String?
+    /// The query string to run. Parameter names can be specified in the query
+    /// string @ character followed by an identifier. The named Parameter
+    /// @scheduled_runtime is reserved and can be used in the query to get the
+    /// time at which the query is scheduled to run. The timestamp calculated
+    /// according to the ScheduleConfiguration parameter, will be the value of
+    /// @scheduled_runtime paramater for each query run. For example, consider
+    /// an instance of a scheduled query executing on 2021-12-01 00:00:00. For
+    /// this instance, the @scheduled_runtime parameter is initialized to the
+    /// timestamp 2021-12-01 00:00:00 when invoking the query.
+    SQQueryString: String?
+    /// Configuration for when the scheduled query is executed.
+    SQScheduleConfiguration: String?
+    /// Notification configuration for the scheduled query. A notification is
+    /// sent by Timestream when a query run finishes, when the state is
+    /// updated or when you delete it.
+    SQNotificationConfiguration: String?
+    /// The ARN for the IAM role that Timestream will assume when running the
+    /// scheduled query.
+    SQScheduledQueryExecutionRoleArn: String?
+    /// Configuration of target store where scheduled query results are
+    /// written to.
+    SQTargetConfiguration: String?
+    /// Configuration for error reporting. Error reports will be generated
+    /// when a problem is encountered when writing the query results.
+    SQErrorReportConfiguration: String?
+    /// The Amazon KMS key used to encrypt the scheduled query resource, at-
+    /// rest. If the Amazon KMS key is not specified, the scheduled query
+    /// resource will be encrypted with a Timestream owned Amazon KMS key. To
+    /// specify a KMS key, use the key ID, key ARN, alias name, or alias ARN.
+    /// When using an alias name, prefix the name with alias/. If
+    /// ErrorReportConfiguration uses SSE_KMS as encryption type, the same
+    /// KmsKeyId is used to encrypt the error report at rest.
+    SQKmsKeyId: String?
+    Tags: Listing<Tag>?
+}
+/// Configuration for when the scheduled query is executed.
+class ScheduleConfiguration {
+    ScheduleExpression: String(length <= 256 && length >= 1)
+}
+/// Notification configuration for the scheduled query. A notification is
+/// sent by Timestream when a query run finishes, when the state is
+/// updated or when you delete it.
+class NotificationConfiguration {
+    SnsConfiguration: SnsConfiguration
+}
+/// SNS configuration for notification upon scheduled query execution.
+class SnsConfiguration {
+    TopicArn: String(length <= 2048 && length >= 1)
+}
+/// Configuration of target store where scheduled query results are
+/// written to.
+class TargetConfiguration {
+    TimestreamConfiguration: TimestreamConfiguration
+}
+/// Configuration needed to write data into the Timestream database and
+/// table.
+class TimestreamConfiguration {
+    DatabaseName: String
+    TableName: String
+    TimeColumn: String
+    DimensionMappings: Listing<DimensionMapping>
+    MultiMeasureMappings: MultiMeasureMappings?
+    MixedMeasureMappings: Listing<MixedMeasureMapping>?
+    MeasureNameColumn: String?
+}
+/// This type is used to map column(s) from the query result to a
+/// dimension in the destination table.
+class DimensionMapping {
+    Name: String
+    DimensionValueType: "VARCHAR"
+}
+/// Only one of MixedMeasureMappings or MultiMeasureMappings is to be
+/// provided. MultiMeasureMappings can be used to ingest data as multi
+/// measures in the derived table.
+class MultiMeasureMappings {
+    TargetMultiMeasureName: String?
+    MultiMeasureAttributeMappings: Listing<MultiMeasureAttributeMapping>
+}
+/// An attribute mapping to be used for mapping query results to ingest
+/// data for multi-measure attributes.
+class MultiMeasureAttributeMapping {
+    SourceColumn: String
+    MeasureValueType: "BIGINT" | "BOOLEAN" | "DOUBLE" | "VARCHAR" | "TIMESTAMP"
+    TargetMultiMeasureAttributeName: String?
+}
+/// MixedMeasureMappings are mappings that can be used to ingest data into
+/// a mixture of narrow and multi measures in the derived table.
+class MixedMeasureMapping {
+    MeasureName: String?
+    SourceColumn: String?
+    TargetMeasureName: String?
+    MeasureValueType: "BIGINT" | "BOOLEAN" | "DOUBLE" | "VARCHAR" | "MULTI"
+    MultiMeasureAttributeMappings: Listing<MultiMeasureAttributeMapping>?
+}
+/// Configuration for error reporting. Error reports will be generated
+/// when a problem is encountered when writing the query results.
+class ErrorReportConfiguration {
+    S3Configuration: S3Configuration
+}
+/// Details on S3 location for error reports that result from running a
+/// query.
+class S3Configuration {
+    BucketName: String(length <= 63 && length >= 3 && matches(Regex(#"[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9]"#)))
+    ObjectKeyPrefix: String(length <= 896 && length >= 1 && matches(Regex(#"[a-zA-Z0-9|!\-_*'\(\)]([a-zA-Z0-9]|[!\-_*'\(\)\/.])+"#)))?
+    EncryptionOption: "SSE_S3" | "SSE_KMS" | *Null
+}
+/// A key-value pair to label the scheduled query.
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

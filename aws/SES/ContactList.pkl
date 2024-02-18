@@ -1,0 +1,27 @@
+/// Resource schema for AWS::SES::ContactList.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SES::ContactList"
+Properties: Props?
+class Props {
+    /// The name of the contact list.
+    ContactListName: String(matches(Regex(#"^[a-zA-Z0-9_-]{1,64}$"#)))?
+    /// The description of the contact list.
+    Description: String(length <= 500)?
+    /// The topics associated with the contact list.
+    Topics: Listing<Topic>?
+    /// The tags (keys and values) associated with the contact list.
+    Tags: Listing<Tag>?
+}
+class Topic {
+    /// The name of the topic.
+    TopicName: String(matches(Regex(#"^[a-zA-Z0-9_-]{1,64}$"#)))
+    /// The display name of the topic.
+    DisplayName: String(length <= 128 && length >= 0)
+    /// The description of the topic.
+    Description: String(length <= 500 && length >= 0)?
+    DefaultSubscriptionStatus: String
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

@@ -1,0 +1,92 @@
+/// Resource Type definition for AWS::CodePipeline::Pipeline
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodePipeline::Pipeline"
+Properties: Props?
+class Props {
+    ArtifactStores: Listing<ArtifactStoreMap>?
+    DisableInboundStageTransitions: Listing<StageTransition>?
+    Stages: Listing<StageDeclaration>?
+    RestartExecutionOnUpdate: Boolean?
+    Triggers: Listing<PipelineTriggerDeclaration>?
+    RoleArn: String?
+    Name: String?
+    Variables: Listing<VariableDeclaration>?
+    Version: String?
+    ArtifactStore: ArtifactStore?
+    PipelineType: String?
+    Id: String?
+    Tags: Listing<Tag>?
+}
+class ArtifactStoreMap {
+    ArtifactStore: ArtifactStore
+    Region: String
+}
+class ArtifactStore {
+    Type: String
+    EncryptionKey: EncryptionKey?
+    Location: String
+}
+class EncryptionKey {
+    Type: String
+    Id: String
+}
+class StageTransition {
+    StageName: String
+    Reason: String
+}
+class StageDeclaration {
+    Blockers: Listing<BlockerDeclaration>?
+    Actions: Listing<ActionDeclaration>
+    Name: String
+}
+class BlockerDeclaration {
+    Type: String
+    Name: String
+}
+class ActionDeclaration {
+    ActionTypeId: ActionTypeId
+    Configuration: Mapping?
+    InputArtifacts: Listing<InputArtifact>?
+    OutputArtifacts: Listing<OutputArtifact>?
+    Region: String?
+    Namespace: String?
+    RoleArn: String?
+    RunOrder: Int?
+    Name: String
+}
+class ActionTypeId {
+    Owner: String
+    Category: String
+    Version: String
+    Provider: String
+}
+class InputArtifact {
+    Name: String
+}
+class OutputArtifact {
+    Name: String
+}
+class PipelineTriggerDeclaration {
+    GitConfiguration: GitConfiguration?
+    ProviderType: String
+}
+class GitConfiguration {
+    Push: Listing<GitPushFilter>?
+    SourceActionName: String
+}
+class GitPushFilter {
+    Tags: GitTagFilterCriteria?
+}
+class GitTagFilterCriteria {
+    Includes: Listing<String>?
+    Excludes: Listing<String>?
+}
+class VariableDeclaration {
+    DefaultValue: String?
+    Description: String?
+    Name: String
+}
+class Tag {
+    Value: String
+    Key: String
+}

@@ -1,0 +1,63 @@
+/// Represents a runtime environment that can run migrated mainframe
+/// applications.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::M2::Environment"
+Properties: Props?
+class Props {
+    /// The description of the environment.
+    Description: String(length <= 500 && length >= 0)?
+    EngineType: "microfocus" | "bluage" | *Null
+    /// The version of the runtime engine for the environment.
+    EngineVersion: String(matches(Regex(#"^\S{1,10}$"#)))?
+    /// The Amazon Resource Name (ARN) of the runtime environment.
+    EnvironmentArn: String(matches(Regex(#"^arn:(aws|aws-cn|aws-iso|aws-iso-[a-z]{1}|aws-us-gov):[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:([a-z]{2}-((iso[a-z]{0,1}-)|(gov-)){0,1}[a-z]+-[0-9]):[0-9]{12}:[A-Za-z0-9/][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))?
+    /// The unique identifier of the environment.
+    EnvironmentId: String(matches(Regex(#"^\S{1,80}$"#)))?
+    HighAvailabilityConfig: HighAvailabilityConfig?
+    /// The type of instance underlying the environment.
+    InstanceType: String(matches(Regex(#"^\S{1,20}$"#)))?
+    /// The ID or the Amazon Resource Name (ARN) of the customer managed KMS
+    /// Key used for encrypting environment-related resources.
+    KmsKeyId: String(length <= 2048)?
+    /// The name of the environment.
+    Name: String(matches(Regex(#"^[A-Za-z0-9][A-Za-z0-9_\-]{1,59}$"#)))?
+    /// Configures a desired maintenance window for the environment. If you do
+    /// not provide a value, a random system-generated value will be assigned.
+    PreferredMaintenanceWindow: String(matches(Regex(#"^\S{1,50}$"#)))?
+    /// Specifies whether the environment is publicly accessible.
+    PubliclyAccessible: Boolean?
+    /// The list of security groups for the VPC associated with this
+    /// environment.
+    SecurityGroupIds: Listing<String(matches(Regex(#"^\S{1,50}$"#)))>?
+    /// The storage configurations defined for the runtime environment.
+    StorageConfigurations: Listing<StorageConfiguration0 | StorageConfiguration1>?
+    /// The unique identifiers of the subnets assigned to this runtime
+    /// environment.
+    SubnetIds: Listing<String(matches(Regex(#"^\S{1,50}$"#)))>?
+    /// Tags associated to this environment.
+    Tags: Mapping?
+}
+/// Defines the details of a high availability configuration.
+class HighAvailabilityConfig {
+    DesiredCapacity: Int
+}
+class StorageConfiguration0 {
+    Efs: EfsStorageConfiguration
+}
+/// Defines the storage configuration for an Amazon EFS file system.
+class EfsStorageConfiguration {
+    /// The file system identifier.
+    FileSystemId: String(matches(Regex(#"^\S{1,200}$"#)))
+    /// The mount point for the file system.
+    MountPoint: String(matches(Regex(#"^\S{1,200}$"#)))
+}
+class StorageConfiguration1 {
+    Fsx: FsxStorageConfiguration
+}
+/// Defines the storage configuration for an Amazon FSx file system.
+class FsxStorageConfiguration {
+    /// The file system identifier.
+    FileSystemId: String(matches(Regex(#"^\S{1,200}$"#)))
+    /// The mount point for the file system.
+    MountPoint: String(matches(Regex(#"^\S{1,200}$"#)))
+}

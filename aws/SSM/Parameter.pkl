@@ -1,0 +1,24 @@
+/// Resource Type definition for AWS::SSM::Parameter
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSM::Parameter"
+Properties: Props?
+class Props {
+    /// The type of the parameter.
+    Type: "String" | "StringList" | "SecureString" | *Null
+    /// The value associated with the parameter.
+    Value: String?
+    /// The information about the parameter.
+    Description: String?
+    /// The policies attached to the parameter.
+    Policies: String?
+    /// The regular expression used to validate the parameter value.
+    AllowedPattern: String?
+    /// The corresponding tier of the parameter.
+    Tier: "Standard" | "Advanced" | "Intelligent-Tiering" | *Null
+    /// A key-value pair to associate with a resource.
+    Tags: Mapping?
+    /// The corresponding DataType of the parameter.
+    DataType: "text" | "aws:ec2:image" | *Null
+    /// The name of the parameter.
+    Name: String?
+}

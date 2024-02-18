@@ -1,0 +1,13 @@
+/// Definition of AWS::Oam::Link Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Oam::Link"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048)?
+    Label: String?
+    LabelTemplate: String(length <= 64 && length >= 1)?
+    ResourceTypes: Listing<"AWS::CloudWatch::Metric" | "AWS::Logs::LogGroup" | "AWS::XRay::Trace" | "AWS::ApplicationInsights::Application">?
+    SinkIdentifier: String(length <= 2048 && length >= 1)?
+    /// Tags to apply to the link
+    Tags: Mapping?
+}

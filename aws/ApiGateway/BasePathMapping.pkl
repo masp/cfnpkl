@@ -1,0 +1,16 @@
+/// The ``AWS::ApiGateway::BasePathMapping`` resource creates a base path
+/// that clients who call your API must use in the invocation URL.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::BasePathMapping"
+Properties: Props?
+class Props {
+    /// The base path name that callers of the API must provide as part of the
+    /// URL after the domain name.
+    BasePath: String?
+    /// The domain name of the BasePathMapping resource to be described.
+    DomainName: String?
+    /// The string identifier of the associated RestApi.
+    RestApiId: String?
+    /// The name of the associated stage.
+    Stage: String?
+}

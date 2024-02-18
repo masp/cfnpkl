@@ -1,0 +1,9 @@
+/// Resource Type definition for AWS::WAFRegional::WebACLAssociation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAFRegional::WebACLAssociation"
+Properties: Props?
+class Props {
+    Id: String?
+    ResourceArn: String?
+    WebACLId: String?
+}

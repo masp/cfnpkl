@@ -1,0 +1,20 @@
+/// Resource Type definition for AWS::WAFRegional::ByteMatchSet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAFRegional::ByteMatchSet"
+Properties: Props?
+class Props {
+    Id: String?
+    ByteMatchTuples: Listing<ByteMatchTuple>?
+    Name: String?
+}
+class ByteMatchTuple {
+    TargetString: String?
+    TargetStringBase64: String?
+    PositionalConstraint: String
+    TextTransformation: String
+    FieldToMatch: FieldToMatch
+}
+class FieldToMatch {
+    Type: String
+    Data: String?
+}

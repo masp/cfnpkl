@@ -1,0 +1,10 @@
+/// Resource Type definition for AWS::EC2::NetworkInterfacePermission
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::NetworkInterfacePermission"
+Properties: Props?
+class Props {
+    Id: String?
+    AwsAccountId: String?
+    NetworkInterfaceId: String?
+    Permission: String?
+}

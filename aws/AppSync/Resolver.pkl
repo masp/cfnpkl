@@ -1,0 +1,84 @@
+/// Resource Type definition for AWS::AppSync::Resolver
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppSync::Resolver"
+Properties: Props?
+class Props {
+    /// The GraphQL type that invokes this resolver.
+    TypeName: String?
+    /// Functions linked with the pipeline resolver.
+    PipelineConfig: PipelineConfig?
+    /// Request mapping templates are optional when using a Lambda data
+    /// source. For all other data sources, a request mapping template is
+    /// required.
+    RequestMappingTemplate: String?
+    /// The response mapping template.
+    ResponseMappingTemplate: String?
+    /// The maximum number of resolver request inputs that will be sent to a
+    /// single AWS Lambda function in a BatchInvoke operation.
+    MaxBatchSize: Int?
+    /// The Amazon Resource Name (ARN) for the resolver.
+    ResolverArn: String?
+    /// The SyncConfig for a resolver attached to a versioned data source.
+    SyncConfig: SyncConfig?
+    /// The resolver code that contains the request and response functions.
+    /// When code is used, the runtime is required.
+    Code: String?
+    /// The location of a response mapping template in an Amazon S3 bucket.
+    /// Use this if you want to provision with a template file in Amazon S3
+    /// rather than embedding it in your CloudFormation template.
+    ResponseMappingTemplateS3Location: String?
+    /// Describes a runtime used by an AWS AppSync pipeline resolver or AWS
+    /// AppSync function. Specifies the name and version of the runtime to
+    /// use. Note that if a runtime is specified, code must also be specified.
+    Runtime: AppSyncRuntime?
+    /// The Amazon S3 endpoint.
+    CodeS3Location: String?
+    /// The resolver data source name.
+    DataSourceName: String?
+    /// The resolver type.
+    Kind: String?
+    /// The caching configuration for the resolver.
+    CachingConfig: CachingConfig?
+    /// The location of a request mapping template in an Amazon S3 bucket. Use
+    /// this if you want to provision with a template file in Amazon S3 rather
+    /// than embedding it in your CloudFormation template.
+    RequestMappingTemplateS3Location: String?
+    /// The AWS AppSync GraphQL API to which you want to attach this resolver.
+    ApiId: String?
+    /// The GraphQL field on a type that invokes the resolver.
+    FieldName: String?
+}
+class PipelineConfig {
+    /// A list of Function objects.
+    Functions: Listing<String>?
+}
+class SyncConfig {
+    /// The Conflict Resolution strategy to perform in the event of a
+    /// conflict.
+    ConflictHandler: String?
+    /// The Conflict Detection strategy to use.
+    ConflictDetection: String
+    LambdaConflictHandlerConfig: LambdaConflictHandlerConfig?
+}
+/// The LambdaConflictHandlerConfig when configuring LAMBDA as the
+/// Conflict Handler.
+class LambdaConflictHandlerConfig {
+    /// The Amazon Resource Name (ARN) for the Lambda function to use as the
+    /// Conflict Handler.
+    LambdaConflictHandlerArn: String?
+}
+class AppSyncRuntime {
+    /// The version of the runtime to use.
+    RuntimeVersion: String
+    /// The name of the runtime to use.
+    Name: String
+}
+class CachingConfig {
+    /// The caching keys for a resolver that has caching activated. Valid
+    /// values are entries from the $context.arguments, $context.source, and
+    /// $context.identity maps.
+    CachingKeys: Listing<String>?
+    /// The TTL in seconds for a resolver that has caching activated. Valid
+    /// values are 1-36.00 seconds.
+    Ttl: Float
+}

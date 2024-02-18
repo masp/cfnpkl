@@ -1,0 +1,12 @@
+/// Resource Type definition for AWS::CloudWatch::InsightRule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudWatch::InsightRule"
+Properties: Props?
+class Props {
+    RuleState: String?
+    Id: String?
+    Arn: String?
+    RuleBody: String?
+    RuleName: String?
+    Tags: Mapping?
+}

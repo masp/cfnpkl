@@ -1,0 +1,10 @@
+/// The AWS::Rekognition::Project type creates an Amazon Rekognition
+/// CustomLabels Project. A project is a grouping of the resources needed
+/// to create and manage Dataset and ProjectVersions.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Rekognition::Project"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && matches(Regex(#"(^arn:[a-z\d-]+:rekognition:[a-z\d-]+:\d{12}:project/[a-zA-Z0-9_.\-]{1,255}/[0-9]+$)"#)))?
+    ProjectName: String(length <= 255 && length >= 1 && matches(Regex(#"[a-zA-Z0-9][a-zA-Z0-9_\-]*"#)))?
+}

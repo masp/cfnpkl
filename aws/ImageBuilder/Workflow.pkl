@@ -1,0 +1,27 @@
+/// Resource schema for AWS::ImageBuilder::Workflow
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ImageBuilder::Workflow"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the workflow.
+    Arn: String?
+    /// The name of the workflow.
+    Name: String?
+    /// The version of the workflow.
+    Version: String?
+    /// The description of the workflow.
+    Description: String?
+    /// The change description of the workflow.
+    ChangeDescription: String?
+    /// The type of the workflow denotes whether the workflow is used to
+    /// build, test, or distribute.
+    Type: "BUILD" | "TEST" | "DISTRIBUTION" | *Null
+    /// The data of the workflow.
+    Data: String(length <= 16000 && length >= 1)?
+    /// The uri of the workflow.
+    Uri: String?
+    /// The KMS key identifier used to encrypt the workflow.
+    KmsKeyId: String?
+    /// The tags associated with the workflow.
+    Tags: Mapping?
+}

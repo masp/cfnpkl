@@ -1,0 +1,91 @@
+/// Resource schema for AWS::EKS::Nodegroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EKS::Nodegroup"
+Properties: Props?
+class Props {
+    /// The AMI type for your node group.
+    AmiType: String?
+    /// The capacity type of your managed node group.
+    CapacityType: String?
+    /// Name of the cluster to create the node group in.
+    ClusterName: String(length >= 1)?
+    /// The root device disk size (in GiB) for your node group instances.
+    DiskSize: Int?
+    /// Force the update if the existing node group's pods are unable to be
+    /// drained due to a pod disruption budget issue.
+    ForceUpdateEnabled: Boolean?
+    /// Specify the instance types for a node group.
+    InstanceTypes: Listing<String>?
+    /// The Kubernetes labels to be applied to the nodes in the node group
+    /// when they are created.
+    Labels: Mapping?
+    /// An object representing a node group's launch template specification.
+    LaunchTemplate: LaunchTemplateSpecification?
+    /// The unique name to give your node group.
+    NodegroupName: String(length >= 1)?
+    /// The Amazon Resource Name (ARN) of the IAM role to associate with your
+    /// node group.
+    NodeRole: String?
+    /// The AMI version of the Amazon EKS-optimized AMI to use with your node
+    /// group.
+    ReleaseVersion: String?
+    /// The remote access (SSH) configuration to use with your node group.
+    RemoteAccess: RemoteAccess?
+    /// The scaling configuration details for the Auto Scaling group that is
+    /// created for your node group.
+    ScalingConfig: ScalingConfig?
+    /// The subnets to use for the Auto Scaling group that is created for your
+    /// node group.
+    Subnets: Listing<String>?
+    /// The metadata, as key-value pairs, to apply to the node group to assist
+    /// with categorization and organization. Follows same schema as Labels
+    /// for consistency.
+    Tags: Mapping?
+    /// The Kubernetes taints to be applied to the nodes in the node group
+    /// when they are created.
+    Taints: Listing<Taint>?
+    /// The node group update configuration.
+    UpdateConfig: UpdateConfig?
+    /// The Kubernetes version to use for your managed nodes.
+    Version: String?
+    Id: String?
+    Arn: String?
+}
+/// An object representing a launch template specification for AWS EKS
+/// Nodegroup.
+class LaunchTemplateSpecification {
+    Id: String(length >= 1)?
+    Version: String(length >= 1)?
+    Name: String(length >= 1)?
+}
+/// An object representing a remote access configuration specification for
+/// AWS EKS Nodegroup.
+class RemoteAccess {
+    SourceSecurityGroups: Listing<String>?
+    Ec2SshKey: String
+}
+/// An object representing a auto scaling group specification for AWS EKS
+/// Nodegroup.
+class ScalingConfig {
+    MinSize: Int?
+    DesiredSize: Int?
+    MaxSize: Int?
+}
+/// An object representing a Taint specification for AWS EKS Nodegroup.
+class Taint {
+    Key: String(length >= 1)?
+    Value: String(length >= 0)?
+    Effect: String(length >= 1)?
+}
+/// The node group update configuration.
+class UpdateConfig {
+    /// The maximum number of nodes unavailable at once during a version
+    /// update. Nodes will be updated in parallel. This value or
+    /// maxUnavailablePercentage is required to have a value.The maximum
+    /// number is 100.
+    MaxUnavailable: Float?
+    /// The maximum percentage of nodes unavailable during a version update.
+    /// This percentage of nodes will be updated in parallel, up to 100 nodes
+    /// at once. This value or maxUnavailable is required to have a value.
+    MaxUnavailablePercentage: Float?
+}

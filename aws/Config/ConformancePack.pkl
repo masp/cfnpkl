@@ -1,0 +1,40 @@
+/// A conformance pack is a collection of AWS Config rules and remediation
+/// actions that can be easily deployed as a single entity in an account
+/// and a region or across an entire AWS Organization.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Config::ConformancePack"
+Properties: Props?
+class Props {
+    /// Name of the conformance pack which will be assigned as the unique
+    /// identifier.
+    ConformancePackName: String(length <= 256 && length >= 1 && matches(Regex(#"[a-zA-Z][-a-zA-Z0-9]*"#)))?
+    /// AWS Config stores intermediate files while processing conformance pack
+    /// template.
+    DeliveryS3Bucket: String(length <= 63 && length >= 0)?
+    /// The prefix for delivery S3 bucket.
+    DeliveryS3KeyPrefix: String(length <= 1024 && length >= 0)?
+    /// A string containing full conformance pack template body. You can only
+    /// specify one of the template body or template S3Uri fields.
+    TemplateBody: String(length <= 51200 && length >= 1)?
+    /// Location of file containing the template body which points to the
+    /// conformance pack template that is located in an Amazon S3 bucket. You
+    /// can only specify one of the template body or template S3Uri fields.
+    TemplateS3Uri: String(length <= 1024 && length >= 1 && matches(Regex(#"s3://.*"#)))?
+    /// The TemplateSSMDocumentDetails object contains the name of the SSM
+    /// document and the version of the SSM document.
+    TemplateSSMDocumentDetails: TemplateSSMDocumentDetails?
+    /// A list of ConformancePackInputParameter objects.
+    ConformancePackInputParameters: Listing<ConformancePackInputParameter>?
+}
+/// The TemplateSSMDocumentDetails object contains the name of the SSM
+/// document and the version of the SSM document.
+class TemplateSSMDocumentDetails {
+    DocumentName: String(length <= 128 && length >= 3)?
+    DocumentVersion: String(length <= 128 && length >= 1)?
+}
+/// Input parameters in the form of key-value pairs for the conformance
+/// pack.
+class ConformancePackInputParameter {
+    ParameterName: String(length <= 255 && length >= 0)
+    ParameterValue: String(length <= 4096 && length >= 0)
+}

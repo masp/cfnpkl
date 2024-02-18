@@ -1,0 +1,24 @@
+/// AWS Ground Station DataflowEndpointGroup schema for CloudFormation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GroundStation::DataflowEndpointGroup"
+Properties: Props?
+class Props {
+    Id: String?
+    Arn: String?
+    EndpointDetails: Listing<Mapping | Mapping>?
+    /// Amount of time, in seconds, before a contact starts that the Ground
+    /// Station Dataflow Endpoint Group will be in a PREPASS state. A Ground
+    /// Station Dataflow Endpoint Group State Change event will be emitted
+    /// when the Dataflow Endpoint Group enters and exits the PREPASS state.
+    ContactPrePassDurationSeconds: Int?
+    /// Amount of time, in seconds, after a contact ends that the Ground
+    /// Station Dataflow Endpoint Group will be in a POSTPASS state. A Ground
+    /// Station Dataflow Endpoint Group State Change event will be emitted
+    /// when the Dataflow Endpoint Group enters and exits the POSTPASS state.
+    ContactPostPassDurationSeconds: Int?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(matches(Regex(#"^[ a-zA-Z0-9\+\-=._:/@]{1,128}$"#)))
+    Value: String(matches(Regex(#"^[ a-zA-Z0-9\+\-=._:/@]{1,256}$"#)))
+}

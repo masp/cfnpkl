@@ -1,0 +1,45 @@
+/// Resource Type definition for AWS::GuardDuty::Detector
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GuardDuty::Detector"
+Properties: Props?
+class Props {
+    FindingPublishingFrequency: String?
+    Enable: Boolean?
+    DataSources: CFNDataSourceConfigurations?
+    Features: Listing<CFNFeatureConfiguration>?
+    Id: String?
+    Tags: Listing<TagItem>?
+}
+class CFNDataSourceConfigurations {
+    S3Logs: CFNS3LogsConfiguration?
+    Kubernetes: CFNKubernetesConfiguration?
+    MalwareProtection: CFNMalwareProtectionConfiguration?
+}
+class CFNS3LogsConfiguration {
+    Enable: Boolean
+}
+class CFNKubernetesConfiguration {
+    AuditLogs: CFNKubernetesAuditLogsConfiguration
+}
+class CFNKubernetesAuditLogsConfiguration {
+    Enable: Boolean
+}
+class CFNMalwareProtectionConfiguration {
+    ScanEc2InstanceWithFindings: CFNScanEc2InstanceWithFindingsConfiguration?
+}
+class CFNScanEc2InstanceWithFindingsConfiguration {
+    EbsVolumes: Boolean?
+}
+class CFNFeatureConfiguration {
+    Name: String(length <= 128)
+    Status: "ENABLED" | "DISABLED"
+    AdditionalConfiguration: Listing<CFNFeatureAdditionalConfiguration>?
+}
+class CFNFeatureAdditionalConfiguration {
+    Name: String(length <= 256 && length >= 1)?
+    Status: String(length <= 128 && length >= 1)?
+}
+class TagItem {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

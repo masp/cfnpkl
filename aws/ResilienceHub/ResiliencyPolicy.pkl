@@ -1,0 +1,18 @@
+/// Resource Type Definition for Resiliency Policy.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ResilienceHub::ResiliencyPolicy"
+Properties: Props?
+class Props {
+    /// Name of Resiliency Policy.
+    PolicyName: String(matches(Regex(#"^[A-Za-z0-9][A-Za-z0-9_\-]{1,59}$"#)))?
+    /// Description of Resiliency Policy.
+    PolicyDescription: String(length <= 500)?
+    /// Data Location Constraint of the Policy.
+    DataLocationConstraint: "AnyLocation" | "SameContinent" | "SameCountry" | *Null
+    /// Resiliency Policy Tier.
+    Tier: "MissionCritical" | "Critical" | "Important" | "CoreServices" | "NonCritical" | *Null
+    Policy: Mapping?
+    /// Amazon Resource Name (ARN) of the Resiliency Policy.
+    PolicyArn: String(matches(Regex(#"^arn:(aws|aws-cn|aws-iso|aws-iso-[a-z]{1}|aws-us-gov):[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:([a-z]{2}-((iso[a-z]{0,1}-)|(gov-)){0,1}[a-z]+-[0-9]):[0-9]{12}:[A-Za-z0-9][A-Za-z0-9:_/+=,@.-]{0,1023}$"#)))?
+    Tags: Mapping?
+}

@@ -1,0 +1,104 @@
+/// Resource Type definition for AWS::ElasticLoadBalancingV2::ListenerRule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElasticLoadBalancingV2::ListenerRule"
+Properties: Props?
+class Props {
+    ListenerArn: String?
+    RuleArn: String?
+    Actions: Listing<Action>?
+    Priority: Int?
+    Conditions: Listing<RuleCondition>?
+    IsDefault: Boolean?
+}
+class Action {
+    Order: Int?
+    TargetGroupArn: String?
+    FixedResponseConfig: FixedResponseConfig?
+    AuthenticateCognitoConfig: AuthenticateCognitoConfig?
+    Type: String
+    RedirectConfig: RedirectConfig?
+    ForwardConfig: ForwardConfig?
+    AuthenticateOidcConfig: AuthenticateOidcConfig?
+}
+class FixedResponseConfig {
+    ContentType: String?
+    StatusCode: String
+    MessageBody: String?
+}
+class AuthenticateCognitoConfig {
+    OnUnauthenticatedRequest: String?
+    UserPoolClientId: String
+    UserPoolDomain: String
+    SessionTimeout: Int?
+    Scope: String?
+    SessionCookieName: String?
+    UserPoolArn: String
+    AuthenticationRequestExtraParams: Mapping?
+}
+class RedirectConfig {
+    Path: String?
+    Query: String?
+    Port: String?
+    Host: String?
+    Protocol: String?
+    StatusCode: String
+}
+class ForwardConfig {
+    TargetGroupStickinessConfig: TargetGroupStickinessConfig?
+    TargetGroups: Listing<TargetGroupTuple>?
+}
+class TargetGroupStickinessConfig {
+    Enabled: Boolean?
+    DurationSeconds: Int?
+}
+class TargetGroupTuple {
+    TargetGroupArn: String?
+    Weight: Int?
+}
+class AuthenticateOidcConfig {
+    OnUnauthenticatedRequest: String?
+    TokenEndpoint: String
+    SessionTimeout: Int?
+    Scope: String?
+    Issuer: String
+    ClientSecret: String?
+    UserInfoEndpoint: String
+    ClientId: String
+    AuthorizationEndpoint: String
+    SessionCookieName: String?
+    UseExistingClientSecret: Boolean?
+    AuthenticationRequestExtraParams: Mapping?
+}
+class RuleCondition {
+    Field: String?
+    Values: Listing<String>?
+    HttpRequestMethodConfig: HttpRequestMethodConfig?
+    PathPatternConfig: PathPatternConfig?
+    HttpHeaderConfig: HttpHeaderConfig?
+    SourceIpConfig: SourceIpConfig?
+    HostHeaderConfig: HostHeaderConfig?
+    QueryStringConfig: QueryStringConfig?
+}
+class HttpRequestMethodConfig {
+    Values: Listing<String>?
+}
+class PathPatternConfig {
+    Values: Listing<String>?
+}
+class HttpHeaderConfig {
+    Values: Listing<String>?
+    HttpHeaderName: String?
+}
+class SourceIpConfig {
+    Values: Listing<String>?
+}
+class HostHeaderConfig {
+    Values: Listing<String>?
+}
+class QueryStringConfig {
+    Values: Listing<QueryStringKeyValue>?
+}
+class QueryStringKeyValue {
+    Value: String?
+    Key: String?
+}

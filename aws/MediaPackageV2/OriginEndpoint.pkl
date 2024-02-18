@@ -1,0 +1,237 @@
+/// <p>Represents an origin endpoint that is associated with a channel,
+/// offering a dynamically repackaged version of its content through
+/// various streaming media protocols. The content can be efficiently
+/// disseminated to end-users via a Content Delivery Network (CDN), like
+/// Amazon CloudFront.</p>
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaPackageV2::OriginEndpoint"
+Properties: Props?
+class Props {
+    /// <p>The Amazon Resource Name (ARN) associated with the resource.</p>
+    Arn: String?
+    ChannelGroupName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    ChannelName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    ContainerType: "TS" | "CMAF" | *Null
+    /// <p>The date and time the origin endpoint was created.</p>
+    CreatedAt: String?
+    /// <p>Enter any descriptive text that helps you to identify the origin
+    /// endpoint.</p>
+    Description: String(length <= 1024 && length >= 0)?
+    /// <p>An HTTP live streaming (HLS) manifest configuration.</p>
+    HlsManifests: Listing<HlsManifestConfiguration>?
+    /// <p>A low-latency HLS manifest configuration.</p>
+    LowLatencyHlsManifests: Listing<LowLatencyHlsManifestConfiguration>?
+    /// <p>The date and time the origin endpoint was modified.</p>
+    ModifiedAt: String?
+    OriginEndpointName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    Segment: Segment?
+    /// <p>The size of the window (in seconds) to create a window of the live
+    /// stream that's available for on-demand viewing. Viewers can start-over
+    /// or catch-up on content that falls within the window. The maximum
+    /// startover window is 1,209,600 seconds (14 days).</p>
+    StartoverWindowSeconds: Int?
+    Tags: Listing<Tag>?
+}
+/// <p>Retrieve the HTTP live streaming (HLS) manifest configuration.</p>
+class HlsManifestConfiguration {
+    /// <p>A short short string that's appended to the endpoint URL. The
+    /// manifest name creates a unique path to this endpoint. If you don't
+    /// enter a value, MediaPackage uses the default manifest name, index.
+    /// MediaPackage automatically inserts the format extension, such as
+    /// .m3u8. You can't use the same manifest name if you use HLS manifest
+    /// and low-latency HLS manifest. The manifestName on the HLSManifest
+    /// object overrides the manifestName you provided on the originEndpoint
+    /// object.</p>
+    ManifestName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))
+    /// <p>The egress domain URL for stream delivery from MediaPackage.</p>
+    Url: String?
+    /// <p>A short string that's appended to the endpoint URL. The child
+    /// manifest name creates a unique path to this endpoint. If you don't
+    /// enter a value, MediaPackage uses the default child manifest name,
+    /// index_1. The manifestName on the HLSManifest object overrides the
+    /// manifestName you provided on the originEndpoint object.</p>
+    ChildManifestName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    /// <p>The total duration (in seconds) of the manifest's content.</p>
+    ManifestWindowSeconds: Int?
+    /// <p>Inserts EXT-X-PROGRAM-DATE-TIME tags in the output manifest at the
+    /// interval that you specify. If you don't enter an interval,
+    /// EXT-X-PROGRAM-DATE-TIME tags aren't included in the manifest.
+    /// The tags sync the stream to the wall clock so that viewers can seek to
+    /// a specific time in the playback timeline on the player.
+    /// ID3Timed metadata messages generate every 5 seconds whenever the
+    /// content is ingested.</p>          <p>Irrespective of this parameter,
+    /// if any ID3Timed metadata is in the HLS input, it is passed through to
+    /// the HLS output.</p>
+    ProgramDateTimeIntervalSeconds: Int?
+    ScteHls: ScteHls?
+    FilterConfiguration: FilterConfiguration?
+}
+/// <p>The SCTE configuration.</p>
+class ScteHls {
+    AdMarkerHls: "DATERANGE" | *Null
+}
+/// <p>Filter configuration includes settings for manifest filtering,
+/// start and end times, and time delay that apply to all of your egress
+/// requests for this manifest. </p>
+class FilterConfiguration {
+    /// <p>Optionally specify one or more manifest filters for all of your
+    /// manifest egress requests. When you include a manifest filter, note
+    /// that you cannot use an identical manifest filter query parameter for
+    /// this manifest's endpoint URL.</p>
+    ManifestFilter: String(length <= 1024 && length >= 1)?
+    /// <p>Optionally specify the start time for all of your manifest egress
+    /// requests. When you include start time, note that you cannot use start
+    /// time query parameters for this manifest's endpoint URL.</p>
+    Start: String?
+    /// <p>Optionally specify the end time for all of your manifest egress
+    /// requests. When you include end time, note that you cannot use end time
+    /// query parameters for this manifest's endpoint URL.</p>
+    End: String?
+    /// <p>Optionally specify the time delay for all of your manifest egress
+    /// requests. Enter a value that is smaller than your endpoint's startover
+    /// window. When you include time delay, note that you cannot use time
+    /// delay query parameters for this manifest's endpoint URL.</p>
+    TimeDelaySeconds: Int?
+}
+/// <p>Retrieve the low-latency HTTP live streaming (HLS) manifest
+/// configuration.</p>
+class LowLatencyHlsManifestConfiguration {
+    /// <p>A short short string that's appended to the endpoint URL. The
+    /// manifest name creates a unique path to this endpoint. If you don't
+    /// enter a value, MediaPackage uses the default manifest name, index.
+    /// MediaPackage automatically inserts the format extension, such as
+    /// .m3u8. You can't use the same manifest name if you use HLS manifest
+    /// and low-latency HLS manifest. The manifestName on the HLSManifest
+    /// object overrides the manifestName you provided on the originEndpoint
+    /// object.</p>
+    ManifestName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))
+    /// <p>The egress domain URL for stream delivery from MediaPackage.</p>
+    Url: String?
+    /// <p>A short string that's appended to the endpoint URL. The child
+    /// manifest name creates a unique path to this endpoint. If you don't
+    /// enter a value, MediaPackage uses the default child manifest name,
+    /// index_1. The manifestName on the HLSManifest object overrides the
+    /// manifestName you provided on the originEndpoint object.</p>
+    ChildManifestName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    /// <p>The total duration (in seconds) of the manifest's content.</p>
+    ManifestWindowSeconds: Int?
+    /// <p>Inserts EXT-X-PROGRAM-DATE-TIME tags in the output manifest at the
+    /// interval that you specify. If you don't enter an interval,
+    /// EXT-X-PROGRAM-DATE-TIME tags aren't included in the manifest.
+    /// The tags sync the stream to the wall clock so that viewers can seek to
+    /// a specific time in the playback timeline on the player.
+    /// ID3Timed metadata messages generate every 5 seconds whenever the
+    /// content is ingested.</p>          <p>Irrespective of this parameter,
+    /// if any ID3Timed metadata is in the HLS input, it is passed through to
+    /// the HLS output.</p>
+    ProgramDateTimeIntervalSeconds: Int?
+    ScteHls: ScteHls?
+    FilterConfiguration: FilterConfiguration?
+}
+/// <p>The segment configuration, including the segment name, duration,
+/// and other configuration values.</p>
+class Segment {
+    /// <p>The duration (in seconds) of each segment. Enter a value equal to,
+    /// or a multiple of, the input segment duration. If the value that you
+    /// enter is different from the input segment duration, MediaPackage
+    /// rounds segments to the nearest multiple of the input segment
+    /// duration.</p>
+    SegmentDurationSeconds: Int?
+    /// <p>The name that describes the segment. The name is the base name of
+    /// the segment used in all content manifests inside of the endpoint. You
+    /// can't use spaces in the name.</p>
+    SegmentName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    /// <p>When selected, MediaPackage bundles all audio tracks in a rendition
+    /// group. All other tracks in the stream can be used with any audio
+    /// rendition from the group.</p>
+    TsUseAudioRenditionGroup: Boolean?
+    /// <p>When selected, the stream set includes an additional I-frame only
+    /// stream, along with the other tracks. If false, this extra stream is
+    /// not included. MediaPackage generates an I-frame only stream from the
+    /// first rendition in the manifest. The service inserts EXT-I-FRAMES-ONLY
+    /// tags in the output manifest, and then generates and includes an
+    /// I-frames only playlist in the stream. This playlist permits player
+    /// functionality like fast forward and rewind.</p>
+    IncludeIframeOnlyStreams: Boolean?
+    /// <p>By default, MediaPackage excludes all digital video broadcasting
+    /// (DVB) subtitles from the output. When selected, MediaPackage passes
+    /// through DVB subtitles into the output.</p>
+    TsIncludeDvbSubtitles: Boolean?
+    Scte: Scte?
+    Encryption: Encryption?
+}
+/// <p>The SCTE configuration.</p>
+class Scte {
+    /// <p>The SCTE-35 message types that you want to be treated as ad markers
+    /// in the output.</p>
+    ScteFilter: Listing<"SPLICE_INSERT" | "BREAK" | "PROVIDER_ADVERTISEMENT" | "DISTRIBUTOR_ADVERTISEMENT" | "PROVIDER_PLACEMENT_OPPORTUNITY" | "DISTRIBUTOR_PLACEMENT_OPPORTUNITY" | "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY" | "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY" | "PROGRAM">?
+}
+/// <p>The parameters for encrypting content.</p>
+class Encryption {
+    /// <p>A 128-bit, 16-byte hex value represented by a 32-character string,
+    /// used in conjunction with the key for encrypting content. If you don't
+    /// specify a value, then MediaPackage creates the constant initialization
+    /// vector (IV).</p>
+    ConstantInitializationVector: String(length <= 32 && length >= 32 && matches(Regex(#"^[0-9a-fA-F]+$"#)))?
+    EncryptionMethod: EncryptionMethod
+    /// <p>The frequency (in seconds) of key changes for live workflows, in
+    /// which content is streamed real time. The service retrieves content
+    /// keys before the live content begins streaming, and then retrieves them
+    /// as needed over the lifetime of the workflow. By default, key rotation
+    /// is set to 300 seconds (5 minutes), the minimum rotation interval,
+    /// which is equivalent to setting it to 300. If you don't enter an
+    /// interval, content keys aren't rotated.</p>          <p>The following
+    /// example setting causes the service to rotate keys every thirty
+    /// minutes: <code>1800</code>          </p>
+    KeyRotationIntervalSeconds: Int?
+    SpekeKeyProvider: SpekeKeyProvider
+}
+/// <p>The encryption type.</p>
+class EncryptionMethod {
+    TsEncryptionMethod: "AES_128" | "SAMPLE_AES" | *Null
+    CmafEncryptionMethod: "CENC" | "CBCS" | *Null
+}
+/// <p>The parameters for the SPEKE key provider.</p>
+class SpekeKeyProvider {
+    EncryptionContractConfiguration: EncryptionContractConfiguration
+    /// <p>The unique identifier for the content. The service sends this to
+    /// the key server to identify the current endpoint. How unique you make
+    /// this depends on how fine-grained you want access controls to be. The
+    /// service does not permit you to use the same ID for two simultaneous
+    /// encryption processes. The resource ID is also known as the content
+    /// ID.</p>          <p>The following example shows a resource ID:
+    /// <code>MovieNight20171126093045</code>          </p>
+    ResourceId: String(length <= 256 && length >= 1 && matches(Regex(#"^[0-9a-zA-Z_-]+$"#)))
+    /// <p>The DRM solution provider you're using to protect your content
+    /// during distribution.</p>
+    DrmSystems: Listing<"CLEAR_KEY_AES_128" | "FAIRPLAY" | "PLAYREADY" | "WIDEVINE">
+    /// <p>The ARN for the IAM role granted by the key provider that provides
+    /// access to the key provider API. This role must have a trust policy
+    /// that allows MediaPackage to assume the role, and it must have a
+    /// sufficient permissions policy to allow access to the specific key
+    /// retrieval URL. Get this from your DRM solution provider.</p>
+    /// <p>Valid format: <code>arn:aws:iam::{accountID}:role/{name}</code>.
+    /// The following example shows a role ARN:
+    /// <code>arn:aws:iam::444455556666:role/SpekeAccess</code>          </p>
+    RoleArn: String(length <= 2048 && length >= 1)
+    /// <p>The URL of the API Gateway proxy that you set up to talk to your
+    /// key server. The API Gateway proxy must reside in the same AWS Region
+    /// as MediaPackage and must start with https://.</p>          <p>The
+    /// following example shows a URL: <code>https://1wm2dx1f33.execute-
+    /// api.us-west-2.amazonaws.com/SpekeSample/copyProtection</code>
+    /// </p>
+    Url: String(length <= 1024 && length >= 1)
+}
+/// <p>Configure one or more content encryption keys for your endpoints
+/// that use SPEKE Version 2.0. The encryption contract defines which
+/// content keys are used to encrypt the audio and video tracks in your
+/// stream. To configure the encryption contract, specify which audio and
+/// video encryption presets to use.</p>
+class EncryptionContractConfiguration {
+    PresetSpeke20Audio: "PRESET_AUDIO_1" | "PRESET_AUDIO_2" | "PRESET_AUDIO_3" | "SHARED" | "UNENCRYPTED"
+    PresetSpeke20Video: "PRESET_VIDEO_1" | "PRESET_VIDEO_2" | "PRESET_VIDEO_3" | "PRESET_VIDEO_4" | "PRESET_VIDEO_5" | "PRESET_VIDEO_6" | "PRESET_VIDEO_7" | "PRESET_VIDEO_8" | "SHARED" | "UNENCRYPTED"
+}
+class Tag {
+    Key: String?
+    Value: String?
+}

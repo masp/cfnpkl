@@ -1,0 +1,152 @@
+/// Resource Type definition for AWS::DLM::LifecyclePolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DLM::LifecyclePolicy"
+Properties: Props?
+class Props {
+    CreateInterval: Int?
+    Description: String?
+    ExtendDeletion: Boolean?
+    Exclusions: Exclusions?
+    RetainInterval: Int?
+    ExecutionRoleArn: String?
+    DefaultPolicy: String?
+    State: String?
+    CrossRegionCopyTargets: Mapping?
+    PolicyDetails: PolicyDetails?
+    Id: String?
+    Arn: String?
+    Tags: Listing<Tag>?
+    CopyTags: Boolean?
+}
+class Exclusions {
+    ExcludeTags: Mapping?
+    ExcludeVolumeTypes: Mapping?
+    ExcludeBootVolumes: Boolean?
+}
+class PolicyDetails {
+    PolicyLanguage: String?
+    ResourceTypes: Listing<String>?
+    Schedules: Listing<Schedule>?
+    PolicyType: String?
+    CreateInterval: Int?
+    Parameters: Parameters?
+    ExtendDeletion: Boolean?
+    Exclusions: Exclusions?
+    Actions: Listing<Action>?
+    ResourceType: String?
+    RetainInterval: Int?
+    EventSource: EventSource?
+    CrossRegionCopyTargets: Mapping?
+    TargetTags: Listing<Tag>?
+    ResourceLocations: Listing<String>?
+    CopyTags: Boolean?
+}
+class Schedule {
+    ShareRules: Listing<ShareRule>?
+    DeprecateRule: DeprecateRule?
+    TagsToAdd: Listing<Tag>?
+    CreateRule: CreateRule?
+    VariableTags: Listing<Tag>?
+    FastRestoreRule: FastRestoreRule?
+    ArchiveRule: ArchiveRule?
+    RetainRule: RetainRule?
+    CrossRegionCopyRules: Listing<CrossRegionCopyRule>?
+    Name: String?
+    CopyTags: Boolean?
+}
+class ShareRule {
+    TargetAccounts: Listing<String>?
+    UnshareIntervalUnit: String?
+    UnshareInterval: Int?
+}
+class DeprecateRule {
+    IntervalUnit: String?
+    Count: Int?
+    Interval: Int?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class CreateRule {
+    IntervalUnit: String?
+    Scripts: Listing<Script>?
+    Times: Listing<String>?
+    CronExpression: String?
+    Interval: Int?
+    Location: String?
+}
+class Script {
+    ExecutionHandlerService: String?
+    ExecutionTimeout: Int?
+    Stages: Listing<String>?
+    ExecutionHandler: String?
+    MaximumRetryCount: Int?
+    ExecuteOperationOnScriptFailure: Boolean?
+}
+class FastRestoreRule {
+    IntervalUnit: String?
+    Count: Int?
+    AvailabilityZones: Listing<String>?
+    Interval: Int?
+}
+class ArchiveRule {
+    RetainRule: ArchiveRetainRule
+}
+class ArchiveRetainRule {
+    RetentionArchiveTier: RetentionArchiveTier
+}
+class RetentionArchiveTier {
+    IntervalUnit: String?
+    Count: Int?
+    Interval: Int?
+}
+class RetainRule {
+    IntervalUnit: String?
+    Count: Int?
+    Interval: Int?
+}
+class CrossRegionCopyRule {
+    TargetRegion: String?
+    Target: String?
+    DeprecateRule: CrossRegionCopyDeprecateRule?
+    Encrypted: Boolean
+    CmkArn: String?
+    RetainRule: CrossRegionCopyRetainRule?
+    CopyTags: Boolean?
+}
+class CrossRegionCopyDeprecateRule {
+    IntervalUnit: String
+    Interval: Int
+}
+class CrossRegionCopyRetainRule {
+    IntervalUnit: String
+    Interval: Int
+}
+class Parameters {
+    ExcludeBootVolume: Boolean?
+    NoReboot: Boolean?
+    ExcludeDataVolumeTags: Listing<Tag>?
+}
+class Action {
+    CrossRegionCopy: Listing<CrossRegionCopyAction>
+    Name: String
+}
+class CrossRegionCopyAction {
+    Target: String
+    EncryptionConfiguration: EncryptionConfiguration
+    RetainRule: CrossRegionCopyRetainRule?
+}
+class EncryptionConfiguration {
+    Encrypted: Boolean
+    CmkArn: String?
+}
+class EventSource {
+    Type: String
+    Parameters: EventParameters?
+}
+class EventParameters {
+    DescriptionRegex: String?
+    EventType: String
+    SnapshotOwner: Listing<String>
+}

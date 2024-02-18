@@ -1,0 +1,86 @@
+/// An example resource schema demonstrating some basic constructs and
+/// validation rules.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FinSpace::Environment"
+Properties: Props?
+class Props {
+    /// Unique identifier for representing FinSpace Environment
+    EnvironmentId: String(matches(Regex(#"^[a-zA-Z0-9]{1,26}$"#)))?
+    /// Name of the Environment
+    Name: String(matches(Regex(#"^[a-zA-Z0-9]+[a-zA-Z0-9-]*[a-zA-Z0-9]{1,255}$"#)))?
+    /// AWS account ID associated with the Environment
+    AwsAccountId: String(matches(Regex(#"^[a-zA-Z0-9]{1,26}$"#)))?
+    /// Description of the Environment
+    Description: String(matches(Regex(#"^[a-zA-Z0-9. ]{1,1000}$"#)))?
+    /// State of the Environment
+    Status: "CREATE_REQUESTED" | "CREATING" | "CREATED" | "DELETE_REQUESTED" | "DELETING" | "DELETED" | "FAILED_CREATION" | "FAILED_DELETION" | "RETRY_DELETION" | "SUSPENDED" | *Null
+    /// URL used to login to the Environment
+    EnvironmentUrl: String(matches(Regex(#"^[-a-zA-Z0-9+&amp;@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&amp;@#/%=~_|]{1,1000}"#)))?
+    /// ARN of the Environment
+    EnvironmentArn: String(matches(Regex(#"^arn:aws:finspace:[A-Za-z0-9_/.-]{0,63}:\d+:environment/[0-9A-Za-z_-]{1,128}$"#)))?
+    /// SageMaker Studio Domain URL associated with the Environment
+    SageMakerStudioDomainUrl: String(matches(Regex(#"^[a-zA-Z-0-9-:\/.]*{1,1000}$"#)))?
+    /// KMS key used to encrypt customer data within FinSpace Environment
+    /// infrastructure
+    KmsKeyId: String(matches(Regex(#"^[a-zA-Z-0-9-:\/]*{1,1000}$"#)))?
+    /// ID for FinSpace created account used to store Environment artifacts
+    DedicatedServiceAccountId: String(matches(Regex(#"^[a-zA-Z0-9]{1,26}$"#)))?
+    /// Federation mode used with the Environment
+    FederationMode: "LOCAL" | "FEDERATED" | *Null
+    FederationParameters: FederationParameters?
+    SuperuserParameters: SuperuserParameters?
+    /// ARNs of FinSpace Data Bundles to install
+    DataBundles: Listing<String(matches(Regex(#"^arn:aws:finspace:[A-Za-z0-9_/.-]{0,63}:\d*:data-bundle/[0-9A-Za-z_-]{1,128}$"#)))>?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// Additional parameters to identify Federation mode
+class FederationParameters {
+    /// SAML metadata URL to link with the Environment
+    SamlMetadataURL: String(matches(Regex(#"^https?://[-a-zA-Z0-9+&amp;@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&amp;@#/%=~_|]{1,1000}"#)))?
+    /// Federation provider name to link with the Environment
+    FederationProviderName: String(length <= 32 && length >= 1 && matches(Regex(#"[^_\p{Z}][\p{L}\p{M}\p{S}\p{N}\p{P}][^_\p{Z}]+"#)))?
+    /// SAML metadata document to link the federation provider to the
+    /// Environment
+    SamlMetadataDocument: String(length <= 10000000 && length >= 1000 && matches(Regex(#".*"#)))?
+    /// SAML metadata URL to link with the Environment
+    ApplicationCallBackURL: String(matches(Regex(#"^https?://[-a-zA-Z0-9+&amp;@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&amp;@#/%=~_|]{1,1000}"#)))?
+    /// SAML metadata URL to link with the Environment
+    FederationURN: String?
+    /// Attribute map for SAML configuration
+    AttributeMap: Listing<AttributeMap>?
+}
+class AttributeMap {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)?
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)?
+}
+/// Parameters of the first Superuser for the FinSpace Environment
+class SuperuserParameters {
+    /// First name
+    FirstName: String(length <= 50 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]{1,50}$"#)))?
+    /// Last name
+    LastName: String(length <= 50 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9]{1,50}$"#)))?
+    /// Email address
+    EmailAddress: String(length <= 128 && length >= 1 && matches(Regex(#"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+[.]+[A-Za-z]+"#)))?
+}
+/// A list of all tags for a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

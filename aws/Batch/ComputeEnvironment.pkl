@@ -1,0 +1,57 @@
+/// Resource Type definition for AWS::Batch::ComputeEnvironment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Batch::ComputeEnvironment"
+Properties: Props?
+class Props {
+    ComputeEnvironmentArn: String?
+    ComputeEnvironmentName: String?
+    ComputeResources: ComputeResources?
+    ReplaceComputeEnvironment: Boolean?
+    ServiceRole: String?
+    State: String?
+    /// A key-value pair to associate with a resource.
+    Tags: Mapping?
+    Type: String?
+    UpdatePolicy: UpdatePolicy?
+    UnmanagedvCpus: Int?
+    EksConfiguration: EksConfiguration?
+}
+class ComputeResources {
+    AllocationStrategy: String?
+    BidPercentage: Int?
+    DesiredvCpus: Int?
+    Ec2Configuration: Listing<Ec2ConfigurationObject>?
+    Ec2KeyPair: String?
+    ImageId: String?
+    InstanceRole: String?
+    InstanceTypes: Listing<String>?
+    LaunchTemplate: LaunchTemplateSpecification?
+    MaxvCpus: Int
+    MinvCpus: Int?
+    PlacementGroup: String?
+    SecurityGroupIds: Listing<String>?
+    SpotIamFleetRole: String?
+    Subnets: Listing<String>
+    /// A key-value pair to associate with a resource.
+    Tags: Mapping?
+    Type: String
+    UpdateToLatestImageVersion: Boolean?
+}
+class Ec2ConfigurationObject {
+    ImageIdOverride: String?
+    ImageType: String
+    ImageKubernetesVersion: String?
+}
+class LaunchTemplateSpecification {
+    LaunchTemplateId: String?
+    LaunchTemplateName: String?
+    Version: String?
+}
+class UpdatePolicy {
+    TerminateJobsOnUpdate: Boolean?
+    JobExecutionTimeoutMinutes: Int?
+}
+class EksConfiguration {
+    EksClusterArn: String
+    KubernetesNamespace: String
+}

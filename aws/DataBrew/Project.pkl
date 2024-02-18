@@ -1,0 +1,28 @@
+/// Resource schema for AWS::DataBrew::Project.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataBrew::Project"
+Properties: Props?
+class Props {
+    /// Dataset name
+    DatasetName: String(length <= 255 && length >= 1)?
+    /// Project name
+    Name: String(length <= 255 && length >= 1)?
+    /// Recipe name
+    RecipeName: String(length <= 255 && length >= 1)?
+    /// Role arn
+    RoleArn: String?
+    /// Sample
+    Sample: Sample?
+    Tags: Listing<Tag>?
+}
+class Sample {
+    /// Sample size
+    Size: Int?
+    /// Sample type
+    Type: "FIRST_N" | "LAST_N" | "RANDOM"
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

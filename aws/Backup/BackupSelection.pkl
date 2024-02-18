@@ -1,0 +1,33 @@
+/// Resource Type definition for AWS::Backup::BackupSelection
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Backup::BackupSelection"
+Properties: Props?
+class Props {
+    Id: String?
+    BackupPlanId: String?
+    BackupSelection: BackupSelectionResourceType?
+    SelectionId: String?
+}
+class BackupSelectionResourceType {
+    IamRoleArn: String
+    ListOfTags: Listing<ConditionResourceType>?
+    Resources: Listing<String>?
+    SelectionName: String
+    NotResources: Listing<String>?
+    Conditions: Conditions?
+}
+class ConditionResourceType {
+    ConditionKey: String
+    ConditionValue: String
+    ConditionType: String
+}
+class Conditions {
+    StringEquals: Listing<ConditionParameter>?
+    StringNotEquals: Listing<ConditionParameter>?
+    StringLike: Listing<ConditionParameter>?
+    StringNotLike: Listing<ConditionParameter>?
+}
+class ConditionParameter {
+    ConditionKey: String?
+    ConditionValue: String?
+}

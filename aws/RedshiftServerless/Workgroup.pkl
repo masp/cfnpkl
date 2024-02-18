@@ -1,0 +1,78 @@
+/// Definition of AWS::RedshiftServerless::Workgroup Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RedshiftServerless::Workgroup"
+Properties: Props?
+class Props {
+    /// The name of the workgroup.
+    WorkgroupName: String(length <= 64 && length >= 3 && matches(Regex(#"^(?=^[a-z0-9-]+$).{3,64}$"#)))?
+    /// The namespace the workgroup is associated with.
+    NamespaceName: String(length <= 64 && length >= 3 && matches(Regex(#"^(?=^[a-z0-9-]+$).{3,64}$"#)))?
+    /// The base compute capacity of the workgroup in Redshift Processing
+    /// Units (RPUs).
+    BaseCapacity: Int?
+    /// The max compute capacity of the workgroup in Redshift Processing Units
+    /// (RPUs).
+    MaxCapacity: Int?
+    /// The value that specifies whether to enable enhanced virtual private
+    /// cloud (VPC) routing, which forces Amazon Redshift Serverless to route
+    /// traffic through your VPC.
+    EnhancedVpcRouting: Boolean?
+    /// A list of parameters to set for finer control over a database.
+    /// Available options are datestyle, enable_user_activity_logging,
+    /// query_group, search_path, max_query_execution_time, and require_ssl.
+    ConfigParameters: Listing<ConfigParameter>?
+    /// A list of security group IDs to associate with the workgroup.
+    SecurityGroupIds: Listing<String(length <= 255 && length >= 0 && matches(Regex(#"^sg-[0-9a-fA-F]{8,}$"#)))>?
+    /// A list of subnet IDs the workgroup is associated with.
+    SubnetIds: Listing<String(length <= 255 && length >= 0 && matches(Regex(#"^subnet-[0-9a-fA-F]{8,}$"#)))>?
+    /// A value that specifies whether the workgroup can be accessible from a
+    /// public network.
+    PubliclyAccessible: Boolean?
+    /// The custom port to use when connecting to a workgroup. Valid port
+    /// ranges are 5431-5455 and 8191-8215. The default is 5439.
+    Port: Int?
+    /// The map of the key-value pairs used to tag the workgroup.
+    Tags: Listing<Tag>?
+    /// Definition for workgroup resource
+    Workgroup: Workgroup?
+}
+class ConfigParameter {
+    ParameterKey: String(length <= 255 && length >= 0)?
+    ParameterValue: String(length <= 15000 && length >= 0)?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}
+class Workgroup {
+    WorkgroupId: String?
+    WorkgroupArn: String?
+    WorkgroupName: String(length <= 64 && length >= 3 && matches(Regex(#"^[a-z0-9-]*$"#)))?
+    NamespaceName: String(length <= 64 && length >= 3 && matches(Regex(#"^[a-z0-9-]+$"#)))?
+    BaseCapacity: Int?
+    MaxCapacity: Int?
+    EnhancedVpcRouting: Boolean?
+    ConfigParameters: Listing<ConfigParameter>?
+    SecurityGroupIds: Listing<String(length <= 255 && length >= 0 && matches(Regex(#"^sg-[0-9a-fA-F]{8,}$"#)))>?
+    SubnetIds: Listing<String(length <= 255 && length >= 0 && matches(Regex(#"^subnet-[0-9a-fA-F]{8,}$"#)))>?
+    Status: "CREATING" | "AVAILABLE" | "MODIFYING" | "DELETING" | *Null
+    Endpoint: Endpoint?
+    PubliclyAccessible: Boolean?
+    CreationDate: String?
+}
+class Endpoint {
+    Address: String?
+    Port: Int?
+    VpcEndpoints: Listing<VpcEndpoint>?
+}
+class VpcEndpoint {
+    VpcEndpointId: String?
+    VpcId: String?
+    NetworkInterfaces: Listing<NetworkInterface>?
+}
+class NetworkInterface {
+    NetworkInterfaceId: String?
+    SubnetId: String?
+    PrivateIpAddress: String?
+    AvailabilityZone: String?
+}

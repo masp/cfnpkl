@@ -1,0 +1,24 @@
+/// Resource Type definition for AWS::EC2::CustomerGateway
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::CustomerGateway"
+Properties: Props?
+class Props {
+    /// CustomerGateway ID generated after customer gateway is created. Each
+    /// customer gateway has a unique ID.
+    CustomerGatewayId: String?
+    /// For devices that support BGP, the customer gateway's BGP ASN.
+    BgpAsn: Int?
+    /// The internet-routable IP address for the customer gateway's outside
+    /// interface. The address must be static.
+    IpAddress: String?
+    /// One or more tags for the customer gateway.
+    Tags: Listing<Tag>?
+    /// The type of VPN connection that this customer gateway supports.
+    Type: String?
+    /// A name for the customer gateway device.
+    DeviceName: String?
+}
+class Tag {
+    Key: String
+    Value: String
+}

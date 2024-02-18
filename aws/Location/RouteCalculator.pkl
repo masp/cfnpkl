@@ -1,0 +1,29 @@
+/// Definition of AWS::Location::RouteCalculator Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Location::RouteCalculator"
+Properties: Props?
+class Props {
+    CalculatorArn: String(length <= 1600 && matches(Regex(#"^arn(:[a-z0-9]+([.-][a-z0-9]+)*):geo(:([a-z0-9]+([.-][a-z0-9]+)*))(:[0-9]+):((\*)|([-a-z]+[/][*-._\w]+))$"#)))?
+    CalculatorName: String(length <= 100 && length >= 1 && matches(Regex(#"^[-._\w]+$"#)))?
+    CreateTime: String(matches(Regex(#"^([0-2]\d{3})-(0[0-9]|1[0-2])-([0-2]\d|3[01])T([01]\d|2[0-4]):([0-5]\d):([0-6]\d)((\.\d{3})?)Z$"#)))?
+    DataSource: String?
+    Description: String(length <= 1000 && length >= 0)?
+    PricingPlan: "RequestBasedUsage" | *Null
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    UpdateTime: String(matches(Regex(#"^([0-2]\d{3})-(0[0-9]|1[0-2])-([0-2]\d|3[01])T([01]\d|2[0-4]):([0-5]\d):([0-6]\d)((\.\d{3})?)Z$"#)))?
+    Arn: String(length <= 1600 && matches(Regex(#"^arn(:[a-z0-9]+([.-][a-z0-9]+)*){2}(:([a-z0-9]+([.-][a-z0-9]+)*)?){2}:([^/].*)?$"#)))?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"\A(?!aws:)[a-zA-Z0-9+\-=\._\:\/@]+$"#)))
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0 && matches(Regex(#"\A[a-zA-Z0-9+\-=\._\:\/@]+$"#)))
+}

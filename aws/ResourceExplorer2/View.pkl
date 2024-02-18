@@ -1,0 +1,18 @@
+/// Definition of AWS::ResourceExplorer2::View Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ResourceExplorer2::View"
+Properties: Props?
+class Props {
+    Filters: SearchFilter?
+    IncludedProperties: Listing<IncludedProperty>?
+    Scope: String?
+    Tags: Mapping?
+    ViewArn: String?
+    ViewName: String(matches(Regex(#"^[a-zA-Z0-9\-]{1,64}$"#)))?
+}
+class SearchFilter {
+    FilterString: String(length <= 2048 && length >= 0)
+}
+class IncludedProperty {
+    Name: String(length <= 1011 && length >= 1)
+}

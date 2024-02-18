@@ -1,0 +1,60 @@
+/// The `AWS::Redshift::ScheduledAction` resource creates an Amazon
+/// Redshift Scheduled Action.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Redshift::ScheduledAction"
+Properties: Props?
+class Props {
+    /// The name of the scheduled action. The name must be unique within an
+    /// account.
+    ScheduledActionName: String(matches(Regex(#"^(?=^[a-z][a-z0-9]*(-[a-z0-9]+)*$).{1,60}$"#)))?
+    /// A JSON format string of the Amazon Redshift API operation with input
+    /// parameters.
+    TargetAction: ScheduledActionType0 | ScheduledActionType1 | ScheduledActionType2 | *Null
+    /// The schedule in `at( )` or `cron( )` format.
+    Schedule: String?
+    /// The IAM role to assume to run the target action.
+    IamRole: String?
+    /// The description of the scheduled action.
+    ScheduledActionDescription: String(matches(Regex(#"^(?=^[\x09\x0a\x0d\x20-\xff]*$).{1,255}$"#)))?
+    /// The start time in UTC of the scheduled action. Before this time, the
+    /// scheduled action does not trigger.
+    StartTime: String?
+    /// The end time in UTC of the scheduled action. After this time, the
+    /// scheduled action does not trigger.
+    EndTime: String?
+    /// If true, the schedule is enabled. If false, the scheduled action does
+    /// not trigger.
+    Enable: Boolean?
+    /// The state of the scheduled action.
+    State: "ACTIVE" | "DISABLED" | *Null
+    /// List of times when the scheduled action will run.
+    NextInvocations: Listing<String>?
+}
+class ScheduledActionType0 {
+    ResizeCluster: ResizeClusterMessage?
+}
+/// Describes a resize cluster operation. For example, a scheduled action
+/// to run the `ResizeCluster` API operation.
+class ResizeClusterMessage {
+    ClusterIdentifier: String
+    ClusterType: String?
+    NodeType: String?
+    NumberOfNodes: Int?
+    Classic: Boolean?
+}
+class ScheduledActionType1 {
+    PauseCluster: PauseClusterMessage?
+}
+/// Describes a pause cluster operation. For example, a scheduled action
+/// to run the `PauseCluster` API operation.
+class PauseClusterMessage {
+    ClusterIdentifier: String
+}
+class ScheduledActionType2 {
+    ResumeCluster: ResumeClusterMessage?
+}
+/// Describes a resume cluster operation. For example, a scheduled action
+/// to run the `ResumeCluster` API operation.
+class ResumeClusterMessage {
+    ClusterIdentifier: String
+}

@@ -1,0 +1,22 @@
+/// The ``AWS::ApiGatewayV2::Model`` resource updates data model for a
+/// WebSocket API. For more information, see [Model Selection Expressions]
+/// (https://docs.aws.amazon.com/apigateway/latest/developerguide/apigatew
+/// ay-websocket-api-selection-expressions.html#apigateway-websocket-api-
+/// model-selection-expressions) in the *API Gateway Developer Guide*.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGatewayV2::Model"
+Properties: Props?
+class Props {
+    ModelId: String?
+    /// The description of the model.
+    Description: String?
+    /// The content-type for the model, for example, "application/json".
+    ContentType: String?
+    /// The schema for the model. For application/json models, this should be
+    /// JSON schema draft 4 model.
+    Schema: Mapping?
+    /// The API identifier.
+    ApiId: String?
+    /// The name of the model.
+    Name: String?
+}

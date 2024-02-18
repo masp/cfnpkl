@@ -1,0 +1,59 @@
+/// Resource schema for AWS::ImageBuilder::InfrastructureConfiguration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ImageBuilder::InfrastructureConfiguration"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the infrastructure configuration.
+    Arn: String?
+    /// The name of the infrastructure configuration.
+    Name: String?
+    /// The description of the infrastructure configuration.
+    Description: String?
+    /// The instance types of the infrastructure configuration.
+    InstanceTypes: Listing<String>?
+    /// The security group IDs of the infrastructure configuration.
+    SecurityGroupIds: Listing<String>?
+    /// The logging configuration of the infrastructure configuration.
+    Logging: Logging?
+    /// The subnet ID of the infrastructure configuration.
+    SubnetId: String?
+    /// The EC2 key pair of the infrastructure configuration..
+    KeyPair: String?
+    /// The terminate instance on failure configuration of the infrastructure
+    /// configuration.
+    TerminateInstanceOnFailure: Boolean?
+    /// The instance profile of the infrastructure configuration.
+    InstanceProfileName: String?
+    /// The instance metadata option settings for the infrastructure
+    /// configuration.
+    InstanceMetadataOptions: InstanceMetadataOptions?
+    /// The SNS Topic Amazon Resource Name (ARN) of the infrastructure
+    /// configuration.
+    SnsTopicArn: String?
+    /// The tags attached to the resource created by Image Builder.
+    ResourceTags: Mapping?
+    /// The tags associated with the component.
+    Tags: Mapping?
+}
+/// The logging configuration of the infrastructure configuration.
+class Logging {
+    S3Logs: S3Logs?
+}
+/// The S3 path in which to store the logs.
+class S3Logs {
+    /// S3BucketName
+    S3BucketName: String?
+    /// S3KeyPrefix
+    S3KeyPrefix: String?
+}
+/// The instance metadata option settings for the infrastructure
+/// configuration.
+class InstanceMetadataOptions {
+    /// Limit the number of hops that an instance metadata request can
+    /// traverse to reach its destination.
+    HttpPutResponseHopLimit: Int?
+    /// Indicates whether a signed token header is required for instance
+    /// metadata retrieval requests. The values affect the response as
+    /// follows:
+    HttpTokens: "required" | "optional" | *Null
+}

@@ -1,0 +1,10 @@
+/// Resource Type definition for
+/// AWS::OpsWorks::ElasticLoadBalancerAttachment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::OpsWorks::ElasticLoadBalancerAttachment"
+Properties: Props?
+class Props {
+    Id: String?
+    ElasticLoadBalancerName: String?
+    LayerId: String?
+}

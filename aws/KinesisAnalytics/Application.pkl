@@ -1,0 +1,62 @@
+/// Resource Type definition for AWS::KinesisAnalytics::Application
+extends ".../AWS/Resource.pkl"
+Type = "AWS::KinesisAnalytics::Application"
+Properties: Props?
+class Props {
+    Id: String?
+    ApplicationName: String?
+    Inputs: Listing<Input>?
+    ApplicationDescription: String?
+    ApplicationCode: String?
+}
+class Input {
+    NamePrefix: String
+    InputSchema: InputSchema
+    KinesisStreamsInput: KinesisStreamsInput?
+    KinesisFirehoseInput: KinesisFirehoseInput?
+    InputProcessingConfiguration: InputProcessingConfiguration?
+    InputParallelism: InputParallelism?
+}
+class InputSchema {
+    RecordEncoding: String?
+    RecordColumns: Listing<RecordColumn>
+    RecordFormat: RecordFormat
+}
+class RecordColumn {
+    Mapping: String?
+    SqlType: String
+    Name: String
+}
+class RecordFormat {
+    MappingParameters: MappingParameters?
+    RecordFormatType: String
+}
+class MappingParameters {
+    JSONMappingParameters: JSONMappingParameters?
+    CSVMappingParameters: CSVMappingParameters?
+}
+class JSONMappingParameters {
+    RecordRowPath: String
+}
+class CSVMappingParameters {
+    RecordRowDelimiter: String
+    RecordColumnDelimiter: String
+}
+class KinesisStreamsInput {
+    ResourceARN: String
+    RoleARN: String
+}
+class KinesisFirehoseInput {
+    ResourceARN: String
+    RoleARN: String
+}
+class InputProcessingConfiguration {
+    InputLambdaProcessor: InputLambdaProcessor?
+}
+class InputLambdaProcessor {
+    ResourceARN: String
+    RoleARN: String
+}
+class InputParallelism {
+    Count: Int?
+}

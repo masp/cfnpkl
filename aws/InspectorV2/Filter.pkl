@@ -1,0 +1,78 @@
+/// Inspector Filter resource schema
+extends ".../AWS/Resource.pkl"
+Type = "AWS::InspectorV2::Filter"
+Properties: Props?
+class Props {
+    /// Findings filter name.
+    Name: String(length <= 128 && length >= 1)?
+    /// Findings filter description.
+    Description: String(length <= 512 && length >= 1)?
+    /// Findings filter criteria.
+    FilterCriteria: FilterCriteria?
+    /// Findings filter action.
+    FilterAction: "NONE" | "SUPPRESS" | *Null
+    /// Findings filter ARN.
+    Arn: String(length <= 128 && length >= 1)?
+}
+class FilterCriteria {
+    AwsAccountId: Listing<StringFilter>?
+    ComponentId: Listing<StringFilter>?
+    ComponentType: Listing<StringFilter>?
+    Ec2InstanceImageId: Listing<StringFilter>?
+    Ec2InstanceSubnetId: Listing<StringFilter>?
+    Ec2InstanceVpcId: Listing<StringFilter>?
+    EcrImageArchitecture: Listing<StringFilter>?
+    EcrImageHash: Listing<StringFilter>?
+    EcrImageTags: Listing<StringFilter>?
+    EcrImagePushedAt: Listing<DateFilter>?
+    EcrImageRegistry: Listing<StringFilter>?
+    EcrImageRepositoryName: Listing<StringFilter>?
+    FindingArn: Listing<StringFilter>?
+    FindingStatus: Listing<StringFilter>?
+    FindingType: Listing<StringFilter>?
+    FirstObservedAt: Listing<DateFilter>?
+    InspectorScore: Listing<NumberFilter>?
+    LastObservedAt: Listing<DateFilter>?
+    NetworkProtocol: Listing<StringFilter>?
+    PortRange: Listing<PortRangeFilter>?
+    RelatedVulnerabilities: Listing<StringFilter>?
+    ResourceId: Listing<StringFilter>?
+    ResourceTags: Listing<MapFilter>?
+    ResourceType: Listing<StringFilter>?
+    Severity: Listing<StringFilter>?
+    Title: Listing<StringFilter>?
+    UpdatedAt: Listing<DateFilter>?
+    VendorSeverity: Listing<StringFilter>?
+    VulnerabilityId: Listing<StringFilter>?
+    VulnerabilitySource: Listing<StringFilter>?
+    VulnerablePackages: Listing<PackageFilter>?
+}
+class StringFilter {
+    Comparison: "EQUALS" | "PREFIX" | "NOT_EQUALS"
+    Value: String(length <= 1024 && length >= 1)
+}
+class DateFilter {
+    EndInclusive: Int?
+    StartInclusive: Int?
+}
+class NumberFilter {
+    LowerInclusive: Float?
+    UpperInclusive: Float?
+}
+class PortRangeFilter {
+    BeginInclusive: Int?
+    EndInclusive: Int?
+}
+class MapFilter {
+    Comparison: "EQUALS"
+    Key: String(length <= 128 && length >= 1)?
+    Value: String(length <= 256 && length >= 0)?
+}
+class PackageFilter {
+    Architecture: StringFilter?
+    Epoch: NumberFilter?
+    Name: StringFilter?
+    Release: StringFilter?
+    SourceLayerHash: StringFilter?
+    Version: StringFilter?
+}

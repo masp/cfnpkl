@@ -1,0 +1,44 @@
+/// The AWS::KMS::ReplicaKey resource specifies a multi-region replica AWS
+/// KMS key in AWS Key Management Service (AWS KMS).
+extends ".../AWS/Resource.pkl"
+Type = "AWS::KMS::ReplicaKey"
+Properties: Props?
+class Props {
+    /// Identifies the primary AWS KMS key to create a replica of. Specify the
+    /// Amazon Resource Name (ARN) of the AWS KMS key. You cannot specify an
+    /// alias or key ID. For help finding the ARN, see Finding the Key ID and
+    /// ARN in the AWS Key Management Service Developer Guide.
+    PrimaryKeyArn: String(length <= 256 && length >= 1)?
+    /// A description of the AWS KMS key. Use a description that helps you to
+    /// distinguish this AWS KMS key from others in the account, such as its
+    /// intended use.
+    Description: String(length <= 8192 && length >= 0)?
+    /// Specifies whether the AWS KMS key is enabled. Disabled AWS KMS keys
+    /// cannot be used in cryptographic operations.
+    Enabled: Boolean?
+    /// The key policy that authorizes use of the AWS KMS key. The key policy
+    /// must observe the following rules.
+    KeyPolicy: Mapping | String | *Null
+    /// Specifies the number of days in the waiting period before AWS KMS
+    /// deletes an AWS KMS key that has been removed from a CloudFormation
+    /// stack. Enter a value between 7 and 30 days. The default value is 30
+    /// days.
+    PendingWindowInDays: Int?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    Arn: String?
+    KeyId: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

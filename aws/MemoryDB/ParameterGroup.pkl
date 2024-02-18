@@ -1,0 +1,29 @@
+/// The AWS::MemoryDB::ParameterGroup resource creates an Amazon MemoryDB
+/// ParameterGroup.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MemoryDB::ParameterGroup"
+Properties: Props?
+class Props {
+    /// The name of the parameter group.
+    ParameterGroupName: String?
+    /// The name of the parameter group family that this parameter group is
+    /// compatible with.
+    Family: String?
+    /// A description of the parameter group.
+    Description: String?
+    /// An array of key-value pairs to apply to this parameter group.
+    Tags: Listing<Tag>?
+    /// An map of parameter names and values for the parameter update. You
+    /// must supply at least one parameter name and value; subsequent
+    /// arguments are optional.
+    Parameters: Mapping?
+    /// The Amazon Resource Name (ARN) of the parameter group.
+    ARN: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for the tag. May not be null.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)(?!memorydb:)[a-zA-Z0-9 _\.\/=+:\-@]{1,128}$"#)))
+    /// The tag's value. May be null.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^(?!aws:)(?!memorydb:)[a-zA-Z0-9 _\.\/=+:\-@]{1,256}$"#)))
+}

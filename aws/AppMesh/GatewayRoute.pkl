@@ -1,0 +1,125 @@
+/// Resource Type definition for AWS::AppMesh::GatewayRoute
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppMesh::GatewayRoute"
+Properties: Props?
+class Props {
+    Uid: String?
+    MeshName: String?
+    VirtualGatewayName: String?
+    MeshOwner: String?
+    ResourceOwner: String?
+    GatewayRouteName: String?
+    Id: String?
+    Arn: String?
+    Spec: GatewayRouteSpec?
+    Tags: Listing<Tag>?
+}
+class GatewayRouteSpec {
+    HttpRoute: HttpGatewayRoute?
+    Http2Route: HttpGatewayRoute?
+    GrpcRoute: GrpcGatewayRoute?
+    Priority: Int?
+}
+class HttpGatewayRoute {
+    Action: HttpGatewayRouteAction
+    Match: HttpGatewayRouteMatch
+}
+class HttpGatewayRouteAction {
+    Target: GatewayRouteTarget
+    Rewrite: HttpGatewayRouteRewrite?
+}
+class GatewayRouteTarget {
+    VirtualService: GatewayRouteVirtualService
+    Port: Int?
+}
+class GatewayRouteVirtualService {
+    VirtualServiceName: String
+}
+class HttpGatewayRouteRewrite {
+    Path: HttpGatewayRoutePathRewrite?
+    Hostname: GatewayRouteHostnameRewrite?
+    Prefix: HttpGatewayRoutePrefixRewrite?
+}
+class HttpGatewayRoutePathRewrite {
+    Exact: String?
+}
+class GatewayRouteHostnameRewrite {
+    DefaultTargetHostname: String?
+}
+class HttpGatewayRoutePrefixRewrite {
+    Value: String?
+    DefaultPrefix: String?
+}
+class HttpGatewayRouteMatch {
+    Path: HttpPathMatch?
+    Headers: Listing<HttpGatewayRouteHeader>?
+    Port: Int?
+    Hostname: GatewayRouteHostnameMatch?
+    Prefix: String?
+    Method: String?
+    QueryParameters: Listing<QueryParameter>?
+}
+class HttpPathMatch {
+    Regex: String?
+    Exact: String?
+}
+class HttpGatewayRouteHeader {
+    Invert: Boolean?
+    Name: String
+    Match: HttpGatewayRouteHeaderMatch?
+}
+class HttpGatewayRouteHeaderMatch {
+    Suffix: String?
+    Exact: String?
+    Prefix: String?
+    Regex: String?
+    Range: GatewayRouteRangeMatch?
+}
+class GatewayRouteRangeMatch {
+    Start: Int
+    End: Int
+}
+class GatewayRouteHostnameMatch {
+    Suffix: String?
+    Exact: String?
+}
+class QueryParameter {
+    Name: String
+    Match: HttpQueryParameterMatch?
+}
+class HttpQueryParameterMatch {
+    Exact: String?
+}
+class GrpcGatewayRoute {
+    Action: GrpcGatewayRouteAction
+    Match: GrpcGatewayRouteMatch
+}
+class GrpcGatewayRouteAction {
+    Target: GatewayRouteTarget
+    Rewrite: GrpcGatewayRouteRewrite?
+}
+class GrpcGatewayRouteRewrite {
+    Hostname: GatewayRouteHostnameRewrite?
+}
+class GrpcGatewayRouteMatch {
+    Hostname: GatewayRouteHostnameMatch?
+    Metadata: Listing<GrpcGatewayRouteMetadata>?
+    ServiceName: String?
+    Port: Int?
+}
+class GrpcGatewayRouteMetadata {
+    Invert: Boolean?
+    Name: String
+    Match: GatewayRouteMetadataMatch?
+}
+class GatewayRouteMetadataMatch {
+    Suffix: String?
+    Exact: String?
+    Prefix: String?
+    Regex: String?
+    Range: GatewayRouteRangeMatch?
+}
+class Tag {
+    Value: String
+    Key: String
+}

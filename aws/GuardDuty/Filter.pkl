@@ -1,0 +1,20 @@
+/// Resource Type definition for AWS::GuardDuty::Filter
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GuardDuty::Filter"
+Properties: Props?
+class Props {
+    Action: String?
+    Description: String?
+    DetectorId: String(length <= 300 && length >= 1)?
+    FindingCriteria: FindingCriteria?
+    Rank: Int?
+    Name: String(length <= 64 && length >= 1)?
+    Tags: Listing<TagItem>?
+}
+class FindingCriteria {
+    Criterion: Mapping?
+}
+class TagItem {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

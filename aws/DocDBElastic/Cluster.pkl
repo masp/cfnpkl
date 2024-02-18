@@ -1,0 +1,24 @@
+/// The AWS::DocDBElastic::Cluster Amazon DocumentDB (with MongoDB
+/// compatibility) Elastic Scale resource describes a Cluster
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DocDBElastic::Cluster"
+Properties: Props?
+class Props {
+    ClusterName: String(length <= 50 && length >= 1 && matches(Regex(#"[a-zA-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*"#)))?
+    ClusterArn: String?
+    ClusterEndpoint: String?
+    AdminUserName: String?
+    AdminUserPassword: String?
+    ShardCapacity: Int?
+    ShardCount: Int?
+    VpcSecurityGroupIds: Listing<String>?
+    SubnetIds: Listing<String>?
+    PreferredMaintenanceWindow: String?
+    KmsKeyId: String?
+    Tags: Listing<Tag>?
+    AuthType: String?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z+-=._:/]+$"#)))
+    Value: String(length <= 256 && length >= 0)
+}

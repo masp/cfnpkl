@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::LakeFormation::DataLakeSettings
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LakeFormation::DataLakeSettings"
+Properties: Props?
+class Props {
+    AllowExternalDataFiltering: Boolean?
+    ExternalDataFilteringAllowList: Mapping?
+    CreateTableDefaultPermissions: Mapping?
+    MutationType: String?
+    Parameters: Mapping?
+    AllowFullTableExternalDataAccess: Boolean?
+    Admins: Mapping?
+    CreateDatabaseDefaultPermissions: Mapping?
+    Id: String?
+    AuthorizedSessionTagValueList: Listing<String>?
+    TrustedResourceOwners: Listing<String>?
+}

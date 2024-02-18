@@ -1,0 +1,151 @@
+/// The AWS::S3::StorageLens resource is an Amazon S3 resource type that
+/// you can use to create Storage Lens configurations.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::S3::StorageLens"
+Properties: Props?
+class Props {
+    StorageLensConfiguration: StorageLensConfiguration?
+    /// A set of tags (key-value pairs) for this Amazon S3 Storage Lens
+    /// configuration.
+    Tags: Listing<Tag>?
+}
+/// Specifies the details of Amazon S3 Storage Lens configuration.
+class StorageLensConfiguration {
+    Id: String(length <= 64 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\-_.]+$"#)))
+    Include: BucketsAndRegions?
+    Exclude: BucketsAndRegions?
+    AwsOrg: AwsOrg?
+    AccountLevel: AccountLevel
+    DataExport: DataExport?
+    /// Specifies whether the Amazon S3 Storage Lens configuration is enabled
+    /// or disabled.
+    IsEnabled: Boolean
+    /// The ARN for the Amazon S3 Storage Lens configuration.
+    StorageLensArn: String?
+}
+/// S3 buckets and Regions to include/exclude in the Amazon S3 Storage
+/// Lens configuration.
+class BucketsAndRegions {
+    Buckets: Listing<String>?
+    Regions: Listing<String>?
+}
+/// The AWS Organizations ARN to use in the Amazon S3 Storage Lens
+/// configuration.
+class AwsOrg {
+    Arn: String
+}
+/// Account-level metrics configurations.
+class AccountLevel {
+    ActivityMetrics: ActivityMetrics?
+    AdvancedCostOptimizationMetrics: AdvancedCostOptimizationMetrics?
+    AdvancedDataProtectionMetrics: AdvancedDataProtectionMetrics?
+    DetailedStatusCodesMetrics: DetailedStatusCodesMetrics?
+    BucketLevel: BucketLevel
+    StorageLensGroupLevel: StorageLensGroupLevel?
+}
+/// Enables activity metrics.
+class ActivityMetrics {
+    /// Specifies whether activity metrics are enabled or disabled.
+    IsEnabled: Boolean?
+}
+/// Enables advanced cost optimization metrics.
+class AdvancedCostOptimizationMetrics {
+    /// Specifies whether advanced cost optimization metrics are enabled or
+    /// disabled.
+    IsEnabled: Boolean?
+}
+/// Enables advanced data protection metrics.
+class AdvancedDataProtectionMetrics {
+    /// Specifies whether advanced data protection metrics are enabled or
+    /// disabled.
+    IsEnabled: Boolean?
+}
+/// Enables detailed status codes metrics.
+class DetailedStatusCodesMetrics {
+    /// Specifies whether detailed status codes metrics are enabled or
+    /// disabled.
+    IsEnabled: Boolean?
+}
+/// Bucket-level metrics configurations.
+class BucketLevel {
+    ActivityMetrics: ActivityMetrics?
+    AdvancedCostOptimizationMetrics: AdvancedCostOptimizationMetrics?
+    AdvancedDataProtectionMetrics: AdvancedDataProtectionMetrics?
+    DetailedStatusCodesMetrics: DetailedStatusCodesMetrics?
+    PrefixLevel: PrefixLevel?
+}
+/// Prefix-level metrics configurations.
+class PrefixLevel {
+    StorageMetrics: PrefixLevelStorageMetrics
+}
+class PrefixLevelStorageMetrics {
+    /// Specifies whether prefix-level storage metrics are enabled or
+    /// disabled.
+    IsEnabled: Boolean?
+    SelectionCriteria: SelectionCriteria?
+}
+/// Selection criteria for prefix-level metrics.
+class SelectionCriteria {
+    /// Max depth of prefixes of S3 key that Amazon S3 Storage Lens will
+    /// analyze.
+    MaxDepth: Int?
+    /// Delimiter to divide S3 key into hierarchy of prefixes.
+    Delimiter: String?
+    /// The minimum storage bytes threshold for the prefixes to be included in
+    /// the analysis.
+    MinStorageBytesPercentage: Float?
+}
+/// Specifies the details of Amazon S3 Storage Lens Group configuration.
+class StorageLensGroupLevel {
+    StorageLensGroupSelectionCriteria: StorageLensGroupSelectionCriteria?
+}
+/// Selection criteria for Storage Lens Group level metrics
+class StorageLensGroupSelectionCriteria {
+    Include: Listing<String>?
+    Exclude: Listing<String>?
+}
+/// Specifies how Amazon S3 Storage Lens metrics should be exported.
+class DataExport {
+    S3BucketDestination: S3BucketDestination?
+    CloudWatchMetrics: CloudWatchMetrics?
+}
+/// S3 bucket destination settings for the Amazon S3 Storage Lens metrics
+/// export.
+class S3BucketDestination {
+    /// The version of the output schema to use when exporting Amazon S3
+    /// Storage Lens metrics.
+    OutputSchemaVersion: "V_1"
+    /// Specifies the file format to use when exporting Amazon S3 Storage Lens
+    /// metrics export.
+    Format: "CSV" | "Parquet"
+    /// The AWS account ID that owns the destination S3 bucket.
+    AccountId: String
+    /// The ARN of the bucket to which Amazon S3 Storage Lens exports will be
+    /// placed.
+    Arn: String
+    /// The prefix to use for Amazon S3 Storage Lens export.
+    Prefix: String?
+    Encryption: Encryption0 | Encryption1 | *Null
+}
+class Encryption0 {
+    /// S3 default server-side encryption.
+    SSES3: Mapping
+}
+class Encryption1 {
+    SSEKMS: SSEKMS
+}
+/// AWS KMS server-side encryption.
+class SSEKMS {
+    /// The ARN of the KMS key to use for encryption.
+    KeyId: String
+}
+/// CloudWatch metrics settings for the Amazon S3 Storage Lens metrics
+/// export.
+class CloudWatchMetrics {
+    /// Specifies whether CloudWatch metrics are enabled or disabled.
+    IsEnabled: Boolean
+}
+class Tag {
+    Key: String(length <= 127 && length >= 1 && matches(Regex(#"^(?!aws:.*)[a-zA-Z0-9\s\_\.\/\=\+\-\@\:]+$"#)))
+    Value: String(length <= 255 && length >= 1 && matches(Regex(#"^(?!aws:.*)[a-zA-Z0-9\s\_\.\/\=\+\-\@\:]+$"#)))
+}

@@ -1,0 +1,63 @@
+/// Resource Type definition for AWS::Transfer::Connector
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Transfer::Connector"
+Properties: Props?
+class Props {
+    /// Specifies the access role for the connector.
+    AccessRole: String(length <= 2048 && length >= 20 && matches(Regex(#"arn:.*role/.*"#)))?
+    /// Configuration for an AS2 connector.
+    As2Config: As2Config?
+    /// Configuration for an SFTP connector.
+    SftpConfig: SftpConfig?
+    /// Specifies the unique Amazon Resource Name (ARN) for the connector.
+    Arn: String(length <= 1600 && length >= 20 && matches(Regex(#"arn:.*"#)))?
+    /// A unique identifier for the connector.
+    ConnectorId: String(length <= 19 && length >= 19 && matches(Regex(#"^c-([0-9a-f]{17})$"#)))?
+    /// Specifies the logging role for the connector.
+    LoggingRole: String(length <= 2048 && length >= 20 && matches(Regex(#"arn:.*role/.*"#)))?
+    /// Key-value pairs that can be used to group and search for connectors.
+    /// Tags are metadata attached to connectors for any purpose.
+    Tags: Listing<Tag>?
+    /// URL for Connector
+    Url: String(length <= 255)?
+}
+/// Configuration for an AS2 connector.
+class As2Config {
+    /// A unique identifier for the local profile.
+    LocalProfileId: String(length <= 19 && length >= 19 && matches(Regex(#"^p-([0-9a-f]{17})$"#)))?
+    /// A unique identifier for the partner profile.
+    PartnerProfileId: String(length <= 19 && length >= 19 && matches(Regex(#"^p-([0-9a-f]{17})$"#)))?
+    /// The message subject for this AS2 connector configuration.
+    MessageSubject: String(length <= 1024 && length >= 1 && matches(Regex(#"^[\p{Print}\p{Blank}]+"#)))?
+    /// Compression setting for this AS2 connector configuration.
+    Compression: "ZLIB" | "DISABLED" | *Null
+    /// Encryption algorithm for this AS2 connector configuration.
+    EncryptionAlgorithm: "AES128_CBC" | "AES192_CBC" | "AES256_CBC" | "NONE" | *Null
+    /// Signing algorithm for this AS2 connector configuration.
+    SigningAlgorithm: "SHA256" | "SHA384" | "SHA512" | "SHA1" | "NONE" | *Null
+    /// MDN Signing algorithm for this AS2 connector configuration.
+    MdnSigningAlgorithm: "SHA256" | "SHA384" | "SHA512" | "SHA1" | "NONE" | "DEFAULT" | *Null
+    /// MDN Response setting for this AS2 connector configuration.
+    MdnResponse: "SYNC" | "NONE" | *Null
+    /// ARN or name of the secret in AWS Secrets Manager which contains the
+    /// credentials for Basic authentication. If empty, Basic authentication
+    /// is disabled for the AS2 connector
+    BasicAuthSecretId: String(length <= 2048 && length >= 0)?
+}
+/// Configuration for an SFTP connector.
+class SftpConfig {
+    /// ARN or name of the secret in AWS Secrets Manager which contains the
+    /// SFTP user's private keys or passwords.
+    UserSecretId: String(length <= 2048 && length >= 1)?
+    /// List of public host keys, for the external server to which you are
+    /// connecting.
+    TrustedHostKeys: Listing<String(length <= 2048 && length >= 1)>?
+}
+/// Creates a key-value pair for a specific resource.
+class Tag {
+    /// The name assigned to the tag that you create.
+    Key: String(length <= 128 && length >= 1)
+    /// Contains one or more values that you assigned to the key name you
+    /// create.
+    Value: String(length <= 256 && length >= 0)
+}

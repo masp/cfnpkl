@@ -1,0 +1,52 @@
+/// This schema is for testing purpose only.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RoboMaker::SimulationApplication"
+Properties: Props?
+class Props {
+    Arn: String(matches(Regex(#"arn:[\w+=/,.@-]+:[\w+=/,.@-]+:[\w+=/,.@-]*:[0-9]*:[\w+=,.@-]+(/[\w+=,.@-]+)*"#)))?
+    /// The name of the simulation application.
+    Name: String(length <= 255 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_\-]*"#)))?
+    /// The current revision id.
+    CurrentRevisionId: String?
+    /// The rendering engine for the simulation application.
+    RenderingEngine: RenderingEngine?
+    /// The robot software suite used by the simulation application.
+    RobotSoftwareSuite: RobotSoftwareSuite?
+    /// The simulation software suite used by the simulation application.
+    SimulationSoftwareSuite: SimulationSoftwareSuite?
+    /// The sources of the simulation application.
+    Sources: Listing<SourceConfig>?
+    /// The URI of the Docker image for the robot application.
+    Environment: String?
+    Tags: Mapping?
+}
+/// Information about a rendering engine.
+class RenderingEngine {
+    /// The name of the rendering engine.
+    Name: "OGRE"
+    /// The version of the rendering engine.
+    Version: String(matches(Regex(#"1.x"#)))
+}
+/// Information about a robot software suite.
+class RobotSoftwareSuite {
+    /// The name of the robot software suite.
+    Name: "ROS" | "ROS2" | "General"
+    /// The version of the robot software suite.
+    Version: "Kinetic" | "Melodic" | "Dashing" | "Foxy" | *Null
+}
+/// Information about a simulation software suite.
+class SimulationSoftwareSuite {
+    /// The name of the simulation software suite.
+    Name: "Gazebo" | "RosbagPlay" | "SimulationRuntime"
+    /// The version of the simulation software suite.
+    Version: "7" | "9" | "11" | "Kinetic" | "Melodic" | "Dashing" | "Foxy" | *Null
+}
+/// Information about a source configuration.
+class SourceConfig {
+    /// The Amazon S3 bucket name.
+    S3Bucket: String(matches(Regex(#"[a-z0-9][a-z0-9.\-]*[a-z0-9]"#)))
+    /// The s3 object key.
+    S3Key: String(length <= 1024 && length >= 1)
+    /// The target processor architecture for the application.
+    Architecture: "X86_64" | "ARM64" | "ARMHF"
+}

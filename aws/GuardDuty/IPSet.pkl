@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::GuardDuty::IPSet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GuardDuty::IPSet"
+Properties: Props?
+class Props {
+    Id: String?
+    Format: String?
+    Activate: Boolean?
+    DetectorId: String(length <= 300 && length >= 1)?
+    Name: String(length <= 300 && length >= 1)?
+    Location: String(length <= 300 && length >= 1)?
+    Tags: Listing<TagItem>?
+}
+class TagItem {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

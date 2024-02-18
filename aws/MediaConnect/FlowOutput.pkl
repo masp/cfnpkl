@@ -1,0 +1,65 @@
+/// Resource schema for AWS::MediaConnect::FlowOutput
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaConnect::FlowOutput"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN), a unique identifier for any AWS
+    /// resource, of the flow.
+    FlowArn: String?
+    /// The ARN of the output.
+    OutputArn: String?
+    /// The range of IP addresses that should be allowed to initiate output
+    /// requests to this flow. These IP addresses should be in the form of a
+    /// Classless Inter-Domain Routing (CIDR) block; for example, 10.0.0.0/16.
+    CidrAllowList: Listing<String>?
+    /// The type of key used for the encryption. If no keyType is provided,
+    /// the service will use the default setting (static-key).
+    Encryption: Encryption?
+    /// A description of the output.
+    Description: String?
+    /// The address where you want to send the output.
+    Destination: String?
+    /// The maximum latency in milliseconds. This parameter applies only to
+    /// RIST-based and Zixi-based streams.
+    MaxLatency: Int?
+    /// The minimum latency in milliseconds.
+    MinLatency: Int?
+    /// The name of the output. This value must be unique within the current
+    /// flow.
+    Name: String?
+    /// The port to use when content is distributed to this output.
+    Port: Int?
+    /// The protocol that is used by the source or output.
+    Protocol: "zixi-push" | "rtp-fec" | "rtp" | "zixi-pull" | "rist" | "fujitsu-qos" | "srt-listener" | "srt-caller" | *Null
+    /// The remote ID for the Zixi-pull stream.
+    RemoteId: String?
+    /// The smoothing latency in milliseconds for RIST, RTP, and RTP-FEC
+    /// streams.
+    SmoothingLatency: Int?
+    /// The stream ID that you want to use for this transport. This parameter
+    /// applies only to Zixi-based streams.
+    StreamId: String?
+    /// The name of the VPC interface attachment to use for this output.
+    VpcInterfaceAttachment: VpcInterfaceAttachment?
+}
+/// Information about the encryption of the flow.
+class Encryption {
+    /// The type of algorithm that is used for the encryption (such as aes128,
+    /// aes192, or aes256).
+    Algorithm: "aes128" | "aes192" | "aes256" | *Null
+    /// The type of key that is used for the encryption. If no keyType is
+    /// provided, the service will use the default setting (static-key).
+    KeyType: "static-key" | "srt-password" | *Null
+    /// The ARN of the role that you created during setup (when you set up AWS
+    /// Elemental MediaConnect as a trusted entity).
+    RoleArn: String
+    ///  The ARN of the secret that you created in AWS Secrets Manager to
+    /// store the encryption key. This parameter is required for static key
+    /// encryption and is not valid for SPEKE encryption.
+    SecretArn: String
+}
+/// The settings for attaching a VPC interface to an output.
+class VpcInterfaceAttachment {
+    /// The name of the VPC interface to use for this output.
+    VpcInterfaceName: String?
+}

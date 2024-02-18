@@ -1,0 +1,9 @@
+/// Definition of AWS::PCAConnectorAD::DirectoryRegistration Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::PCAConnectorAD::DirectoryRegistration"
+Properties: Props?
+class Props {
+    DirectoryId: String(matches(Regex(#"^d-[0-9a-f]{10}$"#)))?
+    DirectoryRegistrationArn: String(length <= 200 && length >= 5 && matches(Regex(#"^arn:[\w-]+:pca-connector-ad:[\w-]+:[0-9]+:directory-registration(\/[\w-]+)$"#)))?
+    Tags: Mapping?
+}

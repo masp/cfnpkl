@@ -1,0 +1,21 @@
+/// Resource Type definition for AWS::RDS::DBSecurityGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RDS::DBSecurityGroup"
+Properties: Props?
+class Props {
+    Id: String?
+    DBSecurityGroupIngress: Listing<Ingress>?
+    EC2VpcId: String?
+    GroupDescription: String?
+    Tags: Listing<Tag>?
+}
+class Ingress {
+    CIDRIP: String?
+    EC2SecurityGroupId: String?
+    EC2SecurityGroupName: String?
+    EC2SecurityGroupOwnerId: String?
+}
+class Tag {
+    Key: String
+    Value: String
+}

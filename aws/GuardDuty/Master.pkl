@@ -1,0 +1,9 @@
+/// Resource Type definition for AWS::GuardDuty::Master
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GuardDuty::Master"
+Properties: Props?
+class Props {
+    DetectorId: String?
+    MasterId: String?
+    InvitationId: String?
+}

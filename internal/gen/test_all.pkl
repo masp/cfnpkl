@@ -1,0 +1,1 @@
+allResources = read*("../../cfn/**/*.pkl")

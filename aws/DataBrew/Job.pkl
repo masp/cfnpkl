@@ -1,0 +1,143 @@
+/// Resource schema for AWS::DataBrew::Job.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataBrew::Job"
+Properties: Props?
+class Props {
+    /// Dataset name
+    DatasetName: String(length <= 255 && length >= 1)?
+    /// Encryption Key Arn
+    EncryptionKeyArn: String(length <= 2048 && length >= 20)?
+    /// Encryption mode
+    EncryptionMode: "SSE-KMS" | "SSE-S3" | *Null
+    /// Job name
+    Name: String(length <= 255 && length >= 1)?
+    /// Job type
+    Type: "PROFILE" | "RECIPE" | *Null
+    /// Log subscription
+    LogSubscription: "ENABLE" | "DISABLE" | *Null
+    /// Max capacity
+    MaxCapacity: Int?
+    /// Max retries
+    MaxRetries: Int?
+    Outputs: Listing<Output>?
+    DataCatalogOutputs: Listing<DataCatalogOutput>?
+    DatabaseOutputs: Listing<DatabaseOutput>?
+    /// Output location
+    OutputLocation: OutputLocation?
+    /// Project name
+    ProjectName: String(length <= 255 && length >= 1)?
+    Recipe: Recipe?
+    /// Role arn
+    RoleArn: String?
+    Tags: Listing<Tag>?
+    /// Timeout
+    Timeout: Int?
+    /// Job Sample
+    JobSample: JobSample?
+    /// Profile Job configuration
+    ProfileConfiguration: ProfileConfiguration?
+    /// Data quality rules configuration
+    ValidationConfigurations: Listing<ValidationConfiguration>?
+}
+class Output {
+    CompressionFormat: "GZIP" | "LZ4" | "SNAPPY" | "BZIP2" | "DEFLATE" | "LZO" | "BROTLI" | "ZSTD" | "ZLIB" | *Null
+    Format: "CSV" | "JSON" | "PARQUET" | "GLUEPARQUET" | "AVRO" | "ORC" | "XML" | "TABLEAUHYPER" | *Null
+    FormatOptions: OutputFormatOptions?
+    PartitionColumns: Listing<String>?
+    Location: S3Location
+    Overwrite: Boolean?
+    MaxOutputFiles: Int?
+}
+/// Format options for job Output
+class OutputFormatOptions {
+    Csv: CsvOutputOptions?
+}
+/// Output Csv options
+class CsvOutputOptions {
+    Delimiter: String(length <= 1 && length >= 1)?
+}
+/// S3 Output location
+class S3Location {
+    Bucket: String
+    Key: String?
+    BucketOwner: String(length <= 12 && length >= 12)?
+}
+class DataCatalogOutput {
+    CatalogId: String(length <= 255 && length >= 1)?
+    DatabaseName: String(length <= 255 && length >= 1)
+    TableName: String(length <= 255 && length >= 1)
+    S3Options: S3TableOutputOptions?
+    DatabaseOptions: DatabaseTableOutputOptions?
+    Overwrite: Boolean?
+}
+class S3TableOutputOptions {
+    Location: S3Location
+}
+class DatabaseTableOutputOptions {
+    TempDirectory: S3Location?
+    TableName: String(length <= 255 && length >= 1)
+}
+class DatabaseOutput {
+    /// Glue connection name
+    GlueConnectionName: String
+    /// Database table name
+    DatabaseOutputMode: "NEW_TABLE" | *Null
+    DatabaseOptions: DatabaseTableOutputOptions
+}
+/// Output location
+class OutputLocation {
+    Bucket: String
+    Key: String?
+    BucketOwner: String(length <= 12 && length >= 12)?
+}
+class Recipe {
+    /// Recipe name
+    Name: String
+    /// Recipe version
+    Version: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}
+/// Job Sample
+class JobSample {
+    Mode: "FULL_DATASET" | "CUSTOM_ROWS" | *Null
+    Size: Int?
+}
+class ProfileConfiguration {
+    DatasetStatisticsConfiguration: StatisticsConfiguration?
+    ProfileColumns: Listing<ColumnSelector>?
+    ColumnStatisticsConfigurations: Listing<ColumnStatisticsConfiguration>?
+    EntityDetectorConfiguration: EntityDetectorConfiguration?
+}
+class StatisticsConfiguration {
+    IncludedStatistics: Listing<String(length <= 128 && length >= 1 && matches(Regex(#"^[A-Z\_]+$"#)))>?
+    Overrides: Listing<StatisticOverride>?
+}
+class StatisticOverride {
+    Statistic: String(length <= 128 && length >= 1 && matches(Regex(#"^[A-Z\_]+$"#)))
+    Parameters: Mapping
+}
+class ColumnSelector {
+    Regex: String(length <= 255 && length >= 1)?
+    Name: String(length <= 255 && length >= 1)?
+}
+class ColumnStatisticsConfiguration {
+    Selectors: Listing<ColumnSelector>?
+    Statistics: StatisticsConfiguration
+}
+class EntityDetectorConfiguration {
+    EntityTypes: Listing<String(length <= 128 && length >= 1 && matches(Regex(#"^[A-Z_][A-Z\\d_]*$"#)))>
+    AllowedStatistics: AllowedStatistics?
+}
+class AllowedStatistics {
+    Statistics: Listing<String(length <= 128 && length >= 1 && matches(Regex(#"^[A-Z\_]+$"#)))>
+}
+/// Configuration to attach Rulesets to the job
+class ValidationConfiguration {
+    /// Arn of the Ruleset
+    RulesetArn: String(length <= 2048 && length >= 20)
+    ValidationMode: "CHECK_ALL" | *Null
+}

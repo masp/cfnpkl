@@ -1,0 +1,40 @@
+/// Resource Type definition for AWS::Backup::BackupPlan
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Backup::BackupPlan"
+Properties: Props?
+class Props {
+    BackupPlan: BackupPlanResourceType?
+    BackupPlanTags: Mapping?
+    BackupPlanArn: String?
+    BackupPlanId: String?
+    VersionId: String?
+}
+class BackupPlanResourceType {
+    BackupPlanName: String
+    AdvancedBackupSettings: Listing<AdvancedBackupSettingResourceType>?
+    BackupPlanRule: Listing<BackupRuleResourceType>
+}
+class AdvancedBackupSettingResourceType {
+    BackupOptions: Mapping
+    ResourceType: String
+}
+class BackupRuleResourceType {
+    RuleName: String
+    TargetBackupVault: String
+    StartWindowMinutes: Float?
+    CompletionWindowMinutes: Float?
+    ScheduleExpression: String?
+    ScheduleExpressionTimezone: String?
+    RecoveryPointTags: Mapping?
+    CopyActions: Listing<CopyActionResourceType>?
+    Lifecycle: LifecycleResourceType?
+    EnableContinuousBackup: Boolean?
+}
+class CopyActionResourceType {
+    Lifecycle: LifecycleResourceType?
+    DestinationBackupVaultArn: String
+}
+class LifecycleResourceType {
+    MoveToColdStorageAfterDays: Float?
+    DeleteAfterDays: Float?
+}

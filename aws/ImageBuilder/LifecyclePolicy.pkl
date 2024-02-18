@@ -1,0 +1,99 @@
+/// Resource schema for AWS::ImageBuilder::LifecyclePolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ImageBuilder::LifecyclePolicy"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the lifecycle policy.
+    Arn: String?
+    /// The name of the lifecycle policy.
+    Name: String?
+    /// The description of the lifecycle policy.
+    Description: String?
+    /// The status of the lifecycle policy.
+    Status: "DISABLED" | "ENABLED" | *Null
+    /// The execution role of the lifecycle policy.
+    ExecutionRole: String?
+    /// The resource type of the lifecycle policy.
+    ResourceType: "AMI_IMAGE" | "CONTAINER_IMAGE" | *Null
+    /// The policy details of the lifecycle policy.
+    PolicyDetails: Listing<PolicyDetail>?
+    /// The resource selection of the lifecycle policy.
+    ResourceSelection: ResourceSelection?
+    /// The tags associated with the lifecycle policy.
+    Tags: Mapping?
+}
+/// The policy detail of the lifecycle policy.
+class PolicyDetail {
+    Action: Action
+    Filter: Filter
+    ExclusionRules: ExclusionRules?
+}
+/// The action of the policy detail.
+class Action {
+    /// The action type of the policy detail.
+    Type: "DELETE" | "DEPRECATE" | "DISABLE"
+    IncludeResources: IncludeResources?
+}
+/// The included resources of the policy detail.
+class IncludeResources {
+    /// Use to configure lifecycle actions on AMIs.
+    Amis: Boolean?
+    /// Use to configure lifecycle actions on containers.
+    Containers: Boolean?
+    /// Use to configure lifecycle actions on snapshots.
+    Snapshots: Boolean?
+}
+/// The filters to apply of the policy detail.
+class Filter {
+    /// The filter type.
+    Type: "AGE" | "COUNT"
+    /// The filter value.
+    Value: Int
+    /// The value's time unit.
+    Unit: "DAYS" | "WEEKS" | "MONTHS" | "YEARS" | *Null
+    /// The minimum number of Image Builder resources to retain.
+    RetainAtLeast: Int?
+}
+/// The exclusion rules to apply of the policy detail.
+class ExclusionRules {
+    /// The Image Builder tags to filter on.
+    TagMap: Mapping?
+    Amis: AmiExclusionRules?
+}
+/// The AMI exclusion rules for the policy detail.
+class AmiExclusionRules {
+    /// Use to apply lifecycle policy actions on whether the AMI is public.
+    IsPublic: Boolean?
+    /// Use to apply lifecycle policy actions on AMIs distributed to a set of
+    /// regions.
+    Regions: Listing<String>?
+    /// Use to apply lifecycle policy actions on AMIs shared with a set of
+    /// regions.
+    SharedAccounts: Listing<String>?
+    /// Use to apply lifecycle policy actions on AMIs launched before a
+    /// certain time.
+    LastLaunched: LastLaunched?
+    /// The AMIs to select by tag.
+    TagMap: Mapping?
+}
+/// The last launched time of a resource.
+class LastLaunched {
+    /// The last launched value.
+    Value: Int
+    /// The value's time unit.
+    Unit: "DAYS" | "WEEKS" | "MONTHS" | "YEARS"
+}
+/// The resource selection for the lifecycle policy.
+class ResourceSelection {
+    /// The recipes to select.
+    Recipes: Listing<RecipeSelection>?
+    /// The Image Builder resources to select by tag.
+    TagMap: Mapping?
+}
+/// The recipe to apply the lifecycle policy for.
+class RecipeSelection {
+    /// The recipe name.
+    Name: String
+    /// The recipe version.
+    SemanticVersion: String
+}

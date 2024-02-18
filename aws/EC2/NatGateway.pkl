@@ -1,0 +1,20 @@
+/// Resource Type definition for AWS::EC2::NatGateway
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::NatGateway"
+Properties: Props?
+class Props {
+    SubnetId: String?
+    NatGatewayId: String?
+    ConnectivityType: String?
+    PrivateIpAddress: String?
+    Tags: Listing<Tag>?
+    AllocationId: String?
+    SecondaryAllocationIds: Listing<String>?
+    SecondaryPrivateIpAddresses: Listing<String>?
+    SecondaryPrivateIpAddressCount: Int?
+    MaxDrainDurationSeconds: Int?
+}
+class Tag {
+    Value: String
+    Key: String
+}

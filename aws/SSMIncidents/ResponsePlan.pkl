@@ -1,0 +1,88 @@
+/// Resource type definition for AWS::SSMIncidents::ResponsePlan
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSMIncidents::ResponsePlan"
+Properties: Props?
+class Props {
+    /// The ARN of the response plan.
+    Arn: String(length <= 1000 && matches(Regex(#"^arn:aws(-(cn|us-gov))?:[a-z-]+:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))?
+    /// The name of the response plan.
+    Name: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]*$"#)))?
+    /// The display name of the response plan.
+    DisplayName: String(length <= 200 && length >= 1)?
+    ChatChannel: ChatChannel?
+    /// The list of engagements to use.
+    Engagements: Listing<String(length <= 1000 && matches(Regex(#"^arn:aws(-(cn|us-gov))?:ssm-contacts:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))>?
+    /// The list of actions.
+    Actions: Listing<Action>?
+    /// The list of integrations.
+    Integrations: Listing<Mapping>?
+    /// The tags to apply to the response plan.
+    Tags: Listing<Tag>?
+    IncidentTemplate: IncidentTemplate?
+}
+/// The chat channel configuration.
+class ChatChannel {
+    ChatbotSns: Listing<String(length <= 1000 && matches(Regex(#"^arn:aws(-(cn|us-gov))?:sns:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))>?
+}
+/// The automation configuration to launch.
+class Action {
+    SsmAutomation: SsmAutomation?
+}
+/// The configuration to use when starting the SSM automation document.
+class SsmAutomation {
+    /// The role ARN to use when starting the SSM automation document.
+    RoleArn: String(length <= 1000 && matches(Regex(#"^arn:aws(-(cn|us-gov))?:[a-z-]+:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))
+    /// The document name to use when starting the SSM automation document.
+    DocumentName: String(length <= 128)
+    /// The version of the document to use when starting the SSM automation
+    /// document.
+    DocumentVersion: String(length <= 128)?
+    /// The account type to use when starting the SSM automation document.
+    TargetAccount: "IMPACTED_ACCOUNT" | "RESPONSE_PLAN_OWNER_ACCOUNT" | *Null
+    /// The parameters to set when starting the SSM automation document.
+    Parameters: Listing<SsmParameter>?
+    /// The parameters with dynamic values to set when starting the SSM
+    /// automation document.
+    DynamicParameters: Listing<DynamicSsmParameter>?
+}
+/// A parameter to set when starting the SSM automation document.
+class SsmParameter {
+    Key: String(length <= 50 && length >= 1)
+    Values: Listing<String(length <= 10000)>
+}
+/// A parameter with a dynamic value to set when starting the SSM
+/// automation document.
+class DynamicSsmParameter {
+    Key: String(length <= 50 && length >= 1)
+    Value: DynamicSsmParameterValue
+}
+/// Value of the dynamic parameter to set when starting the SSM automation
+/// document.
+class DynamicSsmParameterValue {
+    Variable: "INCIDENT_RECORD_ARN" | "INVOLVED_RESOURCES" | *Null
+}
+/// A key-value pair to tag a resource.
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z+-=._:/]+$"#)))
+    Value: String(length <= 256 && length >= 1)
+}
+/// The incident template configuration.
+class IncidentTemplate {
+    /// The deduplication string.
+    DedupeString: String(length <= 1000 && length >= 1)?
+    /// The impact value.
+    Impact: Int
+    /// The list of notification targets.
+    NotificationTargets: Listing<NotificationTargetItem>?
+    /// The summary string.
+    Summary: String(length <= 4000 && length >= 1)?
+    /// The title string.
+    Title: String(length <= 200)
+    /// Tags that get applied to incidents created by the StartIncident API
+    /// action.
+    IncidentTags: Listing<Tag>?
+}
+/// A notification target.
+class NotificationTargetItem {
+    SnsTopicArn: String(length <= 1000 && matches(Regex(#"^arn:aws(-(cn|us-gov))?:sns:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))?
+}

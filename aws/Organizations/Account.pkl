@@ -1,0 +1,42 @@
+/// You can use AWS::Organizations::Account to manage accounts in
+/// organization.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Organizations::Account"
+Properties: Props?
+class Props {
+    /// The friendly name of the member account.
+    AccountName: String(length <= 50 && length >= 1 && matches(Regex(#"[\u0020-\u007E]+"#)))?
+    /// The email address of the owner to assign to the new member account.
+    Email: String(length <= 64 && length >= 6 && matches(Regex(#"[^\s@]+@[^\s@]+\.[^\s@]+"#)))?
+    /// The name of an IAM role that AWS Organizations automatically
+    /// preconfigures in the new member account. Default name is
+    /// OrganizationAccountAccessRole if not specified.
+    RoleName: String(length <= 64 && length >= 1 && matches(Regex(#"[\w+=,.@-]{1,64}"#)))?
+    /// List of parent nodes for the member account. Currently only one parent
+    /// at a time is supported. Default is root.
+    ParentIds: Listing<String(matches(Regex(#"^(r-[0-9a-z]{4,32})|(ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})$"#)))>?
+    /// A list of tags that you want to attach to the newly created account.
+    /// For each tag in the list, you must specify both a tag key and a value.
+    Tags: Listing<Tag>?
+    /// If the account was created successfully, the unique identifier (ID) of
+    /// the new account.
+    AccountId: String(length <= 12 && matches(Regex(#"^\d{12}$"#)))?
+    /// The Amazon Resource Name (ARN) of the account.
+    Arn: String(matches(Regex(#"^arn:aws.*:organizations::\d{12}:account\/o-[a-z0-9]{10,32}\/\d{12}"#)))?
+    /// The method by which the account joined the organization.
+    JoinedMethod: "INVITED" | "CREATED" | *Null
+    /// The date the account became a part of the organization.
+    JoinedTimestamp: String?
+    /// The status of the account in the organization.
+    Status: "ACTIVE" | "SUSPENDED" | "PENDING_CLOSURE" | *Null
+}
+/// A custom key-value pair associated with a resource within your
+/// organization.
+class Tag {
+    /// The key identifier, or name, of the tag.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"[\s\S]*"#)))
+    /// The string value that's associated with the key of the tag. You can
+    /// set the value of a tag to an empty string, but you can't set the value
+    /// of a tag to null.
+    Value: String(length <= 256 && length >= 0 && matches(Regex(#"[\s\S]*"#)))
+}

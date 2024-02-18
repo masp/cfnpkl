@@ -1,0 +1,64 @@
+/// The AWS::GameLift::GameSessionQueue resource creates an Amazon
+/// GameLift (GameLift) game session queue.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GameLift::GameSessionQueue"
+Properties: Props?
+class Props {
+    /// A descriptive label that is associated with game session queue. Queue
+    /// names must be unique within each Region.
+    Name: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9-]+"#)))?
+    /// The maximum time, in seconds, that a new game session placement
+    /// request remains in the queue.
+    TimeoutInSeconds: Int?
+    /// A list of fleets and/or fleet aliases that can be used to fulfill game
+    /// session placement requests in the queue.
+    Destinations: Listing<GameSessionQueueDestination>?
+    /// A set of policies that act as a sliding cap on player latency.
+    PlayerLatencyPolicies: Listing<PlayerLatencyPolicy>?
+    /// Information that is added to all events that are related to this game
+    /// session queue.
+    CustomEventData: String(length <= 256 && length >= 1 && matches(Regex(#"[\s\S]*"#)))?
+    /// An SNS topic ARN that is set up to receive game session placement
+    /// notifications.
+    NotificationTarget: String(length <= 300 && length >= 1 && matches(Regex(#"[a-zA-Z0-9:_-]*(\.fifo)?"#)))?
+    /// A list of locations where a queue is allowed to place new game
+    /// sessions.
+    FilterConfiguration: FilterConfiguration?
+    /// Custom settings to use when prioritizing destinations and locations
+    /// for game session placements.
+    PriorityConfiguration: PriorityConfiguration?
+    /// The Amazon Resource Name (ARN) that is assigned to a Amazon GameLift
+    /// game session queue resource and uniquely identifies it.
+    Arn: String(length <= 256 && length >= 1 && matches(Regex(#"^arn:.*:gamesessionqueue\/[a-zA-Z0-9-]+"#)))?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A fleet or alias designated in a game session queue.
+class GameSessionQueueDestination {
+    DestinationArn: String(length <= 256 && length >= 1 && matches(Regex(#"[a-zA-Z0-9:/-]+"#)))?
+}
+/// Sets a latency cap for individual players when placing a game session.
+class PlayerLatencyPolicy {
+    /// The maximum latency value that is allowed for any player, in
+    /// milliseconds. All policies must have a value set for this property.
+    MaximumIndividualPlayerLatencyMilliseconds: Int?
+    /// The length of time, in seconds, that the policy is enforced while
+    /// placing a new game session.
+    PolicyDurationSeconds: Int?
+}
+class FilterConfiguration {
+    AllowedLocations: Listing<String(length <= 64 && length >= 1 && matches(Regex(#"^[a-z]+(-([a-z]+|\d))*"#)))>?
+}
+class PriorityConfiguration {
+    LocationOrder: Listing<String(length <= 64 && length >= 1 && matches(Regex(#"^[A-Za-z0-9\-]+"#)))>?
+    PriorityOrder: Listing<"LATENCY" | "COST" | "DESTINATION" | "LOCATION">?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 1 to 256
+    /// Unicode characters in length.
+    Value: String(length <= 256 && length >= 1)
+}

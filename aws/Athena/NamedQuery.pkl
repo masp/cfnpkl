@@ -1,0 +1,18 @@
+/// Resource schema for AWS::Athena::NamedQuery
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Athena::NamedQuery"
+Properties: Props?
+class Props {
+    /// The query name.
+    Name: String(length <= 128 && length >= 1)?
+    /// The database to which the query belongs.
+    Database: String(length <= 255 && length >= 1)?
+    /// The query description.
+    Description: String(length <= 1024 && length >= 1)?
+    /// The contents of the query with all query statements.
+    QueryString: String(length <= 262144 && length >= 1)?
+    /// The name of the workgroup that contains the named query.
+    WorkGroup: String(length <= 128 && length >= 1)?
+    /// The unique ID of the query.
+    NamedQueryId: String?
+}

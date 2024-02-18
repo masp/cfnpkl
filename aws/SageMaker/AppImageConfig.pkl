@@ -1,0 +1,66 @@
+/// Resource Type definition for AWS::SageMaker::AppImageConfig
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::AppImageConfig"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the AppImageConfig.
+    AppImageConfigArn: String(length <= 256 && length >= 1 && matches(Regex(#"arn:aws[a-z\-]*:sagemaker:[a-z0-9\-]*:[0-9]{12}:app-image-config/.*"#)))?
+    /// The Name of the AppImageConfig.
+    AppImageConfigName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,62}"#)))?
+    /// The KernelGatewayImageConfig.
+    KernelGatewayImageConfig: KernelGatewayImageConfig?
+    /// The JupyterLabAppImageConfig.
+    JupyterLabAppImageConfig: JupyterLabAppImageConfig?
+    /// A list of tags to apply to the AppImageConfig.
+    Tags: Listing<Tag>?
+}
+/// The configuration for the file system and kernels in a SageMaker image
+/// running as a KernelGateway app.
+class KernelGatewayImageConfig {
+    /// The Amazon Elastic File System (EFS) storage configuration for a
+    /// SageMaker image.
+    FileSystemConfig: FileSystemConfig?
+    /// The specification of the Jupyter kernels in the image.
+    KernelSpecs: Listing<KernelSpec>
+}
+/// The Amazon Elastic File System (EFS) storage configuration for a
+/// SageMaker image.
+class FileSystemConfig {
+    /// The default POSIX group ID (GID). If not specified, defaults to 100.
+    DefaultGid: Int?
+    /// The default POSIX user ID (UID). If not specified, defaults to 1000.
+    DefaultUid: Int?
+    /// The path within the image to mount the user's EFS home directory. The
+    /// directory should be empty. If not specified, defaults to
+    /// /home/sagemaker-user.
+    MountPath: String(length <= 1024 && length >= 1 && matches(Regex(#"^/.*"#)))?
+}
+class KernelSpec {
+    /// The display name of the kernel.
+    DisplayName: String(length <= 1024 && length >= 1)?
+    /// The name of the kernel.
+    Name: String(length <= 1024 && length >= 1)
+}
+/// The configuration for the file system and kernels in a SageMaker image
+/// running as a JupyterLab app.
+class JupyterLabAppImageConfig {
+    /// The container configuration for a SageMaker image.
+    ContainerConfig: ContainerConfig?
+}
+/// The container configuration for a SageMaker image.
+class ContainerConfig {
+    /// A list of arguments to apply to the container.
+    ContainerArguments: Listing<String(length <= 64 && length >= 1 && matches(Regex(#"^(?!\s*$).+"#)))>?
+    /// The custom entry point to use on container.
+    ContainerEntrypoint: Listing<String(length <= 256 && length >= 1 && matches(Regex(#"^(?!\s*$).+"#)))>?
+    /// A list of variables to apply to the custom container.
+    ContainerEnvironmentVariables: Listing<CustomImageContainerEnvironmentVariable>?
+}
+class CustomImageContainerEnvironmentVariable {
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^(?!\s*$).+"#)))
+    Key: String(length <= 256 && length >= 1 && matches(Regex(#"^(?!\s*$).+"#)))
+}
+class Tag {
+    Value: String(length <= 128 && length >= 1)
+    Key: String(length <= 128 && length >= 1)
+}

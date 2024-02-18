@@ -1,0 +1,54 @@
+/// Resource Type Definition for AWS::S3Outposts::Bucket
+extends ".../AWS/Resource.pkl"
+Type = "AWS::S3Outposts::Bucket"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the specified bucket.
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[^:]+:s3-outposts:[a-zA-Z0-9\-]+:\d{12}:outpost\/[^:]+\/bucket\/[^:]+$"#)))?
+    /// A name for the bucket.
+    BucketName: String(length <= 63 && length >= 3 && matches(Regex(#"(?=^.{3,63}$)(?!^(\d+\.)+\d+$)(^(([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])\.)*([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])$)"#)))?
+    /// The id of the customer outpost on which the bucket resides.
+    OutpostId: String(matches(Regex(#"^(op-[a-f0-9]{17}|\d{12}|ec2)$"#)))?
+    /// An arbitrary set of tags (key-value pairs) for this S3Outposts bucket.
+    Tags: Listing<Tag>?
+    /// Rules that define how Amazon S3Outposts manages objects during their
+    /// lifetime.
+    LifecycleConfiguration: LifecycleConfiguration?
+}
+class Tag {
+    Key: String(length <= 1024 && length >= 1 && matches(Regex(#"^(?!aws:.*)([\p{L}\p{Z}\p{N}_.:=+\/\-@%]*)$"#)))
+    Value: String(length <= 1024 && length >= 1 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:=+\/\-@%]*)$"#)))
+}
+class LifecycleConfiguration {
+    /// A list of lifecycle rules for individual objects in an Amazon
+    /// S3Outposts bucket.
+    Rules: Listing<Rule>
+}
+/// Specifies lifecycle rules for an Amazon S3Outposts bucket. You must
+/// specify at least one of the following: AbortIncompleteMultipartUpload,
+/// ExpirationDate, ExpirationInDays.
+class Rule {
+    Status: "Enabled" | "Disabled" | *Null
+    /// Unique identifier for the lifecycle rule. The value can't be longer
+    /// than 255 characters.
+    Id: String(length <= 255)?
+    /// Specifies a lifecycle rule that stops incomplete multipart uploads to
+    /// an Amazon S3Outposts bucket.
+    AbortIncompleteMultipartUpload: AbortIncompleteMultipartUpload?
+    /// Indicates when objects are deleted from Amazon S3Outposts. The date
+    /// value must be in ISO 8601 format. The time is always midnight UTC.
+    ExpirationDate: String(matches(Regex(#"^([0-2]\d{3})-(0[0-9]|1[0-2])-([0-2]\d|3[01])T([01]\d|2[0-4]):([0-5]\d):([0-6]\d)((\.\d{3})?)Z$"#)))?
+    /// Indicates the number of days after creation when objects are deleted
+    /// from Amazon S3Outposts.
+    ExpirationInDays: Int?
+    /// The container for the filter of the lifecycle rule.
+    Filter: Mapping | Mapping | Mapping | *Null
+}
+/// Specifies the days since the initiation of an incomplete multipart
+/// upload that Amazon S3Outposts will wait before permanently removing
+/// all parts of the upload.
+class AbortIncompleteMultipartUpload {
+    /// Specifies the number of days after which Amazon S3Outposts aborts an
+    /// incomplete multipart upload.
+    DaysAfterInitiation: Int
+}

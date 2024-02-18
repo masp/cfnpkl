@@ -1,0 +1,10 @@
+/// Resource Type definition for AWS::DMS::Certificate
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DMS::Certificate"
+Properties: Props?
+class Props {
+    Id: String?
+    CertificateIdentifier: String?
+    CertificatePem: String?
+    CertificateWallet: String?
+}

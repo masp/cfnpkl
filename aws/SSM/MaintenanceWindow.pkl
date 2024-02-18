@@ -1,0 +1,22 @@
+/// Resource Type definition for AWS::SSM::MaintenanceWindow
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSM::MaintenanceWindow"
+Properties: Props?
+class Props {
+    StartDate: String?
+    Description: String?
+    AllowUnassociatedTargets: Boolean?
+    Cutoff: Int?
+    Schedule: String?
+    Duration: Int?
+    ScheduleOffset: Int?
+    Id: String?
+    EndDate: String?
+    Tags: Listing<Tag>?
+    Name: String?
+    ScheduleTimezone: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

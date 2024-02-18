@@ -1,0 +1,45 @@
+/// Resource schema for AWS::IoTSiteWise::Asset
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTSiteWise::Asset"
+Properties: Props?
+class Props {
+    /// The ID of the asset
+    AssetId: String?
+    /// The ID of the asset model from which to create the asset.
+    AssetModelId: String?
+    /// The ARN of the asset
+    AssetArn: String?
+    /// A unique, friendly name for the asset.
+    AssetName: String?
+    /// A description for the asset
+    AssetDescription: String?
+    AssetProperties: Listing<AssetProperty>?
+    AssetHierarchies: Listing<AssetHierarchy>?
+    /// A list of key-value pairs that contain metadata for the asset.
+    Tags: Listing<Tag>?
+}
+/// The asset property's definition, alias, unit, and notification state.
+class AssetProperty {
+    /// Customer provided ID for property.
+    LogicalId: String(length <= 256 && length >= 1 && matches(Regex(#"[^\u0000-\u001F\u007F]+"#)))
+    /// The property alias that identifies the property.
+    Alias: String?
+    /// The MQTT notification state (ENABLED or DISABLED) for this asset
+    /// property.
+    NotificationState: "ENABLED" | "DISABLED" | *Null
+    /// The unit of measure (such as Newtons or RPM) of the asset property. If
+    /// you don't specify a value for this parameter, the service uses the
+    /// value of the assetModelProperty in the asset model.
+    Unit: String?
+}
+/// A hierarchy specifies allowed parent/child asset relationships.
+class AssetHierarchy {
+    /// The LogicalID of a hierarchy in the parent asset's model.
+    LogicalId: String(length <= 256 && length >= 1 && matches(Regex(#"[^\u0000-\u001F\u007F]+"#)))
+    /// The ID of the child asset to be associated.
+    ChildAssetId: String
+}
+class Tag {
+    Key: String
+    Value: String
+}

@@ -1,0 +1,36 @@
+/// Resource Type definition for AWS::AppStream::ImageBuilder
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppStream::ImageBuilder"
+Properties: Props?
+class Props {
+    Description: String?
+    VpcConfig: VpcConfig?
+    EnableDefaultInternetAccess: Boolean?
+    DomainJoinInfo: DomainJoinInfo?
+    AppstreamAgentVersion: String?
+    Name: String?
+    ImageName: String?
+    DisplayName: String?
+    IamRoleArn: String?
+    InstanceType: String?
+    Tags: Listing<Tag>?
+    StreamingUrl: String?
+    ImageArn: String?
+    AccessEndpoints: Listing<AccessEndpoint>?
+}
+class VpcConfig {
+    SecurityGroupIds: Listing<String>?
+    SubnetIds: Listing<String>?
+}
+class DomainJoinInfo {
+    OrganizationalUnitDistinguishedName: String?
+    DirectoryName: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class AccessEndpoint {
+    EndpointType: String
+    VpceId: String
+}

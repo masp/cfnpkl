@@ -1,0 +1,328 @@
+/// Resource Type definition for AWS::SageMaker::ModelPackage
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::ModelPackage"
+Properties: Props?
+class Props {
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    AdditionalInferenceSpecifications: Listing<AdditionalInferenceSpecificationDefinition>?
+    CertifyForMarketplace: Boolean?
+    ClientToken: String(length <= 36 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]+$"#)))?
+    CustomerMetadataProperties: Mapping?
+    Domain: String?
+    DriftCheckBaselines: DriftCheckBaselines?
+    InferenceSpecification: InferenceSpecification?
+    MetadataProperties: MetadataProperties?
+    ModelApprovalStatus: "Approved" | "Rejected" | "PendingManualApproval" | *Null
+    ModelMetrics: ModelMetrics?
+    ModelPackageDescription: String(length <= 1024 && matches(Regex(#"[\p{L}\p{M}\p{Z}\p{S}\p{N}\p{P}]*"#)))?
+    ModelPackageGroupName: String(length <= 170 && length >= 1 && matches(Regex(#"(arn:aws[a-z\-]*:sagemaker:[a-z0-9\-]*:[0-9]{12}:[a-z\-]*\/)?([a-zA-Z0-9]([a-zA-Z0-9-]){0,62})(?<!-)$"#)))?
+    ModelPackageName: String?
+    SamplePayloadUrl: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))?
+    SkipModelValidation: "None" | "All" | *Null
+    SourceAlgorithmSpecification: SourceAlgorithmSpecification?
+    Task: String?
+    ValidationSpecification: ValidationSpecification?
+    ModelPackageArn: String(length <= 2048 && length >= 1 && matches(Regex(#"^arn:aws(-cn|-us-gov)?:sagemaker:[a-z0-9\-]{9,16}:[0-9]{12}:model-package/[\S]{1,2048}$"#)))?
+    ApprovalDescription: String(length <= 1024 && matches(Regex(#".*"#)))?
+    CreationTime: String?
+    LastModifiedTime: String?
+    ModelPackageStatus: "Pending" | "Deleting" | "InProgress" | "Completed" | "Failed" | *Null
+    ModelPackageVersion: Int?
+    AdditionalInferenceSpecificationsToAdd: Listing<AdditionalInferenceSpecificationDefinition>?
+    ModelPackageStatusDetails: ModelPackageStatusDetails?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+}
+/// Additional Inference Specification specifies details about inference
+/// jobs that can be run with models based on this model
+/// package.AdditionalInferenceSpecifications can be added to existing
+/// model packages using AdditionalInferenceSpecificationsToAdd.
+class AdditionalInferenceSpecificationDefinition {
+    /// The Amazon ECR registry path of the Docker image that contains the
+    /// inference code.
+    Containers: Listing<ModelPackageContainerDefinition>
+    /// A description of the additional Inference specification.
+    Description: String(length <= 1024 && matches(Regex(#".*"#)))?
+    /// A unique name to identify the additional inference specification. The
+    /// name must be unique within the list of your additional inference
+    /// specifications for a particular model package.
+    Name: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,62}$"#)))
+    /// The supported MIME types for the input data.
+    SupportedContentTypes: Listing<String(length <= 256 && matches(Regex(#".*"#)))>?
+    /// A list of the instance types that are used to generate inferences in
+    /// real-time
+    SupportedRealtimeInferenceInstanceTypes: Listing<String>?
+    /// The supported MIME types for the output data.
+    SupportedResponseMIMETypes: Listing<String(length <= 1024 && matches(Regex(#"^[-\w]+\/.+$"#)))>?
+    /// A list of the instance types on which a transformation job can be run
+    /// or on which an endpoint can be deployed.
+    SupportedTransformInstanceTypes: Listing<String>?
+}
+/// Describes the Docker container for the model package.
+class ModelPackageContainerDefinition {
+    /// The DNS host name for the Docker container.
+    ContainerHostname: String(length <= 63 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,62}"#)))?
+    Environment: Mapping?
+    ModelInput: ModelInput?
+    /// The Amazon EC2 Container Registry (Amazon ECR) path where inference
+    /// code is stored.
+    Image: String(length <= 255 && length >= 1 && matches(Regex(#"[\S]{1,255}"#)))
+    /// An MD5 hash of the training algorithm that identifies the Docker image
+    /// used for training.
+    ImageDigest: String(length <= 72 && matches(Regex(#"^[Ss][Hh][Aa]256:[0-9a-fA-F]{64}$"#)))?
+    /// A structure with Model Input details.
+    ModelDataUrl: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))?
+    /// The machine learning framework of the model package container image.
+    Framework: String?
+    /// The framework version of the Model Package Container Image.
+    FrameworkVersion: String(length <= 10 && length >= 3 && matches(Regex(#"[0-9]\.[A-Za-z0-9.]+"#)))?
+    /// The name of a pre-trained machine learning benchmarked by Amazon
+    /// SageMaker Inference Recommender model that matches your model.
+    NearestModelName: String?
+}
+class ModelInput {
+    /// The input configuration object for the model.
+    DataInputConfig: String(length <= 1024 && length >= 1 && matches(Regex(#"[\S\s]+"#)))
+}
+/// Represents the drift check baselines that can be used when the model
+/// monitor is set using the model package.
+class DriftCheckBaselines {
+    Bias: DriftCheckBias?
+    Explainability: DriftCheckExplainability?
+    ModelDataQuality: DriftCheckModelDataQuality?
+    ModelQuality: DriftCheckModelQuality?
+}
+/// Represents the drift check bias baselines that can be used when the
+/// model monitor is set using the model package.
+class DriftCheckBias {
+    PostTrainingConstraints: MetricsSource?
+    PreTrainingConstraints: MetricsSource?
+    ConfigFile: FileSource?
+}
+/// Represents a Metric Source Object.
+class MetricsSource {
+    /// The digest of the metric source.
+    ContentDigest: String(length <= 72 && matches(Regex(#"^[Ss][Hh][Aa]256:[0-9a-fA-F]{64}$"#)))?
+    /// The type of content stored in the metric source.
+    ContentType: String(length <= 256 && matches(Regex(#".*"#)))
+    /// The Amazon S3 URI for the metric source.
+    S3Uri: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))
+}
+/// Represents a File Source Object.
+class FileSource {
+    /// The digest of the file source.
+    ContentDigest: String(length <= 72 && matches(Regex(#"^[Ss][Hh][Aa]256:[0-9a-fA-F]{64}$"#)))?
+    /// The type of content stored in the file source.
+    ContentType: String(length <= 256 && matches(Regex(#".*"#)))?
+    /// The Amazon S3 URI for the file source.
+    S3Uri: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))
+}
+/// Contains explainability metrics for a model.
+class DriftCheckExplainability {
+    Constraints: MetricsSource?
+    ConfigFile: FileSource?
+}
+/// Represents the drift check data quality baselines that can be used
+/// when the model monitor is set using the model package.
+class DriftCheckModelDataQuality {
+    Constraints: MetricsSource?
+    Statistics: MetricsSource?
+}
+/// Represents the drift check model quality baselines that can be used
+/// when the model monitor is set using the model package.
+class DriftCheckModelQuality {
+    Constraints: MetricsSource?
+    Statistics: MetricsSource?
+}
+/// Details about inference jobs that can be run with models based on this
+/// model package.
+class InferenceSpecification {
+    /// The Amazon ECR registry path of the Docker image that contains the
+    /// inference code.
+    Containers: Listing<ModelPackageContainerDefinition>
+    /// The supported MIME types for the input data.
+    SupportedContentTypes: Listing<String(length <= 256 && matches(Regex(#".*"#)))>
+    /// A list of the instance types that are used to generate inferences in
+    /// real-time
+    SupportedRealtimeInferenceInstanceTypes: Listing<String>?
+    /// The supported MIME types for the output data.
+    SupportedResponseMIMETypes: Listing<String(length <= 1024 && matches(Regex(#"^[-\w]+\/.+$"#)))>
+    /// A list of the instance types on which a transformation job can be run
+    /// or on which an endpoint can be deployed.
+    SupportedTransformInstanceTypes: Listing<String>?
+}
+/// Metadata properties of the tracking entity, trial, or trial component.
+class MetadataProperties {
+    /// The commit ID.
+    CommitId: String(length <= 1024 && matches(Regex(#".*"#)))?
+    /// The entity this entity was generated by.
+    GeneratedBy: String(length <= 1024 && matches(Regex(#".*"#)))?
+    /// The project ID metadata.
+    ProjectId: String(length <= 1024 && matches(Regex(#".*"#)))?
+    /// The repository metadata.
+    Repository: String(length <= 1024 && matches(Regex(#".*"#)))?
+}
+/// A structure that contains model metrics reports.
+class ModelMetrics {
+    Bias: Bias?
+    Explainability: Explainability?
+    ModelDataQuality: ModelDataQuality?
+    ModelQuality: ModelQuality?
+}
+/// Contains bias metrics for a model.
+class Bias {
+    Report: MetricsSource?
+    PreTrainingReport: MetricsSource?
+    PostTrainingReport: MetricsSource?
+}
+/// Contains explainability metrics for a model.
+class Explainability {
+    Report: MetricsSource?
+}
+/// Metrics that measure the quality of the input data for a model.
+class ModelDataQuality {
+    Constraints: MetricsSource?
+    Statistics: MetricsSource?
+}
+/// Metrics that measure the quality of a model.
+class ModelQuality {
+    Constraints: MetricsSource?
+    Statistics: MetricsSource?
+}
+/// Details about the algorithm that was used to create the model package.
+class SourceAlgorithmSpecification {
+    /// A list of algorithms that were used to create a model package.
+    SourceAlgorithms: Listing<SourceAlgorithm>
+}
+/// Specifies an algorithm that was used to create the model package. The
+/// algorithm must be either an algorithm resource in your Amazon
+/// SageMaker account or an algorithm in AWS Marketplace that you are
+/// subscribed to.
+class SourceAlgorithm {
+    /// The name of an algorithm that was used to create the model package.
+    /// The algorithm must be either an algorithm resource in your Amazon
+    /// SageMaker account or an algorithm in AWS Marketplace that you are
+    /// subscribed to.
+    AlgorithmName: String(length <= 170 && length >= 1 && matches(Regex(#"(arn:aws[a-z\-]*:sagemaker:[a-z0-9\-]*:[0-9]{12}:[a-z\-]*\/)?([a-zA-Z0-9]([a-zA-Z0-9-]){0,62})(?<!-)$"#)))
+    /// The Amazon S3 path where the model artifacts, which result from model
+    /// training, are stored. This path must point to a single gzip compressed
+    /// tar archive (.tar.gz suffix).
+    ModelDataUrl: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))?
+}
+/// Specifies configurations for one or more transform jobs that Amazon
+/// SageMaker runs to test the model package.
+class ValidationSpecification {
+    ValidationProfiles: Listing<ValidationProfile>
+    /// The IAM roles to be used for the validation of the model package.
+    ValidationRole: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:aws[a-z\-]*:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+$"#)))
+}
+/// Contains data, such as the inputs and targeted instance types that are
+/// used in the process of validating the model package.
+class ValidationProfile {
+    TransformJobDefinition: TransformJobDefinition
+    /// The name of the profile for the model package.
+    ProfileName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,62}$"#)))
+}
+/// Defines the input needed to run a transform job using the inference
+/// specification specified in the algorithm.
+class TransformJobDefinition {
+    Environment: Mapping?
+    /// A string that determines the number of records included in a single
+    /// mini-batch.
+    BatchStrategy: "MultiRecord" | "SingleRecord" | *Null
+    /// The maximum number of parallel requests that can be sent to each
+    /// instance in a transform job. The default value is 1.
+    MaxConcurrentTransforms: Int?
+    /// The maximum payload size allowed, in MB. A payload is the data portion
+    /// of a record (without metadata).
+    MaxPayloadInMB: Int?
+    TransformInput: TransformInput
+    TransformOutput: TransformOutput
+    TransformResources: TransformResources
+}
+/// Describes the input source of a transform job and the way the
+/// transform job consumes it.
+class TransformInput {
+    /// If your transform data is compressed, specify the compression type.
+    /// Amazon SageMaker automatically decompresses the data for the transform
+    /// job accordingly. The default value is None.
+    CompressionType: "None" | "Gzip" | *Null
+    /// The multipurpose internet mail extension (MIME) type of the data.
+    /// Amazon SageMaker uses the MIME type with each http call to transfer
+    /// data to the transform job.
+    ContentType: String(length <= 256 && matches(Regex(#".*"#)))?
+    DataSource: DataSource
+    /// The method to use to split the transform job's data files into smaller
+    /// batches.
+    SplitType: "None" | "TFRecord" | "Line" | "RecordIO" | *Null
+}
+/// Describes the input source of a transform job and the way the
+/// transform job consumes it.
+class DataSource {
+    S3DataSource: S3DataSource
+}
+/// Describes the S3 data source.
+class S3DataSource {
+    /// The S3 Data Source Type
+    S3DataType: "ManifestFile" | "S3Prefix" | "AugmentedManifestFile"
+    /// Depending on the value specified for the S3DataType, identifies either
+    /// a key name prefix or a manifest.
+    S3Uri: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))
+}
+/// Describes the results of a transform job.
+class TransformOutput {
+    /// The MIME type used to specify the output data. Amazon SageMaker uses
+    /// the MIME type with each http call to transfer data from the transform
+    /// job.
+    Accept: String(length <= 256 && matches(Regex(#".*"#)))?
+    /// The AWS Key Management Service (AWS KMS) key that Amazon SageMaker
+    /// uses to encrypt the model artifacts at rest using Amazon S3 server-
+    /// side encryption.
+    KmsKeyId: String(length <= 2048 && matches(Regex(#".*"#)))?
+    /// The Amazon S3 path where you want Amazon SageMaker to store the
+    /// results of the transform job.
+    S3OutputPath: String(length <= 1024 && matches(Regex(#"^(https|s3)://([^/]+)/?(.*)$"#)))
+    /// Defines how to assemble the results of the transform job as a single
+    /// S3 object.
+    AssembleWith: "None" | "Line" | *Null
+}
+/// Describes the resources, including ML instance types and ML instance
+/// count, to use for transform job.
+class TransformResources {
+    /// The number of ML compute instances to use in the transform job. For
+    /// distributed transform jobs, specify a value greater than 1. The
+    /// default value is 1.
+    InstanceCount: Int
+    /// The ML compute instance type for the transform job.
+    InstanceType: String
+    /// The AWS Key Management Service (AWS KMS) key that Amazon SageMaker
+    /// uses to encrypt model data on the storage volume attached to the ML
+    /// compute instance(s) that run the batch transform job.
+    VolumeKmsKeyId: String(length <= 2048 && matches(Regex(#".*"#)))?
+}
+/// Details about the current status of the model package.
+class ModelPackageStatusDetails {
+    ValidationStatuses: Listing<ModelPackageStatusItem>?
+}
+/// Represents the overall status of a model package.
+class ModelPackageStatusItem {
+    /// If the overall status is Failed, the reason for the failure.
+    FailureReason: String?
+    /// The name of the model package for which the overall status is being
+    /// reported.
+    Name: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,62}$"#)))
+    /// The current status.
+    Status: "NotStarted" | "Failed" | "InProgress" | "Completed"
+}

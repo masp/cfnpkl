@@ -1,0 +1,32 @@
+/// Resource Type definition for AWS::SageMaker::Workteam
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::Workteam"
+Properties: Props?
+class Props {
+    Description: String?
+    NotificationConfiguration: NotificationConfiguration?
+    WorkteamName: String?
+    MemberDefinitions: Listing<MemberDefinition>?
+    Id: String?
+    WorkforceName: String?
+    Tags: Listing<Tag>?
+}
+class NotificationConfiguration {
+    NotificationTopicArn: String
+}
+class MemberDefinition {
+    CognitoMemberDefinition: CognitoMemberDefinition?
+    OidcMemberDefinition: OidcMemberDefinition?
+}
+class CognitoMemberDefinition {
+    CognitoUserGroup: String
+    CognitoUserPool: String
+    CognitoClientId: String
+}
+class OidcMemberDefinition {
+    OidcGroups: Listing<String>
+}
+class Tag {
+    Value: String
+    Key: String
+}

@@ -1,0 +1,23 @@
+/// The AWS::Timestream::Database resource creates a Timestream database.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Timestream::Database"
+Properties: Props?
+class Props {
+    Arn: String?
+    /// The name for the database. If you don't specify a name, AWS
+    /// CloudFormation generates a unique physical ID and uses that ID for the
+    /// database name.
+    DatabaseName: String(matches(Regex(#"^[a-zA-Z0-9_.-]{3,256}$"#)))?
+    /// The KMS key for the database. If the KMS key is not specified, the
+    /// database will be encrypted with a Timestream managed KMS key located
+    /// in your account.
+    KmsKeyId: String(length <= 2048 && length >= 1)?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// You can use the Resource Tags property to apply tags to resources,
+/// which can help you identify and categorize those resources.
+class Tag {
+    Key: String(length <= 128 && length >= 1)?
+    Value: String(length <= 256 && length >= 0)?
+}

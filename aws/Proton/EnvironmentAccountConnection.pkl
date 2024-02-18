@@ -1,0 +1,53 @@
+/// Resource Schema describing various properties for AWS Proton
+/// Environment Account Connections resources.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Proton::EnvironmentAccountConnection"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the environment account connection.
+    Arn: String?
+    /// The Amazon Resource Name (ARN) of an IAM service role in the
+    /// environment account. AWS Proton uses this role to provision
+    /// infrastructure resources using CodeBuild-based provisioning in the
+    /// associated environment account.
+    CodebuildRoleArn: String(length <= 200 && length >= 1 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov):iam::\d{12}:role/([\w+=,.@-]{1,512}[/:])*([\w+=,.@-]{1,64})$"#)))?
+    /// The Amazon Resource Name (ARN) of the IAM service role that AWS Proton
+    /// uses when provisioning directly defined components in the associated
+    /// environment account. It determines the scope of infrastructure that a
+    /// component can provision in the account.
+    ComponentRoleArn: String(length <= 200 && length >= 1 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov):iam::\d{12}:role/([\w+=,.@-]{1,512}[/:])*([\w+=,.@-]{1,64})$"#)))?
+    /// The environment account that's connected to the environment account
+    /// connection.
+    EnvironmentAccountId: String(matches(Regex(#"^\d{12}$"#)))?
+    /// The name of the AWS Proton environment that's created in the
+    /// associated management account.
+    EnvironmentName: String(length <= 100 && length >= 1 && matches(Regex(#"^[0-9A-Za-z]+[0-9A-Za-z_\-]*$"#)))?
+    /// The ID of the environment account connection.
+    Id: String(matches(Regex(#"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"#)))?
+    /// The ID of the management account that accepts or rejects the
+    /// environment account connection. You create an manage the AWS Proton
+    /// environment in this account. If the management account accepts the
+    /// environment account connection, AWS Proton can use the associated IAM
+    /// role to provision environment infrastructure resources in the
+    /// associated environment account.
+    ManagementAccountId: String(matches(Regex(#"^\d{12}$"#)))?
+    /// The Amazon Resource Name (ARN) of the IAM service role that's created
+    /// in the environment account. AWS Proton uses this role to provision
+    /// infrastructure resources in the associated environment account.
+    RoleArn: String(length <= 200 && length >= 1 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov):iam::\d{12}:role/([\w+=,.@-]{1,512}[/:])*([\w+=,.@-]{1,64})$"#)))?
+    /// The status of the environment account connection.
+    Status: "PENDING" | "CONNECTED" | "REJECTED" | *Null
+    /// <p>An optional list of metadata items that you can associate with the
+    /// Proton environment account connection. A tag is a key-value pair.</p>
+    /// <p>For more information, see <a href="https://docs.aws.amazon.com/prot
+    /// on/latest/userguide/resources.html">Proton resources and tagging</a>
+    /// in the         <i>Proton User Guide</i>.</p>
+    Tags: Listing<Tag>?
+}
+/// <p>A description of a resource tag.</p>
+class Tag {
+    /// <p>The key of the resource tag.</p>
+    Key: String(length <= 128 && length >= 1)
+    /// <p>The value of the resource tag.</p>
+    Value: String(length <= 256 && length >= 0)
+}

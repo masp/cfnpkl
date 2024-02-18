@@ -1,0 +1,76 @@
+/// The AWS::GameLift::GameServerGroup resource creates an Amazon GameLift
+/// (GameLift) GameServerGroup.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GameLift::GameServerGroup"
+Properties: Props?
+class Props {
+    /// A generated unique ID for the EC2 Auto Scaling group that is
+    /// associated with this game server group.
+    AutoScalingGroupArn: String(length <= 256 && length >= 0 && matches(Regex(#"[ -퟿-�𐀀-􏿿
+	]*"#)))?
+    /// Configuration settings to define a scaling policy for the Auto Scaling
+    /// group that is optimized for game hosting
+    AutoScalingPolicy: AutoScalingPolicy?
+    /// The fallback balancing method to use for the game server group when
+    /// Spot Instances in a Region become unavailable or are not viable for
+    /// game hosting.
+    BalancingStrategy: "SPOT_ONLY" | "SPOT_PREFERRED" | "ON_DEMAND_ONLY" | *Null
+    /// The type of delete to perform.
+    DeleteOption: "SAFE_DELETE" | "FORCE_DELETE" | "RETAIN" | *Null
+    /// A generated unique ID for the game server group.
+    GameServerGroupArn: String(length <= 256 && length >= 1 && matches(Regex(#"^arn:.*:gameservergroup\/[a-zA-Z0-9-\.]*"#)))?
+    /// An identifier for the new game server group.
+    GameServerGroupName: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9-\.]+"#)))?
+    /// A flag that indicates whether instances in the game server group are
+    /// protected from early termination.
+    GameServerProtectionPolicy: "NO_PROTECTION" | "FULL_PROTECTION" | *Null
+    /// A set of EC2 instance types to use when creating instances in the
+    /// group.
+    InstanceDefinitions: Listing<InstanceDefinition>?
+    /// The EC2 launch template that contains configuration settings and game
+    /// server code to be deployed to all instances in the game server group.
+    LaunchTemplate: LaunchTemplate?
+    /// The maximum number of instances allowed in the EC2 Auto Scaling group.
+    MaxSize: Float?
+    /// The minimum number of instances allowed in the EC2 Auto Scaling group.
+    MinSize: Float?
+    /// The Amazon Resource Name (ARN) for an IAM role that allows Amazon
+    /// GameLift to access your EC2 Auto Scaling groups.
+    RoleArn: String(length <= 256 && length >= 1 && matches(Regex(#"^arn:.*:role\/[\w+=,.@-]+"#)))?
+    /// A list of labels to assign to the new game server group resource.
+    Tags: Listing<Tag>?
+    /// A list of virtual private cloud (VPC) subnets to use with instances in
+    /// the game server group.
+    VpcSubnets: Listing<String(length <= 24 && length >= 15 && matches(Regex(#"^subnet-[0-9a-z]+$"#)))>?
+}
+/// Configuration settings to define a scaling policy for the Auto Scaling
+/// group that is optimized for game hosting
+class AutoScalingPolicy {
+    EstimatedInstanceWarmup: Float?
+    TargetTrackingConfiguration: TargetTrackingConfiguration
+}
+/// Settings for a target-based scaling policy applied to Auto Scaling
+/// group.
+class TargetTrackingConfiguration {
+    TargetValue: Float
+}
+/// An allowed instance type for your game server group.
+class InstanceDefinition {
+    InstanceType: String
+    WeightedCapacity: String(matches(Regex(#"^[\u0031-\u0039][\u0030-\u0039]{0,2}$"#)))?
+}
+/// The EC2 launch template that contains configuration settings and game
+/// server code to be deployed to all instances in the game server group.
+class LaunchTemplate {
+    LaunchTemplateId: String?
+    LaunchTemplateName: String?
+    Version: String?
+}
+class Tag {
+    /// The key for a developer-defined key:value pair for tagging an AWS
+    /// resource.
+    Key: String?
+    /// The value for a developer-defined key:value pair for tagging an AWS
+    /// resource.
+    Value: String?
+}

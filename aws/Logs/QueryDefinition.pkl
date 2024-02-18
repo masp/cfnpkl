@@ -1,0 +1,14 @@
+/// The resource schema for AWSLogs QueryDefinition
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Logs::QueryDefinition"
+Properties: Props?
+class Props {
+    /// A name for the saved query definition
+    Name: String(length <= 255 && length >= 1)?
+    /// The query string to use for this definition
+    QueryString: String(length <= 10000 && length >= 1)?
+    /// Optionally define specific log groups as part of your query definition
+    LogGroupNames: Listing<String(length <= 512 && length >= 1 && matches(Regex(#"[\.\-_/#A-Za-z0-9]+"#)))>?
+    /// Unique identifier of a query definition
+    QueryDefinitionId: String(length <= 256 && length >= 0)?
+}

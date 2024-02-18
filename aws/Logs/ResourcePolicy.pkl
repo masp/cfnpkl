@@ -1,0 +1,10 @@
+/// The resource schema for AWSLogs ResourcePolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Logs::ResourcePolicy"
+Properties: Props?
+class Props {
+    /// A name for resource policy
+    PolicyName: String(length <= 255 && length >= 1 && matches(Regex(#"^([^:*\/]+\/?)*[^:*\/]+$"#)))?
+    /// The policy document
+    PolicyDocument: String(length <= 5120 && length >= 1 && matches(Regex(#"[\u0009\u000A\u000D\u0020-\u00FF]+"#)))?
+}

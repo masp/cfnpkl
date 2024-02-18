@@ -1,0 +1,32 @@
+/// Definition of the AWS::QuickSight::VPCConnection Resource Type.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::QuickSight::VPCConnection"
+Properties: Props?
+class Props {
+    Arn: String?
+    AwsAccountId: String(length <= 12 && length >= 12 && matches(Regex(#"^[0-9]{12}$"#)))?
+    Name: String(length <= 128 && length >= 1)?
+    VPCConnectionId: String(length <= 1000 && length >= 1 && matches(Regex(#"[\w\-]+"#)))?
+    VPCId: String?
+    SecurityGroupIds: Listing<String(matches(Regex(#"^sg-[0-9a-z]*$"#)))>?
+    SubnetIds: Listing<String(length <= 255 && length >= 1 && matches(Regex(#"^subnet-[0-9a-z]*$"#)))>?
+    DnsResolvers: Listing<String>?
+    Status: "CREATION_IN_PROGRESS" | "CREATION_SUCCESSFUL" | "CREATION_FAILED" | "UPDATE_IN_PROGRESS" | "UPDATE_SUCCESSFUL" | "UPDATE_FAILED" | "DELETION_IN_PROGRESS" | "DELETION_FAILED" | "DELETED" | *Null
+    AvailabilityStatus: "AVAILABLE" | "UNAVAILABLE" | "PARTIALLY_AVAILABLE" | *Null
+    NetworkInterfaces: Listing<NetworkInterface>?
+    RoleArn: String?
+    CreatedTime: String?
+    LastUpdatedTime: String?
+    Tags: Listing<Tag>?
+}
+class NetworkInterface {
+    SubnetId: String(length <= 255 && length >= 1 && matches(Regex(#"^subnet-[0-9a-z]*$"#)))?
+    AvailabilityZone: String?
+    ErrorMessage: String?
+    Status: "CREATING" | "AVAILABLE" | "CREATION_FAILED" | "UPDATING" | "UPDATE_FAILED" | "DELETING" | "DELETED" | "DELETION_FAILED" | "DELETION_SCHEDULED" | "ATTACHMENT_FAILED_ROLLBACK_FAILED" | *Null
+    NetworkInterfaceId: String(length <= 255 && matches(Regex(#"^eni-[0-9a-z]*$"#)))?
+}
+class Tag {
+    Value: String(length <= 256 && length >= 1)
+    Key: String(length <= 128 && length >= 1)
+}

@@ -1,0 +1,58 @@
+/// IdMappingWorkflow defined in AWS Entity Resolution service
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EntityResolution::IdMappingWorkflow"
+Properties: Props?
+class Props {
+    /// The name of the IdMappingWorkflow
+    WorkflowName: String(length <= 255 && length >= 0 && matches(Regex(#"^[a-zA-Z_0-9-]*$"#)))?
+    /// The description of the IdMappingWorkflow
+    Description: String(length <= 255 && length >= 0)?
+    InputSourceConfig: Listing<IdMappingWorkflowInputSource>?
+    OutputSourceConfig: Listing<IdMappingWorkflowOutputSource>?
+    IdMappingTechniques: IdMappingTechniques?
+    RoleArn: String(matches(Regex(#"^arn:(aws|aws-us-gov|aws-cn):iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    Tags: Listing<Tag>?
+    WorkflowArn: String(matches(Regex(#"^arn:(aws|aws-us-gov|aws-cn):entityresolution:.*:[0-9]+:(idmappingworkflow/.*)$"#)))?
+    CreatedAt: String?
+    UpdatedAt: String?
+}
+class IdMappingWorkflowInputSource {
+    /// An Glue table ARN for the input source table
+    InputSourceARN: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):.*:.*:[0-9]+:.*$"#)))
+    SchemaArn: String(matches(Regex(#"^arn:(aws|aws-us-gov|aws-cn):entityresolution:.*:[0-9]+:(schemamapping/.*)$"#)))
+}
+class IdMappingWorkflowOutputSource {
+    /// The S3 path to which Entity Resolution will write the output table
+    OutputS3Path: String(matches(Regex(#"^s3://([^/]+)/?(.*?([^/]+)/?)$"#)))
+    KMSArn: String(matches(Regex(#"^arn:(aws|aws-us-gov|aws-cn):kms:.*:[0-9]+:.*$"#)))?
+}
+class IdMappingTechniques {
+    IdMappingType: "PROVIDER" | *Null
+    ProviderProperties: ProviderProperties?
+}
+class ProviderProperties {
+    /// Arn of the Provider Service being used.
+    ProviderServiceArn: String(matches(Regex(#"^arn:(aws|aws-us-gov|aws-cn):entityresolution:([A-Za-z0-9]+(-[A-Za-z0-9]+)+)::providerservice/[A-Za-z0-9]+/[A-Za-z0-9]+$"#)))
+    /// Additional Provider configuration that would be required for the
+    /// provider service. The Configuration must be in JSON string format
+    ProviderConfiguration: Mapping?
+    IntermediateSourceConfiguration: IntermediateSourceConfiguration?
+}
+class IntermediateSourceConfiguration {
+    /// The s3 path that would be used to stage the intermediate data being
+    /// generated during workflow execution.
+    IntermediateS3Path: String
+}
+/// A key-value pair to associate with a resource
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

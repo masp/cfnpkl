@@ -1,0 +1,43 @@
+/// Resource schema for AWS::DataSync::LocationSMB.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataSync::LocationSMB"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Names (ARNs) of agents to use for a Simple Message
+    /// Block (SMB) location.
+    AgentArns: Listing<String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:agent/agent-[0-9a-z]{17}$"#)))>?
+    /// The name of the Windows domain that the SMB server belongs to.
+    Domain: String(length <= 253 && matches(Regex(#"^([A-Za-z0-9]+[A-Za-z0-9-.]*)*[A-Za-z0-9-]*[A-Za-z0-9]$"#)))?
+    MountOptions: MountOptions?
+    /// The password of the user who can mount the share and has the
+    /// permissions to access files and folders in the SMB share.
+    Password: String(length <= 104 && matches(Regex(#"^.{0,104}$"#)))?
+    /// The name of the SMB server. This value is the IP address or Domain
+    /// Name Service (DNS) name of the SMB server.
+    ServerHostname: String(length <= 255 && matches(Regex(#"^(([a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9\-]*[A-Za-z0-9])$"#)))?
+    /// The subdirectory in the SMB file system that is used to read data from
+    /// the SMB source location or write data to the SMB destination
+    Subdirectory: String(length <= 4096 && matches(Regex(#"^[a-zA-Z0-9_\-\+\./\(\)\$\p{Zs}]+$"#)))?
+    /// The user who can mount the share, has the permissions to access files
+    /// and folders in the SMB share.
+    User: String(length <= 104 && matches(Regex(#"^[^\x5B\x5D\\/:;|=,+*?]{1,104}$"#)))?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the SMB location that is created.
+    LocationArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:location/loc-[0-9a-z]{17}$"#)))?
+    /// The URL of the SMB location that was described.
+    LocationUri: String(length <= 4356 && matches(Regex(#"^(efs|nfs|s3|smb|fsxw)://[a-zA-Z0-9./\-]+$"#)))?
+}
+/// The mount options used by DataSync to access the SMB server.
+class MountOptions {
+    /// The specific SMB version that you want DataSync to use to mount your
+    /// SMB share.
+    Version: "AUTOMATIC" | "SMB1" | "SMB2_0" | "SMB2" | "SMB3" | *Null
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for an AWS resource tag.
+    Key: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:/-]+$"#)))
+    /// The value for an AWS resource tag.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))
+}

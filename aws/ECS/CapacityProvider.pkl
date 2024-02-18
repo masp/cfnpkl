@@ -1,0 +1,28 @@
+/// Resource Type definition for AWS::ECS::CapacityProvider.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ECS::CapacityProvider"
+Properties: Props?
+class Props {
+    AutoScalingGroupProvider: AutoScalingGroupProvider?
+    Name: String?
+    Tags: Listing<Tag>?
+}
+class AutoScalingGroupProvider {
+    AutoScalingGroupArn: String
+    ManagedScaling: ManagedScaling?
+    ManagedTerminationProtection: "DISABLED" | "ENABLED" | *Null
+    ManagedDraining: "DISABLED" | "ENABLED" | *Null
+}
+/// The managed scaling settings for the Auto Scaling group capacity
+/// provider.
+class ManagedScaling {
+    MinimumScalingStepSize: Int?
+    MaximumScalingStepSize: Int?
+    Status: "DISABLED" | "ENABLED" | *Null
+    TargetCapacity: Int?
+    InstanceWarmupPeriod: Int?
+}
+class Tag {
+    Key: String(length >= 1)?
+    Value: String(length >= 1)?
+}

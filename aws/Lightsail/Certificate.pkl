@@ -1,0 +1,33 @@
+/// An example resource schema demonstrating some basic constructs and
+/// validation rules.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lightsail::Certificate"
+Properties: Props?
+class Props {
+    /// The name for the certificate.
+    CertificateName: String?
+    /// The domain name (e.g., example.com ) for the certificate.
+    DomainName: String?
+    /// An array of strings that specify the alternate domains (e.g.,
+    /// example2.com) and subdomains (e.g., blog.example.com) for the
+    /// certificate.
+    SubjectAlternativeNames: Listing<String>?
+    CertificateArn: String?
+    /// The validation status of the certificate.
+    Status: String?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)?
+}

@@ -1,0 +1,12 @@
+/// Schema for IAM Role Policy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IAM::RolePolicy"
+Properties: Props?
+class Props {
+    /// The policy document.
+    PolicyDocument: Mapping?
+    /// The friendly name (not ARN) identifying the policy.
+    PolicyName: String?
+    /// The name of the policy document.
+    RoleName: String?
+}

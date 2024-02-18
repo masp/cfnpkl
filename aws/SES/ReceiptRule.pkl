@@ -1,0 +1,61 @@
+/// Resource Type definition for AWS::SES::ReceiptRule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SES::ReceiptRule"
+Properties: Props?
+class Props {
+    After: String?
+    Rule: Rule?
+    Id: String?
+    RuleSetName: String?
+}
+class Rule {
+    ScanEnabled: Boolean?
+    Recipients: Listing<String>?
+    Actions: Listing<Action>?
+    Enabled: Boolean?
+    Name: String?
+    TlsPolicy: String?
+}
+class Action {
+    BounceAction: BounceAction?
+    S3Action: S3Action?
+    StopAction: StopAction?
+    SNSAction: SNSAction?
+    WorkmailAction: WorkmailAction?
+    AddHeaderAction: AddHeaderAction?
+    LambdaAction: LambdaAction?
+}
+class BounceAction {
+    Sender: String
+    SmtpReplyCode: String
+    Message: String
+    TopicArn: String?
+    StatusCode: String?
+}
+class S3Action {
+    ObjectKeyPrefix: String?
+    BucketName: String
+    KmsKeyArn: String?
+    TopicArn: String?
+}
+class StopAction {
+    Scope: String
+    TopicArn: String?
+}
+class SNSAction {
+    TopicArn: String?
+    Encoding: String?
+}
+class WorkmailAction {
+    TopicArn: String?
+    OrganizationArn: String
+}
+class AddHeaderAction {
+    HeaderName: String
+    HeaderValue: String
+}
+class LambdaAction {
+    InvocationType: String?
+    FunctionArn: String
+    TopicArn: String?
+}

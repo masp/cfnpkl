@@ -1,0 +1,45 @@
+/// Resource Type definition for AWS::SageMaker::Pipeline
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::Pipeline"
+Properties: Props?
+class Props {
+    /// The name of the Pipeline.
+    PipelineName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*"#)))?
+    /// The display name of the Pipeline.
+    PipelineDisplayName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*"#)))?
+    /// The description of the Pipeline.
+    PipelineDescription: String(length <= 3072 && length >= 0)?
+    PipelineDefinition: PipelineDefinition0 | PipelineDefinition1 | *Null
+    /// Role Arn
+    RoleArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:aws[a-z\-]*:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    Tags: Listing<Tag>?
+    ParallelismConfiguration: ParallelismConfiguration?
+}
+class PipelineDefinition0 {
+    /// A specification that defines the pipeline in JSON format.
+    PipelineDefinitionBody: String
+}
+class PipelineDefinition1 {
+    PipelineDefinitionS3Location: S3Location
+}
+class S3Location {
+    /// The name of the S3 bucket where the PipelineDefinition file is stored.
+    Bucket: String
+    /// The file name of the PipelineDefinition file (Amazon S3 object name).
+    Key: String
+    /// For versioning-enabled buckets, a specific version of the
+    /// PipelineDefinition file.
+    Version: String?
+    /// The Amazon S3 ETag (a file checksum) of the PipelineDefinition file.
+    /// If you don't specify a value, SageMaker skips ETag validation of your
+    /// PipelineDefinition file.
+    ETag: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class ParallelismConfiguration {
+    /// Maximum parallel execution steps
+    MaxParallelExecutionSteps: Int
+}

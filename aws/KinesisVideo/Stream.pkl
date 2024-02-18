@@ -1,0 +1,35 @@
+/// Resource Type Definition for AWS::KinesisVideo::Stream
+extends ".../AWS/Resource.pkl"
+Type = "AWS::KinesisVideo::Stream"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the Kinesis Video stream.
+    Arn: String?
+    /// The name of the Kinesis Video stream.
+    Name: String(length <= 256 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_.-]+"#)))?
+    /// The number of hours till which Kinesis Video will retain the data in
+    /// the stream
+    DataRetentionInHours: Int?
+    /// The name of the device that is writing to the stream.
+    DeviceName: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_.-]+"#)))?
+    /// AWS KMS key ID that Kinesis Video Streams uses to encrypt stream data.
+    KmsKeyId: String(length <= 2048 && length >= 1 && matches(Regex(#".+"#)))?
+    /// The media type of the stream. Consumers of the stream can use this
+    /// information when processing the stream.
+    MediaType: String(length <= 128 && length >= 1 && matches(Regex(#"[\w\-\.\+]+/[\w\-\.\+]+(,[\w\-\.\+]+/[\w\-\.\+]+)*"#)))?
+    /// An array of key-value pairs associated with the Kinesis Video Stream.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associated with the Kinesis Video Stream.
+class Tag {
+    /// The key name of the tag. Specify a value that is 1 to 128 Unicode
+    /// characters in length and cannot be prefixed with aws:. The following
+    /// characters can be used: the set of Unicode letters, digits,
+    /// whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. Specify a value that is 0 to 256 Unicode
+    /// characters in length and cannot be prefixed with aws:. The following
+    /// characters can be used: the set of Unicode letters, digits,
+    /// whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

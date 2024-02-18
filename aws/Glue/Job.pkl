@@ -1,0 +1,42 @@
+/// Resource Type definition for AWS::Glue::Job
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::Job"
+Properties: Props?
+class Props {
+    Connections: ConnectionsList?
+    MaxRetries: Float?
+    Description: String?
+    Timeout: Int?
+    AllocatedCapacity: Float?
+    Name: String?
+    Role: String?
+    DefaultArguments: Mapping?
+    NotificationProperty: NotificationProperty?
+    WorkerType: String?
+    ExecutionClass: String?
+    LogUri: String?
+    Command: JobCommand?
+    GlueVersion: String?
+    ExecutionProperty: ExecutionProperty?
+    SecurityConfiguration: String?
+    Id: String?
+    NumberOfWorkers: Int?
+    Tags: Mapping?
+    MaxCapacity: Float?
+    NonOverridableArguments: Mapping?
+}
+class ConnectionsList {
+    Connections: Listing<String>?
+}
+class NotificationProperty {
+    NotifyDelayAfter: Int?
+}
+class JobCommand {
+    Runtime: String?
+    ScriptLocation: String?
+    PythonVersion: String?
+    Name: String?
+}
+class ExecutionProperty {
+    MaxConcurrentRuns: Float?
+}

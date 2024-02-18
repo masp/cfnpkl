@@ -1,0 +1,84 @@
+/// The AWS::ElastiCache::ServerlessCache resource creates an Amazon
+/// ElastiCache Serverless Cache.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElastiCache::ServerlessCache"
+Properties: Props?
+class Props {
+    /// The name of the Serverless Cache. This value must be unique.
+    ServerlessCacheName: String?
+    /// The description of the Serverless Cache.
+    Description: String?
+    /// The engine name of the Serverless Cache.
+    Engine: String?
+    /// The major engine version of the Serverless Cache.
+    MajorEngineVersion: String?
+    /// The full engine version of the Serverless Cache.
+    FullEngineVersion: String?
+    CacheUsageLimits: CacheUsageLimits?
+    /// The ID of the KMS key used to encrypt the cluster.
+    KmsKeyId: String?
+    /// One or more Amazon VPC security groups associated with this Serverless
+    /// Cache.
+    SecurityGroupIds: Listing<String>?
+    /// The ARN's of snapshot to restore Serverless Cache.
+    SnapshotArnsToRestore: Listing<String>?
+    /// An array of key-value pairs to apply to this Serverless Cache.
+    Tags: Listing<Tag>?
+    /// The ID of the user group.
+    UserGroupId: String?
+    /// The subnet id's of the Serverless Cache.
+    SubnetIds: Listing<String>?
+    /// The snapshot retention limit of the Serverless Cache.
+    SnapshotRetentionLimit: Int?
+    /// The daily time range (in UTC) during which the service takes automatic
+    /// snapshot of the Serverless Cache.
+    DailySnapshotTime: String?
+    /// The creation time of the Serverless Cache.
+    CreateTime: String?
+    /// The status of the Serverless Cache.
+    Status: String?
+    Endpoint: Endpoint?
+    ReaderEndpoint: Endpoint?
+    /// The ARN of the Serverless Cache.
+    ARN: String?
+    /// The final snapshot name which is taken before Serverless Cache is
+    /// deleted.
+    FinalSnapshotName: String?
+}
+/// The cache capacity limit of the Serverless Cache.
+class CacheUsageLimits {
+    DataStorage: DataStorage?
+    ECPUPerSecond: ECPUPerSecond?
+}
+/// The cached data capacity of the Serverless Cache.
+class DataStorage {
+    /// The maximum cached data capacity of the Serverless Cache.
+    Maximum: Int
+    /// The unix of cached data capacity of the Serverless Cache.
+    Unit: "GB"
+}
+/// The ECPU per second of the Serverless Cache.
+class ECPUPerSecond {
+    /// The maximum ECPU per second of the Serverless Cache.
+    Maximum: Int
+}
+/// A key-value pair to associate with Serverless Cache.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with 'aws:'. You
+    /// can use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z0-9 _\.\/=+:\-@]*$"#)))
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length. You can use any of the following
+    /// characters: the set of Unicode letters, digits, whitespace, _, ., /,
+    /// =, +, and -.
+    Value: String(length <= 256 && length >= 0 && matches(Regex(#"^[a-zA-Z0-9 _\.\/=+:\-@]*$"#)))?
+}
+/// The address and the port.
+class Endpoint {
+    /// Endpoint address.
+    Address: String?
+    /// Endpoint port.
+    Port: String?
+}

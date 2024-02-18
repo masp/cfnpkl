@@ -1,0 +1,33 @@
+/// Definition of AWS::RefactorSpaces::Application Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RefactorSpaces::Application"
+Properties: Props?
+class Props {
+    ApiGatewayProxy: ApiGatewayProxyInput?
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:refactor-spaces:[a-zA-Z0-9\-]+:\w{12}:[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    ApiGatewayId: String(length <= 10 && length >= 10 && matches(Regex(#"^[a-z0-9]{10}$"#)))?
+    VpcLinkId: String(length <= 10 && length >= 10 && matches(Regex(#"^[a-z0-9]{10}$"#)))?
+    NlbArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:elasticloadbalancing:[a-zA-Z0-9\\-]+:\\w{12}:[a-zA-Z_0-9+=,.@\\-_\/]+$"#)))?
+    NlbName: String(length <= 32 && length >= 1 && matches(Regex(#"^(?!internal-)[a-zA-Z0-9]+[a-zA-Z0-9-_ ]+.*[^-]$"#)))?
+    ApplicationIdentifier: String(length <= 14 && length >= 14 && matches(Regex(#"^app-([0-9A-Za-z]{10}$)"#)))?
+    EnvironmentIdentifier: String(length <= 14 && length >= 14 && matches(Regex(#"^env-([0-9A-Za-z]{10}$)"#)))?
+    Name: String(length <= 63 && length >= 3 && matches(Regex(#"^(?!app-)[a-zA-Z0-9]+[a-zA-Z0-9-_ ]+$"#)))?
+    ProxyType: "API_GATEWAY" | *Null
+    VpcId: String(length <= 21 && length >= 12 && matches(Regex(#"^vpc-[-a-f0-9]{8}([-a-f0-9]{9})?$"#)))?
+    StageName: String(length <= 128 && length >= 1 && matches(Regex(#"^[-a-zA-Z0-9_]*$"#)))?
+    ProxyUrl: String(length <= 2048 && length >= 1 && matches(Regex(#"^http://[-a-zA-Z0-9+\x38@#/%?=~_|!:,.;]*[-a-zA-Z0-9+\x38@#/%=~_|]$"#)))?
+    /// Metadata that you can assign to help organize the frameworks that you
+    /// create. Each tag is a key-value pair.
+    Tags: Listing<Tag>?
+}
+class ApiGatewayProxyInput {
+    StageName: String(length <= 128 && length >= 1 && matches(Regex(#"^[-a-zA-Z0-9_]*$"#)))?
+    EndpointType: "REGIONAL" | "PRIVATE" | *Null
+}
+/// A label for tagging Environment resource
+class Tag {
+    /// A string used to identify this tag
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:).+"#)))
+    /// A string containing the value for the tag
+    Value: String(length <= 256 && length >= 0)
+}

@@ -1,0 +1,25 @@
+/// Resource Type definition for Alexa::ASK::Skill
+extends ".../AWS/Resource.pkl"
+Type = "Alexa::ASK::Skill"
+Properties: Props?
+class Props {
+    AuthenticationConfiguration: AuthenticationConfiguration?
+    Id: String?
+    VendorId: String?
+    SkillPackage: SkillPackage?
+}
+class AuthenticationConfiguration {
+    ClientId: String
+    RefreshToken: String
+    ClientSecret: String
+}
+class SkillPackage {
+    S3BucketRole: String?
+    Overrides: Overrides?
+    S3ObjectVersion: String?
+    S3Bucket: String
+    S3Key: String
+}
+class Overrides {
+    Manifest: Mapping?
+}

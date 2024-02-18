@@ -1,0 +1,25 @@
+/// Resource Type definition for AWS::EventSchemas::Discoverer
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EventSchemas::Discoverer"
+Properties: Props?
+class Props {
+    /// The ARN of the discoverer.
+    DiscovererArn: String?
+    /// The Id of the discoverer.
+    DiscovererId: String?
+    /// A description for the discoverer.
+    Description: String?
+    /// The ARN of the event bus.
+    SourceArn: String?
+    /// Defines whether event schemas from other accounts are discovered.
+    /// Default is True.
+    CrossAccount: Boolean?
+    /// Defines the current state of the discoverer.
+    State: String?
+    /// Tags associated with the resource.
+    Tags: Listing<TagsEntry>?
+}
+class TagsEntry {
+    Value: String
+    Key: String
+}

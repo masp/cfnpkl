@@ -1,0 +1,18 @@
+/// The ``AWS::ApiGateway::ClientCertificate`` resource creates a client
+/// certificate that API Gateway uses to configure client-side SSL
+/// authentication for sending requests to the integration endpoint.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::ClientCertificate"
+Properties: Props?
+class Props {
+    ClientCertificateId: String?
+    /// The description of the client certificate.
+    Description: String?
+    /// The collection of tags. Each tag element is associated with a given
+    /// resource.
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

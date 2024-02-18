@@ -1,0 +1,29 @@
+/// Resource Type definition for AWS::ApiGateway::DomainName.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::DomainName"
+Properties: Props?
+class Props {
+    DomainName: String?
+    DistributionDomainName: String?
+    DistributionHostedZoneId: String?
+    EndpointConfiguration: EndpointConfiguration?
+    MutualTlsAuthentication: MutualTlsAuthentication?
+    RegionalDomainName: String?
+    RegionalHostedZoneId: String?
+    CertificateArn: String?
+    RegionalCertificateArn: String?
+    OwnershipVerificationCertificateArn: String?
+    SecurityPolicy: String?
+    Tags: Listing<Tag>?
+}
+class EndpointConfiguration {
+    Types: Listing<String>?
+}
+class MutualTlsAuthentication {
+    TruststoreUri: String?
+    TruststoreVersion: String?
+}
+class Tag {
+    Key: String?
+    Value: String?
+}

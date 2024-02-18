@@ -1,0 +1,44 @@
+/// Resource Type definition for
+/// AWS::ApiGatewayV2::ApiGatewayManagedOverrides
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGatewayV2::ApiGatewayManagedOverrides"
+Properties: Props?
+class Props {
+    Stage: StageOverrides?
+    Integration: IntegrationOverrides?
+    Id: String?
+    ApiId: String?
+    Route: RouteOverrides?
+}
+class StageOverrides {
+    Description: String?
+    AccessLogSettings: AccessLogSettings?
+    AutoDeploy: Boolean?
+    RouteSettings: Mapping?
+    StageVariables: Mapping?
+    DefaultRouteSettings: RouteSettings?
+}
+class AccessLogSettings {
+    DestinationArn: String?
+    Format: String?
+}
+class RouteSettings {
+    DetailedMetricsEnabled: Boolean?
+    LoggingLevel: String?
+    DataTraceEnabled: Boolean?
+    ThrottlingBurstLimit: Int?
+    ThrottlingRateLimit: Float?
+}
+class IntegrationOverrides {
+    TimeoutInMillis: Int?
+    Description: String?
+    PayloadFormatVersion: String?
+    IntegrationMethod: String?
+}
+class RouteOverrides {
+    AuthorizationScopes: Listing<String>?
+    Target: String?
+    AuthorizationType: String?
+    AuthorizerId: String?
+    OperationName: String?
+}

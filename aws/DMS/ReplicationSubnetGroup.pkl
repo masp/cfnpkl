@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::DMS::ReplicationSubnetGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DMS::ReplicationSubnetGroup"
+Properties: Props?
+class Props {
+    ReplicationSubnetGroupDescription: String?
+    Id: String?
+    ReplicationSubnetGroupIdentifier: String?
+    SubnetIds: Listing<String>?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String
+    Key: String
+}

@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::Neptune::DBClusterParameterGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Neptune::DBClusterParameterGroup"
+Properties: Props?
+class Props {
+    Id: String?
+    Description: String?
+    Parameters: Mapping?
+    Family: String?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class Tag {
+    Key: String
+    Value: String
+}

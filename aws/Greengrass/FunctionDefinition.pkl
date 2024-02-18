@@ -1,0 +1,51 @@
+/// Resource Type definition for AWS::Greengrass::FunctionDefinition
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Greengrass::FunctionDefinition"
+Properties: Props?
+class Props {
+    LatestVersionArn: String?
+    Id: String?
+    Arn: String?
+    Name: String?
+    InitialVersion: FunctionDefinitionVersion?
+    Tags: Mapping?
+}
+class FunctionDefinitionVersion {
+    DefaultConfig: DefaultConfig?
+    Functions: Listing<Function>
+}
+class DefaultConfig {
+    Execution: Execution
+}
+class Execution {
+    IsolationMode: String?
+    RunAs: RunAs?
+}
+class RunAs {
+    Uid: Int?
+    Gid: Int?
+}
+class Function {
+    FunctionArn: String
+    FunctionConfiguration: FunctionConfiguration
+    Id: String
+}
+class FunctionConfiguration {
+    MemorySize: Int?
+    Pinned: Boolean?
+    ExecArgs: String?
+    Timeout: Int?
+    EncodingType: String?
+    Environment: Environment?
+    Executable: String?
+}
+class Environment {
+    Variables: Mapping?
+    Execution: Execution?
+    ResourceAccessPolicies: Listing<ResourceAccessPolicy>?
+    AccessSysfs: Boolean?
+}
+class ResourceAccessPolicy {
+    ResourceId: String
+    Permission: String?
+}

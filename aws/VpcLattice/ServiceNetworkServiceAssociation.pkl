@@ -1,0 +1,28 @@
+/// Associates a service with a service network.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::VpcLattice::ServiceNetworkServiceAssociation"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:servicenetworkserviceassociation/snsa-[0-9a-z]{17}$"#)))?
+    CreatedAt: String?
+    DnsEntry: DnsEntry?
+    Id: String(length <= 2048 && length >= 17 && matches(Regex(#"^snsa-[0-9a-z]{17}$"#)))?
+    ServiceNetworkArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:servicenetwork/sn-[0-9a-z]{17}$"#)))?
+    ServiceNetworkId: String(length <= 20 && length >= 20 && matches(Regex(#"^sn-[0-9a-z]{17}$"#)))?
+    ServiceNetworkIdentifier: String(length <= 2048 && length >= 20 && matches(Regex(#"^((sn-[0-9a-z]{17})|(arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:servicenetwork/sn-[0-9a-z]{17}))$"#)))?
+    ServiceNetworkName: String(length <= 63 && length >= 3 && matches(Regex(#"^(?!servicenetwork-)(?![-])(?!.*[-]$)(?!.*[-]{2})[a-z0-9-]+$"#)))?
+    ServiceArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:service/svc-[0-9a-z]{17}$"#)))?
+    ServiceId: String(length <= 21 && length >= 21 && matches(Regex(#"^svc-[0-9a-z]{17}$"#)))?
+    ServiceIdentifier: String(length <= 2048 && length >= 20 && matches(Regex(#"^((svc-[0-9a-z]{17})|(arn:[a-z0-9\-]+:vpc-lattice:[a-zA-Z0-9\-]+:\d{12}:service/svc-[0-9a-z]{17}))$"#)))?
+    ServiceName: String(length <= 40 && length >= 3 && matches(Regex(#"^(?!svc-)(?![-])(?!.*[-]$)(?!.*[-]{2})[a-z0-9-]+$"#)))?
+    Status: "CREATE_IN_PROGRESS" | "ACTIVE" | "DELETE_IN_PROGRESS" | "CREATE_FAILED" | "DELETE_FAILED" | *Null
+    Tags: Listing<Tag>?
+}
+class DnsEntry {
+    DomainName: String?
+    HostedZoneId: String?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

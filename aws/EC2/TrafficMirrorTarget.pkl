@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::EC2::TrafficMirrorTarget
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::TrafficMirrorTarget"
+Properties: Props?
+class Props {
+    NetworkLoadBalancerArn: String?
+    Description: String?
+    Id: String?
+    NetworkInterfaceId: String?
+    GatewayLoadBalancerEndpointId: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String
+    Key: String
+}

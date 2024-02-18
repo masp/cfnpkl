@@ -1,0 +1,13 @@
+/// Resource Type definition for AWS::Redshift::ClusterSecurityGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Redshift::ClusterSecurityGroup"
+Properties: Props?
+class Props {
+    Id: String?
+    Description: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

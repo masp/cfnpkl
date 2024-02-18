@@ -1,0 +1,10 @@
+/// Resource Type definition for
+/// AWS::ServiceCatalog::AcceptedPortfolioShare
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceCatalog::AcceptedPortfolioShare"
+Properties: Props?
+class Props {
+    Id: String?
+    AcceptLanguage: String?
+    PortfolioId: String?
+}

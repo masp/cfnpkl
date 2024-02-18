@@ -1,0 +1,26 @@
+/// The AWS::RDS::DBSubnetGroup resource creates a database subnet group.
+/// Subnet groups must contain at least two subnets in two different
+/// Availability Zones in the same region.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RDS::DBSubnetGroup"
+Properties: Props?
+class Props {
+    DBSubnetGroupDescription: String?
+    DBSubnetGroupName: String(matches(Regex(#"^(?!default$)[a-zA-Z]{1}[a-zA-Z0-9-_\.\s]{0,254}$"#)))?
+    SubnetIds: Listing<String>?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)?
+}

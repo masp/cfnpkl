@@ -1,0 +1,10 @@
+/// Definition of AWS::VerifiedPermissions::PolicyTemplate Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::VerifiedPermissions::PolicyTemplate"
+Properties: Props?
+class Props {
+    Description: String(length <= 150 && length >= 0)?
+    PolicyStoreId: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]*$"#)))?
+    PolicyTemplateId: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]*$"#)))?
+    Statement: String(length <= 10000 && length >= 1)?
+}

@@ -1,0 +1,54 @@
+/// Resource Type definition for AWS::OpsWorks::Instance
+extends ".../AWS/Resource.pkl"
+Type = "AWS::OpsWorks::Instance"
+Properties: Props?
+class Props {
+    Id: String?
+    AvailabilityZone: String?
+    PrivateDnsName: String?
+    PrivateIp: String?
+    PublicDnsName: String?
+    PublicIp: String?
+    AgentVersion: String?
+    AmiId: String?
+    Architecture: String?
+    AutoScalingType: String?
+    BlockDeviceMappings: Listing<BlockDeviceMapping>?
+    EbsOptimized: Boolean?
+    ElasticIps: Listing<String>?
+    Hostname: String?
+    InstallUpdatesOnBoot: Boolean?
+    InstanceType: String?
+    LayerIds: Listing<String>?
+    Os: String?
+    RootDeviceType: String?
+    SshKeyName: String?
+    StackId: String?
+    SubnetId: String?
+    Tenancy: String?
+    TimeBasedAutoScaling: TimeBasedAutoScaling?
+    VirtualizationType: String?
+    Volumes: Listing<String>?
+}
+class BlockDeviceMapping {
+    DeviceName: String?
+    Ebs: EbsBlockDevice?
+    NoDevice: String?
+    VirtualName: String?
+}
+class EbsBlockDevice {
+    DeleteOnTermination: Boolean?
+    Iops: Int?
+    SnapshotId: String?
+    VolumeSize: Int?
+    VolumeType: String?
+}
+class TimeBasedAutoScaling {
+    Friday: Mapping?
+    Monday: Mapping?
+    Saturday: Mapping?
+    Sunday: Mapping?
+    Thursday: Mapping?
+    Tuesday: Mapping?
+    Wednesday: Mapping?
+}

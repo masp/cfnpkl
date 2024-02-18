@@ -1,0 +1,12 @@
+/// Resource Type definition for AWS::CloudFormation::Macro
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFormation::Macro"
+Properties: Props?
+class Props {
+    Id: String?
+    Description: String?
+    FunctionName: String?
+    LogGroupName: String?
+    LogRoleARN: String?
+    Name: String?
+}

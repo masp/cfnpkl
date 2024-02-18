@@ -1,0 +1,139 @@
+/// Resource Type definition for AWS::MSK::Cluster
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MSK::Cluster"
+Properties: Props?
+class Props {
+    BrokerNodeGroupInfo: BrokerNodeGroupInfo?
+    EnhancedMonitoring: "DEFAULT" | "PER_BROKER" | "PER_TOPIC_PER_BROKER" | "PER_TOPIC_PER_PARTITION"(length <= 23 && length >= 7) | *Null
+    KafkaVersion: String(length <= 128 && length >= 1)?
+    NumberOfBrokerNodes: Int?
+    EncryptionInfo: EncryptionInfo?
+    OpenMonitoring: OpenMonitoring?
+    ClusterName: String(length <= 64 && length >= 1)?
+    Arn: String?
+    /// The current version of the MSK cluster
+    CurrentVersion: String?
+    ClientAuthentication: ClientAuthentication?
+    LoggingInfo: LoggingInfo?
+    /// A key-value pair to associate with a resource.
+    Tags: Mapping?
+    ConfigurationInfo: ConfigurationInfo?
+    StorageMode: "LOCAL" | "TIERED"(length <= 6 && length >= 5) | *Null
+}
+class BrokerNodeGroupInfo {
+    StorageInfo: StorageInfo?
+    ConnectivityInfo: ConnectivityInfo?
+    SecurityGroups: Listing<String>?
+    BrokerAZDistribution: String(length <= 9 && length >= 6)?
+    ClientSubnets: Listing<String>
+    InstanceType: String(length <= 32 && length >= 5)
+}
+class StorageInfo {
+    EBSStorageInfo: EBSStorageInfo?
+}
+class EBSStorageInfo {
+    VolumeSize: Int?
+    ProvisionedThroughput: ProvisionedThroughput?
+}
+class ProvisionedThroughput {
+    Enabled: Boolean?
+    VolumeThroughput: Int?
+}
+class ConnectivityInfo {
+    PublicAccess: PublicAccess?
+    VpcConnectivity: VpcConnectivity?
+}
+class PublicAccess {
+    Type: String(length <= 23 && length >= 7)?
+}
+class VpcConnectivity {
+    ClientAuthentication: VpcConnectivityClientAuthentication?
+}
+class VpcConnectivityClientAuthentication {
+    Tls: VpcConnectivityTls?
+    Sasl: VpcConnectivitySasl?
+}
+class VpcConnectivityTls {
+    Enabled: Boolean
+}
+class VpcConnectivitySasl {
+    Scram: VpcConnectivityScram?
+    Iam: VpcConnectivityIam?
+}
+class VpcConnectivityScram {
+    Enabled: Boolean
+}
+class VpcConnectivityIam {
+    Enabled: Boolean
+}
+class EncryptionInfo {
+    EncryptionAtRest: EncryptionAtRest?
+    EncryptionInTransit: EncryptionInTransit?
+}
+class EncryptionAtRest {
+    DataVolumeKMSKeyId: String
+}
+class EncryptionInTransit {
+    InCluster: Boolean?
+    ClientBroker: "TLS" | "TLS_PLAINTEXT" | "PLAINTEXT" | *Null
+}
+class OpenMonitoring {
+    Prometheus: Prometheus
+}
+class Prometheus {
+    JmxExporter: JmxExporter?
+    NodeExporter: NodeExporter?
+}
+class JmxExporter {
+    EnabledInBroker: Boolean
+}
+class NodeExporter {
+    EnabledInBroker: Boolean
+}
+class ClientAuthentication {
+    Tls: Tls?
+    Sasl: Sasl?
+    Unauthenticated: Unauthenticated?
+}
+class Tls {
+    CertificateAuthorityArnList: Listing<String>?
+    Enabled: Boolean?
+}
+class Sasl {
+    Scram: Scram?
+    Iam: Iam?
+}
+class Scram {
+    Enabled: Boolean
+}
+class Iam {
+    Enabled: Boolean
+}
+class Unauthenticated {
+    Enabled: Boolean
+}
+class LoggingInfo {
+    BrokerLogs: BrokerLogs
+}
+class BrokerLogs {
+    S3: S3?
+    CloudWatchLogs: CloudWatchLogs?
+    Firehose: Firehose?
+}
+class S3 {
+    Enabled: Boolean
+    Prefix: String?
+    Bucket: String?
+}
+class CloudWatchLogs {
+    LogGroup: String?
+    Enabled: Boolean
+}
+class Firehose {
+    Enabled: Boolean
+    DeliveryStream: String?
+}
+class ConfigurationInfo {
+    Revision: Int
+    Arn: String
+}

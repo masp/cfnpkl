@@ -1,0 +1,13 @@
+/// Resource Type definition for
+/// AWS::ElasticLoadBalancingV2::ListenerCertificate
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElasticLoadBalancingV2::ListenerCertificate"
+Properties: Props?
+class Props {
+    ListenerArn: String?
+    Certificates: Listing<Certificate>?
+    Id: String?
+}
+class Certificate {
+    CertificateArn: String?
+}

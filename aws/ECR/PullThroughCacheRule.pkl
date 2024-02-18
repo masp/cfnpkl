@@ -1,0 +1,18 @@
+/// The AWS::ECR::PullThroughCacheRule resource configures the upstream
+/// registry configuration details for an Amazon Elastic Container
+/// Registry (Amazon Private ECR) pull-through cache.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ECR::PullThroughCacheRule"
+Properties: Props?
+class Props {
+    /// The ECRRepositoryPrefix is a custom alias for upstream registry url.
+    EcrRepositoryPrefix: String(length <= 30 && length >= 2 && matches(Regex(#"(?:[a-z0-9]+(?:[._-][a-z0-9]+)*/)*[a-z0-9]+(?:[._-][a-z0-9]+)*"#)))?
+    /// The upstreamRegistryUrl is the endpoint of upstream registry url of
+    /// the public repository to be cached
+    UpstreamRegistryUrl: String?
+    /// The Amazon Resource Name (ARN) of the AWS Secrets Manager secret that
+    /// identifies the credentials to authenticate to the upstream registry.
+    CredentialArn: String(length <= 612 && length >= 50 && matches(Regex(#"^arn:aws:secretsmanager:[a-zA-Z0-9-:]+:secret:ecr\-pullthroughcache\/[a-zA-Z0-9\/_+=.@-]+$"#)))?
+    /// The name of the upstream registry.
+    UpstreamRegistry: String?
+}

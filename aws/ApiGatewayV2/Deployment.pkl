@@ -1,0 +1,14 @@
+/// The ``AWS::ApiGatewayV2::Deployment`` resource creates a deployment
+/// for an API.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGatewayV2::Deployment"
+Properties: Props?
+class Props {
+    DeploymentId: String?
+    /// The description for the deployment resource.
+    Description: String?
+    /// The name of an existing stage to associate with the deployment.
+    StageName: String?
+    /// The API identifier.
+    ApiId: String?
+}

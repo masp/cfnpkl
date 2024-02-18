@@ -1,0 +1,14 @@
+/// Resource Schema for AWS::ServiceCatalogAppRegistry::AttributeGroup.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceCatalogAppRegistry::AttributeGroup"
+Properties: Props?
+class Props {
+    Id: String(matches(Regex(#"[a-z0-9]{12}"#)))?
+    Arn: String(matches(Regex(#"arn:aws[-a-z]*:servicecatalog:[a-z]{2}(-gov)?-[a-z]+-\d:\d{12}:/attribute-groups/[a-z0-9]+"#)))?
+    /// The name of the attribute group.
+    Name: String(length <= 256 && length >= 1 && matches(Regex(#"\w+"#)))?
+    /// The description of the attribute group.
+    Description: String(length <= 1024)?
+    Attributes: Mapping?
+    Tags: Mapping?
+}

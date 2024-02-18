@@ -1,0 +1,62 @@
+/// Resource for Greengrass component version.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GreengrassV2::ComponentVersion"
+Properties: Props?
+class Props {
+    Arn: String?
+    ComponentName: String?
+    ComponentVersion: String?
+    InlineRecipe: String?
+    LambdaFunction: LambdaFunctionRecipeSource?
+    Tags: Mapping?
+}
+class LambdaFunctionRecipeSource {
+    LambdaArn: String(matches(Regex(#"^arn:[^:]*:lambda:(([a-z]+-)+[0-9])?:([0-9]{12})?:[^.]+$"#)))?
+    ComponentName: String?
+    ComponentVersion: String?
+    ComponentPlatforms: Listing<ComponentPlatform>?
+    ComponentDependencies: Mapping?
+    ComponentLambdaParameters: LambdaExecutionParameters?
+}
+class ComponentPlatform {
+    Name: String?
+    Attributes: Mapping?
+}
+class LambdaExecutionParameters {
+    EventSources: Listing<LambdaEventSource>?
+    MaxQueueSize: Int?
+    MaxInstancesCount: Int?
+    MaxIdleTimeInSeconds: Int?
+    TimeoutInSeconds: Int?
+    StatusTimeoutInSeconds: Int?
+    Pinned: Boolean?
+    InputPayloadEncodingType: "json" | "binary" | *Null
+    ExecArgs: Listing<String>?
+    EnvironmentVariables: Mapping?
+    LinuxProcessParams: LambdaLinuxProcessParams?
+}
+class LambdaEventSource {
+    Topic: String?
+    Type: "PUB_SUB" | "IOT_CORE" | *Null
+}
+class LambdaLinuxProcessParams {
+    IsolationMode: "GreengrassContainer" | "NoContainer" | *Null
+    ContainerParams: LambdaContainerParams?
+}
+class LambdaContainerParams {
+    MemorySizeInKB: Int?
+    MountROSysfs: Boolean?
+    Volumes: Listing<LambdaVolumeMount>?
+    Devices: Listing<LambdaDeviceMount>?
+}
+class LambdaVolumeMount {
+    SourcePath: String?
+    DestinationPath: String?
+    Permission: "ro" | "rw" | *Null
+    AddGroupOwner: Boolean?
+}
+class LambdaDeviceMount {
+    Path: String?
+    Permission: "ro" | "rw" | *Null
+    AddGroupOwner: Boolean?
+}

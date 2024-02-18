@@ -1,0 +1,47 @@
+/// Resource type definition for
+/// AWS::NetworkFirewall::TLSInspectionConfiguration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkFirewall::TLSInspectionConfiguration"
+Properties: Props?
+class Props {
+    TLSInspectionConfigurationName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]+$"#)))?
+    TLSInspectionConfigurationArn: String(length <= 256 && length >= 1 && matches(Regex(#"^(arn:aws.*)$"#)))?
+    TLSInspectionConfiguration: TLSInspectionConfiguration?
+    TLSInspectionConfigurationId: String(length <= 36 && length >= 36 && matches(Regex(#"^([0-9a-f]{8})-([0-9a-f]{4}-){3}([0-9a-f]{12})$"#)))?
+    Description: String(length <= 512 && length >= 1 && matches(Regex(#"^.*$"#)))?
+    Tags: Listing<Tag>?
+}
+class TLSInspectionConfiguration {
+    ServerCertificateConfigurations: Listing<ServerCertificateConfiguration>?
+}
+class ServerCertificateConfiguration {
+    ServerCertificates: Listing<ServerCertificate>?
+    Scopes: Listing<ServerCertificateScope>?
+    CertificateAuthorityArn: String(length <= 256 && length >= 1 && matches(Regex(#"^(arn:aws.*)$"#)))?
+    CheckCertificateRevocationStatus: CheckCertificateRevocationStatus?
+}
+class ServerCertificate {
+    ResourceArn: String(length <= 256 && length >= 1 && matches(Regex(#"^(arn:aws.*)$"#)))?
+}
+class ServerCertificateScope {
+    Sources: Listing<Address>?
+    Destinations: Listing<Address>?
+    SourcePorts: Listing<PortRange>?
+    DestinationPorts: Listing<PortRange>?
+    Protocols: Listing<Int>?
+}
+class Address {
+    AddressDefinition: String(length <= 255 && length >= 1 && matches(Regex(#"^([a-fA-F\d:\.]+/\d{1,3})$"#)))
+}
+class PortRange {
+    FromPort: Int
+    ToPort: Int
+}
+class CheckCertificateRevocationStatus {
+    RevokedStatusAction: "PASS" | "DROP" | "REJECT" | *Null
+    UnknownStatusAction: "PASS" | "DROP" | "REJECT" | *Null
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^.*$"#)))
+    Value: String(length <= 255 && length >= 0 && matches(Regex(#"^.*$"#)))
+}

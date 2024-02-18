@@ -1,0 +1,10 @@
+/// The AWS::LookoutVision::Project type creates an Amazon Lookout for
+/// Vision project. A project is a grouping of the resources needed to
+/// create and manage a Lookout for Vision model.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LookoutVision::Project"
+Properties: Props?
+class Props {
+    Arn: String(length <= 1000)?
+    ProjectName: String(length <= 255 && length >= 1 && matches(Regex(#"[a-zA-Z0-9][a-zA-Z0-9_\-]*"#)))?
+}

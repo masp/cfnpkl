@@ -1,0 +1,20 @@
+/// Definition of AWS::ARCZonalShift::ZonalAutoshiftConfiguration Resource
+/// Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ARCZonalShift::ZonalAutoshiftConfiguration"
+Properties: Props?
+class Props {
+    ZonalAutoshiftStatus: "ENABLED" | "DISABLED" | *Null
+    PracticeRunConfiguration: PracticeRunConfiguration?
+    ResourceIdentifier: String(length <= 1024 && length >= 8)?
+}
+class PracticeRunConfiguration {
+    BlockingAlarms: Listing<ControlCondition>?
+    OutcomeAlarms: Listing<ControlCondition>
+    BlockedDates: Listing<String(length <= 10 && length >= 10 && matches(Regex(#"^[0-9]{4}-[0-9]{2}-[0-9]{2}$"#)))>?
+    BlockedWindows: Listing<String(length <= 19 && length >= 19 && matches(Regex(#"^(Mon|Tue|Wed|Thu|Fri|Sat|Sun):[0-9]{2}:[0-9]{2}-(Mon|Tue|Wed|Thu|Fri|Sat|Sun):[0-9]{2}:[0-9]{2}$"#)))>?
+}
+class ControlCondition {
+    Type: "CLOUDWATCH"
+    AlarmIdentifier: String(length <= 1024 && length >= 8 && matches(Regex(#"^arn:.*$"#)))
+}

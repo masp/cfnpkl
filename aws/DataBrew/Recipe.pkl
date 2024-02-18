@@ -1,0 +1,36 @@
+/// Resource schema for AWS::DataBrew::Recipe.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataBrew::Recipe"
+Properties: Props?
+class Props {
+    /// Description of the recipe
+    Description: String(length <= 1024 && length >= 0)?
+    /// Recipe name
+    Name: String(length <= 255 && length >= 1)?
+    Steps: Listing<RecipeStep>?
+    Tags: Listing<Tag>?
+}
+class RecipeStep {
+    Action: Action
+    /// Condition expressions applied to the step action
+    ConditionExpressions: Listing<ConditionExpression>?
+}
+class Action {
+    /// Step action operation
+    Operation: String
+    Parameters: Mapping?
+}
+/// Condition expressions applied to the step action
+class ConditionExpression {
+    /// Input condition to be applied to the target column
+    Condition: String
+    /// Value of the condition
+    Value: String?
+    /// Name of the target column
+    TargetColumn: String
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

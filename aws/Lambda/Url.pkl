@@ -1,0 +1,40 @@
+/// Resource Type definition for AWS::Lambda::Url
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lambda::Url"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the function associated with the
+    /// Function URL.
+    TargetFunctionArn: String(matches(Regex(#"^(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}:)?(\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:((?!\d+)[0-9a-zA-Z-_]+))?$"#)))?
+    /// The alias qualifier for the target function. If TargetFunctionArn is
+    /// unqualified then Qualifier must be passed.
+    Qualifier: String(length <= 128 && length >= 1 && matches(Regex(#"((?!^[0-9]+$)([a-zA-Z0-9-_]+))"#)))?
+    /// Can be either AWS_IAM if the requests are authorized via IAM, or NONE
+    /// if no authorization is configured on the Function URL.
+    AuthType: "AWS_IAM" | "NONE" | *Null
+    /// The invocation mode for the function’s URL. Set to BUFFERED if you
+    /// want to buffer responses before returning them to the client. Set to
+    /// RESPONSE_STREAM if you want to stream responses, allowing faster time
+    /// to first byte and larger response payload sizes. If not set, defaults
+    /// to BUFFERED.
+    InvokeMode: "BUFFERED" | "RESPONSE_STREAM" | *Null
+    /// The full Amazon Resource Name (ARN) of the function associated with
+    /// the Function URL.
+    FunctionArn: String(matches(Regex(#"^(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}:)?(\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:((?!\d+)[0-9a-zA-Z-_]+))?$"#)))?
+    /// The generated url for this resource.
+    FunctionUrl: String?
+    Cors: Cors?
+}
+class Cors {
+    /// Specifies whether credentials are included in the CORS request.
+    AllowCredentials: Boolean?
+    /// Represents a collection of allowed headers.
+    AllowHeaders: Listing<String(length <= 1024 && length >= 1)>?
+    /// Represents a collection of allowed HTTP methods.
+    AllowMethods: Listing<"GET" | "PUT" | "HEAD" | "POST" | "PATCH" | "DELETE" | "*">?
+    /// Represents a collection of allowed origins.
+    AllowOrigins: Listing<String(length <= 253 && length >= 1)>?
+    /// Represents a collection of exposed headers.
+    ExposeHeaders: Listing<String(length <= 1024 && length >= 1)>?
+    MaxAge: Int?
+}

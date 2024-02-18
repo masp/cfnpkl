@@ -1,0 +1,12 @@
+/// Resource Type definition for
+/// AWS::Redshift::ClusterSecurityGroupIngress
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Redshift::ClusterSecurityGroupIngress"
+Properties: Props?
+class Props {
+    Id: String?
+    CIDRIP: String?
+    ClusterSecurityGroupName: String?
+    EC2SecurityGroupName: String?
+    EC2SecurityGroupOwnerId: String?
+}

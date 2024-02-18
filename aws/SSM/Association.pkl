@@ -1,0 +1,47 @@
+/// The AWS::SSM::Association resource associates an SSM document in AWS
+/// Systems Manager with EC2 instances that contain a configuration agent
+/// to process the document.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSM::Association"
+Properties: Props?
+class Props {
+    /// Unique identifier of the association.
+    AssociationId: String(matches(Regex(#"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"#)))?
+    /// The name of the association.
+    AssociationName: String(matches(Regex(#"^[a-zA-Z0-9_\-.]{3,128}$"#)))?
+    /// The version of the SSM document to associate with the target.
+    DocumentVersion: String(matches(Regex(#"([$]LATEST|[$]DEFAULT|^[1-9][0-9]*$)"#)))?
+    /// The ID of the instance that the SSM document is associated with.
+    InstanceId: String(matches(Regex(#"(^i-(\w{8}|\w{17})$)|(^mi-\w{17}$)"#)))?
+    /// The name of the SSM document.
+    Name: String(matches(Regex(#"^[a-zA-Z0-9_\-.:/]{3,200}$"#)))?
+    /// Parameter values that the SSM document uses at runtime.
+    Parameters: Mapping?
+    /// A Cron or Rate expression that specifies when the association is
+    /// applied to the target.
+    ScheduleExpression: String(length <= 256 && length >= 1)?
+    /// The targets that the SSM document sends commands to.
+    Targets: Listing<Target>?
+    OutputLocation: InstanceAssociationOutputLocation?
+    AutomationTargetParameterName: String(length <= 50 && length >= 1)?
+    MaxErrors: String(matches(Regex(#"^([1-9][0-9]{0,6}|[0]|[1-9][0-9]%|[0-9]%|100%)$"#)))?
+    MaxConcurrency: String(matches(Regex(#"^([1-9][0-9]{0,6}|[1-9][0-9]%|[1-9]%|100%)$"#)))?
+    ComplianceSeverity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "UNSPECIFIED" | *Null
+    SyncCompliance: "AUTO" | "MANUAL" | *Null
+    WaitForSuccessTimeoutSeconds: Int?
+    ApplyOnlyAtCronInterval: Boolean?
+    CalendarNames: Listing<String>?
+    ScheduleOffset: Int?
+}
+class Target {
+    Key: String(matches(Regex(#"^[\p{L}\p{Z}\p{N}_.:/=+\-@]{1,128}$|resource-groups:Name"#)))
+    Values: Listing<String>
+}
+class InstanceAssociationOutputLocation {
+    S3Location: S3OutputLocation?
+}
+class S3OutputLocation {
+    OutputS3Region: String(length <= 20 && length >= 3)?
+    OutputS3BucketName: String(length <= 63 && length >= 3)?
+    OutputS3KeyPrefix: String(length <= 1024)?
+}

@@ -1,0 +1,11 @@
+/// Resource schema for AWS::CertificateManager::Account.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CertificateManager::Account"
+Properties: Props?
+class Props {
+    ExpiryEventsConfiguration: ExpiryEventsConfiguration?
+    AccountId: String?
+}
+class ExpiryEventsConfiguration {
+    DaysBeforeExpiry: Int?
+}

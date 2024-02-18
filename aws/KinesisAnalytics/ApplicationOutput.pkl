@@ -1,0 +1,31 @@
+/// Resource Type definition for AWS::KinesisAnalytics::ApplicationOutput
+extends ".../AWS/Resource.pkl"
+Type = "AWS::KinesisAnalytics::ApplicationOutput"
+Properties: Props?
+class Props {
+    Id: String?
+    ApplicationName: String?
+    Output: Output?
+}
+class Output {
+    DestinationSchema: DestinationSchema
+    LambdaOutput: LambdaOutput?
+    KinesisFirehoseOutput: KinesisFirehoseOutput?
+    KinesisStreamsOutput: KinesisStreamsOutput?
+    Name: String?
+}
+class DestinationSchema {
+    RecordFormatType: String?
+}
+class LambdaOutput {
+    ResourceARN: String
+    RoleARN: String
+}
+class KinesisFirehoseOutput {
+    ResourceARN: String
+    RoleARN: String
+}
+class KinesisStreamsOutput {
+    ResourceARN: String
+    RoleARN: String
+}

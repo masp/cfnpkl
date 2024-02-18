@@ -1,0 +1,40 @@
+/// Resource Type definition for AWS::LookoutMetrics::Alert
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LookoutMetrics::Alert"
+Properties: Props?
+class Props {
+    /// The name of the alert. If not provided, a name is generated
+    /// automatically.
+    AlertName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))?
+    /// ARN assigned to the alert.
+    Arn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))?
+    /// A description for the alert.
+    AlertDescription: String(length <= 256 && matches(Regex(#".*\S.*"#)))?
+    /// The Amazon resource name (ARN) of the Anomaly Detector to alert.
+    AnomalyDetectorArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))?
+    /// A number between 0 and 100 (inclusive) that tunes the sensitivity of
+    /// the alert.
+    AlertSensitivityThreshold: Int?
+    /// The action to be taken by the alert when an anomaly is detected.
+    Action: Action?
+}
+class Action {
+    SNSConfiguration: SNSConfiguration?
+    LambdaConfiguration: LambdaConfiguration?
+}
+/// Configuration options for an SNS alert action.
+class SNSConfiguration {
+    /// ARN of an IAM role that LookoutMetrics should assume to access the SNS
+    /// topic.
+    RoleArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))
+    /// ARN of an SNS topic to send alert notifications to.
+    SnsTopicArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))
+}
+/// Configuration options for a Lambda alert action.
+class LambdaConfiguration {
+    /// ARN of an IAM role that LookoutMetrics should assume to access the
+    /// Lambda function.
+    RoleArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))
+    /// ARN of a Lambda to send alert notifications to.
+    LambdaArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):.*:.*:.*:.+"#)))
+}

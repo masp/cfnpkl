@@ -1,0 +1,36 @@
+/// Describes an endpoint authorization for authorizing Redshift-managed
+/// VPC endpoint access to a cluster across AWS accounts.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Redshift::EndpointAuthorization"
+Properties: Props?
+class Props {
+    /// The AWS account ID of the cluster owner.
+    Grantor: String(matches(Regex(#"^\d{12}$"#)))?
+    /// The AWS account ID of the grantee of the cluster.
+    Grantee: String(matches(Regex(#"^\d{12}$"#)))?
+    /// The cluster identifier.
+    ClusterIdentifier: String(matches(Regex(#"^(?=^[a-z][a-z0-9]*(-[a-z0-9]+)*$).{1,63}$"#)))?
+    /// The time (UTC) when the authorization was created.
+    AuthorizeTime: String?
+    /// The status of the cluster.
+    ClusterStatus: String?
+    /// The status of the authorization action.
+    Status: String?
+    /// Indicates whether all VPCs in the grantee account are allowed access
+    /// to the cluster.
+    AllowedAllVPCs: Boolean?
+    /// The VPCs allowed access to the cluster.
+    AllowedVPCs: Listing<String(matches(Regex(#"^vpc-[A-Za-z0-9]{1,17}$"#)))>?
+    /// The number of Redshift-managed VPC endpoints created for the
+    /// authorization.
+    EndpointCount: Int?
+    /// The target AWS account ID to grant or revoke access for.
+    Account: String(matches(Regex(#"^\d{12}$"#)))?
+    /// The virtual private cloud (VPC) identifiers to grant or revoke access
+    /// to.
+    VpcIds: Listing<String(matches(Regex(#"^vpc-[A-Za-z0-9]{1,17}$"#)))>?
+    ///  Indicates whether to force the revoke action. If true, the Redshift-
+    /// managed VPC endpoints associated with the endpoint authorization are
+    /// also deleted.
+    Force: Boolean?
+}

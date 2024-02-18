@@ -1,0 +1,21 @@
+/// Resource Type definition for AWS::EC2::TrafficMirrorFilterRule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::TrafficMirrorFilterRule"
+Properties: Props?
+class Props {
+    Id: String?
+    DestinationPortRange: TrafficMirrorPortRange?
+    Description: String?
+    SourcePortRange: TrafficMirrorPortRange?
+    RuleAction: String?
+    SourceCidrBlock: String?
+    RuleNumber: Int?
+    DestinationCidrBlock: String?
+    TrafficMirrorFilterId: String?
+    TrafficDirection: String?
+    Protocol: Int?
+}
+class TrafficMirrorPortRange {
+    FromPort: Int
+    ToPort: Int
+}

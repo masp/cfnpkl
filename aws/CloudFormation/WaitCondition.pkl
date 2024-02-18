@@ -1,0 +1,11 @@
+/// Resource Type definition for AWS::CloudFormation::WaitCondition
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFormation::WaitCondition"
+Properties: Props?
+class Props {
+    Id: String?
+    Data: Mapping?
+    Count: Int?
+    Handle: String?
+    Timeout: String?
+}

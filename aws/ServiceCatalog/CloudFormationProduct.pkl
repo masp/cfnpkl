@@ -1,0 +1,48 @@
+/// Resource Type definition for
+/// AWS::ServiceCatalog::CloudFormationProduct
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceCatalog::CloudFormationProduct"
+Properties: Props?
+class Props {
+    Owner: String?
+    Description: String?
+    ProductName: String?
+    SupportEmail: String?
+    ProductType: String?
+    ProvisioningArtifactNames: String?
+    Name: String?
+    ReplaceProvisioningArtifacts: Boolean?
+    SupportDescription: String?
+    Distributor: String?
+    ProvisioningArtifactIds: String?
+    AcceptLanguage: String?
+    SupportUrl: String?
+    Id: String?
+    SourceConnection: SourceConnection?
+    Tags: Listing<Tag>?
+    ProvisioningArtifactParameters: Listing<ProvisioningArtifactProperties>?
+}
+class SourceConnection {
+    ConnectionParameters: ConnectionParameters
+    Type: String
+}
+class ConnectionParameters {
+    CodeStar: CodeStarParameters?
+}
+class CodeStarParameters {
+    ArtifactPath: String
+    ConnectionArn: String
+    Repository: String
+    Branch: String
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class ProvisioningArtifactProperties {
+    Type: String?
+    Description: String?
+    Info: Mapping
+    DisableTemplateValidation: Boolean?
+    Name: String?
+}

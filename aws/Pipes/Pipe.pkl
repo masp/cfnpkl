@@ -1,0 +1,339 @@
+/// Definition of AWS::Pipes::Pipe Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Pipes::Pipe"
+Properties: Props?
+class Props {
+    Arn: String(length <= 1600 && length >= 1 && matches(Regex(#"^arn:aws([a-z]|\-)*:([a-zA-Z0-9\-]+):([a-z]|\d|\-)*:([0-9]{12})?:(.+)$"#)))?
+    CreationTime: String?
+    CurrentState: "RUNNING" | "STOPPED" | "CREATING" | "UPDATING" | "DELETING" | "STARTING" | "STOPPING" | "CREATE_FAILED" | "UPDATE_FAILED" | "START_FAILED" | "STOP_FAILED" | "DELETE_FAILED" | "CREATE_ROLLBACK_FAILED" | "DELETE_ROLLBACK_FAILED" | "UPDATE_ROLLBACK_FAILED" | *Null
+    Description: String(length <= 512 && length >= 0 && matches(Regex(#"^.*$"#)))?
+    DesiredState: "RUNNING" | "STOPPED" | *Null
+    Enrichment: String(length <= 1600 && length >= 0 && matches(Regex(#"^$|arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-]+):([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1})?:(\d{12})?:(.+)$"#)))?
+    EnrichmentParameters: PipeEnrichmentParameters?
+    LastModifiedTime: String?
+    LogConfiguration: PipeLogConfiguration?
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[\.\-_A-Za-z0-9]+$"#)))?
+    RoleArn: String(length <= 1600 && length >= 1 && matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:iam::\d{12}:role/?[a-zA-Z0-9+=,.@\-_/]+$"#)))?
+    Source: String(length <= 1600 && length >= 1 && matches(Regex(#"^smk://(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]):[0-9]{1,5}|arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-]+):([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1})?:(\d{12})?:(.+)$"#)))?
+    SourceParameters: PipeSourceParameters?
+    StateReason: String(length <= 512 && length >= 0 && matches(Regex(#"^.*$"#)))?
+    Tags: Mapping?
+    Target: String(length <= 1600 && length >= 1 && matches(Regex(#"^arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-]+):([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1})?:(\d{12})?:(.+)$"#)))?
+    TargetParameters: PipeTargetParameters?
+}
+class PipeEnrichmentParameters {
+    InputTemplate: String(length <= 8192 && length >= 0)?
+    HttpParameters: PipeEnrichmentHttpParameters?
+}
+class PipeEnrichmentHttpParameters {
+    PathParameterValues: Listing<String(matches(Regex(#"^(?!\s*$).+|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)$"#)))>?
+    HeaderParameters: Mapping?
+    QueryStringParameters: Mapping?
+}
+class PipeLogConfiguration {
+    S3LogDestination: S3LogDestination?
+    FirehoseLogDestination: FirehoseLogDestination?
+    CloudwatchLogsLogDestination: CloudwatchLogsLogDestination?
+    Level: "OFF" | "ERROR" | "INFO" | "TRACE" | *Null
+    IncludeExecutionData: Listing<"ALL">?
+}
+class S3LogDestination {
+    BucketName: String?
+    Prefix: String?
+    BucketOwner: String?
+    OutputFormat: "json" | "plain" | "w3c" | *Null
+}
+class FirehoseLogDestination {
+    DeliveryStreamArn: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:firehose:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):deliverystream/.+)$"#)))?
+}
+class CloudwatchLogsLogDestination {
+    LogGroupArn: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:logs:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):log-group:.+)$"#)))?
+}
+class PipeSourceParameters {
+    FilterCriteria: FilterCriteria?
+    KinesisStreamParameters: PipeSourceKinesisStreamParameters?
+    DynamoDBStreamParameters: PipeSourceDynamoDBStreamParameters?
+    SqsQueueParameters: PipeSourceSqsQueueParameters?
+    ActiveMQBrokerParameters: PipeSourceActiveMQBrokerParameters?
+    RabbitMQBrokerParameters: PipeSourceRabbitMQBrokerParameters?
+    ManagedStreamingKafkaParameters: PipeSourceManagedStreamingKafkaParameters?
+    SelfManagedKafkaParameters: PipeSourceSelfManagedKafkaParameters?
+}
+class FilterCriteria {
+    Filters: Listing<Filter>?
+}
+class Filter {
+    Pattern: String(length <= 4096 && length >= 0)?
+}
+class PipeSourceKinesisStreamParameters {
+    BatchSize: Int?
+    DeadLetterConfig: DeadLetterConfig?
+    OnPartialBatchItemFailure: "AUTOMATIC_BISECT" | *Null
+    MaximumBatchingWindowInSeconds: Int?
+    MaximumRecordAgeInSeconds: Int?
+    MaximumRetryAttempts: Int?
+    ParallelizationFactor: Int?
+    StartingPosition: "TRIM_HORIZON" | "LATEST" | "AT_TIMESTAMP"
+    StartingPositionTimestamp: String?
+}
+class DeadLetterConfig {
+    Arn: String(length <= 1600 && length >= 1 && matches(Regex(#"^arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-]+):([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1})?:(\d{12})?:(.+)$"#)))?
+}
+class PipeSourceDynamoDBStreamParameters {
+    BatchSize: Int?
+    DeadLetterConfig: DeadLetterConfig?
+    OnPartialBatchItemFailure: "AUTOMATIC_BISECT" | *Null
+    MaximumBatchingWindowInSeconds: Int?
+    MaximumRecordAgeInSeconds: Int?
+    MaximumRetryAttempts: Int?
+    ParallelizationFactor: Int?
+    StartingPosition: "TRIM_HORIZON" | "LATEST"
+}
+class PipeSourceSqsQueueParameters {
+    BatchSize: Int?
+    MaximumBatchingWindowInSeconds: Int?
+}
+class PipeSourceActiveMQBrokerParameters {
+    Credentials: MQBrokerAccessCredentials0
+    QueueName: String(length <= 1000 && length >= 1 && matches(Regex(#"^[\s\S]*$"#)))
+    BatchSize: Int?
+    MaximumBatchingWindowInSeconds: Int?
+}
+class MQBrokerAccessCredentials0 {
+    /// Optional SecretManager ARN which stores the database credentials
+    BasicAuth: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:secretsmanager:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):secret:.+)$"#)))
+}
+class PipeSourceRabbitMQBrokerParameters {
+    Credentials: MQBrokerAccessCredentials0
+    QueueName: String(length <= 1000 && length >= 1 && matches(Regex(#"^[\s\S]*$"#)))
+    VirtualHost: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-\/*:_+=.@-]*$"#)))?
+    BatchSize: Int?
+    MaximumBatchingWindowInSeconds: Int?
+}
+class PipeSourceManagedStreamingKafkaParameters {
+    TopicName: String(length <= 249 && length >= 1 && matches(Regex(#"^[^.]([a-zA-Z0-9\-_.]+)$"#)))
+    StartingPosition: "TRIM_HORIZON" | "LATEST" | *Null
+    BatchSize: Int?
+    MaximumBatchingWindowInSeconds: Int?
+    ConsumerGroupID: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-\/*:_+=.@-]*$"#)))?
+    Credentials: MSKAccessCredentials0 | MSKAccessCredentials1 | *Null
+}
+class MSKAccessCredentials0 {
+    /// Optional SecretManager ARN which stores the database credentials
+    SaslScram512Auth: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:secretsmanager:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):secret:.+)$"#)))
+}
+class MSKAccessCredentials1 {
+    /// Optional SecretManager ARN which stores the database credentials
+    ClientCertificateTlsAuth: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:secretsmanager:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):secret:.+)$"#)))
+}
+class PipeSourceSelfManagedKafkaParameters {
+    TopicName: String(length <= 249 && length >= 1 && matches(Regex(#"^[^.]([a-zA-Z0-9\-_.]+)$"#)))
+    StartingPosition: "TRIM_HORIZON" | "LATEST" | *Null
+    AdditionalBootstrapServers: Listing<String(length <= 300 && length >= 1 && matches(Regex(#"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]):[0-9]{1,5}$"#)))>?
+    BatchSize: Int?
+    MaximumBatchingWindowInSeconds: Int?
+    ConsumerGroupID: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-\/*:_+=.@-]*$"#)))?
+    Credentials: SelfManagedKafkaAccessConfigurationCredentials0 | SelfManagedKafkaAccessConfigurationCredentials1 | SelfManagedKafkaAccessConfigurationCredentials2 | SelfManagedKafkaAccessConfigurationCredentials3 | *Null
+    /// Optional SecretManager ARN which stores the database credentials
+    ServerRootCaCertificate: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:secretsmanager:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):secret:.+)$"#)))?
+    Vpc: SelfManagedKafkaAccessConfigurationVpc?
+}
+class SelfManagedKafkaAccessConfigurationCredentials0 {
+    /// Optional SecretManager ARN which stores the database credentials
+    BasicAuth: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:secretsmanager:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):secret:.+)$"#)))
+}
+class SelfManagedKafkaAccessConfigurationCredentials1 {
+    /// Optional SecretManager ARN which stores the database credentials
+    SaslScram512Auth: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:secretsmanager:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):secret:.+)$"#)))
+}
+class SelfManagedKafkaAccessConfigurationCredentials2 {
+    /// Optional SecretManager ARN which stores the database credentials
+    SaslScram256Auth: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:secretsmanager:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):secret:.+)$"#)))
+}
+class SelfManagedKafkaAccessConfigurationCredentials3 {
+    /// Optional SecretManager ARN which stores the database credentials
+    ClientCertificateTlsAuth: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:secretsmanager:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):secret:.+)$"#)))
+}
+class SelfManagedKafkaAccessConfigurationVpc {
+    /// List of SubnetId.
+    Subnets: Listing<String(length <= 1024 && length >= 1 && matches(Regex(#"^subnet-[0-9a-z]*$"#)))>?
+    /// List of SecurityGroupId.
+    SecurityGroup: Listing<String(length <= 1024 && length >= 1 && matches(Regex(#"^sg-[0-9a-zA-Z]*$"#)))>?
+}
+class PipeTargetParameters {
+    InputTemplate: String(length <= 8192 && length >= 0)?
+    LambdaFunctionParameters: PipeTargetLambdaFunctionParameters?
+    StepFunctionStateMachineParameters: PipeTargetStateMachineParameters?
+    KinesisStreamParameters: PipeTargetKinesisStreamParameters?
+    EcsTaskParameters: PipeTargetEcsTaskParameters?
+    BatchJobParameters: PipeTargetBatchJobParameters?
+    SqsQueueParameters: PipeTargetSqsQueueParameters?
+    HttpParameters: PipeTargetHttpParameters?
+    RedshiftDataParameters: PipeTargetRedshiftDataParameters?
+    SageMakerPipelineParameters: PipeTargetSageMakerPipelineParameters?
+    EventBridgeEventBusParameters: PipeTargetEventBridgeEventBusParameters?
+    CloudWatchLogsParameters: PipeTargetCloudWatchLogsParameters?
+}
+class PipeTargetLambdaFunctionParameters {
+    InvocationType: "REQUEST_RESPONSE" | "FIRE_AND_FORGET" | *Null
+}
+class PipeTargetStateMachineParameters {
+    InvocationType: "REQUEST_RESPONSE" | "FIRE_AND_FORGET" | *Null
+}
+class PipeTargetKinesisStreamParameters {
+    PartitionKey: String(length <= 256 && length >= 0)
+}
+class PipeTargetEcsTaskParameters {
+    TaskDefinitionArn: String(length <= 1600 && length >= 1 && matches(Regex(#"^arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-]+):([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1})?:(\d{12})?:(.+)|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)$"#)))
+    TaskCount: Int?
+    LaunchType: "EC2" | "FARGATE" | "EXTERNAL" | *Null
+    NetworkConfiguration: NetworkConfiguration?
+    PlatformVersion: String?
+    Group: String?
+    CapacityProviderStrategy: Listing<CapacityProviderStrategyItem>?
+    EnableECSManagedTags: Boolean?
+    EnableExecuteCommand: Boolean?
+    PlacementConstraints: Listing<PlacementConstraint>?
+    PlacementStrategy: Listing<PlacementStrategy>?
+    PropagateTags: "TASK_DEFINITION" | *Null
+    ReferenceId: String(length <= 1024 && length >= 0)?
+    Overrides: EcsTaskOverride?
+    Tags: Listing<Tag>?
+}
+class NetworkConfiguration {
+    AwsvpcConfiguration: AwsVpcConfiguration?
+}
+class AwsVpcConfiguration {
+    Subnets: Listing<String(length <= 1024 && length >= 1 && matches(Regex(#"^subnet-[0-9a-z]*|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)$"#)))>
+    SecurityGroups: Listing<String(length <= 1024 && length >= 1 && matches(Regex(#"^sg-[0-9a-zA-Z]*|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)$"#)))>?
+    AssignPublicIp: "ENABLED" | "DISABLED" | *Null
+}
+class CapacityProviderStrategyItem {
+    CapacityProvider: String(length <= 255 && length >= 1)
+    Weight: Int?
+    Base: Int?
+}
+class PlacementConstraint {
+    Type: "distinctInstance" | "memberOf" | *Null
+    Expression: String(length <= 2000 && length >= 0)?
+}
+class PlacementStrategy {
+    Type: "random" | "spread" | "binpack" | *Null
+    Field: String(length <= 255 && length >= 0)?
+}
+class EcsTaskOverride {
+    ContainerOverrides: Listing<EcsContainerOverride>?
+    Cpu: String?
+    EphemeralStorage: EcsEphemeralStorage?
+    ExecutionRoleArn: String(length <= 1600 && length >= 1 && matches(Regex(#"^arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-]+):([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1})?:(\d{12})?:(.+)|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)$"#)))?
+    InferenceAcceleratorOverrides: Listing<EcsInferenceAcceleratorOverride>?
+    Memory: String?
+    TaskRoleArn: String(length <= 1600 && length >= 1 && matches(Regex(#"^arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-]+):([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1})?:(\d{12})?:(.+)|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)$"#)))?
+}
+class EcsContainerOverride {
+    Command: Listing<String>?
+    Cpu: Int?
+    Environment: Listing<EcsEnvironmentVariable>?
+    EnvironmentFiles: Listing<EcsEnvironmentFile>?
+    Memory: Int?
+    MemoryReservation: Int?
+    Name: String?
+    ResourceRequirements: Listing<EcsResourceRequirement>?
+}
+class EcsEnvironmentVariable {
+    Name: String?
+    Value: String?
+}
+class EcsEnvironmentFile {
+    Type: "s3"
+    Value: String
+}
+class EcsResourceRequirement {
+    Type: "GPU" | "InferenceAccelerator"
+    Value: String
+}
+class EcsEphemeralStorage {
+    SizeInGiB: Int
+}
+class EcsInferenceAcceleratorOverride {
+    DeviceName: String?
+    DeviceType: String?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}
+class PipeTargetBatchJobParameters {
+    JobDefinition: String
+    JobName: String
+    ArrayProperties: BatchArrayProperties?
+    RetryStrategy: BatchRetryStrategy?
+    ContainerOverrides: BatchContainerOverrides?
+    DependsOn: Listing<BatchJobDependency>?
+    Parameters: Mapping?
+}
+class BatchArrayProperties {
+    Size: Int?
+}
+class BatchRetryStrategy {
+    Attempts: Int?
+}
+class BatchContainerOverrides {
+    Command: Listing<String>?
+    Environment: Listing<BatchEnvironmentVariable>?
+    InstanceType: String?
+    ResourceRequirements: Listing<BatchResourceRequirement>?
+}
+class BatchEnvironmentVariable {
+    Name: String?
+    Value: String?
+}
+class BatchResourceRequirement {
+    Type: "GPU" | "MEMORY" | "VCPU"
+    Value: String
+}
+class BatchJobDependency {
+    JobId: String?
+    Type: "N_TO_N" | "SEQUENTIAL" | *Null
+}
+class PipeTargetSqsQueueParameters {
+    MessageGroupId: String(length <= 100 && length >= 0)?
+    MessageDeduplicationId: String(length <= 100 && length >= 0)?
+}
+class PipeTargetHttpParameters {
+    PathParameterValues: Listing<String(matches(Regex(#"^(?!\s*$).+|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)$"#)))>?
+    HeaderParameters: Mapping?
+    QueryStringParameters: Mapping?
+}
+class PipeTargetRedshiftDataParameters {
+    /// Optional SecretManager ARN which stores the database credentials
+    SecretManagerArn: String(length <= 1600 && length >= 1 && matches(Regex(#"^(^arn:aws([a-z]|\-)*:secretsmanager:([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}):(\d{12}):secret:.+)|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)$"#)))?
+    /// Redshift Database
+    Database: String(length <= 64 && length >= 1)
+    /// Database user name
+    DbUser: String(length <= 128 && length >= 1)?
+    /// A name for Redshift DataAPI statement which can be used as filter of
+    /// ListStatement.
+    StatementName: String(length <= 500 && length >= 1)?
+    WithEvent: Boolean?
+    /// A list of SQLs.
+    Sqls: Listing<String(length <= 100000 && length >= 1)>
+}
+class PipeTargetSageMakerPipelineParameters {
+    PipelineParameterList: Listing<SageMakerPipelineParameter>?
+}
+class SageMakerPipelineParameter {
+    Name: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9](-*[a-zA-Z0-9])*|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)$"#)))
+    Value: String(length <= 1024 && length >= 0)
+}
+class PipeTargetEventBridgeEventBusParameters {
+    EndpointId: String(length <= 50 && length >= 1 && matches(Regex(#"^[A-Za-z0-9\-]+[\.][A-Za-z0-9\-]+$"#)))?
+    DetailType: String(length <= 128 && length >= 1)?
+    Source: String(length <= 256 && length >= 1 && matches(Regex(#"(?=[/\.\-_A-Za-z0-9]+)((?!aws\.).*)|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)"#)))?
+    Resources: Listing<String(length <= 1600 && length >= 1 && matches(Regex(#"^arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-]+):([a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1})?:(\d{12})?:(.+)|(\$(\.[\w/_-]+(\[(\d+|\*)\])*)*)$"#)))>?
+    Time: String(length <= 256 && length >= 1 && matches(Regex(#"^\$(\.[\w/_-]+(\[(\d+|\*)\])*)*$"#)))?
+}
+class PipeTargetCloudWatchLogsParameters {
+    LogStreamName: String(length <= 256 && length >= 1)?
+    Timestamp: String(length <= 256 && length >= 1 && matches(Regex(#"^\$(\.[\w_-]+(\[(\d+|\*)\])*)*$"#)))?
+}

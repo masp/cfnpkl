@@ -1,0 +1,70 @@
+/// Create an Elastic Container Service (ECS) cluster.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ECS::Cluster"
+Properties: Props?
+class Props {
+    Tags: Listing<Tag>?
+    /// A user-generated string that you use to identify your cluster. If you
+    /// don't specify a name, AWS CloudFormation generates a unique physical
+    /// ID for the name.
+    ClusterName: String?
+    ClusterSettings: Listing<ClusterSettings>?
+    Configuration: ClusterConfiguration?
+    CapacityProviders: Listing<String>?
+    DefaultCapacityProviderStrategy: Listing<CapacityProviderStrategyItem>?
+    ServiceConnectDefaults: ServiceConnectDefaults?
+    /// The Amazon Resource Name (ARN) of the Amazon ECS cluster, such as
+    /// arn:aws:ecs:us-east-2:123456789012:cluster/MyECSCluster.
+    Arn: String?
+}
+/// The metadata that you apply to the cluster to help you categorize and
+/// organize them. Each tag consists of a key and an optional value, both
+/// of which you define.
+class Tag {
+    Key: String?
+    Value: String?
+}
+/// The setting to use when creating a cluster. This parameter is used to
+/// enable CloudWatch Container Insights for a cluster. If this value is
+/// specified, it will override the containerInsights value set with
+/// PutAccountSetting or PutAccountSettingDefault.
+class ClusterSettings {
+    Name: String?
+    Value: String?
+}
+/// The configurations to be set at cluster level.
+class ClusterConfiguration {
+    ExecuteCommandConfiguration: ExecuteCommandConfiguration?
+}
+/// The configuration for ExecuteCommand.
+class ExecuteCommandConfiguration {
+    KmsKeyId: String?
+    Logging: String?
+    LogConfiguration: ExecuteCommandLogConfiguration?
+}
+/// The session logging configuration for ExecuteCommand.
+class ExecuteCommandLogConfiguration {
+    CloudWatchLogGroupName: String?
+    CloudWatchEncryptionEnabled: Boolean?
+    S3BucketName: String?
+    S3EncryptionEnabled: Boolean?
+    S3KeyPrefix: String?
+}
+/// A capacity provider strategy consists of one or more capacity
+/// providers along with the `base` and `weight` to assign to them. A
+/// capacity provider must be associated with the cluster to be used in a
+/// capacity provider strategy. The PutClusterCapacityProviders API is
+/// used to associate a capacity provider with a cluster. Only capacity
+/// providers with an `ACTIVE` or `UPDATING` status can be used.
+class CapacityProviderStrategyItem {
+    CapacityProvider: String?
+    Weight: Int?
+    Base: Int?
+}
+/// Service Connect Configuration default for all services or tasks within
+/// this cluster
+class ServiceConnectDefaults {
+    /// Service Connect Namespace Name or ARN default for all services or
+    /// tasks within this cluster
+    Namespace: String?
+}

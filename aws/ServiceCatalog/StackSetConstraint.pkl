@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::ServiceCatalog::StackSetConstraint
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceCatalog::StackSetConstraint"
+Properties: Props?
+class Props {
+    Id: String?
+    Description: String?
+    StackInstanceControl: String?
+    AcceptLanguage: String?
+    PortfolioId: String?
+    ProductId: String?
+    RegionList: Listing<String>?
+    AdminRole: String?
+    AccountList: Listing<String>?
+    ExecutionRole: String?
+}

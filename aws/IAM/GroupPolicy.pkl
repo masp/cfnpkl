@@ -1,0 +1,12 @@
+/// Schema for IAM Group Policy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IAM::GroupPolicy"
+Properties: Props?
+class Props {
+    /// The policy document.
+    PolicyDocument: Mapping?
+    /// The name of the policy document.
+    PolicyName: String?
+    /// The name of the group to associate the policy with.
+    GroupName: String?
+}

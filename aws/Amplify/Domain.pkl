@@ -1,0 +1,21 @@
+/// The AWS::Amplify::Domain resource allows you to connect a custom
+/// domain to your app.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Amplify::Domain"
+Properties: Props?
+class Props {
+    AppId: String(length <= 20 && length >= 1 && matches(Regex(#"d[a-z0-9]+"#)))?
+    Arn: String(length <= 1000 && matches(Regex(#"(?s).*"#)))?
+    AutoSubDomainCreationPatterns: Listing<String(length <= 2048 && length >= 1 && matches(Regex(#"(?s).+"#)))>?
+    AutoSubDomainIAMRole: String(length <= 1000 && matches(Regex(#"^$|^arn:.+:iam::\d{12}:role.+"#)))?
+    CertificateRecord: String(length <= 1000)?
+    DomainName: String(length <= 255 && matches(Regex(#"^(((?!-)[A-Za-z0-9-]{0,62}[A-Za-z0-9])\.)+((?!-)[A-Za-z0-9-]{1,62}[A-Za-z0-9])(\.)?$"#)))?
+    DomainStatus: String?
+    EnableAutoSubDomain: Boolean?
+    StatusReason: String(length <= 1000)?
+    SubDomainSettings: Listing<SubDomainSetting>?
+}
+class SubDomainSetting {
+    Prefix: String(length <= 255 && matches(Regex(#"(?s).*"#)))
+    BranchName: String(length <= 255 && length >= 1 && matches(Regex(#"(?s).+"#)))
+}

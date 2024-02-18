@@ -1,0 +1,32 @@
+/// Resource Type definition for AWS::AppMesh::VirtualService
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppMesh::VirtualService"
+Properties: Props?
+class Props {
+    Uid: String?
+    MeshName: String?
+    MeshOwner: String?
+    ResourceOwner: String?
+    Id: String?
+    VirtualServiceName: String?
+    Arn: String?
+    Spec: VirtualServiceSpec?
+    Tags: Listing<Tag>?
+}
+class VirtualServiceSpec {
+    Provider: VirtualServiceProvider?
+}
+class VirtualServiceProvider {
+    VirtualNode: VirtualNodeServiceProvider?
+    VirtualRouter: VirtualRouterServiceProvider?
+}
+class VirtualNodeServiceProvider {
+    VirtualNodeName: String
+}
+class VirtualRouterServiceProvider {
+    VirtualRouterName: String
+}
+class Tag {
+    Value: String
+    Key: String
+}

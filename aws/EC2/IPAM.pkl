@@ -1,0 +1,52 @@
+/// Resource Schema of AWS::EC2::IPAM Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::IPAM"
+Properties: Props?
+class Props {
+    /// Id of the IPAM.
+    IpamId: String?
+    /// The Amazon Resource Name (ARN) of the IPAM.
+    Arn: String?
+    /// The Id of the default resource discovery, created with this IPAM.
+    DefaultResourceDiscoveryId: String?
+    /// The Id of the default association to the default resource discovery,
+    /// created with this IPAM.
+    DefaultResourceDiscoveryAssociationId: String?
+    /// The count of resource discoveries associated with this IPAM.
+    ResourceDiscoveryAssociationCount: Int?
+    Description: String?
+    /// The Id of the default scope for publicly routable IP space, created
+    /// with this IPAM.
+    PublicDefaultScopeId: String(length <= 255)?
+    /// The Id of the default scope for publicly routable IP space, created
+    /// with this IPAM.
+    PrivateDefaultScopeId: String?
+    /// The number of scopes that currently exist in this IPAM.
+    ScopeCount: Int?
+    /// The regions IPAM is enabled for. Allows pools to be created in these
+    /// regions, as well as enabling monitoring
+    OperatingRegions: Listing<IpamOperatingRegion>?
+    /// The tier of the IPAM.
+    Tier: "free" | "advanced" | *Null
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// The regions IPAM is enabled for. Allows pools to be created in these
+/// regions, as well as enabling monitoring
+class IpamOperatingRegion {
+    /// The name of the region.
+    RegionName: String
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

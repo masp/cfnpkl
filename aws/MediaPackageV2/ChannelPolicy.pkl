@@ -1,0 +1,9 @@
+/// Definition of AWS::MediaPackageV2::ChannelPolicy Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaPackageV2::ChannelPolicy"
+Properties: Props?
+class Props {
+    ChannelGroupName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    ChannelName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    Policy: Mapping | String | *Null
+}

@@ -1,0 +1,46 @@
+/// Resource Type definition for AWS::AppStream::Stack
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppStream::Stack"
+Properties: Props?
+class Props {
+    Description: String?
+    StorageConnectors: Listing<StorageConnector>?
+    DeleteStorageConnectors: Boolean?
+    EmbedHostDomains: Listing<String>?
+    UserSettings: Listing<UserSetting>?
+    AttributesToDelete: Listing<String>?
+    RedirectURL: String?
+    StreamingExperienceSettings: StreamingExperienceSettings?
+    Name: String?
+    FeedbackURL: String?
+    ApplicationSettings: ApplicationSettings?
+    DisplayName: String?
+    Id: String?
+    Tags: Listing<Tag>?
+    AccessEndpoints: Listing<AccessEndpoint>?
+}
+class StorageConnector {
+    Domains: Listing<String>?
+    ResourceIdentifier: String?
+    ConnectorType: String
+}
+class UserSetting {
+    Permission: String
+    Action: String
+    MaximumLength: Int?
+}
+class StreamingExperienceSettings {
+    PreferredProtocol: String?
+}
+class ApplicationSettings {
+    SettingsGroup: String?
+    Enabled: Boolean
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class AccessEndpoint {
+    EndpointType: String
+    VpceId: String
+}

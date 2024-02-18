@@ -1,0 +1,39 @@
+/// Macie AllowList resource schema
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Macie::AllowList"
+Properties: Props?
+class Props {
+    /// Name of AllowList.
+    Name: String?
+    /// Description of AllowList.
+    Description: String?
+    /// AllowList criteria.
+    Criteria: Criteria0 | Criteria1 | *Null
+    /// AllowList ID.
+    Id: String?
+    /// AllowList ARN.
+    Arn: String?
+    /// AllowList status.
+    Status: "OK" | "S3_OBJECT_NOT_FOUND" | "S3_USER_ACCESS_DENIED" | "S3_OBJECT_ACCESS_DENIED" | "S3_THROTTLED" | "S3_OBJECT_OVERSIZE" | "S3_OBJECT_EMPTY" | "UNKNOWN_ERROR" | *Null
+    /// A collection of tags associated with a resource
+    Tags: Listing<Tag>?
+}
+class Criteria0 {
+    /// The S3 object key for the AllowList.
+    Regex: String
+}
+class Criteria1 {
+    /// The S3 location for the AllowList.
+    S3WordsList: S3WordsList
+}
+class S3WordsList {
+    BucketName: String
+    ObjectKey: String
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The tag's key.
+    Key: String
+    /// The tag's value.
+    Value: String
+}

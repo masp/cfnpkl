@@ -1,0 +1,39 @@
+/// Definition of AWS::B2BI::Capability Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::B2BI::Capability"
+Properties: Props?
+class Props {
+    CapabilityArn: String(length <= 255 && length >= 1)?
+    CapabilityId: String(length <= 64 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    Configuration: CapabilityConfiguration0 | *Null
+    CreatedAt: String?
+    InstructionsDocuments: Listing<S3Location>?
+    ModifiedAt: String?
+    Name: String(length <= 254 && length >= 1)?
+    Tags: Listing<Tag>?
+    Type: "edi" | *Null
+}
+class CapabilityConfiguration0 {
+    Edi: EdiConfiguration
+}
+class EdiConfiguration {
+    Type: EdiType0
+    InputLocation: S3Location
+    OutputLocation: S3Location
+    TransformerId: String(length <= 64 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))
+}
+class EdiType0 {
+    X12Details: X12Details
+}
+class X12Details {
+    TransactionSet: "X12_110" | "X12_180" | "X12_204" | "X12_210" | "X12_214" | "X12_215" | "X12_310" | "X12_315" | "X12_322" | "X12_404" | "X12_410" | "X12_820" | "X12_824" | "X12_830" | "X12_846" | "X12_850" | "X12_852" | "X12_855" | "X12_856" | "X12_860" | "X12_861" | "X12_864" | "X12_940" | "X12_990" | "X12_997" | *Null
+    Version: "VERSION_4010" | "VERSION_4030" | "VERSION_5010" | *Null
+}
+class S3Location {
+    BucketName: String(length <= 63 && length >= 3)?
+    Key: String(length <= 1024 && length >= 0)?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

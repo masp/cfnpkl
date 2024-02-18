@@ -1,0 +1,18 @@
+/// Resource Type definition for AWS::EC2::NetworkInterfaceAttachment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::NetworkInterfaceAttachment"
+Properties: Props?
+class Props {
+    /// The ID of the network interface attachment.
+    AttachmentId: String?
+    /// Whether to delete the network interface when the instance terminates.
+    /// By default, this value is set to true.
+    DeleteOnTermination: Boolean?
+    /// The network interface's position in the attachment order. For example,
+    /// the first attached network interface has a DeviceIndex of 0.
+    DeviceIndex: String?
+    /// The ID of the instance to which you will attach the ENI.
+    InstanceId: String?
+    /// The ID of the ENI that you want to attach.
+    NetworkInterfaceId: String?
+}

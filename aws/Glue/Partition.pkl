@@ -1,0 +1,60 @@
+/// Resource Type definition for AWS::Glue::Partition
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::Partition"
+Properties: Props?
+class Props {
+    DatabaseName: String?
+    TableName: String?
+    Id: String?
+    CatalogId: String?
+    PartitionInput: PartitionInput?
+}
+class PartitionInput {
+    StorageDescriptor: StorageDescriptor?
+    Values: Listing<String>
+    Parameters: Mapping?
+}
+class StorageDescriptor {
+    StoredAsSubDirectories: Boolean?
+    Parameters: Mapping?
+    BucketColumns: Listing<String>?
+    NumberOfBuckets: Int?
+    OutputFormat: String?
+    Columns: Listing<Column>?
+    SerdeInfo: SerdeInfo?
+    SortColumns: Listing<Order>?
+    Compressed: Boolean?
+    SchemaReference: SchemaReference?
+    SkewedInfo: SkewedInfo?
+    InputFormat: String?
+    Location: String?
+}
+class Column {
+    Comment: String?
+    Type: String?
+    Name: String
+}
+class SerdeInfo {
+    Parameters: Mapping?
+    SerializationLibrary: String?
+    Name: String?
+}
+class Order {
+    Column: String
+    SortOrder: Int?
+}
+class SchemaReference {
+    SchemaId: SchemaId?
+    SchemaVersionId: String?
+    SchemaVersionNumber: Int?
+}
+class SchemaId {
+    RegistryName: String?
+    SchemaName: String?
+    SchemaArn: String?
+}
+class SkewedInfo {
+    SkewedColumnValues: Listing<String>?
+    SkewedColumnValueLocationMaps: Mapping?
+    SkewedColumnNames: Listing<String>?
+}

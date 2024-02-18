@@ -1,0 +1,26 @@
+/// Resource schema for AWS::Athena::DataCatalog
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Athena::DataCatalog"
+Properties: Props?
+class Props {
+    /// The name of the data catalog to create. The catalog name must be
+    /// unique for the AWS account and can use a maximum of 128 alphanumeric,
+    /// underscore, at sign, or hyphen characters.
+    Name: String(length <= 256 && length >= 1)?
+    /// A description of the data catalog to be created.
+    Description: String(length <= 1024 && length >= 1)?
+    /// Specifies the Lambda function or functions to use for creating the
+    /// data catalog. This is a mapping whose values depend on the catalog
+    /// type.
+    Parameters: Mapping?
+    /// A list of comma separated tags to add to the data catalog that is
+    /// created.
+    Tags: Listing<Tag>?
+    /// The type of data catalog to create: LAMBDA for a federated catalog,
+    /// GLUE for AWS Glue Catalog, or HIVE for an external hive metastore.
+    Type: "LAMBDA" | "GLUE" | "HIVE" | *Null
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

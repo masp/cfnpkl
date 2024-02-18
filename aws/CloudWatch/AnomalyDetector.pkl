@@ -1,0 +1,55 @@
+/// Resource Type definition for AWS::CloudWatch::AnomalyDetector
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudWatch::AnomalyDetector"
+Properties: Props?
+class Props {
+    MetricName: String?
+    Stat: String?
+    Configuration: Configuration?
+    MetricMathAnomalyDetector: MetricMathAnomalyDetector?
+    Dimensions: Listing<Dimension>?
+    Id: String?
+    Namespace: String?
+    SingleMetricAnomalyDetector: SingleMetricAnomalyDetector?
+}
+class Configuration {
+    MetricTimeZone: String?
+    ExcludedTimeRanges: Listing<Range>?
+}
+class Range {
+    EndTime: String
+    StartTime: String
+}
+class MetricMathAnomalyDetector {
+    MetricDataQueries: Listing<MetricDataQuery>?
+}
+class MetricDataQuery {
+    AccountId: String?
+    ReturnData: Boolean?
+    Expression: String?
+    MetricStat: MetricStat?
+    Label: String?
+    Period: Int?
+    Id: String
+}
+class MetricStat {
+    Period: Int
+    Metric: Metric
+    Stat: String
+    Unit: String?
+}
+class Metric {
+    MetricName: String
+    Dimensions: Listing<Dimension>?
+    Namespace: String
+}
+class Dimension {
+    Value: String
+    Name: String
+}
+class SingleMetricAnomalyDetector {
+    MetricName: String?
+    Dimensions: Listing<Dimension>?
+    Stat: String?
+    Namespace: String?
+}

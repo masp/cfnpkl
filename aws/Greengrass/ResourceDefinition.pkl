@@ -1,0 +1,58 @@
+/// Resource Type definition for AWS::Greengrass::ResourceDefinition
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Greengrass::ResourceDefinition"
+Properties: Props?
+class Props {
+    Id: String?
+    Arn: String?
+    LatestVersionArn: String?
+    Tags: Mapping?
+    Name: String?
+    InitialVersion: ResourceDefinitionVersion?
+}
+class ResourceDefinitionVersion {
+    Resources: Listing<ResourceInstance>
+}
+class ResourceInstance {
+    ResourceDataContainer: ResourceDataContainer
+    Id: String
+    Name: String
+}
+class ResourceDataContainer {
+    LocalVolumeResourceData: LocalVolumeResourceData?
+    LocalDeviceResourceData: LocalDeviceResourceData?
+    S3MachineLearningModelResourceData: S3MachineLearningModelResourceData?
+    SecretsManagerSecretResourceData: SecretsManagerSecretResourceData?
+    SageMakerMachineLearningModelResourceData: SageMakerMachineLearningModelResourceData?
+}
+class LocalVolumeResourceData {
+    SourcePath: String
+    DestinationPath: String
+    GroupOwnerSetting: GroupOwnerSetting?
+}
+class GroupOwnerSetting {
+    AutoAddGroupOwner: Boolean
+    GroupOwner: String?
+}
+class LocalDeviceResourceData {
+    SourcePath: String
+    GroupOwnerSetting: GroupOwnerSetting?
+}
+class S3MachineLearningModelResourceData {
+    OwnerSetting: ResourceDownloadOwnerSetting?
+    DestinationPath: String
+    S3Uri: String
+}
+class ResourceDownloadOwnerSetting {
+    GroupPermission: String
+    GroupOwner: String
+}
+class SecretsManagerSecretResourceData {
+    ARN: String
+    AdditionalStagingLabelsToDownload: Listing<String>?
+}
+class SageMakerMachineLearningModelResourceData {
+    OwnerSetting: ResourceDownloadOwnerSetting?
+    SageMakerJobArn: String
+    DestinationPath: String
+}

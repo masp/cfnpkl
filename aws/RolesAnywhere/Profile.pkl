@@ -1,0 +1,20 @@
+/// Definition of AWS::RolesAnywhere::Profile Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RolesAnywhere::Profile"
+Properties: Props?
+class Props {
+    DurationSeconds: Float?
+    Enabled: Boolean?
+    ManagedPolicyArns: Listing<String>?
+    Name: String?
+    ProfileArn: String?
+    ProfileId: String(matches(Regex(#"[a-f0-9]{8}-([a-z0-9]{4}-){3}[a-z0-9]{12}"#)))?
+    RequireInstanceProperties: Boolean?
+    RoleArns: Listing<String(length <= 1011 && length >= 1)>?
+    SessionPolicy: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

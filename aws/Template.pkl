@@ -1,0 +1,33 @@
+module aws.Template
+
+/// The AWS CloudFormation template version that the template conforms to.
+/// The template format version isn't the same as the API or WSDL version. 
+/// The template format version can change independently of the API and WSDL versions.
+AWSTemplateFormatVersion = "2010-09-09"
+
+/// A text string that describes the template.
+Description: String
+
+// Arbitrary metadata about the template.
+Metadata: Mapping?
+
+// TODO: Support the rest of these
+// Parameters:
+//   set of parameters
+
+// Rules:
+//   set of rules
+
+// Mappings:
+//   set of mappings
+
+// Conditions:
+//   set of conditions
+
+// Transform:
+//   set of transforms
+
+Resources: Mapping<String, Resource>
+
+// Outputs:
+//   set of outputs

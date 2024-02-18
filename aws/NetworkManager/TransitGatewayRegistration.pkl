@@ -1,0 +1,14 @@
+/// The AWS::NetworkManager::TransitGatewayRegistration type registers a
+/// transit gateway in your global network. The transit gateway can be in
+/// any AWS Region, but it must be owned by the same AWS account that owns
+/// the global network. You cannot register a transit gateway in more than
+/// one global network.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkManager::TransitGatewayRegistration"
+Properties: Props?
+class Props {
+    /// The ID of the global network.
+    GlobalNetworkId: String?
+    /// The Amazon Resource Name (ARN) of the transit gateway.
+    TransitGatewayArn: String?
+}

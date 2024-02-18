@@ -1,0 +1,41 @@
+/// Schema for ResourceGroups::Group
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ResourceGroups::Group"
+Properties: Props?
+class Props {
+    /// The name of the resource group
+    Name: String(length <= 128)?
+    /// The description of the resource group
+    Description: String(length <= 512)?
+    ResourceQuery: ResourceQuery?
+    Tags: Listing<Tag>?
+    /// The Resource Group ARN.
+    Arn: String?
+    Configuration: Listing<ConfigurationItem>?
+    Resources: Listing<String>?
+}
+class ResourceQuery {
+    Type: "TAG_FILTERS_1_0" | "CLOUDFORMATION_STACK_1_0" | *Null
+    Query: Query?
+}
+class Query {
+    ResourceTypeFilters: Listing<String>?
+    StackIdentifier: String?
+    TagFilters: Listing<TagFilter>?
+}
+class TagFilter {
+    Key: String?
+    Values: Listing<String>?
+}
+class Tag {
+    Key: String(matches(Regex(#"^(?!aws:).+"#)))?
+    Value: String?
+}
+class ConfigurationItem {
+    Type: String?
+    Parameters: Listing<ConfigurationParameter>?
+}
+class ConfigurationParameter {
+    Name: String?
+    Values: Listing<String>?
+}

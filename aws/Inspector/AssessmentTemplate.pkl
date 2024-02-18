@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::Inspector::AssessmentTemplate
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Inspector::AssessmentTemplate"
+Properties: Props?
+class Props {
+    Arn: String?
+    AssessmentTargetArn: String?
+    DurationInSeconds: Int?
+    AssessmentTemplateName: String?
+    RulesPackageArns: Listing<String>?
+    UserAttributesForFindings: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

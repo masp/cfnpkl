@@ -1,0 +1,30 @@
+/// Resource Type definition for AWS::EC2::CapacityReservation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::CapacityReservation"
+Properties: Props?
+class Props {
+    Tenancy: String?
+    EndDateType: String?
+    TagSpecifications: Listing<TagSpecification>?
+    AvailabilityZone: String?
+    TotalInstanceCount: Int?
+    EndDate: String?
+    EbsOptimized: Boolean?
+    OutPostArn: String?
+    InstanceCount: Int?
+    PlacementGroupArn: String?
+    AvailableInstanceCount: Int?
+    InstancePlatform: String?
+    Id: String?
+    InstanceType: String?
+    EphemeralStorage: Boolean?
+    InstanceMatchCriteria: String?
+}
+class TagSpecification {
+    ResourceType: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String
+    Key: String
+}

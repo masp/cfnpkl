@@ -1,0 +1,49 @@
+/// Resource Type definition for AWS::Pinpoint::InAppTemplate
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Pinpoint::InAppTemplate"
+Properties: Props?
+class Props {
+    Arn: String?
+    Content: Listing<InAppMessageContent>?
+    CustomConfig: Mapping?
+    Layout: "BOTTOM_BANNER" | "TOP_BANNER" | "OVERLAYS" | "MOBILE_FEED" | "MIDDLE_BANNER" | "CAROUSEL" | *Null
+    Tags: Mapping?
+    TemplateDescription: String?
+    TemplateName: String?
+}
+class InAppMessageContent {
+    BackgroundColor: String?
+    BodyConfig: BodyConfig?
+    HeaderConfig: HeaderConfig?
+    ImageUrl: String?
+    PrimaryBtn: ButtonConfig?
+    SecondaryBtn: ButtonConfig?
+}
+class BodyConfig {
+    Alignment: "LEFT" | "CENTER" | "RIGHT" | *Null
+    Body: String?
+    TextColor: String?
+}
+class HeaderConfig {
+    Alignment: "LEFT" | "CENTER" | "RIGHT" | *Null
+    Header: String?
+    TextColor: String?
+}
+class ButtonConfig {
+    Android: OverrideButtonConfiguration?
+    DefaultConfig: DefaultButtonConfiguration?
+    IOS: OverrideButtonConfiguration?
+    Web: OverrideButtonConfiguration?
+}
+class OverrideButtonConfiguration {
+    ButtonAction: "LINK" | "DEEP_LINK" | "CLOSE" | *Null
+    Link: String?
+}
+class DefaultButtonConfiguration {
+    BackgroundColor: String?
+    BorderRadius: Int?
+    ButtonAction: "LINK" | "DEEP_LINK" | "CLOSE" | *Null
+    Link: String?
+    Text: String?
+    TextColor: String?
+}

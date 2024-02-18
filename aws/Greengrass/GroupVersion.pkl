@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::Greengrass::GroupVersion
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Greengrass::GroupVersion"
+Properties: Props?
+class Props {
+    Id: String?
+    LoggerDefinitionVersionArn: String?
+    DeviceDefinitionVersionArn: String?
+    FunctionDefinitionVersionArn: String?
+    CoreDefinitionVersionArn: String?
+    ResourceDefinitionVersionArn: String?
+    ConnectorDefinitionVersionArn: String?
+    SubscriptionDefinitionVersionArn: String?
+    GroupId: String?
+}

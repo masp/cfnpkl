@@ -1,0 +1,43 @@
+/// Resource Type definition for AWS::Glue::Trigger
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::Trigger"
+Properties: Props?
+class Props {
+    Type: String?
+    StartOnCreation: Boolean?
+    Description: String?
+    Actions: Listing<Action>?
+    EventBatchingCondition: EventBatchingCondition?
+    WorkflowName: String?
+    Schedule: String?
+    Id: String?
+    Tags: Mapping?
+    Name: String?
+    Predicate: Predicate?
+}
+class Action {
+    NotificationProperty: NotificationProperty?
+    CrawlerName: String?
+    Timeout: Int?
+    JobName: String?
+    Arguments: Mapping?
+    SecurityConfiguration: String?
+}
+class NotificationProperty {
+    NotifyDelayAfter: Int?
+}
+class EventBatchingCondition {
+    BatchSize: Int
+    BatchWindow: Int?
+}
+class Predicate {
+    Logical: String?
+    Conditions: Listing<Condition>?
+}
+class Condition {
+    JobName: String?
+    CrawlerName: String?
+    State: String?
+    CrawlState: String?
+    LogicalOperator: String?
+}

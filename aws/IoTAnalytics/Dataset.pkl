@@ -1,0 +1,108 @@
+/// Resource Type definition for AWS::IoTAnalytics::Dataset
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTAnalytics::Dataset"
+Properties: Props?
+class Props {
+    Actions: Listing<Action>?
+    LateDataRules: Listing<LateDataRule>?
+    DatasetName: String(length <= 128 && length >= 1 && matches(Regex(#"(^(?!_{2}))(^[a-zA-Z0-9_]+$)"#)))?
+    ContentDeliveryRules: Listing<DatasetContentDeliveryRule>?
+    Triggers: Listing<Trigger>?
+    VersioningConfiguration: VersioningConfiguration?
+    Id: String?
+    RetentionPeriod: RetentionPeriod?
+    Tags: Listing<Tag>?
+}
+class Action {
+    ActionName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_]+$"#)))
+    ContainerAction: ContainerAction?
+    QueryAction: QueryAction?
+}
+class ContainerAction {
+    Variables: Listing<Variable>?
+    ExecutionRoleArn: String(length <= 2048 && length >= 20)
+    Image: String(length <= 255)
+    ResourceConfiguration: ResourceConfiguration
+}
+class Variable {
+    VariableName: String(length <= 256 && length >= 1)
+    DatasetContentVersionValue: DatasetContentVersionValue?
+    StringValue: String(length <= 1024 && length >= 0)?
+    DoubleValue: Float?
+    OutputFileUriValue: OutputFileUriValue?
+}
+class DatasetContentVersionValue {
+    DatasetName: String(length <= 128 && length >= 1 && matches(Regex(#"(^(?!_{2}))(^[a-zA-Z0-9_]+$)"#)))
+}
+class OutputFileUriValue {
+    FileName: String(matches(Regex(#"^[\w\.-]{1,255}$"#)))
+}
+class ResourceConfiguration {
+    VolumeSizeInGB: Int
+    ComputeType: "ACU_1" | "ACU_2"
+}
+class QueryAction {
+    Filters: Listing<Filter>?
+    SqlQuery: String
+}
+class Filter {
+    DeltaTime: DeltaTime?
+}
+class DeltaTime {
+    OffsetSeconds: Int
+    TimeExpression: String
+}
+class LateDataRule {
+    RuleConfiguration: LateDataRuleConfiguration
+    RuleName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_]+$"#)))?
+}
+class LateDataRuleConfiguration {
+    DeltaTimeSessionWindowConfiguration: DeltaTimeSessionWindowConfiguration?
+}
+class DeltaTimeSessionWindowConfiguration {
+    TimeoutInMinutes: Int
+}
+class DatasetContentDeliveryRule {
+    Destination: DatasetContentDeliveryRuleDestination
+    EntryName: String?
+}
+class DatasetContentDeliveryRuleDestination {
+    IotEventsDestinationConfiguration: IotEventsDestinationConfiguration?
+    S3DestinationConfiguration: S3DestinationConfiguration?
+}
+class IotEventsDestinationConfiguration {
+    InputName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z][a-zA-Z0-9_]*$"#)))
+    RoleArn: String(length <= 2048 && length >= 20)
+}
+class S3DestinationConfiguration {
+    GlueConfiguration: GlueConfiguration?
+    Bucket: String(length <= 255 && length >= 3 && matches(Regex(#"^[a-zA-Z0-9.\-_]*$"#)))
+    Key: String(length <= 255 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9!_.*'()/{}:-]*$"#)))
+    RoleArn: String(length <= 2048 && length >= 20)
+}
+class GlueConfiguration {
+    DatabaseName: String(length <= 150 && length >= 1)
+    TableName: String(length <= 150 && length >= 1)
+}
+class Trigger {
+    TriggeringDataset: TriggeringDataset?
+    Schedule: Schedule?
+}
+class TriggeringDataset {
+    DatasetName: String(length <= 128 && length >= 1 && matches(Regex(#"(^(?!_{2}))(^[a-zA-Z0-9_]+$)"#)))
+}
+class Schedule {
+    ScheduleExpression: String
+}
+class VersioningConfiguration {
+    Unlimited: Boolean?
+    MaxVersions: Int?
+}
+class RetentionPeriod {
+    NumberOfDays: Int?
+    Unlimited: Boolean?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

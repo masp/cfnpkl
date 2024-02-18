@@ -1,0 +1,151 @@
+/// Resource Type definition for AWS::AutoScaling::AutoScalingGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AutoScaling::AutoScalingGroup"
+Properties: Props?
+class Props {
+    LifecycleHookSpecificationList: Listing<LifecycleHookSpecification>?
+    LoadBalancerNames: Listing<String>?
+    LaunchConfigurationName: String?
+    ServiceLinkedRoleARN: String?
+    TargetGroupARNs: Listing<String>?
+    Cooldown: String?
+    NotificationConfigurations: Listing<NotificationConfiguration>?
+    DesiredCapacity: String(matches(Regex(#"^[0-9]+$"#)))?
+    HealthCheckGracePeriod: Int?
+    DefaultInstanceWarmup: Int?
+    NewInstancesProtectedFromScaleIn: Boolean?
+    LaunchTemplate: LaunchTemplateSpecification?
+    MixedInstancesPolicy: MixedInstancesPolicy?
+    VPCZoneIdentifier: Listing<String>?
+    Tags: Listing<TagProperty>?
+    Context: String?
+    CapacityRebalance: Boolean?
+    InstanceId: String?
+    AvailabilityZones: Listing<String>?
+    NotificationConfiguration: NotificationConfiguration?
+    MetricsCollection: Listing<MetricsCollection>?
+    InstanceMaintenancePolicy: InstanceMaintenancePolicy?
+    MaxSize: String(matches(Regex(#"^[0-9]+$"#)))?
+    MinSize: String(matches(Regex(#"^[0-9]+$"#)))?
+    TerminationPolicies: Listing<String>?
+    AutoScalingGroupName: String?
+    DesiredCapacityType: String?
+    PlacementGroup: String?
+    HealthCheckType: String?
+    MaxInstanceLifetime: Int?
+}
+class LifecycleHookSpecification {
+    LifecycleHookName: String
+    LifecycleTransition: String
+    HeartbeatTimeout: Int?
+    NotificationMetadata: String?
+    DefaultResult: String?
+    NotificationTargetARN: String?
+    RoleARN: String?
+}
+class NotificationConfiguration {
+    TopicARN: String | Listing<Mapping>
+    NotificationTypes: Listing<String>?
+}
+class LaunchTemplateSpecification {
+    LaunchTemplateName: String?
+    Version: String
+    LaunchTemplateId: String?
+}
+class MixedInstancesPolicy {
+    InstancesDistribution: InstancesDistribution?
+    LaunchTemplate: LaunchTemplate
+}
+class InstancesDistribution {
+    OnDemandAllocationStrategy: String?
+    OnDemandBaseCapacity: Int?
+    OnDemandPercentageAboveBaseCapacity: Int?
+    SpotInstancePools: Int?
+    SpotAllocationStrategy: String?
+    SpotMaxPrice: String?
+}
+class LaunchTemplate {
+    LaunchTemplateSpecification: LaunchTemplateSpecification
+    Overrides: Listing<LaunchTemplateOverrides>?
+}
+class LaunchTemplateOverrides {
+    LaunchTemplateSpecification: LaunchTemplateSpecification?
+    WeightedCapacity: String?
+    InstanceRequirements: InstanceRequirements?
+    InstanceType: String?
+}
+class InstanceRequirements {
+    LocalStorageTypes: Listing<String>?
+    InstanceGenerations: Listing<String>?
+    NetworkInterfaceCount: NetworkInterfaceCountRequest?
+    AcceleratorTypes: Listing<String>?
+    MemoryGiBPerVCpu: MemoryGiBPerVCpuRequest?
+    AcceleratorManufacturers: Listing<String>?
+    ExcludedInstanceTypes: Listing<String>?
+    VCpuCount: VCpuCountRequest
+    AllowedInstanceTypes: Listing<String>?
+    LocalStorage: String?
+    CpuManufacturers: Listing<String>?
+    AcceleratorCount: AcceleratorCountRequest?
+    NetworkBandwidthGbps: NetworkBandwidthGbpsRequest?
+    BareMetal: String?
+    RequireHibernateSupport: Boolean?
+    MaxSpotPriceAsPercentageOfOptimalOnDemandPrice: Int?
+    BaselineEbsBandwidthMbps: BaselineEbsBandwidthMbpsRequest?
+    SpotMaxPricePercentageOverLowestPrice: Int?
+    AcceleratorNames: Listing<String>?
+    AcceleratorTotalMemoryMiB: AcceleratorTotalMemoryMiBRequest?
+    OnDemandMaxPricePercentageOverLowestPrice: Int?
+    BurstablePerformance: String?
+    MemoryMiB: MemoryMiBRequest
+    TotalLocalStorageGB: TotalLocalStorageGBRequest?
+}
+class NetworkInterfaceCountRequest {
+    Min: Int?
+    Max: Int?
+}
+class MemoryGiBPerVCpuRequest {
+    Min: Float?
+    Max: Float?
+}
+class VCpuCountRequest {
+    Min: Int?
+    Max: Int?
+}
+class AcceleratorCountRequest {
+    Min: Int?
+    Max: Int?
+}
+class NetworkBandwidthGbpsRequest {
+    Min: Float?
+    Max: Float?
+}
+class BaselineEbsBandwidthMbpsRequest {
+    Min: Int?
+    Max: Int?
+}
+class AcceleratorTotalMemoryMiBRequest {
+    Min: Int?
+    Max: Int?
+}
+class MemoryMiBRequest {
+    Min: Int?
+    Max: Int?
+}
+class TotalLocalStorageGBRequest {
+    Min: Float?
+    Max: Float?
+}
+class TagProperty {
+    Value: String
+    Key: String
+    PropagateAtLaunch: Boolean
+}
+class MetricsCollection {
+    Metrics: Listing<String>?
+    Granularity: String
+}
+class InstanceMaintenancePolicy {
+    MaxHealthyPercentage: Int?
+    MinHealthyPercentage: Int?
+}

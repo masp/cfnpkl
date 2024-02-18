@@ -1,0 +1,43 @@
+/// Resource Type definition for
+/// AWS::CloudFront::ContinuousDeploymentPolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::ContinuousDeploymentPolicy"
+Properties: Props?
+class Props {
+    ContinuousDeploymentPolicyConfig: ContinuousDeploymentPolicyConfig?
+    Id: String?
+    LastModifiedTime: String?
+}
+class ContinuousDeploymentPolicyConfig {
+    Enabled: Boolean
+    SingleHeaderPolicyConfig: SingleHeaderPolicyConfig?
+    SingleWeightPolicyConfig: SingleWeightPolicyConfig?
+    StagingDistributionDnsNames: Listing<String>
+    TrafficConfig: TrafficConfig?
+    Type: "SingleWeight" | "SingleHeader" | *Null
+}
+class SingleHeaderPolicyConfig {
+    Header: String(length <= 256 && length >= 1)
+    Value: String(length <= 1783 && length >= 1)
+}
+class SingleWeightPolicyConfig {
+    SessionStickinessConfig: SessionStickinessConfig?
+    Weight: Float
+}
+class SessionStickinessConfig {
+    IdleTTL: Int
+    MaximumTTL: Int
+}
+class TrafficConfig {
+    SingleHeaderConfig: SingleHeaderConfig?
+    SingleWeightConfig: SingleWeightConfig?
+    Type: "SingleWeight" | "SingleHeader"
+}
+class SingleHeaderConfig {
+    Header: String(length <= 256 && length >= 1)
+    Value: String(length <= 1783 && length >= 1)
+}
+class SingleWeightConfig {
+    SessionStickinessConfig: SessionStickinessConfig?
+    Weight: Float
+}

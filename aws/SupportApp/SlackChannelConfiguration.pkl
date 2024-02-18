@@ -1,0 +1,26 @@
+/// An AWS Support App resource that creates, updates, lists and deletes
+/// Slack channel configurations.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SupportApp::SlackChannelConfiguration"
+Properties: Props?
+class Props {
+    /// The team ID in Slack, which uniquely identifies a workspace.
+    TeamId: String(length <= 256 && length >= 1 && matches(Regex(#"^\S+$"#)))?
+    /// The channel ID in Slack, which identifies a channel within a
+    /// workspace.
+    ChannelId: String(length <= 256 && length >= 1 && matches(Regex(#"^\S+$"#)))?
+    /// The channel name in Slack.
+    ChannelName: String(length <= 256 && length >= 1 && matches(Regex(#"^.+$"#)))?
+    /// Whether to notify when a case is created or reopened.
+    NotifyOnCreateOrReopenCase: Boolean?
+    /// Whether to notify when a correspondence is added to a case.
+    NotifyOnAddCorrespondenceToCase: Boolean?
+    /// Whether to notify when a case is resolved.
+    NotifyOnResolveCase: Boolean?
+    /// The severity level of a support case that a customer wants to get
+    /// notified for.
+    NotifyOnCaseSeverity: "none" | "all" | "high" | *Null
+    /// The Amazon Resource Name (ARN) of an IAM role that grants the AWS
+    /// Support App access to perform operations for AWS services.
+    ChannelRoleArn: String(length <= 2048 && length >= 31 && matches(Regex(#"^arn:aws[-a-z0-9]*:iam::[0-9]{12}:role\/(.+)$"#)))?
+}

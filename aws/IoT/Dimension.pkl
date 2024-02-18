@@ -1,0 +1,24 @@
+/// A dimension can be used to limit the scope of a metric used in a
+/// security profile for AWS IoT Device Defender.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::Dimension"
+Properties: Props?
+class Props {
+    /// A unique identifier for the dimension.
+    Name: String(length <= 128 && length >= 1 && matches(Regex(#"[a-zA-Z0-9:_-]+"#)))?
+    /// Specifies the type of the dimension.
+    Type: "TOPIC_FILTER" | *Null
+    /// Specifies the value or list of values for the dimension.
+    StringValues: Listing<String(length <= 256 && length >= 1)>?
+    /// Metadata that can be used to manage the dimension.
+    Tags: Listing<Tag>?
+    /// The ARN (Amazon resource name) of the created dimension.
+    Arn: String?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The tag's key.
+    Key: String(length <= 128 && length >= 1)
+    /// The tag's value.
+    Value: String(length <= 256 && length >= 1)
+}

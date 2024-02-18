@@ -1,0 +1,10 @@
+/// Resource Type definition for AWS::ElastiCache::SecurityGroupIngress
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ElastiCache::SecurityGroupIngress"
+Properties: Props?
+class Props {
+    Id: String?
+    CacheSecurityGroupName: String?
+    EC2SecurityGroupName: String?
+    EC2SecurityGroupOwnerId: String?
+}

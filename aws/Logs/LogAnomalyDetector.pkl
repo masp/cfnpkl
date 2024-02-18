@@ -1,0 +1,28 @@
+/// The AWS::Logs::LogAnomalyDetector resource specifies a CloudWatch Logs
+/// LogAnomalyDetector.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Logs::LogAnomalyDetector"
+Properties: Props?
+class Props {
+    /// Account ID for owner of detector
+    AccountId: String?
+    /// The Amazon Resource Name (ARN) of the CMK to use when encrypting log
+    /// data.
+    KmsKeyId: String(length <= 256)?
+    /// Name of detector
+    DetectorName: String?
+    /// List of Arns for the given log group
+    LogGroupArnList: Listing<String(length <= 2048 && length >= 20)>?
+    /// How often log group is evaluated
+    EvaluationFrequency: "FIVE_MIN" | "TEN_MIN" | "FIFTEEN_MIN" | "THIRTY_MIN" | "ONE_HOUR" | *Null
+    FilterPattern: String(matches(Regex(#""#)))?
+    /// Current status of detector.
+    AnomalyDetectorStatus: String?
+    AnomalyVisibilityTime: Float?
+    /// When detector was created.
+    CreationTimeStamp: Float?
+    /// When detector was lsat modified.
+    LastModifiedTimeStamp: Float?
+    /// ARN of LogAnomalyDetector
+    AnomalyDetectorArn: String?
+}

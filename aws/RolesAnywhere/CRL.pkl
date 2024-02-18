@@ -1,0 +1,16 @@
+/// Definition of AWS::RolesAnywhere::CRL Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RolesAnywhere::CRL"
+Properties: Props?
+class Props {
+    CrlData: String?
+    CrlId: String(matches(Regex(#"[a-f0-9]{8}-([a-z0-9]{4}-){3}[a-z0-9]{12}"#)))?
+    Enabled: Boolean?
+    Name: String?
+    TrustAnchorArn: String(matches(Regex(#"^arn:aws(-[^:]+)?:rolesanywhere(:.*){2}(:trust-anchor.*)$"#)))?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

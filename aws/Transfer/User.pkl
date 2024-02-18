@@ -1,0 +1,32 @@
+/// Resource Type definition for AWS::Transfer::User
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Transfer::User"
+Properties: Props?
+class Props {
+    Policy: String?
+    Role: String?
+    HomeDirectory: String?
+    HomeDirectoryType: String?
+    ServerId: String?
+    UserName: String?
+    HomeDirectoryMappings: Listing<HomeDirectoryMapEntry>?
+    PosixProfile: PosixProfile?
+    SshPublicKeys: Listing<Mapping>?
+    Id: String?
+    Arn: String?
+    Tags: Listing<Tag>?
+}
+class HomeDirectoryMapEntry {
+    Entry: String
+    Target: String
+    Type: String?
+}
+class PosixProfile {
+    Uid: Float
+    SecondaryGids: Listing<Float>?
+    Gid: Float
+}
+class Tag {
+    Value: String
+    Key: String
+}

@@ -1,0 +1,12 @@
+/// Resource Type definition for AWS::Kinesis::StreamConsumer
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Kinesis::StreamConsumer"
+Properties: Props?
+class Props {
+    Id: String?
+    ConsumerCreationTimestamp: String?
+    ConsumerName: String?
+    ConsumerARN: String?
+    ConsumerStatus: String?
+    StreamARN: String?
+}

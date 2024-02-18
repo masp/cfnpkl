@@ -1,0 +1,31 @@
+/// Definition of AWS::Proton::EnvironmentTemplate Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Proton::EnvironmentTemplate"
+Properties: Props?
+class Props {
+    /// <p>The Amazon Resource Name (ARN) of the environment template.</p>
+    Arn: String?
+    /// <p>A description of the environment template.</p>
+    Description: String(length <= 500 && length >= 0)?
+    /// <p>The environment template name as displayed in the developer
+    /// interface.</p>
+    DisplayName: String(length <= 100 && length >= 1)?
+    /// <p>A customer provided encryption key that Proton uses to encrypt
+    /// data.</p>
+    EncryptionKey: String(length <= 200 && length >= 1 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov):[a-zA-Z0-9-]+:[a-zA-Z0-9-]*:\d{12}:([\w+=,.@-]+[/:])*[\w+=,.@-]+$"#)))?
+    Name: String(length <= 100 && length >= 1 && matches(Regex(#"^[0-9A-Za-z]+[0-9A-Za-z_\-]*$"#)))?
+    Provisioning: "CUSTOMER_MANAGED" | *Null
+    /// <p>An optional list of metadata items that you can associate with the
+    /// Proton environment template. A tag is a key-value pair.</p>
+    /// <p>For more information, see <a href="https://docs.aws.amazon.com/prot
+    /// on/latest/userguide/resources.html">Proton resources and tagging</a>
+    /// in the         <i>Proton User Guide</i>.</p>
+    Tags: Listing<Tag>?
+}
+/// <p>A description of a resource tag.</p>
+class Tag {
+    /// <p>The key of the resource tag.</p>
+    Key: String(length <= 128 && length >= 1)
+    /// <p>The value of the resource tag.</p>
+    Value: String(length <= 256 && length >= 0)
+}

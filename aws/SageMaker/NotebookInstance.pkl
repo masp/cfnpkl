@@ -1,0 +1,30 @@
+/// Resource Type definition for AWS::SageMaker::NotebookInstance
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::NotebookInstance"
+Properties: Props?
+class Props {
+    KmsKeyId: String?
+    VolumeSizeInGB: Int?
+    AdditionalCodeRepositories: Listing<String>?
+    DefaultCodeRepository: String?
+    DirectInternetAccess: String?
+    PlatformIdentifier: String?
+    AcceleratorTypes: Listing<String>?
+    SubnetId: String?
+    SecurityGroupIds: Listing<String>?
+    RoleArn: String?
+    InstanceMetadataServiceConfiguration: InstanceMetadataServiceConfiguration?
+    RootAccess: String?
+    Id: String?
+    NotebookInstanceName: String?
+    InstanceType: String?
+    LifecycleConfigName: String?
+    Tags: Listing<Tag>?
+}
+class InstanceMetadataServiceConfiguration {
+    MinimumInstanceMetadataServiceVersion: String
+}
+class Tag {
+    Value: String
+    Key: String
+}

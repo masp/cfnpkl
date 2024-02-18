@@ -1,0 +1,49 @@
+/// Resource Type definition for AWS::CodeDeploy::DeploymentConfig
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodeDeploy::DeploymentConfig"
+Properties: Props?
+class Props {
+    /// The destination platform type for the deployment (Lambda, Server, or
+    /// ECS).
+    ComputePlatform: String?
+    /// A name for the deployment configuration. If you don't specify a name,
+    /// AWS CloudFormation generates a unique physical ID and uses that ID for
+    /// the deployment configuration name. For more information, see Name
+    /// Type.
+    DeploymentConfigName: String?
+    /// The minimum number of healthy instances that should be available at
+    /// any time during the deployment. There are two parameters expected in
+    /// the input: type and value.
+    MinimumHealthyHosts: MinimumHealthyHosts?
+    /// The zonal deployment config that specifies how the zonal deployment
+    /// behaves
+    ZonalConfig: ZonalConfig?
+    /// The configuration that specifies how the deployment traffic is routed.
+    TrafficRoutingConfig: TrafficRoutingConfig?
+}
+class MinimumHealthyHosts {
+    Value: Int
+    Type: String
+}
+class ZonalConfig {
+    FirstZoneMonitorDurationInSeconds: Int?
+    MonitorDurationInSeconds: Int?
+    MinimumHealthyHostsPerZone: MinimumHealthyHostsPerZone?
+}
+class MinimumHealthyHostsPerZone {
+    Value: Int
+    Type: String
+}
+class TrafficRoutingConfig {
+    Type: String
+    TimeBasedLinear: TimeBasedLinear?
+    TimeBasedCanary: TimeBasedCanary?
+}
+class TimeBasedLinear {
+    LinearInterval: Int
+    LinearPercentage: Int
+}
+class TimeBasedCanary {
+    CanaryPercentage: Int
+    CanaryInterval: Int
+}

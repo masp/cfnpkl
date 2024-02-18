@@ -1,0 +1,19 @@
+/// Resource Schema for AWS::Personalize::DatasetGroup.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Personalize::DatasetGroup"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the dataset group.
+    DatasetGroupArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))?
+    /// The name for the new dataset group.
+    Name: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))?
+    /// The Amazon Resource Name(ARN) of a AWS Key Management Service (KMS)
+    /// key used to encrypt the datasets.
+    KmsKeyArn: String(length <= 2048 && matches(Regex(#"arn:aws.*:kms:.*:[0-9]{12}:key/.*"#)))?
+    /// The ARN of the AWS Identity and Access Management (IAM) role that has
+    /// permissions to access the AWS Key Management Service (KMS) key.
+    /// Supplying an IAM role is only valid when also specifying a KMS key.
+    RoleArn: String(length <= 256 && length >= 0 && matches(Regex(#"arn:([a-z\d-]+):iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+"#)))?
+    /// The domain of a Domain dataset group.
+    Domain: "ECOMMERCE" | "VIDEO_ON_DEMAND" | *Null
+}

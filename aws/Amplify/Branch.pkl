@@ -1,0 +1,37 @@
+/// The AWS::Amplify::Branch resource creates a new branch within an app.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Amplify::Branch"
+Properties: Props?
+class Props {
+    AppId: String(length <= 20 && length >= 1 && matches(Regex(#"d[a-z0-9]+"#)))?
+    Arn: String(length <= 1000 && matches(Regex(#"(?s).*"#)))?
+    BasicAuthConfig: BasicAuthConfig?
+    Backend: Backend?
+    BranchName: String(length <= 255 && length >= 1 && matches(Regex(#"(?s).+"#)))?
+    BuildSpec: String(length <= 25000 && length >= 1 && matches(Regex(#"(?s).+"#)))?
+    Description: String(length <= 1000 && matches(Regex(#"(?s).*"#)))?
+    EnableAutoBuild: Boolean?
+    EnablePerformanceMode: Boolean?
+    EnablePullRequestPreview: Boolean?
+    EnvironmentVariables: Listing<EnvironmentVariable>?
+    Framework: String(length <= 255 && matches(Regex(#"(?s).*"#)))?
+    PullRequestEnvironmentName: String(length <= 20 && matches(Regex(#"(?s).*"#)))?
+    Stage: "EXPERIMENTAL" | "BETA" | "PULL_REQUEST" | "PRODUCTION" | "DEVELOPMENT" | *Null
+    Tags: Listing<Tag>?
+}
+class BasicAuthConfig {
+    EnableBasicAuth: Boolean?
+    Username: String(length <= 255 && length >= 1)
+    Password: String(length <= 255 && length >= 1)
+}
+class Backend {
+    StackArn: String(length <= 2048 && length >= 20)?
+}
+class EnvironmentVariable {
+    Name: String(length <= 255 && matches(Regex(#"(?s).*"#)))
+    Value: String(length <= 5500 && matches(Regex(#"(?s).*"#)))
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z+-=._:/]+$"#)))
+    Value: String(length <= 256 && length >= 0 && matches(Regex(#"^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$"#)))
+}

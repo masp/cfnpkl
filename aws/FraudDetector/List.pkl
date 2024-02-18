@@ -1,0 +1,35 @@
+/// A resource schema for a List in Amazon Fraud Detector.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FraudDetector::List"
+Properties: Props?
+class Props {
+    /// The list ARN.
+    Arn: String?
+    /// The name of the list.
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[0-9a-z_]+$"#)))?
+    /// The description of the list.
+    Description: String(length <= 128 && length >= 1)?
+    /// The variable type of the list.
+    VariableType: String(length <= 64 && length >= 1 && matches(Regex(#"^[A-Z_]{1,64}$"#)))?
+    /// The time when the list was created.
+    CreatedTime: String?
+    /// The time when the list was last updated.
+    LastUpdatedTime: String?
+    /// Tags associated with this list.
+    Tags: Listing<Tag>?
+    /// The elements in this list.
+    Elements: Listing<String(length <= 64 && length >= 1 && matches(Regex(#"^\S+( +\S+)*$"#)))>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

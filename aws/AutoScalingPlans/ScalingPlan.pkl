@@ -1,0 +1,70 @@
+/// Resource Type definition for AWS::AutoScalingPlans::ScalingPlan
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AutoScalingPlans::ScalingPlan"
+Properties: Props?
+class Props {
+    Id: String?
+    ScalingPlanName: String?
+    ScalingPlanVersion: String?
+    ApplicationSource: ApplicationSource?
+    ScalingInstructions: Listing<ScalingInstruction>?
+}
+class ApplicationSource {
+    CloudFormationStackARN: String?
+    TagFilters: Listing<TagFilter>?
+}
+class TagFilter {
+    Values: Listing<String>?
+    Key: String
+}
+class ScalingInstruction {
+    DisableDynamicScaling: Boolean?
+    ServiceNamespace: String
+    PredictiveScalingMaxCapacityBehavior: String?
+    ScalableDimension: String
+    ScalingPolicyUpdateBehavior: String?
+    MinCapacity: Int
+    TargetTrackingConfigurations: Listing<TargetTrackingConfiguration>
+    PredictiveScalingMaxCapacityBuffer: Int?
+    CustomizedLoadMetricSpecification: CustomizedLoadMetricSpecification?
+    PredefinedLoadMetricSpecification: PredefinedLoadMetricSpecification?
+    ResourceId: String
+    ScheduledActionBufferTime: Int?
+    MaxCapacity: Int
+    PredictiveScalingMode: String?
+}
+class TargetTrackingConfiguration {
+    ScaleOutCooldown: Int?
+    TargetValue: Float
+    PredefinedScalingMetricSpecification: PredefinedScalingMetricSpecification?
+    DisableScaleIn: Boolean?
+    ScaleInCooldown: Int?
+    EstimatedInstanceWarmup: Int?
+    CustomizedScalingMetricSpecification: CustomizedScalingMetricSpecification?
+}
+class PredefinedScalingMetricSpecification {
+    ResourceLabel: String?
+    PredefinedScalingMetricType: String
+}
+class CustomizedScalingMetricSpecification {
+    MetricName: String
+    Statistic: String
+    Dimensions: Listing<MetricDimension>?
+    Unit: String?
+    Namespace: String
+}
+class MetricDimension {
+    Value: String
+    Name: String
+}
+class CustomizedLoadMetricSpecification {
+    MetricName: String
+    Statistic: String
+    Dimensions: Listing<MetricDimension>?
+    Unit: String?
+    Namespace: String
+}
+class PredefinedLoadMetricSpecification {
+    PredefinedLoadMetricType: String
+    ResourceLabel: String?
+}

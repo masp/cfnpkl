@@ -1,0 +1,19 @@
+/// Resource schema for AWS::Route53Resolver::ResolverConfig.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53Resolver::ResolverConfig"
+Properties: Props?
+class Props {
+    /// Id
+    Id: String(length <= 64 && length >= 1)?
+    /// AccountId
+    OwnerId: String(length <= 32 && length >= 12)?
+    /// ResourceId
+    ResourceId: String(length <= 64 && length >= 1)?
+    /// ResolverAutodefinedReverseStatus, possible values are ENABLING,
+    /// ENABLED, DISABLING AND DISABLED.
+    AutodefinedReverse: "ENABLING" | "ENABLED" | "DISABLING" | "DISABLED" | *Null
+    /// Represents the desired status of AutodefinedReverse. The only
+    /// supported value on creation is DISABLE. Deletion of this resource will
+    /// return AutodefinedReverse to its default value (ENABLED).
+    AutodefinedReverseFlag: "DISABLE" | *Null
+}

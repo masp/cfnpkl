@@ -1,0 +1,48 @@
+/// The AWS::NetworkManager::Link type describes a link.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkManager::Link"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the link.
+    LinkArn: String?
+    /// The ID of the link.
+    LinkId: String?
+    /// The ID of the global network.
+    GlobalNetworkId: String?
+    /// The ID of the site
+    SiteId: String?
+    /// The Bandwidth for the link.
+    Bandwidth: Bandwidth?
+    /// The provider of the link.
+    Provider: String?
+    /// The description of the link.
+    Description: String?
+    /// The tags for the link.
+    Tags: Listing<Tag>?
+    /// The type of the link.
+    Type: String?
+    /// The date and time that the device was created.
+    CreatedAt: String?
+    /// The state of the link.
+    State: String?
+}
+/// The bandwidth for the link.
+class Bandwidth {
+    /// Download speed in Mbps.
+    DownloadSpeed: Int?
+    /// Upload speed in Mbps.
+    UploadSpeed: Int?
+}
+/// A key-value pair to associate with a link resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String
+}

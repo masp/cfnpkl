@@ -1,0 +1,189 @@
+/// Resource Type definition for AWS::CloudFront::Distribution
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::Distribution"
+Properties: Props?
+class Props {
+    DistributionConfig: DistributionConfig?
+    DomainName: String?
+    Id: String?
+    Tags: Listing<Tag>?
+}
+class DistributionConfig {
+    Aliases: Listing<String>?
+    CNAMEs: Listing<String>?
+    CacheBehaviors: Listing<CacheBehavior>?
+    Comment: String?
+    ContinuousDeploymentPolicyId: String?
+    CustomErrorResponses: Listing<CustomErrorResponse>?
+    CustomOrigin: LegacyCustomOrigin?
+    DefaultCacheBehavior: DefaultCacheBehavior
+    DefaultRootObject: String?
+    Enabled: Boolean
+    HttpVersion: String?
+    IPV6Enabled: Boolean?
+    Logging: Logging?
+    OriginGroups: OriginGroups?
+    Origins: Listing<Origin>?
+    PriceClass: String?
+    Restrictions: Restrictions?
+    S3Origin: LegacyS3Origin?
+    Staging: Boolean?
+    ViewerCertificate: ViewerCertificate?
+    WebACLId: String?
+}
+class CacheBehavior {
+    AllowedMethods: Listing<String>?
+    CachePolicyId: String?
+    CachedMethods: Listing<String>?
+    Compress: Boolean?
+    DefaultTTL: Float?
+    FieldLevelEncryptionId: String?
+    ForwardedValues: ForwardedValues?
+    FunctionAssociations: Listing<FunctionAssociation>?
+    LambdaFunctionAssociations: Listing<LambdaFunctionAssociation>?
+    MaxTTL: Float?
+    MinTTL: Float?
+    OriginRequestPolicyId: String?
+    PathPattern: String
+    RealtimeLogConfigArn: String?
+    ResponseHeadersPolicyId: String?
+    SmoothStreaming: Boolean?
+    TargetOriginId: String
+    TrustedKeyGroups: Listing<String>?
+    TrustedSigners: Listing<String>?
+    ViewerProtocolPolicy: String
+}
+class ForwardedValues {
+    Cookies: Cookies?
+    Headers: Listing<String>?
+    QueryString: Boolean
+    QueryStringCacheKeys: Listing<String>?
+}
+class Cookies {
+    Forward: String
+    WhitelistedNames: Listing<String>?
+}
+class FunctionAssociation {
+    EventType: String?
+    FunctionARN: String?
+}
+class LambdaFunctionAssociation {
+    EventType: String?
+    IncludeBody: Boolean?
+    LambdaFunctionARN: String?
+}
+class CustomErrorResponse {
+    ErrorCachingMinTTL: Float?
+    ErrorCode: Int
+    ResponseCode: Int?
+    ResponsePagePath: String?
+}
+class LegacyCustomOrigin {
+    DNSName: String
+    HTTPPort: Int?
+    HTTPSPort: Int?
+    OriginProtocolPolicy: String
+    OriginSSLProtocols: Listing<String>
+}
+class DefaultCacheBehavior {
+    AllowedMethods: Listing<String>?
+    CachePolicyId: String?
+    CachedMethods: Listing<String>?
+    Compress: Boolean?
+    DefaultTTL: Float?
+    FieldLevelEncryptionId: String?
+    ForwardedValues: ForwardedValues?
+    FunctionAssociations: Listing<FunctionAssociation>?
+    LambdaFunctionAssociations: Listing<LambdaFunctionAssociation>?
+    MaxTTL: Float?
+    MinTTL: Float?
+    OriginRequestPolicyId: String?
+    RealtimeLogConfigArn: String?
+    ResponseHeadersPolicyId: String?
+    SmoothStreaming: Boolean?
+    TargetOriginId: String
+    TrustedKeyGroups: Listing<String>?
+    TrustedSigners: Listing<String>?
+    ViewerProtocolPolicy: String
+}
+class Logging {
+    Bucket: String
+    IncludeCookies: Boolean?
+    Prefix: String?
+}
+class OriginGroups {
+    Items: Listing<OriginGroup>?
+    Quantity: Int
+}
+class OriginGroup {
+    FailoverCriteria: OriginGroupFailoverCriteria
+    Id: String
+    Members: OriginGroupMembers
+}
+class OriginGroupFailoverCriteria {
+    StatusCodes: StatusCodes
+}
+class StatusCodes {
+    Items: Listing<Int>
+    Quantity: Int
+}
+class OriginGroupMembers {
+    Items: Listing<OriginGroupMember>
+    Quantity: Int
+}
+class OriginGroupMember {
+    OriginId: String
+}
+class Origin {
+    ConnectionAttempts: Int?
+    ConnectionTimeout: Int?
+    CustomOriginConfig: CustomOriginConfig?
+    DomainName: String
+    Id: String
+    OriginAccessControlId: String?
+    OriginCustomHeaders: Listing<OriginCustomHeader>?
+    OriginPath: String?
+    OriginShield: OriginShield?
+    S3OriginConfig: S3OriginConfig?
+}
+class CustomOriginConfig {
+    HTTPPort: Int?
+    HTTPSPort: Int?
+    OriginKeepaliveTimeout: Int?
+    OriginProtocolPolicy: String
+    OriginReadTimeout: Int?
+    OriginSSLProtocols: Listing<String>?
+}
+class OriginCustomHeader {
+    HeaderName: String
+    HeaderValue: String
+}
+class OriginShield {
+    Enabled: Boolean?
+    OriginShieldRegion: String?
+}
+class S3OriginConfig {
+    OriginAccessIdentity: String?
+}
+class Restrictions {
+    GeoRestriction: GeoRestriction
+}
+class GeoRestriction {
+    Locations: Listing<String>?
+    RestrictionType: String
+}
+class LegacyS3Origin {
+    DNSName: String
+    OriginAccessIdentity: String?
+}
+class ViewerCertificate {
+    AcmCertificateArn: String?
+    CloudFrontDefaultCertificate: Boolean?
+    IamCertificateId: String?
+    MinimumProtocolVersion: String?
+    SslSupportMethod: String?
+}
+class Tag {
+    Key: String
+    Value: String
+}

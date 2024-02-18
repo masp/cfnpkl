@@ -1,0 +1,25 @@
+/// A KendraRanking Rescore execution plan
+extends ".../AWS/Resource.pkl"
+Type = "AWS::KendraRanking::ExecutionPlan"
+Properties: Props?
+class Props {
+    Id: String(length <= 36 && length >= 36)?
+    Arn: String(length <= 1000)?
+    /// A description for the execution plan
+    Description: String(length <= 1000)?
+    /// Tags for labeling the execution plan
+    Tags: Listing<Tag>?
+    Name: String(length <= 1000 && length >= 1)?
+    /// Capacity units
+    CapacityUnits: CapacityUnitsConfiguration?
+}
+/// A label for tagging KendraRanking resources
+class Tag {
+    /// A string used to identify this tag
+    Key: String(length <= 128 && length >= 1)
+    /// A string containing the value for the tag
+    Value: String(length <= 256 && length >= 0)
+}
+class CapacityUnitsConfiguration {
+    RescoreCapacityUnits: Int
+}

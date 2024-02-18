@@ -1,0 +1,56 @@
+/// Configures the Device Defender audit settings for this account.
+/// Settings include how audit notifications are sent and which audit
+/// checks are enabled or disabled.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::AccountAuditConfiguration"
+Properties: Props?
+class Props {
+    /// Your 12-digit account ID (used as the primary identifier for the
+    /// CloudFormation resource).
+    AccountId: String(length <= 12 && length >= 12)?
+    AuditCheckConfigurations: AuditCheckConfigurations?
+    AuditNotificationTargetConfigurations: AuditNotificationTargetConfigurations?
+    /// The ARN of the role that grants permission to AWS IoT to access
+    /// information about your devices, policies, certificates and other items
+    /// as required when performing an audit.
+    RoleArn: String(length <= 2048 && length >= 20)?
+}
+/// Specifies which audit checks are enabled and disabled for this
+/// account.
+class AuditCheckConfigurations {
+    AuthenticatedCognitoRoleOverlyPermissiveCheck: AuditCheckConfiguration?
+    CaCertificateExpiringCheck: AuditCheckConfiguration?
+    CaCertificateKeyQualityCheck: AuditCheckConfiguration?
+    ConflictingClientIdsCheck: AuditCheckConfiguration?
+    DeviceCertificateExpiringCheck: AuditCheckConfiguration?
+    DeviceCertificateKeyQualityCheck: AuditCheckConfiguration?
+    DeviceCertificateSharedCheck: AuditCheckConfiguration?
+    IotPolicyOverlyPermissiveCheck: AuditCheckConfiguration?
+    IotRoleAliasAllowsAccessToUnusedServicesCheck: AuditCheckConfiguration?
+    IotRoleAliasOverlyPermissiveCheck: AuditCheckConfiguration?
+    LoggingDisabledCheck: AuditCheckConfiguration?
+    RevokedCaCertificateStillActiveCheck: AuditCheckConfiguration?
+    RevokedDeviceCertificateStillActiveCheck: AuditCheckConfiguration?
+    UnauthenticatedCognitoRoleOverlyPermissiveCheck: AuditCheckConfiguration?
+    IntermediateCaRevokedForActiveDeviceCertificatesCheck: AuditCheckConfiguration?
+    IoTPolicyPotentialMisConfigurationCheck: AuditCheckConfiguration?
+}
+/// The configuration for a specific audit check.
+class AuditCheckConfiguration {
+    /// True if the check is enabled.
+    Enabled: Boolean?
+}
+/// Information about the targets to which audit notifications are sent.
+class AuditNotificationTargetConfigurations {
+    Sns: AuditNotificationTarget?
+}
+class AuditNotificationTarget {
+    /// The ARN of the target (SNS topic) to which audit notifications are
+    /// sent.
+    TargetArn: String(length <= 2048)?
+    /// The ARN of the role that grants permission to send notifications to
+    /// the target.
+    RoleArn: String(length <= 2048 && length >= 20)?
+    /// True if notifications to the target are enabled.
+    Enabled: Boolean?
+}

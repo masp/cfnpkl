@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::Lightsail::StaticIp
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lightsail::StaticIp"
+Properties: Props?
+class Props {
+    /// The name of the static IP address.
+    StaticIpName: String?
+    /// The instance where the static IP is attached.
+    AttachedTo: String?
+    /// A Boolean value indicating whether the static IP is attached.
+    IsAttached: Boolean?
+    /// The static IP address.
+    IpAddress: String?
+    StaticIpArn: String?
+}

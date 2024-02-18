@@ -1,0 +1,39 @@
+/// AWS Cost Anomaly Detection leverages advanced Machine Learning
+/// technologies to identify anomalous spend and root causes, so you can
+/// quickly take action. Create subscription to be notified
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CE::AnomalySubscription"
+Properties: Props?
+class Props {
+    SubscriptionArn: String(matches(Regex(#"^arn:aws[-a-z0-9]*:[a-z0-9]+:[-a-z0-9]*:[0-9]{12}:[-a-zA-Z0-9/:_]+$"#)))?
+    /// The name of the subscription.
+    SubscriptionName: String(length <= 1024 && length >= 0 && matches(Regex(#"[\S\s]*"#)))?
+    /// The accountId
+    AccountId: String(length <= 1024 && length >= 0)?
+    /// A list of cost anomaly monitors.
+    MonitorArnList: Listing<String(matches(Regex(#"^arn:aws[-a-z0-9]*:[a-z0-9]+:[-a-z0-9]*:[0-9]{12}:[-a-zA-Z0-9/:_]+$"#)))>?
+    /// A list of subscriber
+    Subscribers: Listing<Subscriber>?
+    /// The dollar value that triggers a notification if the threshold is
+    /// exceeded.
+    Threshold: Float?
+    /// An Expression object in JSON String format used to specify the
+    /// anomalies that you want to generate alerts for.
+    ThresholdExpression: String?
+    /// The frequency at which anomaly reports are sent over email.
+    Frequency: "DAILY" | "IMMEDIATE" | "WEEKLY" | *Null
+    /// Tags to assign to subscription.
+    ResourceTags: Listing<ResourceTag>?
+}
+class Subscriber {
+    Address: String(matches(Regex(#"(^[a-zA-Z0-9.!#$%&'*+=?^_‘{|}~-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$)|(^arn:(aws[a-zA-Z-]*):sns:[a-zA-Z0-9-]+:[0-9]{12}:[a-zA-Z0-9_-]+(\.fifo)?$)"#)))
+    Status: "CONFIRMED" | "DECLINED" | *Null
+    Type: "EMAIL" | "SNS"
+}
+/// A key-value pair to associate with a resource.
+class ResourceTag {
+    /// The key name for the tag.
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:).*$"#)))
+    /// The value for the tag.
+    Value: String(length <= 256 && length >= 0)
+}

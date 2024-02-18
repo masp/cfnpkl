@@ -1,0 +1,37 @@
+/// Resource Schema of AWS::EC2::IPAMScope Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::IPAMScope"
+Properties: Props?
+class Props {
+    /// Id of the IPAM scope.
+    IpamScopeId: String?
+    /// The Amazon Resource Name (ARN) of the IPAM scope.
+    Arn: String?
+    /// The Id of the IPAM this scope is a part of.
+    IpamId: String?
+    /// The Amazon Resource Name (ARN) of the IPAM this scope is a part of.
+    IpamArn: String?
+    /// Determines whether this scope contains publicly routable space or
+    /// space for a private network
+    IpamScopeType: "public" | "private" | *Null
+    /// Is this one of the default scopes created with the IPAM.
+    IsDefault: Boolean?
+    Description: String?
+    /// The number of pools that currently exist in this scope.
+    PoolCount: Int?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

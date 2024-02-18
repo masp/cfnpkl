@@ -1,0 +1,244 @@
+/// Resource Type definition for AWS::IoT::TopicRule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::TopicRule"
+Properties: Props?
+class Props {
+    Arn: String?
+    RuleName: String?
+    TopicRulePayload: TopicRulePayload?
+    Tags: Listing<Tag>?
+}
+class TopicRulePayload {
+    RuleDisabled: Boolean?
+    ErrorAction: Action?
+    Description: String?
+    AwsIotSqlVersion: String?
+    Actions: Listing<Action>
+    Sql: String
+}
+class Action {
+    CloudwatchAlarm: CloudwatchAlarmAction?
+    CloudwatchLogs: CloudwatchLogsAction?
+    CloudwatchMetric: CloudwatchMetricAction?
+    DynamoDB: DynamoDBAction?
+    DynamoDBv2: DynamoDBv2Action?
+    Elasticsearch: ElasticsearchAction?
+    Firehose: FirehoseAction?
+    Http: HttpAction?
+    IotAnalytics: IotAnalyticsAction?
+    IotEvents: IotEventsAction?
+    IotSiteWise: IotSiteWiseAction?
+    Kafka: KafkaAction?
+    Kinesis: KinesisAction?
+    Lambda: LambdaAction?
+    Location: LocationAction?
+    OpenSearch: OpenSearchAction?
+    Republish: RepublishAction?
+    S3: S3Action?
+    Sns: SnsAction?
+    Sqs: SqsAction?
+    StepFunctions: StepFunctionsAction?
+    Timestream: TimestreamAction?
+}
+class CloudwatchAlarmAction {
+    StateValue: String
+    AlarmName: String
+    StateReason: String
+    RoleArn: String
+}
+class CloudwatchLogsAction {
+    LogGroupName: String
+    RoleArn: String
+    BatchMode: Boolean?
+}
+class CloudwatchMetricAction {
+    MetricName: String
+    MetricValue: String
+    MetricNamespace: String
+    MetricUnit: String
+    RoleArn: String
+    MetricTimestamp: String?
+}
+class DynamoDBAction {
+    TableName: String
+    PayloadField: String?
+    RangeKeyField: String?
+    HashKeyField: String
+    RangeKeyValue: String?
+    RangeKeyType: String?
+    HashKeyType: String?
+    HashKeyValue: String
+    RoleArn: String
+}
+class DynamoDBv2Action {
+    PutItem: PutItemInput?
+    RoleArn: String?
+}
+class PutItemInput {
+    TableName: String
+}
+class ElasticsearchAction {
+    Type: String
+    Index: String
+    Id: String
+    Endpoint: String
+    RoleArn: String
+}
+class FirehoseAction {
+    DeliveryStreamName: String
+    RoleArn: String
+    Separator: String?
+    BatchMode: Boolean?
+}
+class HttpAction {
+    ConfirmationUrl: String?
+    Headers: Listing<HttpActionHeader>?
+    Url: String
+    Auth: HttpAuthorization?
+}
+class HttpActionHeader {
+    Value: String
+    Key: String
+}
+class HttpAuthorization {
+    Sigv4: SigV4Authorization?
+}
+class SigV4Authorization {
+    ServiceName: String
+    SigningRegion: String
+    RoleArn: String
+}
+class IotAnalyticsAction {
+    RoleArn: String
+    ChannelName: String
+    BatchMode: Boolean?
+}
+class IotEventsAction {
+    InputName: String
+    RoleArn: String
+    MessageId: String?
+    BatchMode: Boolean?
+}
+class IotSiteWiseAction {
+    RoleArn: String
+    PutAssetPropertyValueEntries: Listing<PutAssetPropertyValueEntry>
+}
+class PutAssetPropertyValueEntry {
+    PropertyAlias: String?
+    PropertyValues: Listing<AssetPropertyValue>
+    AssetId: String?
+    EntryId: String?
+    PropertyId: String?
+}
+class AssetPropertyValue {
+    Value: AssetPropertyVariant
+    Timestamp: AssetPropertyTimestamp
+    Quality: String?
+}
+class AssetPropertyVariant {
+    StringValue: String?
+    DoubleValue: String?
+    BooleanValue: String?
+    IntegerValue: String?
+}
+class AssetPropertyTimestamp {
+    TimeInSeconds: String
+    OffsetInNanos: String?
+}
+class KafkaAction {
+    DestinationArn: String
+    Topic: String
+    Key: String?
+    Partition: String?
+    ClientProperties: Mapping
+    Headers: Listing<KafkaActionHeader>?
+}
+class KafkaActionHeader {
+    Value: String
+    Key: String
+}
+class KinesisAction {
+    PartitionKey: String?
+    StreamName: String
+    RoleArn: String
+}
+class LambdaAction {
+    FunctionArn: String?
+}
+class LocationAction {
+    RoleArn: String
+    TrackerName: String
+    DeviceId: String
+    Latitude: String
+    Longitude: String
+    Timestamp: Timestamp?
+}
+class Timestamp {
+    Value: String
+    Unit: String?
+}
+class OpenSearchAction {
+    Type: String
+    Index: String
+    Id: String
+    Endpoint: String
+    RoleArn: String
+}
+class RepublishAction {
+    Qos: Int?
+    Topic: String
+    RoleArn: String
+    Headers: RepublishActionHeaders?
+}
+class RepublishActionHeaders {
+    PayloadFormatIndicator: String(length <= 1024 && length >= 0)?
+    ContentType: String(length <= 1024 && length >= 0)?
+    ResponseTopic: String(length <= 1024 && length >= 0)?
+    CorrelationData: String(length <= 1024 && length >= 0)?
+    MessageExpiry: String(length <= 1024 && length >= 0)?
+    UserProperties: Listing<UserProperty>?
+}
+class UserProperty {
+    Key: String(length <= 1024 && length >= 0)
+    Value: String(length <= 1024 && length >= 0)
+}
+class S3Action {
+    BucketName: String
+    Key: String
+    RoleArn: String
+    CannedAcl: "private" | "public-read" | "public-read-write" | "aws-exec-read" | "authenticated-read" | "bucket-owner-read" | "bucket-owner-full-control" | "log-delivery-write" | *Null
+}
+class SnsAction {
+    TargetArn: String
+    MessageFormat: String?
+    RoleArn: String
+}
+class SqsAction {
+    RoleArn: String
+    UseBase64: Boolean?
+    QueueUrl: String
+}
+class StepFunctionsAction {
+    ExecutionNamePrefix: String?
+    StateMachineName: String
+    RoleArn: String
+}
+class TimestreamAction {
+    RoleArn: String
+    DatabaseName: String
+    TableName: String
+    Dimensions: Listing<TimestreamDimension>
+    Timestamp: TimestreamTimestamp?
+}
+class TimestreamDimension {
+    Name: String
+    Value: String
+}
+class TimestreamTimestamp {
+    Value: String
+    Unit: String
+}
+class Tag {
+    Key: String
+    Value: String
+}

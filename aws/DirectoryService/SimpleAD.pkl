@@ -1,0 +1,21 @@
+/// Resource Type definition for AWS::DirectoryService::SimpleAD
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DirectoryService::SimpleAD"
+Properties: Props?
+class Props {
+    Id: String?
+    Alias: String?
+    DnsIpAddresses: Listing<String>?
+    CreateAlias: Boolean?
+    Description: String?
+    EnableSso: Boolean?
+    Name: String?
+    Password: String?
+    ShortName: String?
+    Size: String?
+    VpcSettings: VpcSettings?
+}
+class VpcSettings {
+    SubnetIds: Listing<String>
+    VpcId: String
+}

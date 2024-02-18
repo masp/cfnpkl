@@ -1,0 +1,39 @@
+/// Resource Type definition for AWS::EC2::SecurityGroupEgress
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::SecurityGroupEgress"
+Properties: Props?
+class Props {
+    /// The IPv4 ranges
+    CidrIp: String?
+    /// [VPC only] The IPv6 ranges
+    CidrIpv6: String?
+    /// Resource Type definition for an egress (outbound) security group rule.
+    Description: String?
+    /// The start of port range for the TCP and UDP protocols, or an
+    /// ICMP/ICMPv6 type number. A value of -1 indicates all ICMP/ICMPv6
+    /// types. If you specify all ICMP/ICMPv6 types, you must specify all
+    /// codes.
+    FromPort: Int?
+    /// The end of port range for the TCP and UDP protocols, or an ICMP/ICMPv6
+    /// code. A value of -1 indicates all ICMP/ICMPv6 codes. If you specify
+    /// all ICMP/ICMPv6 types, you must specify all codes.
+    ToPort: Int?
+    /// [VPC only] Use -1 to specify all protocols. When authorizing security
+    /// group rules, specifying -1 or a protocol number other than tcp, udp,
+    /// icmp, or icmpv6 allows traffic on all ports, regardless of any port
+    /// range you specify. For tcp, udp, and icmp, you must specify a port
+    /// range. For icmpv6, the port range is optional; if you omit the port
+    /// range, traffic for all types and codes is allowed.
+    IpProtocol: String?
+    /// You must specify a destination security group (DestinationPrefixListId
+    /// or DestinationSecurityGroupId) or a CIDR range (CidrIp or CidrIpv6).
+    DestinationSecurityGroupId: String?
+    /// The Security Group Rule Id
+    Id: String?
+    /// [EC2-VPC only] The ID of a prefix list.
+    DestinationPrefixListId: String?
+    /// The ID of the security group. You must specify either the security
+    /// group ID or the security group name in the request. For security
+    /// groups in a nondefault VPC, you must specify the security group ID.
+    GroupId: String?
+}

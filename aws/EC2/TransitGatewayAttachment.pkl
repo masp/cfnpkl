@@ -1,0 +1,29 @@
+/// Resource Type definition for AWS::EC2::TransitGatewayAttachment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::TransitGatewayAttachment"
+Properties: Props?
+class Props {
+    /// The options for the transit gateway vpc attachment.
+    Options: Options?
+    TransitGatewayId: String?
+    VpcId: String?
+    Id: String?
+    SubnetIds: Listing<String>?
+    Tags: Listing<Tag>?
+}
+/// The options for the transit gateway vpc attachment.
+class Options {
+    /// Indicates whether to enable Ipv6 Support for Vpc Attachment. Valid
+    /// Values: enable | disable
+    Ipv6Support: String?
+    /// Indicates whether to enable Ipv6 Support for Vpc Attachment. Valid
+    /// Values: enable | disable
+    ApplianceModeSupport: String?
+    /// Indicates whether to enable DNS Support for Vpc Attachment. Valid
+    /// Values: enable | disable
+    DnsSupport: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

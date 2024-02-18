@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::IoT::Policy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::Policy"
+Properties: Props?
+class Props {
+    Id: String?
+    Arn: String?
+    PolicyDocument: Mapping | String | *Null
+    PolicyName: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

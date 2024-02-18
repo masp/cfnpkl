@@ -1,0 +1,12 @@
+/// Resource Type definition for AWS::Inspector::ResourceGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Inspector::ResourceGroup"
+Properties: Props?
+class Props {
+    Arn: String?
+    ResourceGroupTags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

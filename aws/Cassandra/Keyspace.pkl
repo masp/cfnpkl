@@ -1,0 +1,18 @@
+/// Resource schema for AWS::Cassandra::Keyspace
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cassandra::Keyspace"
+Properties: Props?
+class Props {
+    /// Name for Cassandra keyspace
+    KeyspaceName: String(matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9_]{1,47}$"#)))?
+    Tags: Listing<Tag>?
+    ReplicationSpecification: ReplicationSpecification?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}
+class ReplicationSpecification {
+    ReplicationStrategy: "SINGLE_REGION" | "MULTI_REGION" | *Null
+    RegionList: Listing<"ap-northeast-1" | "ap-northeast-2" | "ap-south-1" | "ap-southeast-1" | "ap-southeast-2" | "ca-central-1" | "eu-central-1" | "eu-north-1" | "eu-west-1" | "eu-west-2" | "eu-west-3" | "sa-east-1" | "us-east-1" | "us-east-2" | "us-west-1" | "us-west-2">?
+}

@@ -1,0 +1,111 @@
+/// Resource Type definition for AWS::KafkaConnect::Connector
+extends ".../AWS/Resource.pkl"
+Type = "AWS::KafkaConnect::Connector"
+Properties: Props?
+class Props {
+    Capacity: Mapping | Mapping | *Null
+    /// Amazon Resource Name for the created Connector.
+    ConnectorArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):kafkaconnect:.*"#)))?
+    /// The configuration for the connector.
+    ConnectorConfiguration: Mapping?
+    /// A summary description of the connector.
+    ConnectorDescription: String(length <= 1024)?
+    /// The name of the connector.
+    ConnectorName: String(length <= 128 && length >= 1)?
+    KafkaCluster: KafkaCluster?
+    KafkaClusterClientAuthentication: KafkaClusterClientAuthentication?
+    KafkaClusterEncryptionInTransit: KafkaClusterEncryptionInTransit?
+    /// The version of Kafka Connect. It has to be compatible with both the
+    /// Kafka cluster's version and the plugins.
+    KafkaConnectVersion: String?
+    LogDelivery: LogDelivery?
+    /// List of plugins to use with the connector.
+    Plugins: Listing<Plugin>?
+    /// The Amazon Resource Name (ARN) of the IAM role used by the connector
+    /// to access Amazon S3 objects and other external resources.
+    ServiceExecutionRoleArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):iam:.*"#)))?
+    WorkerConfiguration: WorkerConfiguration?
+}
+/// Details of how to connect to the Kafka cluster.
+class KafkaCluster {
+    ApacheKafkaCluster: ApacheKafkaCluster
+}
+/// Details of how to connect to an Apache Kafka cluster.
+class ApacheKafkaCluster {
+    /// The bootstrap servers string of the Apache Kafka cluster.
+    BootstrapServers: String
+    Vpc: Vpc
+}
+/// Information about a VPC used with the connector.
+class Vpc {
+    /// The AWS security groups to associate with the elastic network
+    /// interfaces in order to specify what the connector has access to.
+    SecurityGroups: Listing<String>
+    /// The list of subnets to connect to in the virtual private cloud (VPC).
+    /// AWS creates elastic network interfaces inside these subnets.
+    Subnets: Listing<String>
+}
+/// Details of the client authentication used by the Kafka cluster.
+class KafkaClusterClientAuthentication {
+    AuthenticationType: "NONE" | "IAM"
+}
+/// Details of encryption in transit to the Kafka cluster.
+class KafkaClusterEncryptionInTransit {
+    EncryptionType: "PLAINTEXT" | "TLS"
+}
+/// Details of what logs are delivered and where they are delivered.
+class LogDelivery {
+    WorkerLogDelivery: WorkerLogDelivery
+}
+/// Specifies where worker logs are delivered.
+class WorkerLogDelivery {
+    CloudWatchLogs: CloudWatchLogsLogDelivery?
+    Firehose: FirehoseLogDelivery?
+    S3: S3LogDelivery?
+}
+/// Details about delivering logs to Amazon CloudWatch Logs.
+class CloudWatchLogsLogDelivery {
+    /// Specifies whether the logs get sent to the specified CloudWatch Logs
+    /// destination.
+    Enabled: Boolean
+    /// The CloudWatch log group that is the destination for log delivery.
+    LogGroup: String?
+}
+/// Details about delivering logs to Amazon Kinesis Data Firehose.
+class FirehoseLogDelivery {
+    /// The Kinesis Data Firehose delivery stream that is the destination for
+    /// log delivery.
+    DeliveryStream: String?
+    /// Specifies whether the logs get sent to the specified Kinesis Data
+    /// Firehose delivery stream.
+    Enabled: Boolean
+}
+/// Details about delivering logs to Amazon S3.
+class S3LogDelivery {
+    /// The name of the S3 bucket that is the destination for log delivery.
+    Bucket: String?
+    /// Specifies whether the logs get sent to the specified Amazon S3
+    /// destination.
+    Enabled: Boolean
+    /// The S3 prefix that is the destination for log delivery.
+    Prefix: String?
+}
+/// Details about a Kafka Connect plugin which will be used with the
+/// connector.
+class Plugin {
+    CustomPlugin: CustomPlugin
+}
+/// Details about a custom plugin.
+class CustomPlugin {
+    /// The Amazon Resource Name (ARN) of the custom plugin to use.
+    CustomPluginArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):kafkaconnect:.*"#)))
+    /// The revision of the custom plugin to use.
+    Revision: Int
+}
+/// Specifies the worker configuration to use with the connector.
+class WorkerConfiguration {
+    /// The revision of the worker configuration to use.
+    Revision: Int
+    /// The Amazon Resource Name (ARN) of the worker configuration to use.
+    WorkerConfigurationArn: String(matches(Regex(#"arn:(aws|aws-us-gov|aws-cn):kafkaconnect:.*"#)))
+}

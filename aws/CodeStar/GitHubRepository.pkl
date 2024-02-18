@@ -1,0 +1,23 @@
+/// Resource Type definition for AWS::CodeStar::GitHubRepository
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodeStar::GitHubRepository"
+Properties: Props?
+class Props {
+    EnableIssues: Boolean?
+    ConnectionArn: String?
+    RepositoryName: String?
+    RepositoryAccessToken: String?
+    Id: String?
+    RepositoryOwner: String?
+    IsPrivate: Boolean?
+    Code: Code?
+    RepositoryDescription: String?
+}
+class Code {
+    S3: S3
+}
+class S3 {
+    ObjectVersion: String?
+    Bucket: String
+    Key: String
+}

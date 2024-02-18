@@ -1,0 +1,11 @@
+/// Resource schema for AWS::Detective::OrganizationAdmin
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Detective::OrganizationAdmin"
+Properties: Props?
+class Props {
+    /// The account ID of the account that should be registered as your
+    /// Organization's delegated administrator for Detective
+    AccountId: String(matches(Regex(#"[0-9]{12}"#)))?
+    /// The Detective graph ARN
+    GraphArn: String?
+}

@@ -1,0 +1,10 @@
+/// Resource schema for AWS::FIS::TargetAccountConfiguration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FIS::TargetAccountConfiguration"
+Properties: Props?
+class Props {
+    ExperimentTemplateId: String?
+    AccountId: String(length <= 512)?
+    RoleArn: String(length <= 1224)?
+    Description: String(length <= 512)?
+}

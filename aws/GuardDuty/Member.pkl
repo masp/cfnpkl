@@ -1,0 +1,12 @@
+/// Resource Type definition for AWS::GuardDuty::Member
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GuardDuty::Member"
+Properties: Props?
+class Props {
+    Status: String?
+    MemberId: String?
+    Email: String?
+    Message: String?
+    DisableEmailNotification: Boolean?
+    DetectorId: String?
+}

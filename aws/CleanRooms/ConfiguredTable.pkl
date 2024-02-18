@@ -1,0 +1,71 @@
+/// Represents a table that can be associated with collaborations
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CleanRooms::ConfiguredTable"
+Properties: Props?
+class Props {
+    Arn: String(length <= 100)?
+    /// An arbitrary set of tags (key-value pairs) for this cleanrooms
+    /// collaboration.
+    Tags: Listing<Tag>?
+    AllowedColumns: Listing<String(length <= 128 && matches(Regex(#"^[a-z0-9_](([a-z0-9_ ]+-)*([a-z0-9_ ]+))?$"#)))>?
+    AnalysisMethod: "DIRECT_QUERY" | *Null
+    ConfiguredTableIdentifier: String(length <= 36 && length >= 36 && matches(Regex(#"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"#)))?
+    Description: String(length <= 255 && matches(Regex(#"^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDBFF-\uDC00\uDFFF\t\r\n]*$"#)))?
+    Name: String(length <= 100 && length >= 1 && matches(Regex(#"^(?!\s*$)[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDBFF-\uDC00\uDFFF\t]*$"#)))?
+    AnalysisRules: Listing<AnalysisRule>?
+    TableReference: TableReference?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}
+class AnalysisRule {
+    Type: "AGGREGATION" | "LIST" | "CUSTOM"
+    Policy: ConfiguredTableAnalysisRulePolicy
+}
+class ConfiguredTableAnalysisRulePolicy {
+    V1: ConfiguredTableAnalysisRulePolicyV10 | ConfiguredTableAnalysisRulePolicyV11 | ConfiguredTableAnalysisRulePolicyV12
+}
+class ConfiguredTableAnalysisRulePolicyV10 {
+    List: AnalysisRuleList
+}
+class AnalysisRuleList {
+    JoinColumns: Listing<String(length <= 127 && length >= 1 && matches(Regex(#"^[a-z0-9_](([a-z0-9_ ]+-)*([a-z0-9_ ]+))?$"#)))>
+    AllowedJoinOperators: Listing<"OR" | "AND">?
+    ListColumns: Listing<String(length <= 127 && length >= 1 && matches(Regex(#"^[a-z0-9_](([a-z0-9_ ]+-)*([a-z0-9_ ]+))?$"#)))>
+}
+class ConfiguredTableAnalysisRulePolicyV11 {
+    Aggregation: AnalysisRuleAggregation
+}
+class AnalysisRuleAggregation {
+    AggregateColumns: Listing<AggregateColumn>
+    JoinColumns: Listing<String(length <= 127 && length >= 1 && matches(Regex(#"^[a-z0-9_](([a-z0-9_ ]+-)*([a-z0-9_ ]+))?$"#)))>
+    AllowedJoinOperators: Listing<"OR" | "AND">?
+    JoinRequired: "QUERY_RUNNER" | *Null
+    DimensionColumns: Listing<String(length <= 127 && length >= 1 && matches(Regex(#"^[a-z0-9_](([a-z0-9_ ]+-)*([a-z0-9_ ]+))?$"#)))>
+    ScalarFunctions: Listing<"TRUNC" | "ABS" | "CEILING" | "FLOOR" | "LN" | "LOG" | "ROUND" | "SQRT" | "CAST" | "LOWER" | "RTRIM" | "UPPER" | "COALESCE">
+    OutputConstraints: Listing<AggregationConstraint>
+}
+class AggregateColumn {
+    ColumnNames: Listing<String(length <= 127 && length >= 1 && matches(Regex(#"^[a-z0-9_](([a-z0-9_ ]+-)*([a-z0-9_ ]+))?$"#)))>
+    Function: "SUM" | "SUM_DISTINCT" | "COUNT" | "COUNT_DISTINCT" | "AVG"
+}
+class AggregationConstraint {
+    ColumnName: String(length <= 127 && length >= 1 && matches(Regex(#"^[a-z0-9_](([a-z0-9_ ]+-)*([a-z0-9_ ]+))?$"#)))
+    Minimum: Float
+    Type: "COUNT_DISTINCT"
+}
+class ConfiguredTableAnalysisRulePolicyV12 {
+    Custom: AnalysisRuleCustom
+}
+class AnalysisRuleCustom {
+    AllowedAnalyses: Listing<String(length <= 200 && length >= 0 && matches(Regex(#"(ANY_QUERY|arn:[\w]{3}:cleanrooms:[\w]{2}-[\w]{4,9}-[\d]:[\d]{12}:membership/[\d\w-]+/analysistemplate/[\d\w-]+)"#)))>
+    AllowedAnalysisProviders: Listing<String(length <= 12 && length >= 12 && matches(Regex(#"\d+"#)))>?
+}
+class TableReference {
+    Glue: GlueTableReference
+}
+class GlueTableReference {
+    TableName: String(length <= 128 && matches(Regex(#"^[a-zA-Z0-9_](([a-zA-Z0-9_ ]+-)*([a-zA-Z0-9_ ]+))?$"#)))
+    DatabaseName: String(length <= 128 && matches(Regex(#"^[a-zA-Z0-9_](([a-zA-Z0-9_ ]+-)*([a-zA-Z0-9_ ]+))?$"#)))
+}

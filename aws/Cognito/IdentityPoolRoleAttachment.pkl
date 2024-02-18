@@ -1,0 +1,10 @@
+/// Resource Type definition for AWS::Cognito::IdentityPoolRoleAttachment
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cognito::IdentityPoolRoleAttachment"
+Properties: Props?
+class Props {
+    IdentityPoolId: String?
+    Roles: Mapping?
+    Id: String?
+    RoleMappings: Mapping?
+}

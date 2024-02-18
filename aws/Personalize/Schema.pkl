@@ -1,0 +1,14 @@
+/// Resource schema for AWS::Personalize::Schema.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Personalize::Schema"
+Properties: Props?
+class Props {
+    /// Name for the schema.
+    Name: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9][a-zA-Z0-9\-_]*"#)))?
+    /// Arn for the schema.
+    SchemaArn: String(length <= 256 && matches(Regex(#"arn:([a-z\d-]+):personalize:.*:.*:.+"#)))?
+    /// A schema in Avro JSON format.
+    Schema: String(length <= 10000)?
+    /// The domain of a Domain dataset group.
+    Domain: "ECOMMERCE" | "VIDEO_ON_DEMAND" | *Null
+}

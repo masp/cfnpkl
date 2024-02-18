@@ -1,0 +1,13 @@
+/// Resource Type definition for
+/// AWS::CloudFront::CloudFrontOriginAccessIdentity
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::CloudFrontOriginAccessIdentity"
+Properties: Props?
+class Props {
+    CloudFrontOriginAccessIdentityConfig: CloudFrontOriginAccessIdentityConfig?
+    Id: String?
+    S3CanonicalUserId: String?
+}
+class CloudFrontOriginAccessIdentityConfig {
+    Comment: String
+}

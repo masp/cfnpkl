@@ -1,0 +1,9 @@
+/// Resource Type definition for AWS::CloudWatch::Dashboard
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudWatch::Dashboard"
+Properties: Props?
+class Props {
+    DashboardName: String?
+    DashboardBody: String?
+    Id: String?
+}

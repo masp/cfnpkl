@@ -1,0 +1,17 @@
+amends "pkl:Project"
+
+dependencies {}
+
+package {
+  name = "cfnpkl" 
+  description = "Write CloudFormation templates using Pkl"
+  version = "0.0.1" 
+  baseUri = "package://github.com/masp/cfnpkl"
+  packageZipUrl = "https://github.com/masp/cfnpkl/releases/download/\(name)@\(version)/\(name)@\(version).zip"
+  license = "Apache-2.0"
+  exclude {
+    "Makefile"
+    "cfnjson/**"
+    "aws/gen/**"
+  }
+}

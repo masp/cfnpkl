@@ -1,0 +1,28 @@
+/// Resource Type definition for AWS::AppMesh::Mesh
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppMesh::Mesh"
+Properties: Props?
+class Props {
+    Uid: String?
+    MeshName: String?
+    MeshOwner: String?
+    ResourceOwner: String?
+    Id: String?
+    Arn: String?
+    Spec: MeshSpec?
+    Tags: Listing<Tag>?
+}
+class MeshSpec {
+    EgressFilter: EgressFilter?
+    ServiceDiscovery: MeshServiceDiscovery?
+}
+class EgressFilter {
+    Type: String
+}
+class MeshServiceDiscovery {
+    IpPreference: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

@@ -1,0 +1,37 @@
+/// Resource Schema for AWS::EKS::Addon
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EKS::Addon"
+Properties: Props?
+class Props {
+    /// Name of Cluster
+    ClusterName: String(length >= 1)?
+    /// Name of Addon
+    AddonName: String(length >= 1)?
+    /// Version of Addon
+    AddonVersion: String(length >= 1)?
+    /// PreserveOnDelete parameter value
+    PreserveOnDelete: Boolean?
+    /// Resolve parameter value conflicts
+    ResolveConflicts: "NONE" | "OVERWRITE" | "PRESERVE"(length >= 1) | *Null
+    /// IAM role to bind to the add-on's service account
+    ServiceAccountRoleArn: String(length >= 1)?
+    /// The configuration values to use with the add-on
+    ConfigurationValues: String(length >= 1)?
+    /// Amazon Resource Name (ARN) of the add-on
+    Arn: String?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 127 && length >= 1)
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 255 && length >= 1)
+}

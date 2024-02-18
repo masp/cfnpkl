@@ -1,0 +1,37 @@
+/// Resource Type Definition for AWS::Forecast::Dataset
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Forecast::Dataset"
+Properties: Props?
+class Props {
+    Arn: String(length <= 256 && matches(Regex(#"^[a-zA-Z0-9\-\_\.\/\:]+$"#)))?
+    /// A name for the dataset
+    DatasetName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z][a-zA-Z0-9_]*"#)))?
+    /// The dataset type
+    DatasetType: "TARGET_TIME_SERIES" | "RELATED_TIME_SERIES" | "ITEM_METADATA" | *Null
+    /// Frequency of data collection. This parameter is required for
+    /// RELATED_TIME_SERIES
+    DataFrequency: String(matches(Regex(#"^Y|M|W|D|H|30min|15min|10min|5min|1min$"#)))?
+    /// The domain associated with the dataset
+    Domain: "RETAIL" | "CUSTOM" | "INVENTORY_PLANNING" | "EC2_CAPACITY" | "WORK_FORCE" | "WEB_TRAFFIC" | "METRICS" | *Null
+    EncryptionConfig: EncryptionConfig?
+    Schema: Schema?
+    Tags: Listing<Tags>?
+}
+class EncryptionConfig {
+    KmsKeyArn: String(length <= 256 && matches(Regex(#"arn:aws[-a-z]*:kms:.*:key/.*"#)))?
+    RoleArn: String(length <= 256 && matches(Regex(#"^[a-zA-Z0-9\-\_\.\/\:]+$"#)))?
+}
+class Schema {
+    Attributes: Listing<Attributes>?
+}
+class Attributes {
+    /// Name of the dataset field
+    AttributeName: String(matches(Regex(#"^[a-zA-Z][a-zA-Z0-9_]*"#)))?
+    /// Data type of the field
+    AttributeType: "string" | "integer" | "float" | "timestamp" | "geolocation" | *Null
+}
+/// A key-value pair to associate with a resource.
+class Tags {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

@@ -1,0 +1,14 @@
+/// Resource Type definition for AWS::Oam::Sink
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Oam::Sink"
+Properties: Props?
+class Props {
+    /// The Amazon resource name (ARN) of the ObservabilityAccessManager Sink
+    Arn: String(length <= 2048)?
+    /// The name of the ObservabilityAccessManager Sink.
+    Name: String(length <= 255 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_.-]+$"#)))?
+    /// The policy of this ObservabilityAccessManager Sink.
+    Policy: Mapping?
+    /// Tags to apply to the sink
+    Tags: Mapping?
+}

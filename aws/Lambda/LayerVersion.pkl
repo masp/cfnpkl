@@ -1,0 +1,28 @@
+/// Resource Type definition for AWS::Lambda::LayerVersion
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lambda::LayerVersion"
+Properties: Props?
+class Props {
+    /// A list of compatible function runtimes. Used for filtering with
+    /// ListLayers and ListLayerVersions.
+    CompatibleRuntimes: Listing<String>?
+    /// The layer's software license.
+    LicenseInfo: String?
+    /// The description of the version.
+    Description: String?
+    /// The name or Amazon Resource Name (ARN) of the layer.
+    LayerName: String?
+    /// The function layer archive.
+    Content: Content?
+    LayerVersionArn: String?
+    /// A list of compatible instruction set architectures.
+    CompatibleArchitectures: Listing<String>?
+}
+class Content {
+    /// For versioned objects, the version of the layer archive object to use.
+    S3ObjectVersion: String?
+    /// The Amazon S3 bucket of the layer archive.
+    S3Bucket: String
+    /// The Amazon S3 key of the layer archive.
+    S3Key: String
+}

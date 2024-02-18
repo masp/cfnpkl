@@ -1,0 +1,15 @@
+/// Resource Type definition for
+/// AWS::AppConfig::HostedConfigurationVersion
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppConfig::HostedConfigurationVersion"
+Properties: Props?
+class Props {
+    ConfigurationProfileId: String?
+    Description: String?
+    ContentType: String?
+    LatestVersionNumber: Float?
+    Content: String?
+    VersionLabel: String?
+    Id: String?
+    ApplicationId: String?
+}

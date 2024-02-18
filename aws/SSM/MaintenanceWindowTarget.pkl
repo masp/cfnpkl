@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::SSM::MaintenanceWindowTarget
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSM::MaintenanceWindowTarget"
+Properties: Props?
+class Props {
+    OwnerInformation: String?
+    Description: String?
+    WindowId: String?
+    ResourceType: String?
+    Targets: Listing<Targets>?
+    Id: String?
+    Name: String?
+}
+class Targets {
+    Values: Listing<String>
+    Key: String
+}

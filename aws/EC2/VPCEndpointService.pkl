@@ -1,0 +1,12 @@
+/// Resource Type definition for AWS::EC2::VPCEndpointService
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VPCEndpointService"
+Properties: Props?
+class Props {
+    NetworkLoadBalancerArns: Listing<String>?
+    ContributorInsightsEnabled: Boolean?
+    PayerResponsibility: String?
+    ServiceId: String?
+    AcceptanceRequired: Boolean?
+    GatewayLoadBalancerArns: Listing<String>?
+}

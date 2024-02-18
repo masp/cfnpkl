@@ -1,0 +1,144 @@
+/// Resource Type definition for AWS::CodeBuild::Project
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodeBuild::Project"
+Properties: Props?
+class Props {
+    Description: String?
+    ResourceAccessRole: String?
+    VpcConfig: VpcConfig?
+    SecondarySources: Listing<Source>?
+    EncryptionKey: String?
+    SecondaryArtifacts: Listing<Artifacts>?
+    Source: Source?
+    Name: String?
+    LogsConfig: LogsConfig?
+    ServiceRole: String?
+    QueuedTimeoutInMinutes: Int?
+    SecondarySourceVersions: Listing<ProjectSourceVersion>?
+    Tags: Listing<Tag>?
+    SourceVersion: String?
+    Triggers: ProjectTriggers?
+    Artifacts: Artifacts?
+    BadgeEnabled: Boolean?
+    FileSystemLocations: Listing<ProjectFileSystemLocation>?
+    Environment: Environment?
+    ConcurrentBuildLimit: Int?
+    Visibility: String?
+    Id: String?
+    Arn: String?
+    BuildBatchConfig: ProjectBuildBatchConfig?
+    TimeoutInMinutes: Int?
+    Cache: ProjectCache?
+}
+class VpcConfig {
+    Subnets: Listing<String>?
+    VpcId: String?
+    SecurityGroupIds: Listing<String>?
+}
+class Source {
+    Type: String
+    ReportBuildStatus: Boolean?
+    Auth: SourceAuth?
+    SourceIdentifier: String?
+    BuildSpec: String?
+    GitCloneDepth: Int?
+    BuildStatusConfig: BuildStatusConfig?
+    GitSubmodulesConfig: GitSubmodulesConfig?
+    InsecureSsl: Boolean?
+    Location: String?
+}
+class SourceAuth {
+    Resource: String?
+    Type: String
+}
+class BuildStatusConfig {
+    Context: String?
+    TargetUrl: String?
+}
+class GitSubmodulesConfig {
+    FetchSubmodules: Boolean
+}
+class Artifacts {
+    Path: String?
+    Type: String
+    ArtifactIdentifier: String?
+    OverrideArtifactName: Boolean?
+    Packaging: String?
+    EncryptionDisabled: Boolean?
+    Location: String?
+    Name: String?
+    NamespaceType: String?
+}
+class LogsConfig {
+    CloudWatchLogs: CloudWatchLogsConfig?
+    S3Logs: S3LogsConfig?
+}
+class CloudWatchLogsConfig {
+    Status: String
+    GroupName: String?
+    StreamName: String?
+}
+class S3LogsConfig {
+    Status: String
+    EncryptionDisabled: Boolean?
+    Location: String?
+}
+class ProjectSourceVersion {
+    SourceIdentifier: String
+    SourceVersion: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class ProjectTriggers {
+    BuildType: String?
+    FilterGroups: Listing<Mapping>?
+    Webhook: Boolean?
+}
+class ProjectFileSystemLocation {
+    MountPoint: String
+    Type: String
+    Identifier: String
+    MountOptions: String?
+    Location: String
+}
+class Environment {
+    Type: String
+    EnvironmentVariables: Listing<EnvironmentVariable>?
+    Fleet: ProjectFleet?
+    PrivilegedMode: Boolean?
+    ImagePullCredentialsType: String?
+    Image: String
+    RegistryCredential: RegistryCredential?
+    ComputeType: String
+    Certificate: String?
+}
+class EnvironmentVariable {
+    Value: String
+    Type: String?
+    Name: String
+}
+class ProjectFleet {
+    FleetArn: String?
+}
+class RegistryCredential {
+    Credential: String
+    CredentialProvider: String
+}
+class ProjectBuildBatchConfig {
+    CombineArtifacts: Boolean?
+    ServiceRole: String?
+    BatchReportMode: String?
+    TimeoutInMins: Int?
+    Restrictions: BatchRestrictions?
+}
+class BatchRestrictions {
+    ComputeTypesAllowed: Listing<String>?
+    MaximumBuildsAllowed: Int?
+}
+class ProjectCache {
+    Modes: Listing<String>?
+    Type: String
+    Location: String?
+}

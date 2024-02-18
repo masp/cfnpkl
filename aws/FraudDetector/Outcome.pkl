@@ -1,0 +1,22 @@
+/// An outcome for rule evaluation.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FraudDetector::Outcome"
+Properties: Props?
+class Props {
+    /// The name of the outcome.
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[0-9a-z_-]+$"#)))?
+    /// Tags associated with this outcome.
+    Tags: Listing<Tag>?
+    /// The outcome description.
+    Description: String(length <= 128 && length >= 1)?
+    /// The outcome ARN.
+    Arn: String?
+    /// The timestamp when the outcome was created.
+    CreatedTime: String?
+    /// The timestamp when the outcome was last updated.
+    LastUpdatedTime: String?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

@@ -1,0 +1,57 @@
+/// Resource schema for AWS::IoTSiteWise::AccessPolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTSiteWise::AccessPolicy"
+Properties: Props?
+class Props {
+    /// The ID of the access policy.
+    AccessPolicyId: String?
+    /// The ARN of the access policy.
+    AccessPolicyArn: String?
+    /// The identity for this access policy. Choose either a user or a group
+    /// but not both.
+    AccessPolicyIdentity: AccessPolicyIdentity?
+    /// The permission level for this access policy. Valid values are
+    /// ADMINISTRATOR or VIEWER.
+    AccessPolicyPermission: String?
+    /// The AWS IoT SiteWise Monitor resource for this access policy. Choose
+    /// either portal or project but not both.
+    AccessPolicyResource: AccessPolicyResource?
+}
+/// The identity for this access policy. Choose either an SSO user or
+/// group or an IAM user or role.
+class AccessPolicyIdentity {
+    User: User?
+    IamUser: IamUser?
+    IamRole: IamRole?
+}
+/// Contains information for a user identity in an access policy.
+class User {
+    /// The AWS SSO ID of the user.
+    id: String?
+}
+/// Contains information for an IAM user identity in an access policy.
+class IamUser {
+    /// The ARN of the IAM user.
+    arn: String?
+}
+/// Contains information for an IAM role identity in an access policy.
+class IamRole {
+    /// The ARN of the IAM role.
+    arn: String?
+}
+/// The AWS IoT SiteWise Monitor resource for this access policy. Choose
+/// either portal or project but not both.
+class AccessPolicyResource {
+    Portal: Portal?
+    Project: Project?
+}
+/// A portal resource.
+class Portal {
+    /// The ID of the portal.
+    id: String?
+}
+/// A project resource.
+class Project {
+    /// The ID of the project.
+    id: String?
+}

@@ -1,0 +1,14 @@
+/// Resource Type definition for AWS::CloudFront::MonitoringSubscription
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::MonitoringSubscription"
+Properties: Props?
+class Props {
+    DistributionId: String?
+    MonitoringSubscription: MonitoringSubscription?
+}
+class MonitoringSubscription {
+    RealtimeMetricsSubscriptionConfig: RealtimeMetricsSubscriptionConfig?
+}
+class RealtimeMetricsSubscriptionConfig {
+    RealtimeMetricsSubscriptionStatus: "Enabled" | "Disabled"
+}

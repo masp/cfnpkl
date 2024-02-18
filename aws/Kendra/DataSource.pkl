@@ -1,0 +1,58 @@
+/// Kendra DataSource
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Kendra::DataSource"
+Properties: Props?
+class Props {
+    Id: String(length <= 100 && length >= 1)?
+    Arn: String(length <= 1000)?
+    Name: String(length <= 1000 && length >= 1)?
+    IndexId: String(length <= 36 && length >= 36)?
+    Type: "S3" | "SHAREPOINT" | "SALESFORCE" | "ONEDRIVE" | "SERVICENOW" | "DATABASE" | "CUSTOM" | "CONFLUENCE" | "GOOGLEDRIVE" | "WEBCRAWLER" | "WORKDOCS" | *Null
+    DataSourceConfiguration: Mapping | Mapping | Mapping | Mapping | Mapping | Mapping | Mapping | Mapping | Mapping | Mapping | *Null
+    Description: String(length <= 1000 && length >= 1)?
+    Schedule: String(length <= 1000)?
+    RoleArn: String(length <= 1284 && length >= 1 && matches(Regex(#"arn:[a-z0-9-\.]{1,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[^/].{0,1023}"#)))?
+    /// Tags for labeling the data source
+    Tags: Listing<Tag>?
+    CustomDocumentEnrichmentConfiguration: CustomDocumentEnrichmentConfiguration?
+    LanguageCode: String(length <= 10 && length >= 2 && matches(Regex(#"[a-zA-Z-]*"#)))?
+}
+/// A label for tagging Kendra resources
+class Tag {
+    /// A string used to identify this tag
+    Key: String(length <= 128 && length >= 1)
+    /// A string containing the value for the tag
+    Value: String(length <= 256 && length >= 0)
+}
+class CustomDocumentEnrichmentConfiguration {
+    InlineConfigurations: Listing<InlineCustomDocumentEnrichmentConfiguration>?
+    PreExtractionHookConfiguration: HookConfiguration?
+    PostExtractionHookConfiguration: HookConfiguration?
+    RoleArn: String(length <= 1284 && length >= 1 && matches(Regex(#"arn:[a-z0-9-\.]{1,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[^/].{0,1023}"#)))?
+}
+class InlineCustomDocumentEnrichmentConfiguration {
+    Condition: DocumentAttributeCondition?
+    Target: DocumentAttributeTarget?
+    DocumentContentDeletion: Boolean?
+}
+class DocumentAttributeCondition {
+    ConditionDocumentAttributeKey: String(length <= 200 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_][a-zA-Z0-9_-]*"#)))
+    Operator: "GreaterThan" | "GreaterThanOrEquals" | "LessThan" | "LessThanOrEquals" | "Equals" | "NotEquals" | "Contains" | "NotContains" | "Exists" | "NotExists" | "BeginsWith"
+    ConditionOnValue: DocumentAttributeValue?
+}
+class DocumentAttributeValue {
+    StringValue: String(length <= 2048 && length >= 1)?
+    StringListValue: Listing<String>?
+    LongValue: Int?
+    DateValue: String?
+}
+class DocumentAttributeTarget {
+    TargetDocumentAttributeKey: String(length <= 200 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_][a-zA-Z0-9_-]*"#)))
+    TargetDocumentAttributeValueDeletion: Boolean?
+    TargetDocumentAttributeValue: DocumentAttributeValue?
+}
+class HookConfiguration {
+    InvocationCondition: DocumentAttributeCondition?
+    LambdaArn: String(length <= 2048 && length >= 1)
+    S3Bucket: String(length <= 63 && length >= 3 && matches(Regex(#"[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9]"#)))
+}

@@ -1,0 +1,24 @@
+/// Resource Type definition for AWS::CodePipeline::Webhook
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodePipeline::Webhook"
+Properties: Props?
+class Props {
+    AuthenticationConfiguration: WebhookAuthConfiguration?
+    Filters: Listing<WebhookFilterRule>?
+    Authentication: String?
+    TargetPipeline: String?
+    TargetAction: String?
+    Id: String?
+    Url: String?
+    Name: String?
+    TargetPipelineVersion: Int?
+    RegisterWithThirdParty: Boolean?
+}
+class WebhookAuthConfiguration {
+    AllowedIPRange: String?
+    SecretToken: String?
+}
+class WebhookFilterRule {
+    JsonPath: String
+    MatchEquals: String?
+}

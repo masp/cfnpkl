@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::IAM::ServiceLinkedRole
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IAM::ServiceLinkedRole"
+Properties: Props?
+class Props {
+    /// The name of the role.
+    RoleName: String?
+    /// A string that you provide, which is combined with the service-provided
+    /// prefix to form the complete role name.
+    CustomSuffix: String?
+    /// The description of the role.
+    Description: String?
+    /// The service principal for the AWS service to which this role is
+    /// attached.
+    AWSServiceName: String?
+}

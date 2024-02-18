@@ -1,0 +1,30 @@
+/// Resource Type definition for AWS::SecretsManager::RotationSchedule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SecretsManager::RotationSchedule"
+Properties: Props?
+class Props {
+    Id: String?
+    RotationLambdaARN: String?
+    RotationRules: RotationRules?
+    RotateImmediatelyOnUpdate: Boolean?
+    SecretId: String?
+    HostedRotationLambda: HostedRotationLambda?
+}
+class RotationRules {
+    ScheduleExpression: String?
+    Duration: String?
+    AutomaticallyAfterDays: Int?
+}
+class HostedRotationLambda {
+    Runtime: String?
+    RotationType: String
+    RotationLambdaName: String?
+    KmsKeyArn: String?
+    MasterSecretArn: String?
+    VpcSecurityGroupIds: String?
+    ExcludeCharacters: String?
+    MasterSecretKmsKeyArn: String?
+    SuperuserSecretArn: String?
+    SuperuserSecretKmsKeyArn: String?
+    VpcSubnetIds: String?
+}

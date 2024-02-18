@@ -1,0 +1,18 @@
+/// Resource Type definition for AWS::Cognito::UserPoolUser
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cognito::UserPoolUser"
+Properties: Props?
+class Props {
+    DesiredDeliveryMediums: Listing<String>?
+    ForceAliasCreation: Boolean?
+    UserAttributes: Listing<AttributeType>?
+    MessageAction: String?
+    Username: String?
+    UserPoolId: String?
+    ValidationData: Listing<AttributeType>?
+    ClientMetadata: Mapping?
+}
+class AttributeType {
+    Name: String?
+    Value: String?
+}

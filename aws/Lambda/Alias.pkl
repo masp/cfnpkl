@@ -1,0 +1,23 @@
+/// Resource Type definition for AWS::Lambda::Alias
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lambda::Alias"
+Properties: Props?
+class Props {
+    FunctionName: String?
+    ProvisionedConcurrencyConfig: ProvisionedConcurrencyConfiguration?
+    Description: String?
+    FunctionVersion: String?
+    Id: String?
+    RoutingConfig: AliasRoutingConfiguration?
+    Name: String?
+}
+class ProvisionedConcurrencyConfiguration {
+    ProvisionedConcurrentExecutions: Int
+}
+class AliasRoutingConfiguration {
+    AdditionalVersionWeights: Listing<VersionWeight>
+}
+class VersionWeight {
+    FunctionWeight: Float
+    FunctionVersion: String
+}

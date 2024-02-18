@@ -1,0 +1,183 @@
+/// Definition of the AWS::QuickSight::Topic Resource Type.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::QuickSight::Topic"
+Properties: Props?
+class Props {
+    Arn: String?
+    AwsAccountId: String(length <= 12 && length >= 12 && matches(Regex(#"^[0-9]{12}$"#)))?
+    DataSets: Listing<DatasetMetadata>?
+    Description: String(length <= 256 && length >= 0)?
+    Name: String(length <= 128 && length >= 1)?
+    TopicId: String(length <= 256 && length >= 0 && matches(Regex(#"^[A-Za-z0-9-_.\\+]*$"#)))?
+    UserExperienceVersion: "LEGACY" | "NEW_READER_EXPERIENCE" | *Null
+}
+class DatasetMetadata {
+    DatasetArn: String
+    DatasetName: String(length <= 256 && length >= 0)?
+    DatasetDescription: String(length <= 256 && length >= 0)?
+    DataAggregation: DataAggregation?
+    Filters: Listing<TopicFilter>?
+    Columns: Listing<TopicColumn>?
+    CalculatedFields: Listing<TopicCalculatedField>?
+    NamedEntities: Listing<TopicNamedEntity>?
+}
+class DataAggregation {
+    DatasetRowDateGranularity: "SECOND" | "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "QUARTER" | "YEAR" | *Null
+    DefaultDateColumnName: String(length <= 256 && length >= 0)?
+}
+class TopicFilter {
+    FilterDescription: String(length <= 256 && length >= 0)?
+    FilterClass: "ENFORCED_VALUE_FILTER" | "CONDITIONAL_VALUE_FILTER" | "NAMED_VALUE_FILTER" | *Null
+    FilterName: String(length <= 256 && length >= 0)
+    FilterSynonyms: Listing<String(length <= 256 && length >= 0)>?
+    OperandFieldName: String(length <= 256 && length >= 0)
+    FilterType: "CATEGORY_FILTER" | "NUMERIC_EQUALITY_FILTER" | "NUMERIC_RANGE_FILTER" | "DATE_RANGE_FILTER" | "RELATIVE_DATE_FILTER" | *Null
+    CategoryFilter: TopicCategoryFilter?
+    NumericEqualityFilter: TopicNumericEqualityFilter?
+    NumericRangeFilter: TopicNumericRangeFilter?
+    DateRangeFilter: TopicDateRangeFilter?
+    RelativeDateFilter: TopicRelativeDateFilter?
+}
+class TopicCategoryFilter {
+    CategoryFilterFunction: "EXACT" | "CONTAINS" | *Null
+    CategoryFilterType: "CUSTOM_FILTER" | "CUSTOM_FILTER_LIST" | "FILTER_LIST" | *Null
+    Constant: TopicCategoryFilterConstant?
+    Inverse: Boolean?
+}
+class TopicCategoryFilterConstant {
+    ConstantType: "SINGULAR" | "RANGE" | "COLLECTIVE" | *Null
+    SingularConstant: String(length <= 256 && length >= 0)?
+    CollectiveConstant: CollectiveConstant?
+}
+class CollectiveConstant {
+    ValueList: Listing<String>?
+}
+class TopicNumericEqualityFilter {
+    Constant: TopicSingularFilterConstant?
+    Aggregation: "NO_AGGREGATION" | "SUM" | "AVERAGE" | "COUNT" | "DISTINCT_COUNT" | "MAX" | "MEDIAN" | "MIN" | "STDEV" | "STDEVP" | "VAR" | "VARP" | *Null
+}
+class TopicSingularFilterConstant {
+    ConstantType: "SINGULAR" | "RANGE" | "COLLECTIVE" | *Null
+    SingularConstant: String(length <= 256 && length >= 0)?
+}
+class TopicNumericRangeFilter {
+    Inclusive: Boolean?
+    Constant: TopicRangeFilterConstant?
+    Aggregation: "NO_AGGREGATION" | "SUM" | "AVERAGE" | "COUNT" | "DISTINCT_COUNT" | "MAX" | "MEDIAN" | "MIN" | "STDEV" | "STDEVP" | "VAR" | "VARP" | *Null
+}
+class TopicRangeFilterConstant {
+    ConstantType: "SINGULAR" | "RANGE" | "COLLECTIVE" | *Null
+    RangeConstant: RangeConstant?
+}
+class RangeConstant {
+    Minimum: String(length <= 256 && length >= 0)?
+    Maximum: String(length <= 256 && length >= 0)?
+}
+class TopicDateRangeFilter {
+    Inclusive: Boolean?
+    Constant: TopicRangeFilterConstant?
+}
+class TopicRelativeDateFilter {
+    TimeGranularity: "SECOND" | "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "QUARTER" | "YEAR" | *Null
+    RelativeDateFilterFunction: "PREVIOUS" | "THIS" | "LAST" | "NEXT" | "NOW" | *Null
+    Constant: TopicSingularFilterConstant?
+}
+class TopicColumn {
+    ColumnName: String(length <= 256 && length >= 0)
+    ColumnFriendlyName: String(length <= 256 && length >= 0)?
+    ColumnDescription: String(length <= 256 && length >= 0)?
+    ColumnSynonyms: Listing<String(length <= 256 && length >= 0)>?
+    ColumnDataRole: "DIMENSION" | "MEASURE" | *Null
+    Aggregation: "SUM" | "MAX" | "MIN" | "COUNT" | "DISTINCT_COUNT" | "AVERAGE" | "MEDIAN" | "STDEV" | "STDEVP" | "VAR" | "VARP" | *Null
+    IsIncludedInTopic: Boolean?
+    ComparativeOrder: ComparativeOrder?
+    SemanticType: SemanticType?
+    TimeGranularity: "SECOND" | "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "QUARTER" | "YEAR" | *Null
+    AllowedAggregations: Listing<"COUNT" | "DISTINCT_COUNT" | "MIN" | "MAX" | "MEDIAN" | "SUM" | "AVERAGE" | "STDEV" | "STDEVP" | "VAR" | "VARP" | "PERCENTILE">?
+    NotAllowedAggregations: Listing<"COUNT" | "DISTINCT_COUNT" | "MIN" | "MAX" | "MEDIAN" | "SUM" | "AVERAGE" | "STDEV" | "STDEVP" | "VAR" | "VARP" | "PERCENTILE">?
+    DefaultFormatting: DefaultFormatting?
+    NeverAggregateInFilter: Boolean?
+    NonAdditive: Boolean?
+    CellValueSynonyms: Listing<CellValueSynonym>?
+}
+class ComparativeOrder {
+    UseOrdering: "GREATER_IS_BETTER" | "LESSER_IS_BETTER" | "SPECIFIED" | *Null
+    SpecifedOrder: Listing<String>?
+    TreatUndefinedSpecifiedValues: "LEAST" | "MOST" | *Null
+}
+class SemanticType {
+    TypeName: String(length <= 256 && length >= 0)?
+    SubTypeName: String(length <= 256 && length >= 0)?
+    TypeParameters: Mapping?
+    TruthyCellValue: String?
+    TruthyCellValueSynonyms: Listing<String>?
+    FalseyCellValue: String?
+    FalseyCellValueSynonyms: Listing<String>?
+}
+class DefaultFormatting {
+    DisplayFormat: "AUTO" | "PERCENT" | "CURRENCY" | "NUMBER" | "DATE" | "STRING" | *Null
+    DisplayFormatOptions: DisplayFormatOptions?
+}
+class DisplayFormatOptions {
+    UseBlankCellFormat: Boolean?
+    BlankCellFormat: String(length <= 256 && length >= 0)?
+    DateFormat: String(length <= 256 && length >= 0)?
+    DecimalSeparator: "COMMA" | "DOT" | *Null
+    GroupingSeparator: String(length <= 256 && length >= 0)?
+    UseGrouping: Boolean?
+    FractionDigits: Float?
+    Prefix: String(length <= 256 && length >= 0)?
+    Suffix: String(length <= 256 && length >= 0)?
+    UnitScaler: "NONE" | "AUTO" | "THOUSANDS" | "MILLIONS" | "BILLIONS" | "TRILLIONS" | *Null
+    NegativeFormat: NegativeFormat?
+    CurrencySymbol: String(length <= 256 && length >= 0)?
+}
+class NegativeFormat {
+    Prefix: String(length <= 256 && length >= 0)?
+    Suffix: String(length <= 256 && length >= 0)?
+}
+class CellValueSynonym {
+    CellValue: String(length <= 256 && length >= 0)?
+    Synonyms: Listing<String>?
+}
+class TopicCalculatedField {
+    CalculatedFieldName: String(length <= 256 && length >= 0)
+    CalculatedFieldDescription: String(length <= 256 && length >= 0)?
+    Expression: String(length <= 4096 && length >= 1)
+    CalculatedFieldSynonyms: Listing<String(length <= 256 && length >= 0)>?
+    IsIncludedInTopic: Boolean?
+    ColumnDataRole: "DIMENSION" | "MEASURE" | *Null
+    TimeGranularity: "SECOND" | "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "QUARTER" | "YEAR" | *Null
+    DefaultFormatting: DefaultFormatting?
+    Aggregation: "SUM" | "MAX" | "MIN" | "COUNT" | "DISTINCT_COUNT" | "AVERAGE" | "MEDIAN" | "STDEV" | "STDEVP" | "VAR" | "VARP" | *Null
+    ComparativeOrder: ComparativeOrder?
+    SemanticType: SemanticType?
+    AllowedAggregations: Listing<"COUNT" | "DISTINCT_COUNT" | "MIN" | "MAX" | "MEDIAN" | "SUM" | "AVERAGE" | "STDEV" | "STDEVP" | "VAR" | "VARP" | "PERCENTILE">?
+    NotAllowedAggregations: Listing<"COUNT" | "DISTINCT_COUNT" | "MIN" | "MAX" | "MEDIAN" | "SUM" | "AVERAGE" | "STDEV" | "STDEVP" | "VAR" | "VARP" | "PERCENTILE">?
+    NeverAggregateInFilter: Boolean?
+    NonAdditive: Boolean?
+    CellValueSynonyms: Listing<CellValueSynonym>?
+}
+class TopicNamedEntity {
+    EntityName: String(length <= 256 && length >= 0)
+    EntityDescription: String(length <= 256 && length >= 0)?
+    EntitySynonyms: Listing<String(length <= 256 && length >= 0)>?
+    SemanticEntityType: SemanticEntityType?
+    Definition: Listing<NamedEntityDefinition>?
+}
+class SemanticEntityType {
+    TypeName: String(length <= 256 && length >= 0)?
+    SubTypeName: String(length <= 256 && length >= 0)?
+    TypeParameters: Mapping?
+}
+class NamedEntityDefinition {
+    FieldName: String(length <= 256 && length >= 0)?
+    PropertyName: String(length <= 256 && length >= 0)?
+    PropertyRole: "PRIMARY" | "ID" | *Null
+    PropertyUsage: "INHERIT" | "DIMENSION" | "MEASURE" | *Null
+    Metric: NamedEntityDefinitionMetric?
+}
+class NamedEntityDefinitionMetric {
+    Aggregation: "SUM" | "MIN" | "MAX" | "COUNT" | "AVERAGE" | "DISTINCT_COUNT" | "STDEV" | "STDEVP" | "VAR" | "VARP" | "PERCENTILE" | "MEDIAN" | "CUSTOM" | *Null
+    AggregationFunctionParameters: Mapping?
+}

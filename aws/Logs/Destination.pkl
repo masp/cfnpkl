@@ -1,0 +1,21 @@
+/// The AWS::Logs::Destination resource specifies a CloudWatch Logs
+/// destination. A destination encapsulates a physical resource (such as
+/// an Amazon Kinesis data stream) and enables you to subscribe that
+/// resource to a stream of log events.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Logs::Destination"
+Properties: Props?
+class Props {
+    Arn: String?
+    /// The name of the destination resource
+    DestinationName: String(length <= 512 && length >= 1 && matches(Regex(#"^[^:*]{1,512}$"#)))?
+    /// An IAM policy document that governs which AWS accounts can create
+    /// subscription filters against this destination.
+    DestinationPolicy: String(length >= 1)?
+    /// The ARN of an IAM role that permits CloudWatch Logs to send data to
+    /// the specified AWS resource
+    RoleArn: String(length >= 1)?
+    /// The ARN of the physical target where the log events are delivered (for
+    /// example, a Kinesis stream)
+    TargetArn: String(length >= 1)?
+}

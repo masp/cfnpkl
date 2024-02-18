@@ -1,0 +1,46 @@
+/// Resource schema for AWS::DataSync::LocationAzureBlob.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataSync::LocationAzureBlob"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Names (ARNs) of agents to use for an Azure Blob
+    /// Location.
+    AgentArns: Listing<String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:agent/agent-[0-9a-z]{17}$"#)))>?
+    /// The specific authentication type that you want DataSync to use to
+    /// access your Azure Blob Container.
+    AzureBlobAuthenticationType: "SAS" | *Null
+    AzureBlobSasConfiguration: AzureBlobSasConfiguration?
+    /// The URL of the Azure Blob container that was described.
+    AzureBlobContainerUrl: String(length <= 325 && matches(Regex(#"^https://[A-Za-z0-9]((.|-+)?[A-Za-z0-9]){0,252}/[a-z0-9](-?[a-z0-9]){2,62}$"#)))?
+    /// Specifies a blob type for the objects you're transferring into your
+    /// Azure Blob Storage container.
+    AzureBlobType: "BLOCK" | *Null
+    /// Specifies an access tier for the objects you're transferring into your
+    /// Azure Blob Storage container.
+    AzureAccessTier: "HOT" | "COOL" | "ARCHIVE" | *Null
+    /// The subdirectory in the Azure Blob Container that is used to read data
+    /// from the Azure Blob Source Location.
+    Subdirectory: String(length <= 1024 && matches(Regex(#"^[\p{L}\p{M}\p{Z}\p{S}\p{N}\p{P}\p{C}]*$"#)))?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the Azure Blob Location that is
+    /// created.
+    LocationArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:location/loc-[0-9a-z]{17}$"#)))?
+    /// The URL of the Azure Blob Location that was described.
+    LocationUri: String(length <= 4356 && matches(Regex(#"^(azure-blob)://[a-zA-Z0-9./\-]+$"#)))?
+}
+/// Specifies the shared access signature (SAS) that DataSync uses to
+/// access your Azure Blob Storage container.
+class AzureBlobSasConfiguration {
+    /// Specifies the shared access signature (SAS) token, which indicates the
+    /// permissions DataSync needs to access your Azure Blob Storage
+    /// container.
+    AzureBlobSasToken: String(length <= 255 && length >= 1 && matches(Regex(#"(^.+$)"#)))
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for an AWS resource tag.
+    Key: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:/-]+$"#)))
+    /// The value for an AWS resource tag.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))
+}

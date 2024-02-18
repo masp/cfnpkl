@@ -1,0 +1,61 @@
+/// The AWS::S3::StorageLensGroup resource is an Amazon S3 resource type
+/// that you can use to create Storage Lens Group.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::S3::StorageLensGroup"
+Properties: Props?
+class Props {
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\-_]+$"#)))?
+    Filter: Filter?
+    /// The ARN for the Amazon S3 Storage Lens Group.
+    StorageLensGroupArn: String?
+    /// A set of tags (key-value pairs) for this Amazon S3 Storage Lens Group.
+    Tags: Listing<Tag>?
+}
+/// Sets the Storage Lens Group filter.
+class Filter {
+    MatchAnyPrefix: Listing<String(length <= 1024)>?
+    MatchAnySuffix: Listing<String(length <= 1024)>?
+    MatchAnyTag: Listing<Tag>?
+    MatchObjectSize: MatchObjectSize?
+    MatchObjectAge: MatchObjectAge?
+    And: And?
+    Or: Or?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}
+/// Filter to match all of the specified values for the minimum and
+/// maximum object size.
+class MatchObjectSize {
+    /// Minimum object size to which the rule applies.
+    BytesGreaterThan: Int?
+    /// Maximum object size to which the rule applies.
+    BytesLessThan: Int?
+}
+/// Filter to match all of the specified values for the minimum and
+/// maximum object age.
+class MatchObjectAge {
+    /// Minimum object age to which the rule applies.
+    DaysGreaterThan: Int?
+    /// Maximum object age to which the rule applies.
+    DaysLessThan: Int?
+}
+/// The Storage Lens group will include objects that match all of the
+/// specified filter values.
+class And {
+    MatchAnyPrefix: Listing<String(length <= 1024)>?
+    MatchAnySuffix: Listing<String(length <= 1024)>?
+    MatchAnyTag: Listing<Tag>?
+    MatchObjectSize: MatchObjectSize?
+    MatchObjectAge: MatchObjectAge?
+}
+/// The Storage Lens group will include objects that match any of the
+/// specified filter values.
+class Or {
+    MatchAnyPrefix: Listing<String(length <= 1024)>?
+    MatchAnySuffix: Listing<String(length <= 1024)>?
+    MatchAnyTag: Listing<Tag>?
+    MatchObjectSize: MatchObjectSize?
+    MatchObjectAge: MatchObjectAge?
+}

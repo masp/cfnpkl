@@ -1,0 +1,9 @@
+/// Resource Type definition for AWS::AppStream::StackFleetAssociation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppStream::StackFleetAssociation"
+Properties: Props?
+class Props {
+    FleetName: String?
+    StackName: String?
+    Id: String?
+}

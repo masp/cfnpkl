@@ -1,0 +1,27 @@
+/// Resource Type definition for AWS::IAM::ServerCertificate
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IAM::ServerCertificate"
+Properties: Props?
+class Props {
+    CertificateBody: String(length <= 16384 && length >= 1 && matches(Regex(#"[\u0009\u000A\u000D\u0020-\u00FF]+"#)))?
+    CertificateChain: String(length <= 2097152 && length >= 1 && matches(Regex(#"[\u0009\u000A\u000D\u0020-\u00FF]+"#)))?
+    ServerCertificateName: String(length <= 128 && length >= 1 && matches(Regex(#"[\w+=,.@-]+"#)))?
+    Path: String(length <= 512 && length >= 1 && matches(Regex(#"(\u002F)|(\u002F[\u0021-\u007F]+\u002F)"#)))?
+    PrivateKey: String(length <= 16384 && length >= 1 && matches(Regex(#"[\u0009\u000A\u000D\u0020-\u00FF]+"#)))?
+    /// Amazon Resource Name (ARN) of the server certificate
+    Arn: String(length <= 1600 && length >= 1)?
+    Tags: Listing<Tag>?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 1)
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+}

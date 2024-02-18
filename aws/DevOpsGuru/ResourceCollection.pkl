@@ -1,0 +1,28 @@
+/// This resource schema represents the ResourceCollection resource in the
+/// Amazon DevOps Guru.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DevOpsGuru::ResourceCollection"
+Properties: Props?
+class Props {
+    ResourceCollectionFilter: ResourceCollectionFilter?
+    /// The type of ResourceCollection
+    ResourceCollectionType: "AWS_CLOUD_FORMATION" | "AWS_TAGS" | *Null
+}
+/// Information about a filter used to specify which AWS resources are
+/// analyzed for anomalous behavior by DevOps Guru.
+class ResourceCollectionFilter {
+    CloudFormation: CloudFormationCollectionFilter?
+    Tags: Listing<TagCollection>?
+}
+/// CloudFormation resource for DevOps Guru to monitor
+class CloudFormationCollectionFilter {
+    /// An array of CloudFormation stack names.
+    StackNames: Listing<String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z*]+[a-zA-Z0-9-]*$"#)))>?
+}
+/// Tagged resource for DevOps Guru to monitor
+class TagCollection {
+    /// A Tag key for DevOps Guru app boundary.
+    AppBoundaryKey: String(length <= 128 && length >= 1)?
+    /// Tag values of DevOps Guru app boundary.
+    TagValues: Listing<String(length <= 256 && length >= 1)>?
+}

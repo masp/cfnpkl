@@ -1,0 +1,11 @@
+/// Use a SecurityConfiguration resource to configure data encryption,
+/// Kerberos authentication, and Amazon S3 authorization for EMRFS.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EMR::SecurityConfiguration"
+Properties: Props?
+class Props {
+    /// The name of the security configuration.
+    Name: String?
+    /// The security configuration details in JSON format.
+    SecurityConfiguration: Mapping | String | *Null
+}

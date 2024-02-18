@@ -1,0 +1,23 @@
+/// Resource Type Definition for AWS::S3Outposts::AccessPoint
+extends ".../AWS/Resource.pkl"
+Type = "AWS::S3Outposts::AccessPoint"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the specified AccessPoint.
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[^:]+:s3-outposts:[a-zA-Z0-9\-]+:\d{12}:outpost\/[^:]+\/accesspoint\/[^:]+$"#)))?
+    /// The Amazon Resource Name (ARN) of the bucket you want to associate
+    /// this AccessPoint with.
+    Bucket: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:[^:]+:s3-outposts:[a-zA-Z0-9\-]+:\d{12}:outpost\/[^:]+\/bucket\/[^:]+$"#)))?
+    /// A name for the AccessPoint.
+    Name: String(length <= 50 && length >= 3 && matches(Regex(#"^[a-z0-9]([a-z0-9\\-]*[a-z0-9])?$"#)))?
+    /// Virtual Private Cloud (VPC) from which requests can be made to the
+    /// AccessPoint.
+    VpcConfiguration: VpcConfiguration?
+    /// The access point policy associated with this access point.
+    Policy: Mapping?
+}
+class VpcConfiguration {
+    /// Virtual Private Cloud (VPC) Id from which AccessPoint will allow
+    /// requests.
+    VpcId: String(length <= 1024 && length >= 1)?
+}

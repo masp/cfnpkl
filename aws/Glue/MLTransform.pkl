@@ -1,0 +1,47 @@
+/// Resource Type definition for AWS::Glue::MLTransform
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::MLTransform"
+Properties: Props?
+class Props {
+    MaxRetries: Int?
+    Description: String?
+    TransformEncryption: TransformEncryption?
+    Timeout: Int?
+    Name: String?
+    Role: String?
+    WorkerType: String?
+    GlueVersion: String?
+    TransformParameters: TransformParameters?
+    Id: String?
+    InputRecordTables: InputRecordTables?
+    NumberOfWorkers: Int?
+    Tags: Mapping?
+    MaxCapacity: Float?
+}
+class TransformEncryption {
+    TaskRunSecurityConfigurationName: String?
+    MLUserDataEncryption: MLUserDataEncryption?
+}
+class MLUserDataEncryption {
+    KmsKeyId: String?
+    MLUserDataEncryptionMode: String
+}
+class TransformParameters {
+    TransformType: String
+    FindMatchesParameters: FindMatchesParameters?
+}
+class FindMatchesParameters {
+    PrecisionRecallTradeoff: Float?
+    EnforceProvidedLabels: Boolean?
+    PrimaryKeyColumnName: String
+    AccuracyCostTradeoff: Float?
+}
+class InputRecordTables {
+    GlueTables: Listing<GlueTables>?
+}
+class GlueTables {
+    ConnectionName: String?
+    DatabaseName: String
+    TableName: String
+    CatalogId: String?
+}

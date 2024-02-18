@@ -1,0 +1,53 @@
+/// Resource Type definition for AWS::EFS::FileSystem
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EFS::FileSystem"
+Properties: Props?
+class Props {
+    FileSystemId: String?
+    Arn: String?
+    Encrypted: Boolean?
+    FileSystemTags: Listing<ElasticFileSystemTag>?
+    KmsKeyId: String?
+    LifecyclePolicies: Listing<LifecyclePolicy>?
+    FileSystemProtection: FileSystemProtection?
+    PerformanceMode: String?
+    ProvisionedThroughputInMibps: Float?
+    ThroughputMode: String?
+    FileSystemPolicy: Mapping?
+    /// Whether to bypass the FileSystemPolicy lockout safety check. The
+    /// policy lockout safety check determines whether the policy in the
+    /// request will prevent the principal making the request to be locked out
+    /// from making future PutFileSystemPolicy requests on the file system.
+    /// Set BypassPolicyLockoutSafetyCheck to True only when you intend to
+    /// prevent the principal that is making the request from making a
+    /// subsequent PutFileSystemPolicy request on the file system. Defaults to
+    /// false
+    BypassPolicyLockoutSafetyCheck: Boolean?
+    BackupPolicy: BackupPolicy?
+    AvailabilityZoneName: String?
+    ReplicationConfiguration: ReplicationConfiguration?
+}
+class ElasticFileSystemTag {
+    Key: String
+    Value: String
+}
+class LifecyclePolicy {
+    TransitionToIA: String?
+    TransitionToPrimaryStorageClass: String?
+    TransitionToArchive: String?
+}
+class FileSystemProtection {
+    ReplicationOverwriteProtection: "DISABLED" | "ENABLED" | *Null
+}
+class BackupPolicy {
+    Status: String
+}
+class ReplicationConfiguration {
+    Destinations: Listing<ReplicationDestination>?
+}
+class ReplicationDestination {
+    FileSystemId: String?
+    Region: String?
+    AvailabilityZoneName: String?
+    KmsKeyId: String?
+}

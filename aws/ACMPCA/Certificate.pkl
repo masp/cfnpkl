@@ -1,0 +1,131 @@
+/// A certificate issued via a private certificate authority
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ACMPCA::Certificate"
+Properties: Props?
+class Props {
+    /// These are fields to be overridden in a certificate at the time of
+    /// issuance. These requires an API_Passthrough template be used or they
+    /// will be ignored.
+    ApiPassthrough: ApiPassthrough?
+    /// The Amazon Resource Name (ARN) for the private CA to issue the
+    /// certificate.
+    CertificateAuthorityArn: String?
+    /// The certificate signing request (CSR) for the Certificate.
+    CertificateSigningRequest: String(length >= 1)?
+    /// The name of the algorithm that will be used to sign the Certificate.
+    SigningAlgorithm: String?
+    /// Specifies a custom configuration template to use when issuing a
+    /// certificate. If this parameter is not provided, ACM Private CA
+    /// defaults to the EndEntityCertificate/V1 template.
+    TemplateArn: String?
+    /// The time before which the Certificate will be valid.
+    Validity: Validity?
+    /// The time after which the Certificate will be valid.
+    ValidityNotBefore: Validity?
+    /// The issued certificate in base 64 PEM-encoded format.
+    Certificate: String?
+    /// The ARN of the issued certificate.
+    Arn: String?
+}
+/// Structure that specifies fields to be overridden in a certificate at
+/// the time of issuance. These requires an API Passthrough template be
+/// used or they will be ignored.
+class ApiPassthrough {
+    Extensions: Extensions?
+    Subject: Subject?
+}
+/// Structure that contains X.500 extensions for a Certificate.
+class Extensions {
+    CertificatePolicies: Listing<PolicyInformation>?
+    ExtendedKeyUsage: Listing<ExtendedKeyUsage>?
+    KeyUsage: KeyUsage?
+    SubjectAlternativeNames: Listing<GeneralName>?
+    CustomExtensions: Listing<CustomExtension>?
+}
+/// Structure that contains X.509 Policy information.
+class PolicyInformation {
+    CertPolicyId: String
+    PolicyQualifiers: Listing<PolicyQualifierInfo>?
+}
+/// Structure that contains X.509 Policy qualifier information.
+class PolicyQualifierInfo {
+    PolicyQualifierId: String
+    Qualifier: Qualifier
+}
+/// Structure that contains a X.509 policy qualifier.
+class Qualifier {
+    CpsUri: String
+}
+/// Structure that contains X.509 ExtendedKeyUsage information.
+class ExtendedKeyUsage {
+    ExtendedKeyUsageType: String?
+    ExtendedKeyUsageObjectIdentifier: String?
+}
+/// Structure that contains X.509 KeyUsage information.
+class KeyUsage {
+    DigitalSignature: Boolean?
+    NonRepudiation: Boolean?
+    KeyEncipherment: Boolean?
+    DataEncipherment: Boolean?
+    KeyAgreement: Boolean?
+    KeyCertSign: Boolean?
+    CRLSign: Boolean?
+    EncipherOnly: Boolean?
+    DecipherOnly: Boolean?
+}
+/// Structure that contains X.509 GeneralName information. Assign one and
+/// ONLY one field.
+class GeneralName {
+    OtherName: OtherName?
+    Rfc822Name: String?
+    DnsName: String?
+    DirectoryName: Subject?
+    EdiPartyName: EdiPartyName?
+    UniformResourceIdentifier: String?
+    IpAddress: String?
+    RegisteredId: String?
+}
+/// Structure that contains X.509 OtherName information.
+class OtherName {
+    TypeId: String
+    Value: String
+}
+/// Structure that contains X.500 distinguished name information.
+class Subject {
+    Country: String?
+    Organization: String?
+    OrganizationalUnit: String?
+    DistinguishedNameQualifier: String?
+    State: String?
+    CommonName: String?
+    SerialNumber: String?
+    Locality: String?
+    Title: String?
+    Surname: String?
+    GivenName: String?
+    Initials: String?
+    Pseudonym: String?
+    GenerationQualifier: String?
+    CustomAttributes: Listing<CustomAttribute>?
+}
+/// Structure that contains X.500 attribute type and value.
+class CustomAttribute {
+    ObjectIdentifier: String
+    Value: String
+}
+/// Structure that contains X.509 EdiPartyName information.
+class EdiPartyName {
+    PartyName: String
+    NameAssigner: String
+}
+/// Structure that contains X.509 extension information for a certificate.
+class CustomExtension {
+    Critical: Boolean?
+    ObjectIdentifier: String
+    Value: String
+}
+/// Validity for a certificate.
+class Validity {
+    Value: Float
+    Type: String
+}

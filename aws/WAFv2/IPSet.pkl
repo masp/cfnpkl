@@ -1,0 +1,20 @@
+/// Contains a list of IP addresses. This can be either IPV4 or IPV6. The
+/// list will be mutually
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAFv2::IPSet"
+Properties: Props?
+class Props {
+    Arn: String?
+    Description: String(matches(Regex(#"^[a-zA-Z0-9=:#@/\-,.][a-zA-Z0-9+=:#@/\-,.\s]+[a-zA-Z0-9+=:#@/\-,.]{1,256}$"#)))?
+    Name: String(matches(Regex(#"^[0-9A-Za-z_-]{1,128}$"#)))?
+    Id: String(matches(Regex(#"^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$"#)))?
+    Scope: "CLOUDFRONT" | "REGIONAL" | *Null
+    IPAddressVersion: "IPV4" | "IPV6" | *Null
+    /// List of IPAddresses.
+    Addresses: Listing<String(length <= 50 && length >= 1)>?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)?
+    Value: String(length <= 256 && length >= 0)?
+}

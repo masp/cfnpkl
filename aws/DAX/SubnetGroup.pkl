@@ -1,0 +1,10 @@
+/// Resource Type definition for AWS::DAX::SubnetGroup
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DAX::SubnetGroup"
+Properties: Props?
+class Props {
+    Description: String?
+    Id: String?
+    SubnetIds: Listing<String>?
+    SubnetGroupName: String?
+}

@@ -1,0 +1,17 @@
+/// Resource Type definition for AWS::GuardDuty::ThreatIntelSet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::GuardDuty::ThreatIntelSet"
+Properties: Props?
+class Props {
+    Id: String?
+    Format: String(length <= 300 && length >= 1)?
+    Activate: Boolean?
+    DetectorId: String(length <= 32 && length >= 1)?
+    Name: String?
+    Location: String(length <= 300 && length >= 1)?
+    Tags: Listing<TagItem>?
+}
+class TagItem {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 0)
+}

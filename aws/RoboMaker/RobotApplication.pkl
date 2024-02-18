@@ -1,0 +1,32 @@
+/// This schema is for testing purpose only.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RoboMaker::RobotApplication"
+Properties: Props?
+class Props {
+    /// The name of the robot application.
+    Name: String(length <= 255 && length >= 1)?
+    /// The sources of the robot application.
+    Sources: Listing<SourceConfig>?
+    /// The URI of the Docker image for the robot application.
+    Environment: String?
+    RobotSoftwareSuite: RobotSoftwareSuite?
+    /// The revision ID of robot application.
+    CurrentRevisionId: String(length <= 40 && length >= 1)?
+    Arn: String(matches(Regex(#"arn:[\w+=/,.@-]+:[\w+=/,.@-]+:[\w+=/,.@-]*:[0-9]*:[\w+=,.@-]+(/[\w+=,.@-]+)*"#)))?
+    Tags: Mapping?
+}
+class SourceConfig {
+    /// The Arn of the S3Bucket that stores the robot application source.
+    S3Bucket: String
+    /// The s3 key of robot application source.
+    S3Key: String
+    /// The architecture of robot application.
+    Architecture: "X86_64" | "ARM64" | "ARMHF"(length <= 255 && length >= 1)
+}
+/// The robot software suite used by the robot application.
+class RobotSoftwareSuite {
+    /// The name of robot software suite.
+    Name: "ROS" | "ROS2" | "General"
+    /// The version of robot software suite.
+    Version: "Kinetic" | "Melodic" | "Dashing" | *Null
+}

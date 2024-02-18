@@ -1,0 +1,31 @@
+/// Definition of AWS::MediaTailor::LiveSource Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaTailor::LiveSource"
+Properties: Props?
+class Props {
+    /// <p>The ARN of the live source.</p>
+    Arn: String?
+    /// <p>A list of HTTP package configuration parameters for this live
+    /// source.</p>
+    HttpPackageConfigurations: Listing<HttpPackageConfiguration>?
+    LiveSourceName: String?
+    SourceLocationName: String?
+    /// The tags to assign to the live source.
+    Tags: Listing<Tag>?
+}
+/// <p>The HTTP package configuration properties for the requested VOD
+/// source.</p>
+class HttpPackageConfiguration {
+    /// <p>The relative path to the URL for this VOD source. This is combined
+    /// with <code>SourceLocation::HttpConfiguration::BaseUrl</code> to form a
+    /// valid URL.</p>
+    Path: String
+    /// <p>The name of the source group. This has to match one of the
+    /// <code>Channel::Outputs::SourceGroup</code>.</p>
+    SourceGroup: String
+    Type: "DASH" | "HLS"
+}
+class Tag {
+    Key: String
+    Value: String
+}

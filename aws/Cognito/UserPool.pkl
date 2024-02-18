@@ -1,0 +1,140 @@
+/// Resource Type definition for AWS::Cognito::UserPool
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cognito::UserPool"
+Properties: Props?
+class Props {
+    UserPoolName: String(length <= 128 && length >= 1)?
+    Policies: Policies?
+    AccountRecoverySetting: AccountRecoverySetting?
+    AdminCreateUserConfig: AdminCreateUserConfig?
+    AliasAttributes: Listing<String>?
+    UsernameAttributes: Listing<String>?
+    AutoVerifiedAttributes: Listing<String>?
+    DeviceConfiguration: DeviceConfiguration?
+    EmailConfiguration: EmailConfiguration?
+    EmailVerificationMessage: String(length <= 20000 && length >= 6)?
+    EmailVerificationSubject: String(length <= 140 && length >= 1)?
+    DeletionProtection: String?
+    LambdaConfig: LambdaConfig?
+    MfaConfiguration: String?
+    EnabledMfas: Listing<String>?
+    SmsAuthenticationMessage: String(length <= 140 && length >= 6)?
+    SmsConfiguration: SmsConfiguration?
+    SmsVerificationMessage: String(length <= 140 && length >= 6)?
+    Schema: Listing<SchemaAttribute>?
+    UsernameConfiguration: UsernameConfiguration?
+    UserAttributeUpdateSettings: UserAttributeUpdateSettings?
+    UserPoolTags: Mapping?
+    VerificationMessageTemplate: VerificationMessageTemplate?
+    UserPoolAddOns: UserPoolAddOns?
+    ProviderName: String?
+    ProviderURL: String?
+    Arn: String?
+    UserPoolId: String?
+}
+class Policies {
+    PasswordPolicy: PasswordPolicy?
+}
+class PasswordPolicy {
+    MinimumLength: Int?
+    RequireLowercase: Boolean?
+    RequireNumbers: Boolean?
+    RequireSymbols: Boolean?
+    RequireUppercase: Boolean?
+    TemporaryPasswordValidityDays: Int?
+}
+class AccountRecoverySetting {
+    RecoveryMechanisms: Listing<RecoveryOption>?
+}
+class RecoveryOption {
+    Name: String?
+    Priority: Int?
+}
+class AdminCreateUserConfig {
+    AllowAdminCreateUserOnly: Boolean?
+    InviteMessageTemplate: InviteMessageTemplate?
+    UnusedAccountValidityDays: Int?
+}
+class InviteMessageTemplate {
+    EmailMessage: String?
+    EmailSubject: String?
+    SMSMessage: String?
+}
+class DeviceConfiguration {
+    ChallengeRequiredOnNewDevice: Boolean?
+    DeviceOnlyRememberedOnUserPrompt: Boolean?
+}
+class EmailConfiguration {
+    ReplyToEmailAddress: String?
+    SourceArn: String?
+    From: String?
+    ConfigurationSet: String?
+    EmailSendingAccount: String?
+}
+class LambdaConfig {
+    CreateAuthChallenge: String?
+    CustomMessage: String?
+    DefineAuthChallenge: String?
+    PostAuthentication: String?
+    PostConfirmation: String?
+    PreAuthentication: String?
+    PreSignUp: String?
+    VerifyAuthChallengeResponse: String?
+    UserMigration: String?
+    PreTokenGeneration: String?
+    CustomEmailSender: CustomEmailSender?
+    CustomSMSSender: CustomSMSSender?
+    KMSKeyID: String?
+    PreTokenGenerationConfig: PreTokenGenerationConfig?
+}
+class CustomEmailSender {
+    LambdaVersion: String?
+    LambdaArn: String?
+}
+class CustomSMSSender {
+    LambdaVersion: String?
+    LambdaArn: String?
+}
+class PreTokenGenerationConfig {
+    LambdaVersion: String?
+    LambdaArn: String?
+}
+class SmsConfiguration {
+    ExternalId: String?
+    SnsCallerArn: String?
+    SnsRegion: String?
+}
+class SchemaAttribute {
+    AttributeDataType: String?
+    DeveloperOnlyAttribute: Boolean?
+    Mutable: Boolean?
+    Name: String?
+    NumberAttributeConstraints: NumberAttributeConstraints?
+    StringAttributeConstraints: StringAttributeConstraints?
+    Required: Boolean?
+}
+class NumberAttributeConstraints {
+    MaxValue: String?
+    MinValue: String?
+}
+class StringAttributeConstraints {
+    MaxLength: String?
+    MinLength: String?
+}
+class UsernameConfiguration {
+    CaseSensitive: Boolean?
+}
+class UserAttributeUpdateSettings {
+    AttributesRequireVerificationBeforeUpdate: Listing<String>
+}
+class VerificationMessageTemplate {
+    DefaultEmailOption: String?
+    EmailMessage: String?
+    EmailMessageByLink: String?
+    EmailSubject: String?
+    EmailSubjectByLink: String?
+    SmsMessage: String?
+}
+class UserPoolAddOns {
+    AdvancedSecurityMode: String?
+}

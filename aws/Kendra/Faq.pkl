@@ -1,0 +1,34 @@
+/// A Kendra FAQ resource
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Kendra::Faq"
+Properties: Props?
+class Props {
+    Id: String(length <= 100 && length >= 1)?
+    /// Index ID
+    IndexId: String(length <= 36 && length >= 36)?
+    /// FAQ name
+    Name: String(length <= 100 && length >= 1)?
+    /// FAQ description
+    Description: String(length <= 1000 && length >= 1)?
+    /// FAQ file format
+    FileFormat: "CSV" | "CSV_WITH_HEADER" | "JSON" | *Null
+    /// FAQ S3 path
+    S3Path: S3Path?
+    /// FAQ role ARN
+    RoleArn: String(length <= 1284 && length >= 1 && matches(Regex(#"arn:[a-z0-9-\.]{1,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[a-z0-9-\.]{0,63}:[^/].{0,1023}"#)))?
+    /// Tags for labeling the FAQ
+    Tags: Listing<Tag>?
+    Arn: String(length <= 1000)?
+    LanguageCode: String(length <= 10 && length >= 2 && matches(Regex(#"[a-zA-Z-]*"#)))?
+}
+class S3Path {
+    Bucket: String(length <= 63 && length >= 3 && matches(Regex(#"[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9]"#)))
+    Key: String(length <= 1024 && length >= 1)
+}
+/// A label for tagging Kendra resources
+class Tag {
+    /// A string used to identify this tag
+    Key: String(length <= 128 && length >= 1)
+    /// A string containing the value for the tag
+    Value: String(length <= 256 && length >= 0)
+}

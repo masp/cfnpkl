@@ -1,0 +1,15 @@
+/// Resource Type definition for AWS::Cognito::UserPoolResourceServer
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cognito::UserPoolResourceServer"
+Properties: Props?
+class Props {
+    UserPoolId: String?
+    Identifier: String?
+    Id: String?
+    Scopes: Listing<ResourceServerScopeType>?
+    Name: String?
+}
+class ResourceServerScopeType {
+    ScopeName: String
+    ScopeDescription: String
+}

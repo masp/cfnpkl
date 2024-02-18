@@ -1,0 +1,21 @@
+/// Resource Type definition for AWS::SSMGuiConnect::Preferences
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSMGuiConnect::Preferences"
+Properties: Props?
+class Props {
+    IdleConnection: Listing<IdleConnectionPreferences>?
+    AccountId: String?
+    Id: String?
+}
+class IdleConnectionPreferences {
+    Timeout: IdleConnectionTimeout?
+    Alert: IdleConnectionAlert?
+}
+class IdleConnectionTimeout {
+    Value: Int
+    Type: String?
+}
+class IdleConnectionAlert {
+    Value: Int
+    Type: String?
+}

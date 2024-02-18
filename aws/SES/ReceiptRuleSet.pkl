@@ -1,0 +1,8 @@
+/// Resource Type definition for AWS::SES::ReceiptRuleSet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SES::ReceiptRuleSet"
+Properties: Props?
+class Props {
+    RuleSetName: String?
+    Id: String?
+}

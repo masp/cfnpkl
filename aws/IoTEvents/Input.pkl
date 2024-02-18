@@ -1,0 +1,53 @@
+/// The AWS::IoTEvents::Input resource creates an input. To monitor your
+/// devices and processes, they must have a way to get telemetry data into
+/// AWS IoT Events. This is done by sending messages as *inputs* to AWS
+/// IoT Events. For more information, see [How to Use AWS IoT Events](http
+/// s://docs.aws.amazon.com/iotevents/latest/developerguide/how-to-use-
+/// iotevents.html) in the *AWS IoT Events Developer Guide*.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTEvents::Input"
+Properties: Props?
+class Props {
+    InputDefinition: InputDefinition?
+    /// A brief description of the input.
+    InputDescription: String(length <= 128 && length >= 1)?
+    /// The name of the input.
+    InputName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z][a-zA-Z0-9_]*$"#)))?
+    /// An array of key-value pairs to apply to this resource.  For more
+    /// information, see [Tag](https://docs.aws.amazon.com/AWSCloudFormation/l
+    /// atest/UserGuide/aws-properties-resource-tags.html).
+    Tags: Listing<Tag>?
+}
+/// The definition of the input.
+class InputDefinition {
+    /// The attributes from the JSON payload that are made available by the
+    /// input. Inputs are derived from messages sent to the AWS IoT Events
+    /// system using `BatchPutMessage`. Each such message contains a JSON
+    /// payload, and those attributes (and their paired values) specified here
+    /// are available for use in the `condition` expressions used by detectors
+    /// that monitor this input.
+    Attributes: Listing<Attribute>
+}
+/// The attributes from the JSON payload that are made available by the
+/// input. Inputs are derived from messages sent to the AWS IoT Events
+/// system using `BatchPutMessage`. Each such message contains a JSON
+/// payload, and those attributes (and their paired values) specified here
+/// are available for use in the `condition` expressions used by detectors
+/// that monitor this input.
+class Attribute {
+    /// An expression that specifies an attribute-value pair in a JSON
+    /// structure. Use this to specify an attribute from the JSON payload that
+    /// is made available by the input. Inputs are derived from messages sent
+    /// to AWS IoT Events (`BatchPutMessage`). Each such message contains a
+    /// JSON payload. The attribute (and its paired value) specified here are
+    /// available for use in the `condition` expressions used by detectors.
+    /// _Syntax_: `<field-name>.<field-name>...`
+    JsonPath: String(length <= 128 && length >= 1 && matches(Regex(#"^((`[a-zA-Z0-9_\- ]+`)|([a-zA-Z0-9_\-]+))(\.((`[a-zA-Z0-9_\- ]+`)|([a-zA-Z0-9_\-]+)))*$"#)))
+}
+/// Tags to be applied to Input.
+class Tag {
+    /// Key of the Tag.
+    Key: String
+    /// Value of the Tag.
+    Value: String
+}

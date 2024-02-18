@@ -1,0 +1,8 @@
+/// Resource Type definition for AWS::CloudFormation::CustomResource
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFormation::CustomResource"
+Properties: Props?
+class Props {
+    Id: String?
+    ServiceToken: String?
+}

@@ -1,0 +1,21 @@
+/// Resource Type definition for AWS::Greengrass::DeviceDefinition
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Greengrass::DeviceDefinition"
+Properties: Props?
+class Props {
+    LatestVersionArn: String?
+    Id: String?
+    Arn: String?
+    Name: String?
+    InitialVersion: DeviceDefinitionVersion?
+    Tags: Mapping?
+}
+class DeviceDefinitionVersion {
+    Devices: Listing<Device>
+}
+class Device {
+    SyncShadow: Boolean?
+    ThingArn: String
+    Id: String
+    CertificateArn: String
+}

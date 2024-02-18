@@ -1,0 +1,26 @@
+/// Resource Type definition for AWS::Cloud9::EnvironmentEC2
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Cloud9::EnvironmentEC2"
+Properties: Props?
+class Props {
+    Repositories: Listing<Repository>?
+    OwnerArn: String?
+    Description: String?
+    ConnectionType: String?
+    AutomaticStopTimeMinutes: Int?
+    ImageId: String?
+    SubnetId: String?
+    Id: String?
+    Arn: String?
+    InstanceType: String?
+    Tags: Listing<Tag>?
+    Name: String?
+}
+class Repository {
+    RepositoryUrl: String
+    PathComponent: String
+}
+class Tag {
+    Value: String
+    Key: String
+}

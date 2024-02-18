@@ -1,0 +1,97 @@
+/// Version: None. Resource Type definition for AWS::DynamoDB::Table
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DynamoDB::Table"
+Properties: Props?
+class Props {
+    Arn: String?
+    StreamArn: String?
+    AttributeDefinitions: Listing<AttributeDefinition>?
+    BillingMode: String?
+    DeletionProtectionEnabled: Boolean?
+    GlobalSecondaryIndexes: Listing<GlobalSecondaryIndex>?
+    KeySchema: Listing<KeySchema> | Mapping | *Null
+    LocalSecondaryIndexes: Listing<LocalSecondaryIndex>?
+    PointInTimeRecoverySpecification: PointInTimeRecoverySpecification?
+    TableClass: String?
+    ProvisionedThroughput: ProvisionedThroughput?
+    SSESpecification: SSESpecification?
+    StreamSpecification: StreamSpecification?
+    TableName: String?
+    Tags: Listing<Tag>?
+    TimeToLiveSpecification: TimeToLiveSpecification?
+    ContributorInsightsSpecification: ContributorInsightsSpecification?
+    KinesisStreamSpecification: KinesisStreamSpecification?
+    ImportSourceSpecification: ImportSourceSpecification?
+}
+class AttributeDefinition {
+    AttributeName: String
+    AttributeType: String
+}
+class GlobalSecondaryIndex {
+    IndexName: String
+    KeySchema: Listing<KeySchema>
+    Projection: Projection
+    ProvisionedThroughput: ProvisionedThroughput?
+    ContributorInsightsSpecification: ContributorInsightsSpecification?
+}
+class KeySchema {
+    AttributeName: String
+    KeyType: String
+}
+class Projection {
+    NonKeyAttributes: Listing<String>?
+    ProjectionType: String?
+}
+class ProvisionedThroughput {
+    ReadCapacityUnits: Int
+    WriteCapacityUnits: Int
+}
+class ContributorInsightsSpecification {
+    Enabled: Boolean
+}
+class LocalSecondaryIndex {
+    IndexName: String
+    KeySchema: Listing<KeySchema>
+    Projection: Projection
+}
+class PointInTimeRecoverySpecification {
+    PointInTimeRecoveryEnabled: Boolean?
+}
+class SSESpecification {
+    KMSMasterKeyId: String?
+    SSEEnabled: Boolean
+    SSEType: String?
+}
+class StreamSpecification {
+    StreamViewType: String
+}
+class Tag {
+    Key: String
+    Value: String
+}
+class TimeToLiveSpecification {
+    AttributeName: String?
+    Enabled: Boolean
+}
+class KinesisStreamSpecification {
+    StreamArn: String
+    ApproximateCreationDateTimePrecision: "MICROSECOND" | "MILLISECOND" | *Null
+}
+class ImportSourceSpecification {
+    S3BucketSource: S3BucketSource
+    InputFormat: String
+    InputFormatOptions: InputFormatOptions?
+    InputCompressionType: String?
+}
+class S3BucketSource {
+    S3BucketOwner: String?
+    S3Bucket: String
+    S3KeyPrefix: String?
+}
+class InputFormatOptions {
+    Csv: Csv?
+}
+class Csv {
+    HeaderList: Listing<String>?
+    Delimiter: String?
+}

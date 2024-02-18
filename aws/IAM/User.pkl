@@ -1,0 +1,61 @@
+/// Resource Type definition for AWS::IAM::User
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IAM::User"
+Properties: Props?
+class Props {
+    /// The path to the user. For more information about paths, see IAM
+    /// identifiers in the IAM User Guide. The ARN of the policy used to set
+    /// the permissions boundary for the user.
+    Path: String?
+    /// A list of Amazon Resource Names (ARNs) of the IAM managed policies
+    /// that you want to attach to the role.
+    ManagedPolicyArns: Listing<String>?
+    /// Adds or updates an inline policy document that is embedded in the
+    /// specified IAM role.
+    Policies: Listing<Policy>?
+    /// The friendly name identifying the user.
+    UserName: String?
+    /// A list of group names to which you want to add the user.
+    Groups: Listing<String>?
+    /// The Amazon Resource Name (ARN) that identifies the user. For more
+    /// information about ARNs and how to use ARNs in policies, see IAM
+    /// Identifiers in the IAM User Guide.
+    Arn: String?
+    /// Creates a password for the specified IAM user. A password allows an
+    /// IAM user to access AWS services through the AWS Management Console.
+    LoginProfile: LoginProfile?
+    /// A list of tags that are associated with the user. For more information
+    /// about tagging, see Tagging IAM resources in the IAM User Guide.
+    Tags: Listing<Tag>?
+    /// The ARN of the policy that is used to set the permissions boundary for
+    /// the user.
+    PermissionsBoundary: String?
+}
+/// Contains information about an attached policy.
+class Policy {
+    /// The policy document.
+    PolicyDocument: Mapping | String
+    /// The friendly name (not ARN) identifying the policy.
+    PolicyName: String
+}
+/// Contains the user name and password create date for a user.
+class LoginProfile {
+    /// Specifies whether the user is required to set a new password on next
+    /// sign-in.
+    PasswordResetRequired: Boolean?
+    /// The user's password.
+    Password: String
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String
+}

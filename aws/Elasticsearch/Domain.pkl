@@ -1,0 +1,92 @@
+/// Resource Type definition for AWS::Elasticsearch::Domain
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Elasticsearch::Domain"
+Properties: Props?
+class Props {
+    ElasticsearchClusterConfig: ElasticsearchClusterConfig?
+    DomainName: String?
+    ElasticsearchVersion: String?
+    LogPublishingOptions: Mapping?
+    SnapshotOptions: SnapshotOptions?
+    VPCOptions: VPCOptions?
+    NodeToNodeEncryptionOptions: NodeToNodeEncryptionOptions?
+    AccessPolicies: Mapping?
+    DomainEndpointOptions: DomainEndpointOptions?
+    DomainArn: String?
+    CognitoOptions: CognitoOptions?
+    AdvancedOptions: Mapping?
+    AdvancedSecurityOptions: AdvancedSecurityOptionsInput?
+    DomainEndpoint: String?
+    EBSOptions: EBSOptions?
+    Id: String?
+    Arn: String?
+    EncryptionAtRestOptions: EncryptionAtRestOptions?
+    Tags: Listing<Tag>?
+}
+class ElasticsearchClusterConfig {
+    InstanceCount: Int?
+    WarmEnabled: Boolean?
+    WarmCount: Int?
+    DedicatedMasterEnabled: Boolean?
+    ZoneAwarenessConfig: ZoneAwarenessConfig?
+    ColdStorageOptions: ColdStorageOptions?
+    DedicatedMasterCount: Int?
+    InstanceType: String?
+    WarmType: String?
+    ZoneAwarenessEnabled: Boolean?
+    DedicatedMasterType: String?
+}
+class ZoneAwarenessConfig {
+    AvailabilityZoneCount: Int?
+}
+class ColdStorageOptions {
+    Enabled: Boolean?
+}
+class SnapshotOptions {
+    AutomatedSnapshotStartHour: Int?
+}
+class VPCOptions {
+    SecurityGroupIds: Listing<String>?
+    SubnetIds: Listing<String>?
+}
+class NodeToNodeEncryptionOptions {
+    Enabled: Boolean?
+}
+class DomainEndpointOptions {
+    CustomEndpointCertificateArn: String?
+    CustomEndpointEnabled: Boolean?
+    EnforceHTTPS: Boolean?
+    CustomEndpoint: String?
+    TLSSecurityPolicy: String?
+}
+class CognitoOptions {
+    Enabled: Boolean?
+    IdentityPoolId: String?
+    UserPoolId: String?
+    RoleArn: String?
+}
+class AdvancedSecurityOptionsInput {
+    Enabled: Boolean?
+    MasterUserOptions: MasterUserOptions?
+    AnonymousAuthEnabled: Boolean?
+    InternalUserDatabaseEnabled: Boolean?
+}
+class MasterUserOptions {
+    MasterUserPassword: String?
+    MasterUserName: String?
+    MasterUserARN: String?
+}
+class EBSOptions {
+    EBSEnabled: Boolean?
+    VolumeType: String?
+    Iops: Int?
+    VolumeSize: Int?
+}
+class EncryptionAtRestOptions {
+    KmsKeyId: String?
+    Enabled: Boolean?
+}
+class Tag {
+    Value: String
+    Key: String
+}

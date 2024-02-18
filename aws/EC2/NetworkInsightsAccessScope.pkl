@@ -1,0 +1,42 @@
+/// Resource schema for AWS::EC2::NetworkInsightsAccessScope
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::NetworkInsightsAccessScope"
+Properties: Props?
+class Props {
+    NetworkInsightsAccessScopeId: String?
+    NetworkInsightsAccessScopeArn: String?
+    CreatedDate: String?
+    UpdatedDate: String?
+    Tags: Listing<Tag>?
+    MatchPaths: Listing<AccessScopePathRequest>?
+    ExcludePaths: Listing<AccessScopePathRequest>?
+}
+class Tag {
+    Key: String
+    Value: String?
+}
+class AccessScopePathRequest {
+    Source: PathStatementRequest?
+    Destination: PathStatementRequest?
+    ThroughResources: Listing<ThroughResourcesStatementRequest>?
+}
+class PathStatementRequest {
+    PacketHeaderStatement: PacketHeaderStatementRequest?
+    ResourceStatement: ResourceStatementRequest?
+}
+class PacketHeaderStatementRequest {
+    SourceAddresses: Listing<String>?
+    DestinationAddresses: Listing<String>?
+    SourcePorts: Listing<String>?
+    DestinationPorts: Listing<String>?
+    SourcePrefixLists: Listing<String>?
+    DestinationPrefixLists: Listing<String>?
+    Protocols: Listing<"tcp" | "udp">?
+}
+class ResourceStatementRequest {
+    Resources: Listing<String>?
+    ResourceTypes: Listing<String>?
+}
+class ThroughResourcesStatementRequest {
+    ResourceStatement: ResourceStatementRequest?
+}

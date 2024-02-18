@@ -1,0 +1,326 @@
+/// Resource Type definition for AWS::KinesisFirehose::DeliveryStream
+extends ".../AWS/Resource.pkl"
+Type = "AWS::KinesisFirehose::DeliveryStream"
+Properties: Props?
+class Props {
+    Arn: String?
+    DeliveryStreamEncryptionConfigurationInput: DeliveryStreamEncryptionConfigurationInput?
+    DeliveryStreamName: String(length <= 64 && length >= 1 && matches(Regex(#"[a-zA-Z0-9._-]+"#)))?
+    DeliveryStreamType: "DirectPut" | "KinesisStreamAsSource" | "MSKAsSource" | *Null
+    ElasticsearchDestinationConfiguration: ElasticsearchDestinationConfiguration?
+    AmazonopensearchserviceDestinationConfiguration: AmazonopensearchserviceDestinationConfiguration?
+    AmazonOpenSearchServerlessDestinationConfiguration: AmazonOpenSearchServerlessDestinationConfiguration?
+    ExtendedS3DestinationConfiguration: ExtendedS3DestinationConfiguration?
+    KinesisStreamSourceConfiguration: KinesisStreamSourceConfiguration?
+    MSKSourceConfiguration: MSKSourceConfiguration?
+    RedshiftDestinationConfiguration: RedshiftDestinationConfiguration?
+    S3DestinationConfiguration: S3DestinationConfiguration?
+    SplunkDestinationConfiguration: SplunkDestinationConfiguration?
+    HttpEndpointDestinationConfiguration: HttpEndpointDestinationConfiguration?
+    SnowflakeDestinationConfiguration: SnowflakeDestinationConfiguration?
+    Tags: Listing<Tag>?
+}
+class DeliveryStreamEncryptionConfigurationInput {
+    KeyARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))?
+    KeyType: "AWS_OWNED_CMK" | "CUSTOMER_MANAGED_CMK"
+}
+class ElasticsearchDestinationConfiguration {
+    BufferingHints: ElasticsearchBufferingHints?
+    CloudWatchLoggingOptions: CloudWatchLoggingOptions?
+    DomainARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))?
+    IndexName: String(length <= 80 && length >= 1)
+    IndexRotationPeriod: "NoRotation" | "OneHour" | "OneDay" | "OneWeek" | "OneMonth" | *Null
+    ProcessingConfiguration: ProcessingConfiguration?
+    RetryOptions: ElasticsearchRetryOptions?
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    S3BackupMode: "FailedDocumentsOnly" | "AllDocuments" | *Null
+    S3Configuration: S3DestinationConfiguration
+    ClusterEndpoint: String(length <= 512 && length >= 1 && matches(Regex(#"https:.*"#)))?
+    TypeName: String(length <= 100 && length >= 0)?
+    VpcConfiguration: VpcConfiguration?
+    DocumentIdOptions: DocumentIdOptions?
+}
+class ElasticsearchBufferingHints {
+    IntervalInSeconds: Int?
+    SizeInMBs: Int?
+}
+class CloudWatchLoggingOptions {
+    Enabled: Boolean?
+    LogGroupName: String?
+    LogStreamName: String?
+}
+class ProcessingConfiguration {
+    Enabled: Boolean?
+    Processors: Listing<Processor>?
+}
+class Processor {
+    Parameters: Listing<ProcessorParameter>?
+    Type: "RecordDeAggregation" | "Decompression" | "Lambda" | "MetadataExtraction" | "AppendDelimiterToRecord"
+}
+class ProcessorParameter {
+    ParameterName: String
+    ParameterValue: String
+}
+class ElasticsearchRetryOptions {
+    DurationInSeconds: Int?
+}
+class S3DestinationConfiguration {
+    BucketARN: String(length <= 2048 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    BufferingHints: BufferingHints?
+    CloudWatchLoggingOptions: CloudWatchLoggingOptions?
+    CompressionFormat: "UNCOMPRESSED" | "GZIP" | "ZIP" | "Snappy" | "HADOOP_SNAPPY" | *Null
+    EncryptionConfiguration: EncryptionConfiguration?
+    ErrorOutputPrefix: String(length <= 1024 && length >= 0)?
+    Prefix: String(length <= 1024 && length >= 0)?
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+}
+class BufferingHints {
+    IntervalInSeconds: Int?
+    SizeInMBs: Int?
+}
+class EncryptionConfiguration {
+    KMSEncryptionConfig: KMSEncryptionConfig?
+    NoEncryptionConfig: "NoEncryption" | *Null
+}
+class KMSEncryptionConfig {
+    AWSKMSKeyARN: String
+}
+class VpcConfiguration {
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    SubnetIds: Listing<String(length <= 1024 && length >= 1)>
+    SecurityGroupIds: Listing<String(length <= 1024 && length >= 1)>
+}
+class DocumentIdOptions {
+    DefaultDocumentIdFormat: "FIREHOSE_DEFAULT" | "NO_DOCUMENT_ID"
+}
+class AmazonopensearchserviceDestinationConfiguration {
+    BufferingHints: AmazonopensearchserviceBufferingHints?
+    CloudWatchLoggingOptions: CloudWatchLoggingOptions?
+    DomainARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))?
+    IndexName: String(length <= 80 && length >= 1)
+    IndexRotationPeriod: "NoRotation" | "OneHour" | "OneDay" | "OneWeek" | "OneMonth" | *Null
+    ProcessingConfiguration: ProcessingConfiguration?
+    RetryOptions: AmazonopensearchserviceRetryOptions?
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    S3BackupMode: "FailedDocumentsOnly" | "AllDocuments" | *Null
+    S3Configuration: S3DestinationConfiguration
+    ClusterEndpoint: String(length <= 512 && length >= 1 && matches(Regex(#"https:.*"#)))?
+    TypeName: String(length <= 100 && length >= 0)?
+    VpcConfiguration: VpcConfiguration?
+    DocumentIdOptions: DocumentIdOptions?
+}
+class AmazonopensearchserviceBufferingHints {
+    IntervalInSeconds: Int?
+    SizeInMBs: Int?
+}
+class AmazonopensearchserviceRetryOptions {
+    DurationInSeconds: Int?
+}
+class AmazonOpenSearchServerlessDestinationConfiguration {
+    BufferingHints: AmazonOpenSearchServerlessBufferingHints?
+    CloudWatchLoggingOptions: CloudWatchLoggingOptions?
+    IndexName: String(length <= 80 && length >= 1)
+    ProcessingConfiguration: ProcessingConfiguration?
+    RetryOptions: AmazonOpenSearchServerlessRetryOptions?
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    S3BackupMode: "FailedDocumentsOnly" | "AllDocuments" | *Null
+    S3Configuration: S3DestinationConfiguration
+    CollectionEndpoint: String(length <= 512 && length >= 1 && matches(Regex(#"https:.*"#)))?
+    VpcConfiguration: VpcConfiguration?
+}
+class AmazonOpenSearchServerlessBufferingHints {
+    IntervalInSeconds: Int?
+    SizeInMBs: Int?
+}
+class AmazonOpenSearchServerlessRetryOptions {
+    DurationInSeconds: Int?
+}
+class ExtendedS3DestinationConfiguration {
+    BucketARN: String(length <= 2048 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    BufferingHints: BufferingHints?
+    CloudWatchLoggingOptions: CloudWatchLoggingOptions?
+    CompressionFormat: "UNCOMPRESSED" | "GZIP" | "ZIP" | "Snappy" | "HADOOP_SNAPPY" | *Null
+    DataFormatConversionConfiguration: DataFormatConversionConfiguration?
+    DynamicPartitioningConfiguration: DynamicPartitioningConfiguration?
+    EncryptionConfiguration: EncryptionConfiguration?
+    ErrorOutputPrefix: String(length <= 1024 && length >= 0)?
+    Prefix: String(length <= 1024 && length >= 0)?
+    ProcessingConfiguration: ProcessingConfiguration?
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    S3BackupConfiguration: S3DestinationConfiguration?
+    S3BackupMode: "Disabled" | "Enabled" | *Null
+}
+class DataFormatConversionConfiguration {
+    Enabled: Boolean?
+    InputFormatConfiguration: InputFormatConfiguration?
+    OutputFormatConfiguration: OutputFormatConfiguration?
+    SchemaConfiguration: SchemaConfiguration?
+}
+class InputFormatConfiguration {
+    Deserializer: Deserializer?
+}
+class Deserializer {
+    HiveJsonSerDe: HiveJsonSerDe?
+    OpenXJsonSerDe: OpenXJsonSerDe?
+}
+class HiveJsonSerDe {
+    TimestampFormats: Listing<String>?
+}
+class OpenXJsonSerDe {
+    CaseInsensitive: Boolean?
+    ColumnToJsonKeyMappings: Mapping?
+    ConvertDotsInJsonKeysToUnderscores: Boolean?
+}
+class OutputFormatConfiguration {
+    Serializer: Serializer?
+}
+class Serializer {
+    OrcSerDe: OrcSerDe?
+    ParquetSerDe: ParquetSerDe?
+}
+class OrcSerDe {
+    BlockSizeBytes: Int?
+    BloomFilterColumns: Listing<String>?
+    BloomFilterFalsePositiveProbability: Float?
+    Compression: String?
+    DictionaryKeyThreshold: Float?
+    EnablePadding: Boolean?
+    FormatVersion: String?
+    PaddingTolerance: Float?
+    RowIndexStride: Int?
+    StripeSizeBytes: Int?
+}
+class ParquetSerDe {
+    BlockSizeBytes: Int?
+    Compression: String?
+    EnableDictionaryCompression: Boolean?
+    MaxPaddingBytes: Int?
+    PageSizeBytes: Int?
+    WriterVersion: String?
+}
+class SchemaConfiguration {
+    CatalogId: String?
+    DatabaseName: String?
+    Region: String?
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))?
+    TableName: String?
+    VersionId: String?
+}
+class DynamicPartitioningConfiguration {
+    Enabled: Boolean?
+    RetryOptions: RetryOptions?
+}
+class RetryOptions {
+    DurationInSeconds: Int?
+}
+class KinesisStreamSourceConfiguration {
+    KinesisStreamARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+}
+class MSKSourceConfiguration {
+    MSKClusterARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    TopicName: String(length <= 255 && length >= 1 && matches(Regex(#"[a-zA-Z0-9\._\-]+"#)))
+    AuthenticationConfiguration: AuthenticationConfiguration
+}
+class AuthenticationConfiguration {
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    Connectivity: "PUBLIC" | "PRIVATE"
+}
+class RedshiftDestinationConfiguration {
+    CloudWatchLoggingOptions: CloudWatchLoggingOptions?
+    ClusterJDBCURL: String(length <= 512 && length >= 1)
+    CopyCommand: CopyCommand
+    Password: String(length <= 512 && length >= 6)
+    ProcessingConfiguration: ProcessingConfiguration?
+    RetryOptions: RedshiftRetryOptions?
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    S3BackupConfiguration: S3DestinationConfiguration?
+    S3BackupMode: "Disabled" | "Enabled" | *Null
+    S3Configuration: S3DestinationConfiguration
+    Username: String(length <= 512 && length >= 1)
+}
+class CopyCommand {
+    CopyOptions: String(length <= 204800 && length >= 0)?
+    DataTableColumns: String(length <= 204800 && length >= 0)?
+    DataTableName: String(length <= 512 && length >= 1)
+}
+class RedshiftRetryOptions {
+    DurationInSeconds: Int?
+}
+class SplunkDestinationConfiguration {
+    CloudWatchLoggingOptions: CloudWatchLoggingOptions?
+    HECAcknowledgmentTimeoutInSeconds: Int?
+    HECEndpoint: String(length <= 2048 && length >= 0)
+    HECEndpointType: "Raw" | "Event"
+    HECToken: String(length <= 2048 && length >= 0)
+    ProcessingConfiguration: ProcessingConfiguration?
+    RetryOptions: SplunkRetryOptions?
+    S3BackupMode: String?
+    S3Configuration: S3DestinationConfiguration
+    BufferingHints: SplunkBufferingHints?
+}
+class SplunkRetryOptions {
+    DurationInSeconds: Int?
+}
+class SplunkBufferingHints {
+    IntervalInSeconds: Int?
+    SizeInMBs: Int?
+}
+class HttpEndpointDestinationConfiguration {
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))?
+    EndpointConfiguration: HttpEndpointConfiguration
+    RequestConfiguration: HttpEndpointRequestConfiguration?
+    BufferingHints: BufferingHints?
+    CloudWatchLoggingOptions: CloudWatchLoggingOptions?
+    ProcessingConfiguration: ProcessingConfiguration?
+    RetryOptions: RetryOptions?
+    S3BackupMode: String?
+    S3Configuration: S3DestinationConfiguration
+}
+class HttpEndpointConfiguration {
+    Url: String(length <= 1000 && length >= 1)
+    AccessKey: String(length <= 4096 && length >= 0)?
+    Name: String(length <= 256 && length >= 1)?
+}
+class HttpEndpointRequestConfiguration {
+    ContentEncoding: "NONE" | "GZIP" | *Null
+    CommonAttributes: Listing<HttpEndpointCommonAttribute>?
+}
+class HttpEndpointCommonAttribute {
+    AttributeName: String(length <= 256 && length >= 1)
+    AttributeValue: String(length <= 1024 && length >= 0)
+}
+class SnowflakeDestinationConfiguration {
+    AccountUrl: String(length <= 2048 && length >= 24 && matches(Regex(#".+?\.snowflakecomputing\.com"#)))
+    PrivateKey: String(length <= 4096 && length >= 256 && matches(Regex(#"^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$"#)))
+    KeyPassphrase: String(length <= 255 && length >= 7)?
+    User: String(length <= 255 && length >= 1)
+    Database: String(length <= 255 && length >= 1)
+    Schema: String(length <= 255 && length >= 1)
+    Table: String(length <= 255 && length >= 1)
+    SnowflakeRoleConfiguration: SnowflakeRoleConfiguration?
+    DataLoadingOption: "JSON_MAPPING" | "VARIANT_CONTENT_MAPPING" | "VARIANT_CONTENT_AND_METADATA_MAPPING" | *Null
+    MetaDataColumnName: String(length <= 255 && length >= 1)?
+    ContentColumnName: String(length <= 255 && length >= 1)?
+    SnowflakeVpcConfiguration: SnowflakeVpcConfiguration?
+    CloudWatchLoggingOptions: CloudWatchLoggingOptions?
+    ProcessingConfiguration: ProcessingConfiguration?
+    RoleARN: String(length <= 512 && length >= 1 && matches(Regex(#"arn:.*"#)))
+    RetryOptions: SnowflakeRetryOptions?
+    S3BackupMode: "FailedDataOnly" | "AllData" | *Null
+    S3Configuration: S3DestinationConfiguration
+}
+class SnowflakeRoleConfiguration {
+    Enabled: Boolean?
+    SnowflakeRole: String(length <= 255 && length >= 1)?
+}
+class SnowflakeVpcConfiguration {
+    PrivateLinkVpceId: String(length <= 255 && length >= 47 && matches(Regex(#"([a-zA-Z0-9\-\_]+\.){2,3}vpce\.[a-zA-Z0-9\-]*\.vpce-svc\-[a-zA-Z0-9\-]{17}$"#)))
+}
+class SnowflakeRetryOptions {
+    DurationInSeconds: Int?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[\p{L}\p{Z}\p{N}_.:\/=+\-@%]*$"#)))
+    Value: String(length <= 256 && length >= 0 && matches(Regex(#"^[\p{L}\p{Z}\p{N}_.:\/=+\-@%]*$"#)))?
+}

@@ -1,0 +1,28 @@
+/// Resource Type definition for AWS::Route53Resolver::ResolverEndpoint
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53Resolver::ResolverEndpoint"
+Properties: Props?
+class Props {
+    ResolverEndpointId: String?
+    Protocols: Listing<String>?
+    OutpostArn: String?
+    ResolverEndpointType: String?
+    Direction: String?
+    SecurityGroupIds: Listing<String>?
+    Name: String?
+    IpAddresses: Listing<IpAddressRequest>?
+    IpAddressCount: String?
+    PreferredInstanceType: String?
+    Arn: String?
+    HostVPCId: String?
+    Tags: Listing<Tag>?
+}
+class IpAddressRequest {
+    SubnetId: String
+    Ipv6: String?
+    Ip: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}

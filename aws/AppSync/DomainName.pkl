@@ -1,0 +1,11 @@
+/// Resource Type definition for AWS::AppSync::DomainName
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppSync::DomainName"
+Properties: Props?
+class Props {
+    DomainName: String(length <= 253 && length >= 1 && matches(Regex(#"^(\*[a-z\d-]*\.)?([a-z\d-]+\.)+[a-z\d-]+$"#)))?
+    Description: String(length <= 255 && length >= 0)?
+    CertificateArn: String(length <= 2048 && length >= 3 && matches(Regex(#"^arn:[a-z-]*:acm:[a-z0-9-]*:\d{12}:certificate/[0-9A-Za-z_/-]*$"#)))?
+    AppSyncDomainName: String?
+    HostedZoneId: String?
+}

@@ -1,0 +1,32 @@
+/// Represents a dataset group that holds a collection of related datasets
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Forecast::DatasetGroup"
+Properties: Props?
+class Props {
+    /// An array of Amazon Resource Names (ARNs) of the datasets that you want
+    /// to include in the dataset group.
+    DatasetArns: Listing<String(length <= 256 && matches(Regex(#"^[a-zA-Z0-9\-\_\.\/\:]+$"#)))>?
+    /// A name for the dataset group.
+    DatasetGroupName: String(length <= 63 && length >= 1 && matches(Regex(#"^[a-zA-Z][a-zA-Z0-9_]*"#)))?
+    /// The domain associated with the dataset group. When you add a dataset
+    /// to a dataset group, this value and the value specified for the Domain
+    /// parameter of the CreateDataset operation must match.
+    Domain: "RETAIL" | "CUSTOM" | "INVENTORY_PLANNING" | "EC2_CAPACITY" | "WORK_FORCE" | "WEB_TRAFFIC" | "METRICS" | *Null
+    /// The tags of Application Insights application.
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the dataset group to delete.
+    DatasetGroupArn: String(length <= 256 && matches(Regex(#"^[a-zA-Z0-9\-\_\.\/\:]+$"#)))?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

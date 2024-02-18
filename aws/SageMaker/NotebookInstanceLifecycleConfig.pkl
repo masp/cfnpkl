@@ -1,0 +1,14 @@
+/// Resource Type definition for
+/// AWS::SageMaker::NotebookInstanceLifecycleConfig
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::NotebookInstanceLifecycleConfig"
+Properties: Props?
+class Props {
+    Id: String?
+    NotebookInstanceLifecycleConfigName: String?
+    OnStart: Listing<NotebookInstanceLifecycleHook>?
+    OnCreate: Listing<NotebookInstanceLifecycleHook>?
+}
+class NotebookInstanceLifecycleHook {
+    Content: String?
+}

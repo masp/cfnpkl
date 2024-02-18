@@ -1,0 +1,60 @@
+/// Resource Type definition for AWS::LicenseManager::License
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LicenseManager::License"
+Properties: Props?
+class Props {
+    /// ProductSKU of the license.
+    ProductSKU: String(length <= 1024 && length >= 1)?
+    Issuer: IssuerData?
+    /// Name for the created license.
+    LicenseName: String?
+    /// Product name for the created license.
+    ProductName: String?
+    /// Home region for the created license.
+    HomeRegion: String?
+    Validity: ValidityDateFormat?
+    Entitlements: Listing<Entitlement>?
+    /// Beneficiary of the license.
+    Beneficiary: String?
+    ConsumptionConfiguration: ConsumptionConfiguration?
+    LicenseMetadata: Listing<Metadata>?
+    /// Amazon Resource Name is a unique name for each resource.
+    LicenseArn: String(length <= 2048)?
+    Status: String?
+    /// The version of the license.
+    Version: String?
+}
+class IssuerData {
+    Name: String
+    SignKey: String?
+}
+class ValidityDateFormat {
+    /// Validity begin date for the license.
+    Begin: String
+    /// Validity begin date for the license.
+    End: String
+}
+class Entitlement {
+    Name: String
+    Value: String?
+    MaxCount: Int?
+    Overage: Boolean?
+    Unit: String
+    AllowCheckIn: Boolean?
+}
+class ConsumptionConfiguration {
+    RenewType: String?
+    ProvisionalConfiguration: ProvisionalConfiguration?
+    BorrowConfiguration: BorrowConfiguration?
+}
+class ProvisionalConfiguration {
+    MaxTimeToLiveInMinutes: Int
+}
+class BorrowConfiguration {
+    MaxTimeToLiveInMinutes: Int
+    AllowEarlyCheckIn: Boolean
+}
+class Metadata {
+    Name: String
+    Value: String
+}

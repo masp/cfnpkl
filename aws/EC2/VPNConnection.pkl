@@ -1,0 +1,31 @@
+/// Resource Type definition for AWS::EC2::VPNConnection
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VPNConnection"
+Properties: Props?
+class Props {
+    /// The provider-assigned unique ID for this managed resource
+    VpnConnectionId: String?
+    /// The ID of the customer gateway at your end of the VPN connection.
+    CustomerGatewayId: String?
+    /// Indicates whether the VPN connection uses static routes only.
+    StaticRoutesOnly: Boolean?
+    /// Any tags assigned to the VPN connection.
+    Tags: Listing<Tag>?
+    /// The ID of the transit gateway associated with the VPN connection.
+    TransitGatewayId: String?
+    /// The type of VPN connection.
+    Type: String?
+    /// The ID of the virtual private gateway at the AWS side of the VPN
+    /// connection.
+    VpnGatewayId: String?
+    /// The tunnel options for the VPN connection.
+    VpnTunnelOptionsSpecifications: Listing<VpnTunnelOptionsSpecification>?
+}
+class Tag {
+    Key: String
+    Value: String
+}
+class VpnTunnelOptionsSpecification {
+    PreSharedKey: String?
+    TunnelInsideCidr: String?
+}

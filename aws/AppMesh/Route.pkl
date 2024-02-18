@@ -1,0 +1,143 @@
+/// Resource Type definition for AWS::AppMesh::Route
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppMesh::Route"
+Properties: Props?
+class Props {
+    Uid: String?
+    MeshName: String?
+    VirtualRouterName: String?
+    MeshOwner: String?
+    ResourceOwner: String?
+    RouteName: String?
+    Id: String?
+    Arn: String?
+    Spec: RouteSpec?
+    Tags: Listing<Tag>?
+}
+class RouteSpec {
+    HttpRoute: HttpRoute?
+    Http2Route: HttpRoute?
+    GrpcRoute: GrpcRoute?
+    TcpRoute: TcpRoute?
+    Priority: Int?
+}
+class HttpRoute {
+    Action: HttpRouteAction
+    RetryPolicy: HttpRetryPolicy?
+    Timeout: HttpTimeout?
+    Match: HttpRouteMatch
+}
+class HttpRouteAction {
+    WeightedTargets: Listing<WeightedTarget>
+}
+class WeightedTarget {
+    VirtualNode: String
+    Weight: Int
+    Port: Int?
+}
+class HttpRetryPolicy {
+    MaxRetries: Int
+    TcpRetryEvents: Listing<String>?
+    PerRetryTimeout: Duration
+    HttpRetryEvents: Listing<String>?
+}
+class Duration {
+    Value: Int
+    Unit: String
+}
+class HttpTimeout {
+    PerRequest: Duration?
+    Idle: Duration?
+}
+class HttpRouteMatch {
+    Path: HttpPathMatch?
+    Scheme: String?
+    Headers: Listing<HttpRouteHeader>?
+    Port: Int?
+    Prefix: String?
+    Method: String?
+    QueryParameters: Listing<QueryParameter>?
+}
+class HttpPathMatch {
+    Regex: String?
+    Exact: String?
+}
+class HttpRouteHeader {
+    Invert: Boolean?
+    Name: String
+    Match: HeaderMatchMethod?
+}
+class HeaderMatchMethod {
+    Suffix: String?
+    Exact: String?
+    Prefix: String?
+    Regex: String?
+    Range: MatchRange?
+}
+class MatchRange {
+    Start: Int
+    End: Int
+}
+class QueryParameter {
+    Name: String
+    Match: HttpQueryParameterMatch?
+}
+class HttpQueryParameterMatch {
+    Exact: String?
+}
+class GrpcRoute {
+    Action: GrpcRouteAction
+    RetryPolicy: GrpcRetryPolicy?
+    Timeout: GrpcTimeout?
+    Match: GrpcRouteMatch
+}
+class GrpcRouteAction {
+    WeightedTargets: Listing<WeightedTarget>
+}
+class GrpcRetryPolicy {
+    MaxRetries: Int
+    TcpRetryEvents: Listing<String>?
+    PerRetryTimeout: Duration
+    GrpcRetryEvents: Listing<String>?
+    HttpRetryEvents: Listing<String>?
+}
+class GrpcTimeout {
+    PerRequest: Duration?
+    Idle: Duration?
+}
+class GrpcRouteMatch {
+    Metadata: Listing<GrpcRouteMetadata>?
+    MethodName: String?
+    ServiceName: String?
+    Port: Int?
+}
+class GrpcRouteMetadata {
+    Invert: Boolean?
+    Name: String
+    Match: GrpcRouteMetadataMatchMethod?
+}
+class GrpcRouteMetadataMatchMethod {
+    Suffix: String?
+    Exact: String?
+    Prefix: String?
+    Regex: String?
+    Range: MatchRange?
+}
+class TcpRoute {
+    Action: TcpRouteAction
+    Timeout: TcpTimeout?
+    Match: TcpRouteMatch?
+}
+class TcpRouteAction {
+    WeightedTargets: Listing<WeightedTarget>
+}
+class TcpTimeout {
+    Idle: Duration?
+}
+class TcpRouteMatch {
+    Port: Int?
+}
+class Tag {
+    Value: String
+    Key: String
+}

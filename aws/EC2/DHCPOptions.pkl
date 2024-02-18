@@ -1,0 +1,24 @@
+/// Resource Type definition for AWS::EC2::DHCPOptions
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::DHCPOptions"
+Properties: Props?
+class Props {
+    /// The IPv4 addresses of up to four NetBIOS name servers.
+    NetbiosNameServers: Listing<String>?
+    /// The IPv4 addresses of up to four Network Time Protocol (NTP) servers.
+    NtpServers: Listing<String>?
+    DhcpOptionsId: String?
+    /// This value is used to complete unqualified DNS hostnames.
+    DomainName: String?
+    /// The NetBIOS node type (1, 2, 4, or 8).
+    NetbiosNodeType: Int?
+    /// The IPv4 addresses of up to four domain name servers, or
+    /// AmazonProvidedDNS.
+    DomainNameServers: Listing<String>?
+    /// Any tags assigned to the DHCP options set.
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String(length <= 256 && length >= 0)
+    Key: String(length <= 128 && length >= 1)
+}

@@ -1,0 +1,82 @@
+/// Resource Type definition for Metric Stream
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudWatch::MetricStream"
+Properties: Props?
+class Props {
+    /// Amazon Resource Name of the metric stream.
+    Arn: String(length <= 2048 && length >= 20)?
+    /// The date of creation of the metric stream.
+    CreationDate: String?
+    /// Define which metrics will be not streamed. Metrics matched by multiple
+    /// instances of MetricStreamFilter are joined with an OR operation by
+    /// default. If both IncludeFilters and ExcludeFilters are omitted, all
+    /// metrics in the account will be streamed. IncludeFilters and
+    /// ExcludeFilters are mutually exclusive. Default to null.
+    ExcludeFilters: Listing<MetricStreamFilter>?
+    /// The ARN of the Kinesis Firehose where to stream the data.
+    FirehoseArn: String(length <= 2048 && length >= 20)?
+    /// Define which metrics will be streamed. Metrics matched by multiple
+    /// instances of MetricStreamFilter are joined with an OR operation by
+    /// default. If both IncludeFilters and ExcludeFilters are omitted, all
+    /// metrics in the account will be streamed. IncludeFilters and
+    /// ExcludeFilters are mutually exclusive. Default to null.
+    IncludeFilters: Listing<MetricStreamFilter>?
+    /// The date of the last update of the metric stream.
+    LastUpdateDate: String?
+    /// Name of the metric stream.
+    Name: String(length <= 255 && length >= 1)?
+    /// The ARN of the role that provides access to the Kinesis Firehose.
+    RoleArn: String(length <= 2048 && length >= 20)?
+    /// Displays the state of the Metric Stream.
+    State: String(length <= 255 && length >= 1)?
+    /// The output format of the data streamed to the Kinesis Firehose.
+    OutputFormat: String(length <= 255 && length >= 1)?
+    /// By default, a metric stream always sends the MAX, MIN, SUM, and
+    /// SAMPLECOUNT statistics for each metric that is streamed. You can use
+    /// this parameter to have the metric stream also send additional
+    /// statistics in the stream. This array can have up to 100 members.
+    StatisticsConfigurations: Listing<MetricStreamStatisticsConfiguration>?
+    /// A set of tags to assign to the delivery stream.
+    Tags: Listing<Tag>?
+    /// If you are creating a metric stream in a monitoring account, specify
+    /// true to include metrics from source accounts that are linked to this
+    /// monitoring account, in the metric stream. The default is false.
+    IncludeLinkedAccountsMetrics: Boolean?
+}
+/// This structure defines the metrics that will be streamed.
+class MetricStreamFilter {
+    /// Only metrics with Namespace matching this value will be streamed.
+    Namespace: String(length <= 255 && length >= 1)
+    /// Only metrics with MetricNames matching these values will be streamed.
+    /// Must be set together with Namespace.
+    MetricNames: Listing<String(length <= 255 && length >= 1)>?
+}
+/// This structure specifies a list of additional statistics to stream,
+/// and the metrics to stream those additional statistics for. All metrics
+/// that match the combination of metric name and namespace will be
+/// streamed with the extended statistics, no matter their dimensions.
+class MetricStreamStatisticsConfiguration {
+    /// The additional statistics to stream for the metrics listed in
+    /// IncludeMetrics.
+    AdditionalStatistics: Listing<String>
+    /// An array that defines the metrics that are to have additional
+    /// statistics streamed.
+    IncludeMetrics: Listing<MetricStreamStatisticsMetric>
+}
+/// A structure that specifies the metric name and namespace for one
+/// metric that is going to have additional statistics included in the
+/// stream.
+class MetricStreamStatisticsMetric {
+    /// The name of the metric.
+    MetricName: String(length <= 255 && length >= 1)
+    /// The namespace of the metric.
+    Namespace: String(length <= 255 && length >= 1)
+}
+/// Metadata that you can assign to a Metric Stream, consisting of a key-
+/// value pair.
+class Tag {
+    /// A unique identifier for the tag.
+    Key: String(length <= 128 && length >= 1)
+    /// String which you can use to describe or define the tag.
+    Value: String(length <= 256 && length >= 1)
+}

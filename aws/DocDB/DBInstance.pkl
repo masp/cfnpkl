@@ -1,0 +1,23 @@
+/// Resource Type definition for AWS::DocDB::DBInstance
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DocDB::DBInstance"
+Properties: Props?
+class Props {
+    DBInstanceClass: String?
+    Port: String?
+    DBClusterIdentifier: String?
+    AvailabilityZone: String?
+    PreferredMaintenanceWindow: String?
+    EnablePerformanceInsights: Boolean?
+    AutoMinorVersionUpgrade: Boolean?
+    DBInstanceIdentifier: String?
+    CACertificateIdentifier: String?
+    CertificateRotationRestart: Boolean?
+    Endpoint: String?
+    Id: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String
+    Key: String
+}

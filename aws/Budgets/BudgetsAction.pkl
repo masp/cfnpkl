@@ -1,0 +1,44 @@
+/// An example resource schema demonstrating some basic constructs and
+/// validation rules.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Budgets::BudgetsAction"
+Properties: Props?
+class Props {
+    ActionId: String?
+    BudgetName: String?
+    NotificationType: "ACTUAL" | "FORECASTED" | *Null
+    ActionType: "APPLY_IAM_POLICY" | "APPLY_SCP_POLICY" | "RUN_SSM_DOCUMENTS" | *Null
+    ActionThreshold: ActionThreshold?
+    ExecutionRoleArn: String?
+    ApprovalModel: "AUTOMATIC" | "MANUAL" | *Null
+    Subscribers: Listing<Subscriber>?
+    Definition: Definition?
+}
+class ActionThreshold {
+    Value: Float
+    Type: "PERCENTAGE" | "ABSOLUTE_VALUE"
+}
+class Subscriber {
+    Type: "SNS" | "EMAIL"
+    Address: String
+}
+class Definition {
+    IamActionDefinition: IamActionDefinition?
+    ScpActionDefinition: ScpActionDefinition?
+    SsmActionDefinition: SsmActionDefinition?
+}
+class IamActionDefinition {
+    PolicyArn: String
+    Roles: Listing<String>?
+    Groups: Listing<String>?
+    Users: Listing<String>?
+}
+class ScpActionDefinition {
+    PolicyId: String
+    TargetIds: Listing<String>
+}
+class SsmActionDefinition {
+    Subtype: "STOP_EC2_INSTANCES" | "STOP_RDS_INSTANCES"
+    Region: String
+    InstanceIds: Listing<String>
+}

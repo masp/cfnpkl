@@ -1,0 +1,13 @@
+/// Resource Type definition for
+/// AWS::KinesisAnalyticsV2::ApplicationCloudWatchLoggingOption
+extends ".../AWS/Resource.pkl"
+Type = "AWS::KinesisAnalyticsV2::ApplicationCloudWatchLoggingOption"
+Properties: Props?
+class Props {
+    Id: String?
+    ApplicationName: String?
+    CloudWatchLoggingOption: CloudWatchLoggingOption?
+}
+class CloudWatchLoggingOption {
+    LogStreamARN: String
+}

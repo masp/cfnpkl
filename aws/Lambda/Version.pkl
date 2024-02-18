@@ -1,0 +1,40 @@
+/// Resource Type definition for AWS::Lambda::Version
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lambda::Version"
+Properties: Props?
+class Props {
+    /// The ARN of the version.
+    FunctionArn: String?
+    /// The version number.
+    Version: String?
+    /// Only publish a version if the hash value matches the value that's
+    /// specified. Use this option to avoid publishing a version if the
+    /// function code has changed since you last updated it. Updates are not
+    /// supported for this property.
+    CodeSha256: String?
+    /// A description for the version to override the description in the
+    /// function configuration. Updates are not supported for this property.
+    Description: String(length <= 256 && length >= 0)?
+    /// The name of the Lambda function.
+    FunctionName: String(length <= 140 && length >= 1 && matches(Regex(#"^(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}(-gov)?-[a-z]+-\d{1}:)?(\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\$LATEST|[a-zA-Z0-9-_]+))?$"#)))?
+    /// Specifies a provisioned concurrency configuration for a function's
+    /// version. Updates are not supported for this property.
+    ProvisionedConcurrencyConfig: ProvisionedConcurrencyConfiguration?
+    /// Specifies the runtime management configuration of a function. Displays
+    /// runtimeVersionArn only for Manual.
+    RuntimePolicy: RuntimePolicy?
+}
+/// A provisioned concurrency configuration for a function's version.
+class ProvisionedConcurrencyConfiguration {
+    /// The amount of provisioned concurrency to allocate for the version.
+    ProvisionedConcurrentExecutions: Int
+}
+/// Runtime Management Config of a function.
+class RuntimePolicy {
+    /// The ARN of the runtime the function is configured to use. If the
+    /// runtime update mode is manual, the ARN is returned, otherwise null is
+    /// returned.
+    RuntimeVersionArn: String(length <= 2048 && length >= 26 && matches(Regex(#"^arn:(aws[a-zA-Z-]*):lambda:[a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\d{1}::runtime:.+$"#)))?
+    /// The runtime update mode.
+    UpdateRuntimeOn: String
+}

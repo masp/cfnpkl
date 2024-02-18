@@ -1,0 +1,19 @@
+/// Creates an authorizer.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::Authorizer"
+Properties: Props?
+class Props {
+    AuthorizerFunctionArn: String?
+    Arn: String?
+    AuthorizerName: String(length <= 128 && length >= 1 && matches(Regex(#"[\w=,@-]+"#)))?
+    SigningDisabled: Boolean?
+    Status: "ACTIVE" | "INACTIVE" | *Null
+    TokenKeyName: String?
+    TokenSigningPublicKeys: Mapping?
+    EnableCachingForHttp: Boolean?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String
+}

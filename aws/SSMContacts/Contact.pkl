@@ -1,0 +1,20 @@
+/// Resource Type definition for AWS::SSMContacts::Contact
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SSMContacts::Contact"
+Properties: Props?
+class Props {
+    /// Alias of the contact. String value with 20 to 256 characters. Only
+    /// alphabetical, numeric characters, dash, or underscore allowed.
+    Alias: String(length <= 255 && length >= 1 && matches(Regex(#"^[a-z0-9_\-\.]*$"#)))?
+    /// Name of the contact. String value with 3 to 256 characters. Only
+    /// alphabetical, space, numeric characters, dash, or underscore allowed.
+    DisplayName: String(length <= 255 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_\-\s]*$"#)))?
+    /// Contact type, which specify type of contact. Currently supported
+    /// values: “PERSONAL”, “SHARED”, “OTHER“.
+    Type: "PERSONAL" | "CUSTOM" | "SERVICE" | "ESCALATION" | "ONCALL_SCHEDULE" | *Null
+    /// The stages that an escalation plan or engagement plan engages contacts
+    /// and contact methods in.
+    Plan: Listing<Mapping | Mapping>?
+    /// The Amazon Resource Name (ARN) of the contact.
+    Arn: String?
+}

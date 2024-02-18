@@ -1,0 +1,35 @@
+/// Definition of AWS::RefactorSpaces::Route Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::RefactorSpaces::Route"
+Properties: Props?
+class Props {
+    PathResourceToId: String?
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:(aws[a-zA-Z-]*)?:refactor-spaces:[a-zA-Z0-9\-]+:\w{12}:[a-zA-Z_0-9+=,.@\-_/]+$"#)))?
+    ApplicationIdentifier: String(length <= 14 && length >= 14 && matches(Regex(#"^app-([0-9A-Za-z]{10}$)"#)))?
+    EnvironmentIdentifier: String(length <= 14 && length >= 14 && matches(Regex(#"^env-([0-9A-Za-z]{10}$)"#)))?
+    RouteIdentifier: String(length <= 14 && length >= 14 && matches(Regex(#"^rte-([0-9A-Za-z]{10}$)"#)))?
+    RouteType: "DEFAULT" | "URI_PATH" | *Null
+    ServiceIdentifier: String(length <= 14 && length >= 14 && matches(Regex(#"^svc-([0-9A-Za-z]{10}$)"#)))?
+    DefaultRoute: DefaultRouteInput?
+    UriPathRoute: UriPathRouteInput?
+    /// Metadata that you can assign to help organize the frameworks that you
+    /// create. Each tag is a key-value pair.
+    Tags: Listing<Tag>?
+}
+class DefaultRouteInput {
+    ActivationState: "INACTIVE" | "ACTIVE"
+}
+class UriPathRouteInput {
+    SourcePath: String(length <= 2048 && length >= 1 && matches(Regex(#"^(/([a-zA-Z0-9._:-]+|\{[a-zA-Z0-9._:-]+\}))+$"#)))?
+    ActivationState: "INACTIVE" | "ACTIVE"
+    Methods: Listing<"DELETE" | "GET" | "HEAD" | "OPTIONS" | "PATCH" | "POST" | "PUT">?
+    IncludeChildPaths: Boolean?
+    AppendSourcePath: Boolean?
+}
+/// A label for tagging Environment resource
+class Tag {
+    /// A string used to identify this tag
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:).+"#)))
+    /// A string containing the value for the tag
+    Value: String(length <= 256 && length >= 0)
+}

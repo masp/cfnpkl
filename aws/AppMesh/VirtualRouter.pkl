@@ -1,0 +1,29 @@
+/// Resource Type definition for AWS::AppMesh::VirtualRouter
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppMesh::VirtualRouter"
+Properties: Props?
+class Props {
+    Uid: String?
+    MeshName: String?
+    VirtualRouterName: String?
+    MeshOwner: String?
+    ResourceOwner: String?
+    Id: String?
+    Arn: String?
+    Spec: VirtualRouterSpec?
+    Tags: Listing<Tag>?
+}
+class VirtualRouterSpec {
+    Listeners: Listing<VirtualRouterListener>
+}
+class VirtualRouterListener {
+    PortMapping: PortMapping
+}
+class PortMapping {
+    Protocol: String
+    Port: Int
+}
+class Tag {
+    Value: String
+    Key: String
+}

@@ -1,0 +1,59 @@
+/// Resource Type definition for AWS::Transfer::Server
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Transfer::Server"
+Properties: Props?
+class Props {
+    LoggingRole: String?
+    Protocols: Listing<Mapping>?
+    IdentityProviderDetails: IdentityProviderDetails?
+    EndpointDetails: EndpointDetails?
+    StructuredLogDestinations: Listing<Mapping>?
+    PreAuthenticationLoginBanner: String?
+    ServerId: String?
+    PostAuthenticationLoginBanner: String?
+    EndpointType: String?
+    SecurityPolicyName: String?
+    ProtocolDetails: ProtocolDetails?
+    S3StorageOptions: S3StorageOptions?
+    WorkflowDetails: WorkflowDetails?
+    Arn: String?
+    Domain: String?
+    IdentityProviderType: String?
+    Tags: Listing<Tag>?
+    Certificate: String?
+}
+class IdentityProviderDetails {
+    Function: String?
+    DirectoryId: String?
+    Url: String?
+    InvocationRole: String?
+    SftpAuthenticationMethods: String?
+}
+class EndpointDetails {
+    AddressAllocationIds: Listing<String>?
+    VpcId: String?
+    VpcEndpointId: String?
+    SecurityGroupIds: Listing<String>?
+    SubnetIds: Listing<String>?
+}
+class ProtocolDetails {
+    As2Transports: Listing<Mapping>?
+    PassiveIp: String?
+    SetStatOption: String?
+    TlsSessionResumptionMode: String?
+}
+class S3StorageOptions {
+    DirectoryListingOptimization: String?
+}
+class WorkflowDetails {
+    OnUpload: Listing<WorkflowDetail>?
+    OnPartialUpload: Listing<WorkflowDetail>?
+}
+class WorkflowDetail {
+    WorkflowId: String
+    ExecutionRole: String
+}
+class Tag {
+    Value: String
+    Key: String
+}

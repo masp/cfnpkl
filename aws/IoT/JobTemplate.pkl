@@ -1,0 +1,105 @@
+/// Job templates enable you to preconfigure jobs so that you can deploy
+/// them to multiple sets of target devices.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::JobTemplate"
+Properties: Props?
+class Props {
+    Arn: String?
+    /// Optional for copying a JobTemplate from a pre-existing Job
+    /// configuration.
+    JobArn: String?
+    JobTemplateId: String(length <= 64 && length >= 1 && matches(Regex(#"[a-zA-Z0-9_-]+"#)))?
+    /// A description of the Job Template.
+    Description: String(length <= 2028 && matches(Regex(#"[^\p{C}]+"#)))?
+    /// The job document. Required if you don't specify a value for
+    /// documentSource.
+    Document: String(length <= 32768)?
+    /// An S3 link to the job document to use in the template. Required if you
+    /// don't specify a value for document.
+    DocumentSource: String(length <= 1350 && length >= 1)?
+    /// Specifies the amount of time each device has to finish its execution
+    /// of the job.
+    TimeoutConfig: TimeoutConfig?
+    /// Allows you to create a staged rollout of a job.
+    JobExecutionsRolloutConfig: JobExecutionsRolloutConfig?
+    /// The criteria that determine when and how a job abort takes place.
+    AbortConfig: AbortConfig?
+    /// Configuration for pre-signed S3 URLs.
+    PresignedUrlConfig: PresignedUrlConfig?
+    JobExecutionsRetryConfig: JobExecutionsRetryConfig?
+    MaintenanceWindows: Listing<MaintenanceWindow>?
+    DestinationPackageVersions: Listing<String(length <= 1600 && length >= 1)>?
+    /// Metadata that can be used to manage the JobTemplate.
+    Tags: Listing<Tag>?
+}
+/// Specifies the amount of time each device has to finish its execution
+/// of the job.
+class TimeoutConfig {
+    InProgressTimeoutInMinutes: Int
+}
+/// Allows you to create a staged rollout of a job.
+class JobExecutionsRolloutConfig {
+    /// The rate of increase for a job rollout. This parameter allows you to
+    /// define an exponential rate for a job rollout.
+    ExponentialRolloutRate: ExponentialRolloutRate?
+    /// The maximum number of things that will be notified of a pending job,
+    /// per minute. This parameter allows you to create a staged rollout.
+    MaximumPerMinute: Int?
+}
+/// Allows you to create an exponential rate of rollout for a job.
+class ExponentialRolloutRate {
+    /// The minimum number of things that will be notified of a pending job,
+    /// per minute at the start of job rollout. This parameter allows you to
+    /// define the initial rate of rollout.
+    BaseRatePerMinute: Int
+    /// The exponential factor to increase the rate of rollout for a job.
+    IncrementFactor: Float
+    /// The criteria to initiate the increase in rate of rollout for a job.
+    RateIncreaseCriteria: RateIncreaseCriteria
+}
+class RateIncreaseCriteria {
+    NumberOfNotifiedThings: Int?
+    NumberOfSucceededThings: Int?
+}
+/// The criteria that determine when and how a job abort takes place.
+class AbortConfig {
+    CriteriaList: Listing<AbortCriteria>
+}
+/// The criteria that determine when and how a job abort takes place.
+class AbortCriteria {
+    /// The type of job action to take to initiate the job abort.
+    Action: "CANCEL"
+    /// The type of job execution failures that can initiate a job abort.
+    FailureType: "FAILED" | "REJECTED" | "TIMED_OUT" | "ALL"
+    /// The minimum number of things which must receive job execution
+    /// notifications before the job can be aborted.
+    MinNumberOfExecutedThings: Int
+    /// The minimum percentage of job execution failures that must occur to
+    /// initiate the job abort.
+    ThresholdPercentage: Float
+}
+/// Configuration for pre-signed S3 URLs.
+class PresignedUrlConfig {
+    RoleArn: String(length <= 2048 && length >= 20)
+    ExpiresInSec: Int?
+}
+class JobExecutionsRetryConfig {
+    RetryCriteriaList: Listing<RetryCriteria>?
+}
+/// Specifies how many times a failure type should be retried.
+class RetryCriteria {
+    NumberOfRetries: Int?
+    FailureType: "FAILED" | "TIMED_OUT" | "ALL" | *Null
+}
+/// Specifies a start time and duration for a scheduled Job.
+class MaintenanceWindow {
+    StartTime: String(length <= 256 && length >= 1)?
+    DurationInMinutes: Int?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The tag's key.
+    Key: String(length <= 128 && length >= 1)
+    /// The tag's value.
+    Value: String(length <= 256 && length >= 1)
+}

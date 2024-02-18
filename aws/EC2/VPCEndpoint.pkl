@@ -1,0 +1,29 @@
+/// Resource Type definition for AWS::EC2::VPCEndpoint
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::VPCEndpoint"
+Properties: Props?
+class Props {
+    Id: String?
+    CreationTimestamp: String?
+    DnsEntries: Listing<String>?
+    NetworkInterfaceIds: Listing<String>?
+    /// A policy to attach to the endpoint that controls access to the
+    /// service.
+    PolicyDocument: String | Mapping | *Null
+    /// Indicate whether to associate a private hosted zone with the specified
+    /// VPC.
+    PrivateDnsEnabled: Boolean?
+    /// One or more route table IDs.
+    RouteTableIds: Listing<String>?
+    /// The ID of one or more security groups to associate with the endpoint
+    /// network interface.
+    SecurityGroupIds: Listing<String>?
+    /// The service name.
+    ServiceName: String?
+    /// The ID of one or more subnets in which to create an endpoint network
+    /// interface.
+    SubnetIds: Listing<String>?
+    VpcEndpointType: "Interface" | "Gateway" | "GatewayLoadBalancer" | *Null
+    /// The ID of the VPC in which the endpoint will be used.
+    VpcId: String?
+}

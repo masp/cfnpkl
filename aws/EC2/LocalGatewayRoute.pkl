@@ -1,0 +1,18 @@
+/// Describes a route for a local gateway route table.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::LocalGatewayRoute"
+Properties: Props?
+class Props {
+    /// The CIDR block used for destination matches.
+    DestinationCidrBlock: String?
+    /// The ID of the local gateway route table.
+    LocalGatewayRouteTableId: String?
+    /// The ID of the virtual interface group.
+    LocalGatewayVirtualInterfaceGroupId: String?
+    /// The ID of the network interface.
+    NetworkInterfaceId: String?
+    /// The state of the route.
+    State: String?
+    /// The route type.
+    Type: String?
+}

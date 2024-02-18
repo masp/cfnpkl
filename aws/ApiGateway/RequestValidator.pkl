@@ -1,0 +1,22 @@
+/// The ``AWS::ApiGateway::RequestValidator`` resource sets up basic
+/// validation rules for incoming requests to your API. For more
+/// information, see [Enable Basic Request Validation for an API in API Ga
+/// teway](https://docs.aws.amazon.com/apigateway/latest/developerguide/ap
+/// i-gateway-method-request-validation.html) in the *API Gateway
+/// Developer Guide*.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::RequestValidator"
+Properties: Props?
+class Props {
+    RequestValidatorId: String?
+    /// The name of this RequestValidator
+    Name: String?
+    /// The string identifier of the associated RestApi.
+    RestApiId: String?
+    /// A Boolean flag to indicate whether to validate a request body
+    /// according to the configured Model schema.
+    ValidateRequestBody: Boolean?
+    /// A Boolean flag to indicate whether to validate request parameters
+    /// (``true``) or not (``false``).
+    ValidateRequestParameters: Boolean?
+}

@@ -1,0 +1,17 @@
+/// Definition of AWS::MediaPackageV2::ChannelGroup Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::MediaPackageV2::ChannelGroup"
+Properties: Props?
+class Props {
+    Arn: String?
+    ChannelGroupName: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9_-]+$"#)))?
+    CreatedAt: String?
+    Description: String(length <= 1024 && length >= 0)?
+    EgressDomain: String?
+    ModifiedAt: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String?
+    Value: String?
+}

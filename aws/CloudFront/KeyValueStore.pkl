@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::CloudFront::KeyValueStore
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudFront::KeyValueStore"
+Properties: Props?
+class Props {
+    Arn: String?
+    Id: String?
+    Status: String?
+    Name: String?
+    Comment: String?
+    ImportSource: ImportSource?
+}
+class ImportSource {
+    SourceType: String
+    SourceArn: String
+}

@@ -1,0 +1,144 @@
+/// Resource Type definition for AWS::AppMesh::VirtualGateway
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppMesh::VirtualGateway"
+Properties: Props?
+class Props {
+    Uid: String?
+    VirtualGatewayName: String?
+    MeshName: String?
+    MeshOwner: String?
+    ResourceOwner: String?
+    Id: String?
+    Arn: String?
+    Spec: VirtualGatewaySpec?
+    Tags: Listing<Tag>?
+}
+class VirtualGatewaySpec {
+    Logging: VirtualGatewayLogging?
+    Listeners: Listing<VirtualGatewayListener>
+    BackendDefaults: VirtualGatewayBackendDefaults?
+}
+class VirtualGatewayLogging {
+    AccessLog: VirtualGatewayAccessLog?
+}
+class VirtualGatewayAccessLog {
+    File: VirtualGatewayFileAccessLog?
+}
+class VirtualGatewayFileAccessLog {
+    Path: String
+    Format: LoggingFormat?
+}
+class LoggingFormat {
+    Text: String?
+    Json: Listing<JsonFormatRef>?
+}
+class JsonFormatRef {
+    Value: String
+    Key: String
+}
+class VirtualGatewayListener {
+    ConnectionPool: VirtualGatewayConnectionPool?
+    HealthCheck: VirtualGatewayHealthCheckPolicy?
+    TLS: VirtualGatewayListenerTls?
+    PortMapping: VirtualGatewayPortMapping
+}
+class VirtualGatewayConnectionPool {
+    HTTP: VirtualGatewayHttpConnectionPool?
+    HTTP2: VirtualGatewayHttp2ConnectionPool?
+    GRPC: VirtualGatewayGrpcConnectionPool?
+}
+class VirtualGatewayHttpConnectionPool {
+    MaxConnections: Int
+    MaxPendingRequests: Int?
+}
+class VirtualGatewayHttp2ConnectionPool {
+    MaxRequests: Int
+}
+class VirtualGatewayGrpcConnectionPool {
+    MaxRequests: Int
+}
+class VirtualGatewayHealthCheckPolicy {
+    Path: String?
+    UnhealthyThreshold: Int
+    Port: Int?
+    HealthyThreshold: Int
+    TimeoutMillis: Int
+    Protocol: String
+    IntervalMillis: Int
+}
+class VirtualGatewayListenerTls {
+    Validation: VirtualGatewayListenerTlsValidationContext?
+    Mode: String
+    Certificate: VirtualGatewayListenerTlsCertificate
+}
+class VirtualGatewayListenerTlsValidationContext {
+    SubjectAlternativeNames: SubjectAlternativeNames?
+    Trust: VirtualGatewayListenerTlsValidationContextTrust
+}
+class SubjectAlternativeNames {
+    Match: SubjectAlternativeNameMatchers
+}
+class SubjectAlternativeNameMatchers {
+    Exact: Listing<String>?
+}
+class VirtualGatewayListenerTlsValidationContextTrust {
+    File: VirtualGatewayTlsValidationContextFileTrust?
+    SDS: VirtualGatewayTlsValidationContextSdsTrust?
+}
+class VirtualGatewayTlsValidationContextFileTrust {
+    CertificateChain: String
+}
+class VirtualGatewayTlsValidationContextSdsTrust {
+    SecretName: String
+}
+class VirtualGatewayListenerTlsCertificate {
+    SDS: VirtualGatewayListenerTlsSdsCertificate?
+    ACM: VirtualGatewayListenerTlsAcmCertificate?
+    File: VirtualGatewayListenerTlsFileCertificate?
+}
+class VirtualGatewayListenerTlsSdsCertificate {
+    SecretName: String
+}
+class VirtualGatewayListenerTlsAcmCertificate {
+    CertificateArn: String
+}
+class VirtualGatewayListenerTlsFileCertificate {
+    CertificateChain: String
+    PrivateKey: String
+}
+class VirtualGatewayPortMapping {
+    Protocol: String
+    Port: Int
+}
+class VirtualGatewayBackendDefaults {
+    ClientPolicy: VirtualGatewayClientPolicy?
+}
+class VirtualGatewayClientPolicy {
+    TLS: VirtualGatewayClientPolicyTls?
+}
+class VirtualGatewayClientPolicyTls {
+    Validation: VirtualGatewayTlsValidationContext
+    Ports: Listing<Int>?
+    Enforce: Boolean?
+    Certificate: VirtualGatewayClientTlsCertificate?
+}
+class VirtualGatewayTlsValidationContext {
+    SubjectAlternativeNames: SubjectAlternativeNames?
+    Trust: VirtualGatewayTlsValidationContextTrust
+}
+class VirtualGatewayTlsValidationContextTrust {
+    SDS: VirtualGatewayTlsValidationContextSdsTrust?
+    ACM: VirtualGatewayTlsValidationContextAcmTrust?
+    File: VirtualGatewayTlsValidationContextFileTrust?
+}
+class VirtualGatewayTlsValidationContextAcmTrust {
+    CertificateAuthorityArns: Listing<String>
+}
+class VirtualGatewayClientTlsCertificate {
+    File: VirtualGatewayListenerTlsFileCertificate?
+    SDS: VirtualGatewayListenerTlsSdsCertificate?
+}
+class Tag {
+    Value: String
+    Key: String
+}

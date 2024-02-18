@@ -1,0 +1,40 @@
+/// A channel receives events from a specific source (such as an on-
+/// premises storage solution or application, or a partner event data
+/// source), and delivers the events to one or more event data stores. You
+/// use channels to ingest events into CloudTrail from sources outside
+/// AWS.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CloudTrail::Channel"
+Properties: Props?
+class Props {
+    Name: String(length <= 128 && length >= 3 && matches(Regex(#"(^[a-zA-Z0-9._\-]+$)"#)))?
+    /// The ARN of an on-premises storage solution or application, or a
+    /// partner event source.
+    Source: String(length <= 256 && length >= 1 && matches(Regex(#"(.*)"#)))?
+    /// One or more resources to which events arriving through a channel are
+    /// logged and stored.
+    Destinations: Listing<Destination>?
+    ChannelArn: String(length <= 256 && length >= 3 && matches(Regex(#"(^[a-zA-Z0-9._/\-:]+$)"#)))?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+}
+/// The resource that receives events arriving from a channel.
+class Destination {
+    /// The type of destination for events arriving from a channel.
+    Type: "EVENT_DATA_STORE"
+    /// The ARN of a resource that receives events from a channel.
+    Location: String(length <= 1024 && length >= 3 && matches(Regex(#"(^[a-zA-Z0-9._/\-:]+$)"#)))
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 128
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 0 to 256
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}

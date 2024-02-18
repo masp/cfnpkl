@@ -1,0 +1,20 @@
+/// Resource schema for AWS::EC2::NetworkInsightsAccessScopeAnalysis
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::NetworkInsightsAccessScopeAnalysis"
+Properties: Props?
+class Props {
+    NetworkInsightsAccessScopeAnalysisId: String?
+    NetworkInsightsAccessScopeAnalysisArn: String?
+    NetworkInsightsAccessScopeId: String?
+    Status: "running" | "failed" | "succeeded" | *Null
+    StatusMessage: String?
+    StartDate: String?
+    EndDate: String?
+    FindingsFound: "true" | "false" | "unknown" | *Null
+    AnalyzedEniCount: Int?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String
+    Value: String?
+}

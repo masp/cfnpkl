@@ -1,0 +1,14 @@
+/// Resource schema for AWS::AutoScaling::WarmPool.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AutoScaling::WarmPool"
+Properties: Props?
+class Props {
+    AutoScalingGroupName: String?
+    MaxGroupPreparedCapacity: Int?
+    MinSize: Int?
+    PoolState: String?
+    InstanceReusePolicy: InstanceReusePolicy?
+}
+class InstanceReusePolicy {
+    ReuseOnScaleIn: Boolean?
+}

@@ -1,0 +1,34 @@
+/// You can use organizational units (OUs) to group accounts together to
+/// administer as a single unit. This greatly simplifies the management of
+/// your accounts. For example, you can attach a policy-based control to
+/// an OU, and all accounts within the OU automatically inherit the
+/// policy. You can create multiple OUs within a single organization, and
+/// you can create OUs within other OUs. Each OU can contain multiple
+/// accounts, and you can move accounts from one OU to another. However,
+/// OU names must be unique within a parent OU or root.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Organizations::OrganizationalUnit"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of this OU.
+    Arn: String(matches(Regex(#"^arn:aws.*:organizations::\d{12}:ou/o-[a-z0-9]{10,32}/ou-[0-9a-z]{4,32}-[0-9a-z]{8,32}"#)))?
+    /// The unique identifier (ID) associated with this OU.
+    Id: String(length <= 68 && matches(Regex(#"^ou-[0-9a-z]{4,32}-[a-z0-9]{8,32}$"#)))?
+    /// The friendly name of this OU.
+    Name: String(length <= 128 && length >= 1 && matches(Regex(#"[\s\S]*"#)))?
+    /// The unique identifier (ID) of the parent root or OU that you want to
+    /// create the new OU in.
+    ParentId: String(length <= 100 && matches(Regex(#"^(r-[0-9a-z]{4,32})|(ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})$"#)))?
+    /// A list of tags that you want to attach to the newly created OU.
+    Tags: Listing<Tag>?
+}
+/// A custom key-value pair associated with a resource within your
+/// organization.
+class Tag {
+    /// The key identifier, or name, of the tag.
+    Key: String(length <= 128 && length >= 1)
+    /// The string value that's associated with the key of the tag. You can
+    /// set the value of a tag to an empty string, but you can't set the value
+    /// of a tag to null.
+    Value: String(length <= 256 && length >= 0)
+}

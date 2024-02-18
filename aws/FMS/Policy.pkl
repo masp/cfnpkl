@@ -1,0 +1,43 @@
+/// Creates an AWS Firewall Manager policy.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::FMS::Policy"
+Properties: Props?
+class Props {
+    ExcludeMap: IEMap?
+    ExcludeResourceTags: Boolean?
+    IncludeMap: IEMap?
+    Id: String(length <= 36 && length >= 36 && matches(Regex(#"^[a-z0-9A-Z-]{36}$"#)))?
+    PolicyName: String(length <= 1024 && length >= 1 && matches(Regex(#"^([a-zA-Z0-9_.:/=+\-@\s]+)$"#)))?
+    PolicyDescription: String(length <= 256 && matches(Regex(#"^([a-zA-Z0-9_.:/=+\-@\s]+)$"#)))?
+    RemediationEnabled: Boolean?
+    ResourceTags: Listing<ResourceTag>?
+    ResourceType: String(length <= 128 && length >= 1 && matches(Regex(#"^([^\s]*)$"#)))?
+    ResourceTypeList: Listing<String(length <= 128 && length >= 1 && matches(Regex(#"^([^\s]*)$"#)))>?
+    ResourceSetIds: Listing<String(length <= 22 && length >= 22 && matches(Regex(#"^[a-z0-9A-Z]{22}$"#)))>?
+    SecurityServicePolicyData: SecurityServicePolicyData?
+    Arn: String(length <= 1024 && length >= 1 && matches(Regex(#"^([^\s]*)$"#)))?
+    DeleteAllPolicyResources: Boolean?
+    ResourcesCleanUp: Boolean?
+    Tags: Listing<PolicyTag>?
+}
+/// An FMS includeMap or excludeMap.
+class IEMap {
+    ACCOUNT: Listing<String(length <= 12 && length >= 12 && matches(Regex(#"^([0-9]*)$"#)))>?
+    ORGUNIT: Listing<String(length <= 68 && length >= 16 && matches(Regex(#"^(ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})$"#)))>?
+}
+/// A resource tag.
+class ResourceTag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256)?
+}
+/// Firewall security service policy data.
+class SecurityServicePolicyData {
+    ManagedServiceData: String(length <= 8192 && length >= 1)?
+    Type: "WAF" | "WAFV2" | "SHIELD_ADVANCED" | "SECURITY_GROUPS_COMMON" | "SECURITY_GROUPS_CONTENT_AUDIT" | "SECURITY_GROUPS_USAGE_AUDIT" | "NETWORK_FIREWALL" | "THIRD_PARTY_FIREWALL" | "DNS_FIREWALL" | "IMPORT_NETWORK_FIREWALL"
+    PolicyOption: Mapping | Mapping | *Null
+}
+/// A policy tag.
+class PolicyTag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^([^\s]*)$"#)))
+    Value: String(length <= 256 && matches(Regex(#"^([^\s]*)$"#)))
+}

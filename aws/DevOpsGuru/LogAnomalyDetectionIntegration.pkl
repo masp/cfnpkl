@@ -1,0 +1,8 @@
+/// This resource schema represents the LogAnomalyDetectionIntegration
+/// resource in the Amazon DevOps Guru.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DevOpsGuru::LogAnomalyDetectionIntegration"
+Properties: Props?
+class Props {
+    AccountId: String(matches(Regex(#"^\d{12}$"#)))?
+}

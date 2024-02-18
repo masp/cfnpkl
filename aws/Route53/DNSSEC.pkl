@@ -1,0 +1,9 @@
+/// Resource used to control (enable/disable) DNSSEC in a specific hosted
+/// zone.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Route53::DNSSEC"
+Properties: Props?
+class Props {
+    /// The unique string (ID) used to identify a hosted zone.
+    HostedZoneId: String(matches(Regex(#"^[A-Z0-9]{1,32}$"#)))?
+}

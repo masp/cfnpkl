@@ -1,0 +1,28 @@
+/// Resource Type definition for AWS::IoTAnalytics::Channel
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoTAnalytics::Channel"
+Properties: Props?
+class Props {
+    ChannelStorage: ChannelStorage?
+    ChannelName: String(length <= 128 && length >= 1 && matches(Regex(#"(^(?!_{2}))(^[a-zA-Z0-9_]+$)"#)))?
+    Id: String?
+    RetentionPeriod: RetentionPeriod?
+    Tags: Listing<Tag>?
+}
+class ChannelStorage {
+    ServiceManagedS3: Mapping?
+    CustomerManagedS3: CustomerManagedS3?
+}
+class CustomerManagedS3 {
+    Bucket: String(length <= 255 && length >= 3 && matches(Regex(#"^[a-zA-Z0-9.\-_]*$"#)))
+    RoleArn: String(length <= 2048 && length >= 20)
+    KeyPrefix: String(length <= 255 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9!_.*'()/{}:-]*/$"#)))?
+}
+class RetentionPeriod {
+    NumberOfDays: Int?
+    Unlimited: Boolean?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}

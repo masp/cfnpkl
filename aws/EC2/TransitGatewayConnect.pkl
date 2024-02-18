@@ -1,0 +1,33 @@
+/// The AWS::EC2::TransitGatewayConnect type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::TransitGatewayConnect"
+Properties: Props?
+class Props {
+    /// The ID of the Connect attachment.
+    TransitGatewayAttachmentId: String?
+    /// The ID of the attachment from which the Connect attachment was
+    /// created.
+    TransportTransitGatewayAttachmentId: String?
+    /// The ID of the transit gateway.
+    TransitGatewayId: String?
+    /// The state of the attachment.
+    State: String?
+    /// The creation time.
+    CreationTime: String?
+    /// The tags for the attachment.
+    Tags: Listing<Tag>?
+    /// The Connect attachment options.
+    Options: TransitGatewayConnectOptions?
+}
+class Tag {
+    /// The key of the tag. Constraints: Tag keys are case-sensitive and
+    /// accept a maximum of 127 Unicode characters. May not begin with aws:.
+    Key: String?
+    /// The value of the tag. Constraints: Tag values are case-sensitive and
+    /// accept a maximum of 255 Unicode characters.
+    Value: String?
+}
+class TransitGatewayConnectOptions {
+    /// The tunnel protocol.
+    Protocol: String?
+}

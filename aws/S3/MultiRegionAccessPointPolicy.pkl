@@ -1,0 +1,17 @@
+/// The policy to be attached to a Multi Region Access Point
+extends ".../AWS/Resource.pkl"
+Type = "AWS::S3::MultiRegionAccessPointPolicy"
+Properties: Props?
+class Props {
+    /// The name of the Multi Region Access Point to apply policy
+    MrapName: String(length <= 50 && length >= 3 && matches(Regex(#"^[a-z0-9][-a-z0-9]{1,48}[a-z0-9]$"#)))?
+    /// Policy document to apply to a Multi Region Access Point
+    Policy: Mapping?
+    /// The Policy Status associated with this Multi Region Access Point
+    PolicyStatus: PolicyStatus?
+}
+/// The Policy Status associated with this Multi Region Access Point
+class PolicyStatus {
+    /// Specifies whether the policy is public or not.
+    IsPublic: "true" | "false"
+}

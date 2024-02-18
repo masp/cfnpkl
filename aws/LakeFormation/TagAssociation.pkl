@@ -1,0 +1,47 @@
+/// A resource schema representing a Lake Formation Tag Association. While
+/// tag associations are not explicit Lake Formation resources, this
+/// CloudFormation resource can be used to associate tags with Lake
+/// Formation entities.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LakeFormation::TagAssociation"
+Properties: Props?
+class Props {
+    /// Resource to tag with the Lake Formation Tags
+    Resource: Resource?
+    /// List of Lake Formation Tags to associate with the Lake Formation
+    /// Resource
+    LFTags: Listing<LFTagPair>?
+    /// Unique string identifying the resource. Used as primary identifier,
+    /// which ideally should be a string
+    ResourceIdentifier: String?
+    /// Unique string identifying the resource's tags. Used as primary
+    /// identifier, which ideally should be a string
+    TagsIdentifier: String?
+}
+class Resource {
+    Catalog: Mapping?
+    Database: DatabaseResource?
+    Table: TableResource?
+    TableWithColumns: TableWithColumnsResource?
+}
+class DatabaseResource {
+    CatalogId: String(length <= 12 && length >= 12)
+    Name: String(length <= 255 && length >= 1)
+}
+class TableResource {
+    CatalogId: String(length <= 12 && length >= 12)
+    DatabaseName: String(length <= 255 && length >= 1)
+    Name: String(length <= 255 && length >= 1)?
+    TableWildcard: Mapping?
+}
+class TableWithColumnsResource {
+    CatalogId: String(length <= 12 && length >= 12)
+    DatabaseName: String(length <= 255 && length >= 1)
+    Name: String(length <= 255 && length >= 1)
+    ColumnNames: Listing<String(length <= 255 && length >= 1)>
+}
+class LFTagPair {
+    CatalogId: String(length <= 12 && length >= 12)
+    TagKey: String(length <= 128 && length >= 1)
+    TagValues: Listing<String(length <= 256 && length >= 0)>
+}

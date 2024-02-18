@@ -1,0 +1,31 @@
+/// Describes a local gateway route table virtual interface group
+/// association for a local gateway.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::LocalGatewayRouteTableVirtualInterfaceGroupAssociation"
+Properties: Props?
+class Props {
+    /// The ID of the local gateway route table virtual interface group
+    /// association.
+    LocalGatewayRouteTableVirtualInterfaceGroupAssociationId: String?
+    /// The ID of the local gateway.
+    LocalGatewayId: String?
+    /// The ID of the local gateway route table.
+    LocalGatewayRouteTableId: String?
+    /// The ARN of the local gateway route table.
+    LocalGatewayRouteTableArn: String?
+    /// The ID of the local gateway route table virtual interface group.
+    LocalGatewayVirtualInterfaceGroupId: String?
+    /// The owner of the local gateway route table virtual interface group
+    /// association.
+    OwnerId: String?
+    /// The state of the local gateway route table virtual interface group
+    /// association.
+    State: String?
+    /// The tags for the local gateway route table virtual interface group
+    /// association.
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Key: String(length <= 127 && length >= 1 && matches(Regex(#"^(?!aws:.*)"#)))?
+    Value: String(length <= 255 && length >= 1 && matches(Regex(#"^(?!aws:.*)"#)))?
+}

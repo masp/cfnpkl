@@ -1,0 +1,36 @@
+/// Resource schema for AWS::DataSync::LocationFSxWindows.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DataSync::LocationFSxWindows"
+Properties: Props?
+class Props {
+    /// The name of the Windows domain that the FSx for Windows server belongs
+    /// to.
+    Domain: String(length <= 253 && matches(Regex(#"^([A-Za-z0-9]+[A-Za-z0-9-.]*)*[A-Za-z0-9-]*[A-Za-z0-9]$"#)))?
+    /// The Amazon Resource Name (ARN) for the FSx for Windows file system.
+    FsxFilesystemArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):fsx:[a-z\-0-9]*:[0-9]{12}:file-system/fs-.*$"#)))?
+    /// The password of the user who has the permissions to access files and
+    /// folders in the FSx for Windows file system.
+    Password: String(length <= 104 && matches(Regex(#"^.{0,104}$"#)))?
+    /// The ARNs of the security groups that are to use to configure the FSx
+    /// for Windows file system.
+    SecurityGroupArns: Listing<String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):ec2:[a-z\-0-9]*:[0-9]{12}:security-group/.*$"#)))>?
+    /// A subdirectory in the location's path.
+    Subdirectory: String(length <= 4096 && matches(Regex(#"^[a-zA-Z0-9_\-\+\./\(\)\$\p{Zs}]+$"#)))?
+    /// The user who has the permissions to access files and folders in the
+    /// FSx for Windows file system.
+    User: String(length <= 104 && matches(Regex(#"^[^\x5B\x5D\\/:;|=,+*?]{1,104}$"#)))?
+    /// An array of key-value pairs to apply to this resource.
+    Tags: Listing<Tag>?
+    /// The Amazon Resource Name (ARN) of the Amazon FSx for Windows file
+    /// system location that is created.
+    LocationArn: String(length <= 128 && matches(Regex(#"^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):datasync:[a-z\-0-9]+:[0-9]{12}:location/loc-[0-9a-z]{17}$"#)))?
+    /// The URL of the FSx for Windows location that was described.
+    LocationUri: String(length <= 4356 && matches(Regex(#"^(efs|nfs|s3|smb|fsxw)://[a-zA-Z0-9./\-]+$"#)))?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key for an AWS resource tag.
+    Key: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:/-]+$"#)))
+    /// The value for an AWS resource tag.
+    Value: String(length <= 256 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9\s+=._:@/-]+$"#)))
+}

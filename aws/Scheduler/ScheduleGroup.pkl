@@ -1,0 +1,23 @@
+/// Definition of AWS::Scheduler::ScheduleGroup Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Scheduler::ScheduleGroup"
+Properties: Props?
+class Props {
+    /// The Amazon Resource Name (ARN) of the schedule group.
+    Arn: String(length <= 1224 && length >= 1 && matches(Regex(#"^arn:aws(-[a-z]+)?:scheduler:[a-z0-9\-]+:\d{12}:schedule-group\/[0-9a-zA-Z-_.]+$"#)))?
+    /// The time at which the schedule group was created.
+    CreationDate: String?
+    /// The time at which the schedule group was last modified.
+    LastModificationDate: String?
+    Name: String(length <= 64 && length >= 1 && matches(Regex(#"^[0-9a-zA-Z-_.]+$"#)))?
+    State: "ACTIVE" | "DELETING" | *Null
+    /// The list of tags to associate with the schedule group.
+    Tags: Listing<Tag>?
+}
+/// Tag to associate with the resource.
+class Tag {
+    /// Key for the tag
+    Key: String(length <= 128 && length >= 1)
+    /// Value for the tag
+    Value: String(length <= 256 && length >= 1)
+}

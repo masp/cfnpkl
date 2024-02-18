@@ -1,0 +1,16 @@
+/// Resource Schema for AWS::ServiceCatalog::ServiceAction
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceCatalog::ServiceAction"
+Properties: Props?
+class Props {
+    AcceptLanguage: "en" | "jp" | "zh" | *Null
+    Name: String(length <= 256 && length >= 1)?
+    DefinitionType: "SSM_AUTOMATION" | *Null
+    Definition: Listing<DefinitionParameter>?
+    Description: String(length <= 1024)?
+    Id: String(length <= 100 && length >= 1)?
+}
+class DefinitionParameter {
+    Key: String(length <= 1000 && length >= 1)
+    Value: String(length <= 4096)
+}

@@ -1,0 +1,46 @@
+/// Resource Type definition for AWS::Config::OrganizationConfigRule
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Config::OrganizationConfigRule"
+Properties: Props?
+class Props {
+    OrganizationCustomRuleMetadata: OrganizationCustomRuleMetadata?
+    OrganizationManagedRuleMetadata: OrganizationManagedRuleMetadata?
+    ExcludedAccounts: Listing<String>?
+    OrganizationConfigRuleName: String?
+    Id: String?
+    OrganizationCustomPolicyRuleMetadata: OrganizationCustomPolicyRuleMetadata?
+}
+class OrganizationCustomRuleMetadata {
+    TagKeyScope: String?
+    TagValueScope: String?
+    Description: String?
+    ResourceIdScope: String?
+    LambdaFunctionArn: String
+    OrganizationConfigRuleTriggerTypes: Listing<String>
+    ResourceTypesScope: Listing<String>?
+    MaximumExecutionFrequency: String?
+    InputParameters: String?
+}
+class OrganizationManagedRuleMetadata {
+    TagKeyScope: String?
+    TagValueScope: String?
+    Description: String?
+    ResourceIdScope: String?
+    RuleIdentifier: String
+    ResourceTypesScope: Listing<String>?
+    MaximumExecutionFrequency: String?
+    InputParameters: String?
+}
+class OrganizationCustomPolicyRuleMetadata {
+    TagKeyScope: String?
+    TagValueScope: String?
+    Runtime: String
+    PolicyText: String
+    Description: String?
+    ResourceIdScope: String?
+    OrganizationConfigRuleTriggerTypes: Listing<String>?
+    DebugLogDeliveryAccounts: Listing<String>?
+    ResourceTypesScope: Listing<String>?
+    MaximumExecutionFrequency: String?
+    InputParameters: String?
+}

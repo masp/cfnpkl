@@ -1,0 +1,42 @@
+/// Represents a collaboration between AWS accounts that allows for secure
+/// data collaboration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CleanRooms::Collaboration"
+Properties: Props?
+class Props {
+    Arn: String(length <= 100)?
+    /// An arbitrary set of tags (key-value pairs) for this cleanrooms
+    /// collaboration.
+    Tags: Listing<Tag>?
+    CollaborationIdentifier: String(length <= 36 && length >= 36 && matches(Regex(#"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"#)))?
+    CreatorDisplayName: String(length <= 100 && length >= 1 && matches(Regex(#"^(?!\s*$)[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDBFF-\uDC00\uDFFF\t]*$"#)))?
+    CreatorMemberAbilities: Listing<"CAN_QUERY" | "CAN_RECEIVE_RESULTS">?
+    DataEncryptionMetadata: DataEncryptionMetadata?
+    Description: String(length <= 255 && length >= 1 && matches(Regex(#"^(?!\s*$)[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDBFF-\uDC00\uDFFF\t\r\n]*$"#)))?
+    Members: Listing<MemberSpecification>?
+    Name: String(length <= 100 && length >= 1 && matches(Regex(#"^(?!\s*$)[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDBFF-\uDC00\uDFFF\t]*$"#)))?
+    QueryLogStatus: "ENABLED" | "DISABLED" | *Null
+    CreatorPaymentConfiguration: PaymentConfiguration?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256 && length >= 1)
+}
+class DataEncryptionMetadata {
+    AllowCleartext: Boolean
+    AllowDuplicates: Boolean
+    AllowJoinsOnColumnsWithDifferentNames: Boolean
+    PreserveNulls: Boolean
+}
+class MemberSpecification {
+    AccountId: String(length <= 12 && length >= 12 && matches(Regex(#"^\d+$"#)))
+    MemberAbilities: Listing<"CAN_QUERY" | "CAN_RECEIVE_RESULTS">
+    DisplayName: String(length <= 100 && length >= 1 && matches(Regex(#"^(?!\s*$)[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDBFF-\uDC00\uDFFF\t]*$"#)))
+    PaymentConfiguration: PaymentConfiguration?
+}
+class PaymentConfiguration {
+    QueryCompute: QueryComputePaymentConfig
+}
+class QueryComputePaymentConfig {
+    IsResponsible: Boolean
+}

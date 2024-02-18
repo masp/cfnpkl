@@ -1,0 +1,16 @@
+/// Resource Type definition for AWS::Config::DeliveryChannel
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Config::DeliveryChannel"
+Properties: Props?
+class Props {
+    S3KeyPrefix: String?
+    ConfigSnapshotDeliveryProperties: ConfigSnapshotDeliveryProperties?
+    S3BucketName: String?
+    SnsTopicARN: String?
+    Id: String?
+    S3KmsKeyArn: String?
+    Name: String?
+}
+class ConfigSnapshotDeliveryProperties {
+    DeliveryFrequency: String?
+}

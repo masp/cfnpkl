@@ -1,0 +1,62 @@
+/// Resource Type definition for AWS::Budgets::Budget
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Budgets::Budget"
+Properties: Props?
+class Props {
+    NotificationsWithSubscribers: Listing<NotificationWithSubscribers>?
+    Budget: BudgetData?
+    Id: String?
+}
+class NotificationWithSubscribers {
+    Subscribers: Listing<Subscriber>
+    Notification: Notification
+}
+class Subscriber {
+    Address: String
+    SubscriptionType: String
+}
+class Notification {
+    ComparisonOperator: String
+    NotificationType: String
+    Threshold: Float
+    ThresholdType: String?
+}
+class BudgetData {
+    BudgetLimit: Spend?
+    TimePeriod: TimePeriod?
+    AutoAdjustData: AutoAdjustData?
+    TimeUnit: String
+    PlannedBudgetLimits: Mapping?
+    CostFilters: Mapping?
+    BudgetName: String?
+    CostTypes: CostTypes?
+    BudgetType: String
+}
+class Spend {
+    Unit: String
+    Amount: Float
+}
+class TimePeriod {
+    Start: String?
+    End: String?
+}
+class AutoAdjustData {
+    AutoAdjustType: String
+    HistoricalOptions: HistoricalOptions?
+}
+class HistoricalOptions {
+    BudgetAdjustmentPeriod: Int
+}
+class CostTypes {
+    IncludeSupport: Boolean?
+    IncludeOtherSubscription: Boolean?
+    IncludeTax: Boolean?
+    IncludeSubscription: Boolean?
+    UseBlended: Boolean?
+    IncludeUpfront: Boolean?
+    IncludeDiscount: Boolean?
+    IncludeCredit: Boolean?
+    IncludeRecurring: Boolean?
+    UseAmortized: Boolean?
+    IncludeRefund: Boolean?
+}

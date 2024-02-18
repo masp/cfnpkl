@@ -1,0 +1,60 @@
+/// Resource Type definition for AWS::EC2::ClientVpnEndpoint
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::ClientVpnEndpoint"
+Properties: Props?
+class Props {
+    ClientCidrBlock: String?
+    ClientConnectOptions: ClientConnectOptions?
+    Description: String?
+    TagSpecifications: Listing<TagSpecification>?
+    AuthenticationOptions: Listing<ClientAuthenticationRequest>?
+    ServerCertificateArn: String?
+    SessionTimeoutHours: Int?
+    DnsServers: Listing<String>?
+    SecurityGroupIds: Listing<String>?
+    ConnectionLogOptions: ConnectionLogOptions?
+    SplitTunnel: Boolean?
+    ClientLoginBannerOptions: ClientLoginBannerOptions?
+    VpcId: String?
+    SelfServicePortal: String?
+    TransportProtocol: String?
+    Id: String?
+    VpnPort: Int?
+}
+class ClientConnectOptions {
+    Enabled: Boolean
+    LambdaFunctionArn: String?
+}
+class TagSpecification {
+    ResourceType: String
+    Tags: Listing<Tag>
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class ClientAuthenticationRequest {
+    MutualAuthentication: CertificateAuthenticationRequest?
+    Type: String
+    ActiveDirectory: DirectoryServiceAuthenticationRequest?
+    FederatedAuthentication: FederatedAuthenticationRequest?
+}
+class CertificateAuthenticationRequest {
+    ClientRootCertificateChainArn: String
+}
+class DirectoryServiceAuthenticationRequest {
+    DirectoryId: String
+}
+class FederatedAuthenticationRequest {
+    SAMLProviderArn: String
+    SelfServiceSAMLProviderArn: String?
+}
+class ConnectionLogOptions {
+    Enabled: Boolean
+    CloudwatchLogGroup: String?
+    CloudwatchLogStream: String?
+}
+class ClientLoginBannerOptions {
+    Enabled: Boolean
+    BannerText: String?
+}

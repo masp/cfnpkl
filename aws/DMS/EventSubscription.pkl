@@ -1,0 +1,18 @@
+/// Resource Type definition for AWS::DMS::EventSubscription
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DMS::EventSubscription"
+Properties: Props?
+class Props {
+    SourceType: String?
+    EventCategories: Listing<String>?
+    Enabled: Boolean?
+    SubscriptionName: String?
+    SnsTopicArn: String?
+    SourceIds: Listing<String>?
+    Id: String?
+    Tags: Listing<Tag>?
+}
+class Tag {
+    Value: String
+    Key: String
+}

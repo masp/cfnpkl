@@ -1,0 +1,48 @@
+/// An aggregated metric of certain devices in your fleet
+extends ".../AWS/Resource.pkl"
+Type = "AWS::IoT::FleetMetric"
+Properties: Props?
+class Props {
+    /// The name of the fleet metric
+    MetricName: String?
+    /// The description of a fleet metric
+    Description: String?
+    /// The Fleet Indexing query used by a fleet metric
+    QueryString: String?
+    /// The period of metric emission in seconds
+    Period: Int?
+    /// The aggregation field to perform aggregation and metric emission
+    AggregationField: String?
+    /// The version of a Fleet Indexing query used by a fleet metric
+    QueryVersion: String?
+    /// The index name of a fleet metric
+    IndexName: String?
+    /// The unit of data points emitted by a fleet metric
+    Unit: String?
+    AggregationType: AggregationType?
+    /// The Amazon Resource Number (ARN) of a fleet metric metric
+    MetricArn: String?
+    /// The creation date of a fleet metric
+    CreationDate: String(matches(Regex(#"^([0-2]\d{3})-(0[0-9]|1[0-2])-([0-2]\d|3[01])T([01]\d|2[0-4]):([0-5]\d):([0-6]\d)((\.\d{3})?)Z$"#)))?
+    /// The last modified date of a fleet metric
+    LastModifiedDate: String(matches(Regex(#"^([0-2]\d{3})-(0[0-9]|1[0-2])-([0-2]\d|3[01])T([01]\d|2[0-4]):([0-5]\d):([0-6]\d)((\.\d{3})?)Z$"#)))?
+    /// The version of a fleet metric
+    Version: Float?
+    /// An array of key-value pairs to apply to this resource
+    Tags: Listing<Tag>?
+}
+/// Aggregation types supported by Fleet Indexing
+class AggregationType {
+    /// Fleet Indexing aggregation type names such as Statistics, Percentiles
+    /// and Cardinality
+    Name: String
+    /// Fleet Indexing aggregation type values
+    Values: Listing<String>
+}
+/// A key-value pair to associate with a resource
+class Tag {
+    /// The tag's key
+    Key: String(length <= 128 && length >= 1)
+    /// The tag's value
+    Value: String(length <= 256 && length >= 1)
+}

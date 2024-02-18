@@ -1,0 +1,32 @@
+/// Schema for AWS::CodeStarConnections::SyncConfiguration resource which
+/// is used to enables an AWS resource to be synchronized from a source-
+/// provider.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::CodeStarConnections::SyncConfiguration"
+Properties: Props?
+class Props {
+    /// the ID of the entity that owns the repository.
+    OwnerId: String(matches(Regex(#"[a-za-z0-9_\.-]+"#)))?
+    /// The name of the resource that is being synchronized to the repository.
+    ResourceName: String(matches(Regex(#"[a-za-z0-9_\.-]+"#)))?
+    /// The name of the repository that is being synced to.
+    RepositoryName: String(matches(Regex(#"[a-za-z0-9_\.-]+"#)))?
+    /// The name of the external provider where your third-party code
+    /// repository is configured.
+    ProviderType: String(matches(Regex(#"^(GitHub|Bitbucket|GitHubEnterprise|GitLab)$"#)))?
+    /// The name of the branch of the repository from which resources are to
+    /// be synchronized,
+    Branch: String?
+    /// The source provider repository path of the sync configuration file of
+    /// the respective SyncType.
+    ConfigFile: String?
+    /// The type of resource synchronization service that is to be configured,
+    /// for example, CFN_STACK_SYNC.
+    SyncType: String?
+    /// The IAM Role that allows AWS to update CloudFormation stacks based on
+    /// content in the specified repository.
+    RoleArn: String?
+    /// A UUID that uniquely identifies the RepositoryLink that the SyncConfig
+    /// is associated with.
+    RepositoryLinkId: String(matches(Regex(#"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"#)))?
+}

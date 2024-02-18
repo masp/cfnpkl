@@ -1,0 +1,81 @@
+/// Resource Type definition for AWS::Glue::Table
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Glue::Table"
+Properties: Props?
+class Props {
+    DatabaseName: String?
+    TableInput: TableInput?
+    OpenTableFormatInput: OpenTableFormatInput?
+    Id: String?
+    CatalogId: String?
+}
+class TableInput {
+    Owner: String?
+    ViewOriginalText: String?
+    Description: String?
+    TableType: String?
+    Parameters: Mapping?
+    ViewExpandedText: String?
+    StorageDescriptor: StorageDescriptor?
+    TargetTable: TableIdentifier?
+    PartitionKeys: Listing<Column>?
+    Retention: Int?
+    Name: String?
+}
+class StorageDescriptor {
+    StoredAsSubDirectories: Boolean?
+    Parameters: Mapping?
+    BucketColumns: Listing<String>?
+    NumberOfBuckets: Int?
+    OutputFormat: String?
+    Columns: Listing<Column>?
+    SerdeInfo: SerdeInfo?
+    SortColumns: Listing<Order>?
+    Compressed: Boolean?
+    SchemaReference: SchemaReference?
+    SkewedInfo: SkewedInfo?
+    InputFormat: String?
+    Location: String?
+}
+class Column {
+    Comment: String?
+    Type: String?
+    Name: String
+}
+class SerdeInfo {
+    Parameters: Mapping?
+    SerializationLibrary: String?
+    Name: String?
+}
+class Order {
+    Column: String
+    SortOrder: Int
+}
+class SchemaReference {
+    SchemaId: SchemaId?
+    SchemaVersionId: String?
+    SchemaVersionNumber: Int?
+}
+class SchemaId {
+    RegistryName: String?
+    SchemaName: String?
+    SchemaArn: String?
+}
+class SkewedInfo {
+    SkewedColumnValues: Listing<String>?
+    SkewedColumnValueLocationMaps: Mapping?
+    SkewedColumnNames: Listing<String>?
+}
+class TableIdentifier {
+    DatabaseName: String?
+    Region: String?
+    CatalogId: String?
+    Name: String?
+}
+class OpenTableFormatInput {
+    IcebergInput: IcebergInput?
+}
+class IcebergInput {
+    MetadataOperation: Mapping?
+    Version: String?
+}

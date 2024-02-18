@@ -1,0 +1,25 @@
+/// Resource Type definition for
+/// AWS::Lightsail::LoadBalancerTlsCertificate
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Lightsail::LoadBalancerTlsCertificate"
+Properties: Props?
+class Props {
+    /// The name of your load balancer.
+    LoadBalancerName: String(matches(Regex(#"\w[\w\-]*\w"#)))?
+    /// The SSL/TLS certificate name.
+    CertificateName: String?
+    /// The domain name (e.g., example.com ) for your SSL/TLS certificate.
+    CertificateDomainName: String?
+    /// An array of strings listing alternative domains and subdomains for
+    /// your SSL/TLS certificate.
+    CertificateAlternativeNames: Listing<String>?
+    LoadBalancerTlsCertificateArn: String?
+    /// When true, the SSL/TLS certificate is attached to the Lightsail load
+    /// balancer.
+    IsAttached: Boolean?
+    /// A Boolean value that indicates whether HTTPS redirection is enabled
+    /// for the load balancer.
+    HttpsRedirectionEnabled: Boolean?
+    /// The validation status of the SSL/TLS certificate.
+    Status: String?
+}

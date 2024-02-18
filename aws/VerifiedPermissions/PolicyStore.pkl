@@ -1,0 +1,17 @@
+/// Definition of AWS::VerifiedPermissions::PolicyStore Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::VerifiedPermissions::PolicyStore"
+Properties: Props?
+class Props {
+    Arn: String(length <= 2500 && length >= 1 && matches(Regex(#"^arn:[^:]*:[^:]*:[^:]*:[^:]*:.*$"#)))?
+    Description: String(length <= 150 && length >= 0)?
+    PolicyStoreId: String(length <= 200 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]*$"#)))?
+    ValidationSettings: ValidationSettings?
+    Schema: SchemaDefinition?
+}
+class ValidationSettings {
+    Mode: "OFF" | "STRICT"
+}
+class SchemaDefinition {
+    CedarJson: String?
+}

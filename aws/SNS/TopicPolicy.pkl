@@ -1,0 +1,18 @@
+/// Schema for AWS::SNS::TopicPolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SNS::TopicPolicy"
+Properties: Props?
+class Props {
+    /// The provider-assigned unique ID for this managed resource.
+    Id: String?
+    /// A policy document that contains permissions to add to the specified
+    /// SNS topics.
+    PolicyDocument: Mapping | String | *Null
+    /// The Amazon Resource Names (ARN) of the topics to which you want to add
+    /// the policy. You can use the [Ref](https://docs.aws.amazon.com/AWSCloud
+    /// Formation/latest/UserGuide/intrinsic-function-reference-ref.html)`
+    /// function to specify an [AWS::SNS::Topic](https://docs.aws.amazon.com/A
+    /// WSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html)
+    /// resource.
+    Topics: Listing<String>?
+}

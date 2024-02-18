@@ -1,0 +1,11 @@
+/// Schema for SQS QueueInlinePolicy
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SQS::QueueInlinePolicy"
+Properties: Props?
+class Props {
+    /// A policy document that contains permissions to add to the specified
+    /// SQS queue
+    PolicyDocument: Mapping?
+    /// The URL of the SQS queue.
+    Queue: String?
+}

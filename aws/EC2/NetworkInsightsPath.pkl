@@ -1,0 +1,34 @@
+/// Resource schema for AWS::EC2::NetworkInsightsPath
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::NetworkInsightsPath"
+Properties: Props?
+class Props {
+    NetworkInsightsPathId: String?
+    NetworkInsightsPathArn: String?
+    CreatedDate: String?
+    SourceIp: String?
+    FilterAtSource: PathFilter?
+    FilterAtDestination: PathFilter?
+    DestinationIp: String?
+    Source: String?
+    Destination: String?
+    SourceArn: String?
+    DestinationArn: String?
+    Protocol: "tcp" | "udp" | *Null
+    DestinationPort: Int?
+    Tags: Listing<Tag>?
+}
+class PathFilter {
+    SourceAddress: String?
+    SourcePortRange: FilterPortRange?
+    DestinationAddress: String?
+    DestinationPortRange: FilterPortRange?
+}
+class FilterPortRange {
+    FromPort: Int?
+    ToPort: Int?
+}
+class Tag {
+    Key: String
+    Value: String?
+}

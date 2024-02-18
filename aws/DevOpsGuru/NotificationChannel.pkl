@@ -1,0 +1,27 @@
+/// This resource schema represents the NotificationChannel resource in
+/// the Amazon DevOps Guru.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::DevOpsGuru::NotificationChannel"
+Properties: Props?
+class Props {
+    Config: NotificationChannelConfig?
+    /// The ID of a notification channel.
+    Id: String(length <= 36 && length >= 36 && matches(Regex(#"^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"#)))?
+}
+/// Information about notification channels you have configured with
+/// DevOps Guru.
+class NotificationChannelConfig {
+    Sns: SnsChannelConfig?
+    Filters: NotificationFilterConfig?
+}
+/// Information about a notification channel configured in DevOps Guru to
+/// send notifications when insights are created.
+class SnsChannelConfig {
+    TopicArn: String(length <= 1024 && length >= 36 && matches(Regex(#"^arn:aws[a-z0-9-]*:sns:[a-z0-9-]+:\d{12}:[^:]+$"#)))?
+}
+/// Information about filters of a notification channel configured in
+/// DevOpsGuru to filter for insights.
+class NotificationFilterConfig {
+    Severities: Listing<"LOW" | "MEDIUM" | "HIGH">?
+    MessageTypes: Listing<"NEW_INSIGHT" | "CLOSED_INSIGHT" | "NEW_ASSOCIATION" | "SEVERITY_UPGRADED" | "NEW_RECOMMENDATION">?
+}

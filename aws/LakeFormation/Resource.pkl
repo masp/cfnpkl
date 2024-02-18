@@ -1,0 +1,12 @@
+/// Resource Type definition for AWS::LakeFormation::Resource
+extends ".../AWS/Resource.pkl"
+Type = "AWS::LakeFormation::Resource"
+Properties: Props?
+class Props {
+    ResourceArn: String?
+    WithFederation: Boolean?
+    Id: String?
+    HybridAccessEnabled: Boolean?
+    UseServiceLinkedRole: Boolean?
+    RoleArn: String?
+}

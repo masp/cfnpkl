@@ -1,0 +1,215 @@
+/// Resource Type definition for AWS::EMR::Cluster
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EMR::Cluster"
+Properties: Props?
+class Props {
+    Steps: Listing<StepConfig>?
+    PlacementGroupConfigs: Listing<PlacementGroupConfig>?
+    StepConcurrencyLevel: Int?
+    EbsRootVolumeSize: Int?
+    OSReleaseLabel: String?
+    Name: String?
+    ServiceRole: String?
+    LogUri: String?
+    BootstrapActions: Listing<BootstrapActionConfig>?
+    MasterPublicDNS: String?
+    Configurations: Listing<Configuration>?
+    ReleaseLabel: String?
+    Tags: Listing<Tag>?
+    ManagedScalingPolicy: ManagedScalingPolicy?
+    LogEncryptionKmsKeyId: String?
+    AdditionalInfo: Mapping?
+    AutoTerminationPolicy: AutoTerminationPolicy?
+    KerberosAttributes: KerberosAttributes?
+    Applications: Listing<Application>?
+    AutoScalingRole: String?
+    CustomAmiId: String?
+    EbsRootVolumeIops: Int?
+    Instances: JobFlowInstancesConfig?
+    ScaleDownBehavior: String?
+    EbsRootVolumeThroughput: Int?
+    JobFlowRole: String?
+    VisibleToAllUsers: Boolean?
+    SecurityConfiguration: String?
+    Id: String?
+}
+class StepConfig {
+    HadoopJarStep: HadoopJarStepConfig
+    ActionOnFailure: String?
+    Name: String
+}
+class HadoopJarStepConfig {
+    Args: Listing<String>?
+    MainClass: String?
+    Jar: String
+    StepProperties: Listing<KeyValue>?
+}
+class KeyValue {
+    Value: String?
+    Key: String?
+}
+class PlacementGroupConfig {
+    InstanceRole: String
+    PlacementStrategy: String?
+}
+class BootstrapActionConfig {
+    ScriptBootstrapAction: ScriptBootstrapActionConfig
+    Name: String
+}
+class ScriptBootstrapActionConfig {
+    Path: String
+    Args: Listing<String>?
+}
+class Configuration {
+    ConfigurationProperties: Mapping?
+    Configurations: Listing<Configuration>?
+    Classification: String?
+}
+class Tag {
+    Value: String
+    Key: String
+}
+class ManagedScalingPolicy {
+    ComputeLimits: ComputeLimits?
+}
+class ComputeLimits {
+    MaximumOnDemandCapacityUnits: Int?
+    MaximumCapacityUnits: Int
+    MaximumCoreCapacityUnits: Int?
+    MinimumCapacityUnits: Int
+    UnitType: String
+}
+class AutoTerminationPolicy {
+    IdleTimeout: Int?
+}
+class KerberosAttributes {
+    KdcAdminPassword: String
+    Realm: String
+    ADDomainJoinPassword: String?
+    ADDomainJoinUser: String?
+    CrossRealmTrustPrincipalPassword: String?
+}
+class Application {
+    AdditionalInfo: Mapping?
+    Args: Listing<String>?
+    Version: String?
+    Name: String?
+}
+class JobFlowInstancesConfig {
+    MasterInstanceFleet: InstanceFleetConfig?
+    AdditionalSlaveSecurityGroups: Listing<String>?
+    CoreInstanceFleet: InstanceFleetConfig?
+    CoreInstanceGroup: InstanceGroupConfig?
+    Ec2SubnetIds: Listing<String>?
+    HadoopVersion: String?
+    TerminationProtected: Boolean?
+    KeepJobFlowAliveWhenNoSteps: Boolean?
+    Ec2KeyName: String?
+    MasterInstanceGroup: InstanceGroupConfig?
+    Placement: PlacementType?
+    TaskInstanceFleets: Listing<InstanceFleetConfig>?
+    Ec2SubnetId: String?
+    TaskInstanceGroups: Listing<InstanceGroupConfig>?
+    ServiceAccessSecurityGroup: String?
+    EmrManagedSlaveSecurityGroup: String?
+    AdditionalMasterSecurityGroups: Listing<String>?
+    EmrManagedMasterSecurityGroup: String?
+}
+class InstanceFleetConfig {
+    TargetOnDemandCapacity: Int?
+    TargetSpotCapacity: Int?
+    InstanceTypeConfigs: Listing<InstanceTypeConfig>?
+    LaunchSpecifications: InstanceFleetProvisioningSpecifications?
+    Name: String?
+}
+class InstanceTypeConfig {
+    BidPrice: String?
+    WeightedCapacity: Int?
+    EbsConfiguration: EbsConfiguration?
+    BidPriceAsPercentageOfOnDemandPrice: Float?
+    CustomAmiId: String?
+    Configurations: Listing<Configuration>?
+    InstanceType: String
+}
+class EbsConfiguration {
+    EbsBlockDeviceConfigs: Listing<EbsBlockDeviceConfig>?
+    EbsOptimized: Boolean?
+}
+class EbsBlockDeviceConfig {
+    VolumeSpecification: VolumeSpecification
+    VolumesPerInstance: Int?
+}
+class VolumeSpecification {
+    SizeInGB: Int
+    Throughput: Int?
+    VolumeType: String
+    Iops: Int?
+}
+class InstanceFleetProvisioningSpecifications {
+    SpotSpecification: SpotProvisioningSpecification?
+    OnDemandSpecification: OnDemandProvisioningSpecification?
+}
+class SpotProvisioningSpecification {
+    AllocationStrategy: String?
+    TimeoutDurationMinutes: Int
+    TimeoutAction: String
+    BlockDurationMinutes: Int?
+}
+class OnDemandProvisioningSpecification {
+    AllocationStrategy: String
+}
+class InstanceGroupConfig {
+    AutoScalingPolicy: AutoScalingPolicy?
+    BidPrice: String?
+    InstanceCount: Int
+    EbsConfiguration: EbsConfiguration?
+    CustomAmiId: String?
+    Configurations: Listing<Configuration>?
+    InstanceType: String
+    Market: String?
+    Name: String?
+}
+class AutoScalingPolicy {
+    Rules: Listing<ScalingRule>
+    Constraints: ScalingConstraints
+}
+class ScalingRule {
+    Action: ScalingAction
+    Description: String?
+    Trigger: ScalingTrigger
+    Name: String
+}
+class ScalingAction {
+    Market: String?
+    SimpleScalingPolicyConfiguration: SimpleScalingPolicyConfiguration
+}
+class SimpleScalingPolicyConfiguration {
+    ScalingAdjustment: Int
+    CoolDown: Int?
+    AdjustmentType: String?
+}
+class ScalingTrigger {
+    CloudWatchAlarmDefinition: CloudWatchAlarmDefinition
+}
+class CloudWatchAlarmDefinition {
+    MetricName: String
+    ComparisonOperator: String
+    Statistic: String?
+    Dimensions: Listing<MetricDimension>?
+    Period: Int
+    EvaluationPeriods: Int?
+    Unit: String?
+    Namespace: String?
+    Threshold: Float
+}
+class MetricDimension {
+    Value: String
+    Key: String
+}
+class ScalingConstraints {
+    MinCapacity: Int
+    MaxCapacity: Int
+}
+class PlacementType {
+    AvailabilityZone: String
+}

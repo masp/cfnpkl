@@ -1,0 +1,124 @@
+/// Resource Type definition for AWS::SageMaker::EndpointConfig
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::EndpointConfig"
+Properties: Props?
+class Props {
+    ShadowProductionVariants: Listing<ProductionVariant>?
+    DataCaptureConfig: DataCaptureConfig?
+    ExecutionRoleArn: String?
+    EnableNetworkIsolation: Boolean?
+    ProductionVariants: Listing<ProductionVariant>?
+    KmsKeyId: String?
+    AsyncInferenceConfig: AsyncInferenceConfig?
+    VpcConfig: VpcConfig?
+    EndpointConfigName: String?
+    ExplainerConfig: ExplainerConfig?
+    Id: String?
+    Tags: Listing<Tag>?
+}
+class ProductionVariant {
+    ManagedInstanceScaling: ManagedInstanceScaling?
+    ModelName: String?
+    VolumeSizeInGB: Int?
+    EnableSSMAccess: Boolean?
+    VariantName: String
+    InitialInstanceCount: Int?
+    RoutingConfig: RoutingConfig?
+    AcceleratorType: String?
+    InitialVariantWeight: Float?
+    ModelDataDownloadTimeoutInSeconds: Int?
+    ContainerStartupHealthCheckTimeoutInSeconds: Int?
+    ServerlessConfig: ServerlessConfig?
+    InstanceType: String?
+}
+class ManagedInstanceScaling {
+    Status: String?
+    MaxInstanceCount: Int?
+    MinInstanceCount: Int?
+}
+class RoutingConfig {
+    RoutingStrategy: String?
+}
+class ServerlessConfig {
+    MaxConcurrency: Int
+    MemorySizeInMB: Int
+    ProvisionedConcurrency: Int?
+}
+class DataCaptureConfig {
+    CaptureOptions: Listing<CaptureOption>
+    KmsKeyId: String?
+    DestinationS3Uri: String
+    InitialSamplingPercentage: Int
+    CaptureContentTypeHeader: CaptureContentTypeHeader?
+    EnableCapture: Boolean?
+}
+class CaptureOption {
+    CaptureMode: String
+}
+class CaptureContentTypeHeader {
+    CsvContentTypes: Listing<String>?
+    JsonContentTypes: Listing<String>?
+}
+class AsyncInferenceConfig {
+    ClientConfig: AsyncInferenceClientConfig?
+    OutputConfig: AsyncInferenceOutputConfig
+}
+class AsyncInferenceClientConfig {
+    MaxConcurrentInvocationsPerInstance: Int?
+}
+class AsyncInferenceOutputConfig {
+    NotificationConfig: AsyncInferenceNotificationConfig?
+    KmsKeyId: String?
+    S3OutputPath: String?
+    S3FailurePath: String?
+}
+class AsyncInferenceNotificationConfig {
+    IncludeInferenceResponseIn: Listing<String>?
+    SuccessTopic: String?
+    ErrorTopic: String?
+}
+class VpcConfig {
+    SecurityGroupIds: Listing<String>
+    Subnets: Listing<String>
+}
+class ExplainerConfig {
+    ClarifyExplainerConfig: ClarifyExplainerConfig?
+}
+class ClarifyExplainerConfig {
+    EnableExplanations: String?
+    ShapConfig: ClarifyShapConfig
+    InferenceConfig: ClarifyInferenceConfig?
+}
+class ClarifyShapConfig {
+    TextConfig: ClarifyTextConfig?
+    UseLogit: Boolean?
+    Seed: Int?
+    ShapBaselineConfig: ClarifyShapBaselineConfig
+    NumberOfSamples: Int?
+}
+class ClarifyTextConfig {
+    Language: String
+    Granularity: String
+}
+class ClarifyShapBaselineConfig {
+    MimeType: String?
+    ShapBaseline: String?
+    ShapBaselineUri: String?
+}
+class ClarifyInferenceConfig {
+    ContentTemplate: String?
+    LabelHeaders: Listing<Mapping>?
+    MaxPayloadInMB: Int?
+    ProbabilityIndex: Int?
+    LabelAttribute: String?
+    FeatureTypes: Listing<Mapping>?
+    FeatureHeaders: Listing<Mapping>?
+    LabelIndex: Int?
+    ProbabilityAttribute: String?
+    FeaturesAttribute: String?
+    MaxRecordCount: Int?
+}
+class Tag {
+    Value: String
+    Key: String
+}

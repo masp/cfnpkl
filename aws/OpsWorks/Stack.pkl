@@ -1,0 +1,61 @@
+/// Resource Type definition for AWS::OpsWorks::Stack
+extends ".../AWS/Resource.pkl"
+Type = "AWS::OpsWorks::Stack"
+Properties: Props?
+class Props {
+    Id: String?
+    AgentVersion: String?
+    Attributes: Mapping?
+    ChefConfiguration: ChefConfiguration?
+    CloneAppIds: Listing<String>?
+    ClonePermissions: Boolean?
+    ConfigurationManager: StackConfigurationManager?
+    CustomCookbooksSource: Source?
+    CustomJson: Mapping?
+    DefaultAvailabilityZone: String?
+    DefaultInstanceProfileArn: String?
+    DefaultOs: String?
+    DefaultRootDeviceType: String?
+    DefaultSshKeyName: String?
+    DefaultSubnetId: String?
+    EcsClusterArn: String?
+    ElasticIps: Listing<ElasticIp>?
+    HostnameTheme: String?
+    Name: String?
+    RdsDbInstances: Listing<RdsDbInstance>?
+    ServiceRoleArn: String?
+    SourceStackId: String?
+    Tags: Listing<Tag>?
+    UseCustomCookbooks: Boolean?
+    UseOpsworksSecurityGroups: Boolean?
+    VpcId: String?
+}
+class ChefConfiguration {
+    BerkshelfVersion: String?
+    ManageBerkshelf: Boolean?
+}
+class StackConfigurationManager {
+    Name: String?
+    Version: String?
+}
+class Source {
+    Password: String?
+    Revision: String?
+    SshKey: String?
+    Type: String?
+    Url: String?
+    Username: String?
+}
+class ElasticIp {
+    Ip: String
+    Name: String?
+}
+class RdsDbInstance {
+    DbPassword: String
+    DbUser: String
+    RdsDbInstanceArn: String
+}
+class Tag {
+    Key: String
+    Value: String
+}

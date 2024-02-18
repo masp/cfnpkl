@@ -1,0 +1,9 @@
+/// Associates WebACL to Application Load Balancer, CloudFront or API
+/// Gateway.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::WAFv2::WebACLAssociation"
+Properties: Props?
+class Props {
+    ResourceArn: String(length <= 2048 && length >= 20)?
+    WebACLArn: String(length <= 2048 && length >= 20)?
+}

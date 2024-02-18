@@ -1,0 +1,80 @@
+/// An entity that defines the scope of audit evidence collected by AWS
+/// Audit Manager.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AuditManager::Assessment"
+Properties: Props?
+class Props {
+    FrameworkId: String(length <= 36 && length >= 32 && matches(Regex(#"^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|.*\S.*)$"#)))?
+    AssessmentId: String(length <= 36 && length >= 36 && matches(Regex(#"^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"#)))?
+    AwsAccount: AWSAccount?
+    Arn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:.*:auditmanager:.*"#)))?
+    /// The tags associated with the assessment.
+    Tags: Listing<Tag>?
+    /// The list of delegations.
+    Delegations: Listing<Delegation>?
+    /// The list of roles for the specified assessment.
+    Roles: Listing<Role>?
+    Scope: Scope?
+    AssessmentReportsDestination: AssessmentReportsDestination?
+    Status: "ACTIVE" | "INACTIVE" | *Null
+    CreationTime: Float?
+    Name: String(length <= 127 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-_\.]+$"#)))?
+    Description: String?
+}
+/// The AWS account associated with the assessment.
+class AWSAccount {
+    Id: String(length <= 12 && length >= 12 && matches(Regex(#"^[0-9]{12}$"#)))?
+    EmailAddress: String(length <= 320 && length >= 1 && matches(Regex(#"^.*@.*$"#)))?
+    Name: String(length <= 50 && length >= 1 && matches(Regex(#"^[\u0020-\u007E]+$"#)))?
+}
+/// A key-value pair to associate with a resource.
+class Tag {
+    /// The key name of the tag. You can specify a value that is 1 to 127
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Key: String(length <= 128 && length >= 1)
+    /// The value for the tag. You can specify a value that is 1 to 255
+    /// Unicode characters in length and cannot be prefixed with aws:. You can
+    /// use any of the following characters: the set of Unicode letters,
+    /// digits, whitespace, _, ., /, =, +, and -.
+    Value: String(length <= 256 && length >= 0)
+}
+/// The assignment of a control set to a delegate for review.
+class Delegation {
+    LastUpdated: Float?
+    ControlSetId: String(length <= 300 && length >= 1 && matches(Regex(#"^[\w\W\s\S]*$"#)))?
+    CreationTime: Float?
+    CreatedBy: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:.*:*:.*"#)))?
+    RoleArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:.*:iam:.*"#)))?
+    AssessmentName: String(length <= 127 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-_\.]+$"#)))?
+    Comment: String(length <= 350 && matches(Regex(#"^[\w\W\s\S]*$"#)))?
+    Id: String(length <= 36 && length >= 36 && matches(Regex(#"^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"#)))?
+    RoleType: "PROCESS_OWNER" | "RESOURCE_OWNER" | *Null
+    AssessmentId: String(length <= 36 && length >= 36 && matches(Regex(#"^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"#)))?
+    Status: "IN_PROGRESS" | "UNDER_REVIEW" | "COMPLETE" | *Null
+}
+/// The wrapper that contains AWS Audit Manager role information, such as
+/// the role type and IAM ARN.
+class Role {
+    RoleArn: String(length <= 2048 && length >= 20 && matches(Regex(#"^arn:.*:iam:.*"#)))?
+    RoleType: "PROCESS_OWNER" | "RESOURCE_OWNER" | *Null
+}
+/// The wrapper that contains the AWS accounts and AWS services in scope
+/// for the assessment.
+class Scope {
+    /// The AWS accounts included in scope.
+    AwsAccounts: Listing<AWSAccount>?
+    /// The AWS services included in scope.
+    AwsServices: Listing<AWSService>?
+}
+/// An AWS service such as Amazon S3, AWS CloudTrail, and so on.
+class AWSService {
+    ServiceName: String?
+}
+/// The destination in which evidence reports are stored for the specified
+/// assessment.
+class AssessmentReportsDestination {
+    Destination: String?
+    DestinationType: "S3" | *Null
+}

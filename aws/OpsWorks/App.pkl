@@ -1,0 +1,42 @@
+/// Resource Type definition for AWS::OpsWorks::App
+extends ".../AWS/Resource.pkl"
+Type = "AWS::OpsWorks::App"
+Properties: Props?
+class Props {
+    Id: String?
+    AppSource: Source?
+    Attributes: Mapping?
+    DataSources: Listing<DataSource>?
+    Description: String?
+    Domains: Listing<String>?
+    EnableSsl: Boolean?
+    Environment: Listing<EnvironmentVariable>?
+    Name: String?
+    Shortname: String?
+    SslConfiguration: SslConfiguration?
+    StackId: String?
+    Type: String?
+}
+class Source {
+    Password: String?
+    Revision: String?
+    SshKey: String?
+    Type: String?
+    Url: String?
+    Username: String?
+}
+class DataSource {
+    Arn: String?
+    DatabaseName: String?
+    Type: String?
+}
+class EnvironmentVariable {
+    Key: String
+    Secure: Boolean?
+    Value: String
+}
+class SslConfiguration {
+    Certificate: String?
+    Chain: String?
+    PrivateKey: String?
+}

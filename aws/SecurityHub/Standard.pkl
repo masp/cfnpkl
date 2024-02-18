@@ -1,0 +1,23 @@
+/// The AWS::SecurityHub::Standard resource represents the implementation
+/// of an individual AWS Security Hub Standard in your account. It
+/// requires you have SecurityHub enabled before you can enable the
+/// Standard.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SecurityHub::Standard"
+Properties: Props?
+class Props {
+    /// The ARN of the StandardsSubscription for the account ID, region, and
+    /// Standard.
+    StandardsSubscriptionArn: String(matches(Regex(#"arn:aws\S*:securityhub:\S*"#)))?
+    /// The ARN of the Standard being enabled
+    StandardsArn: String(matches(Regex(#"arn:aws\S*:securityhub:\S"#)))?
+    /// StandardsControls to disable from this Standard.
+    DisabledStandardsControls: Listing<StandardsControl>?
+}
+/// An individual StandardsControl within the Standard.
+class StandardsControl {
+    /// the Arn for the standard control.
+    StandardsControlArn: String(matches(Regex(#"arn:aws\S*:securityhub:\S*"#)))
+    /// the reason the standard control is disabled
+    Reason: String?
+}

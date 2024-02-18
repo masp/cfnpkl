@@ -1,0 +1,24 @@
+/// Resource Type definition for AWS::Config::RemediationConfiguration
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Config::RemediationConfiguration"
+Properties: Props?
+class Props {
+    TargetVersion: String?
+    ExecutionControls: ExecutionControls?
+    Parameters: Mapping?
+    TargetType: String?
+    ConfigRuleName: String?
+    ResourceType: String?
+    RetryAttemptSeconds: Int?
+    MaximumAutomaticAttempts: Int?
+    Id: String?
+    TargetId: String?
+    Automatic: Boolean?
+}
+class ExecutionControls {
+    SsmControls: SsmControls?
+}
+class SsmControls {
+    ErrorPercentage: Int?
+    ConcurrentExecutionRatePercentage: Int?
+}

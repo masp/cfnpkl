@@ -1,0 +1,10 @@
+/// Definition of AWS::ResourceExplorer2::Index Resource Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ResourceExplorer2::Index"
+Properties: Props?
+class Props {
+    Arn: String?
+    Tags: Mapping?
+    Type: "LOCAL" | "AGGREGATOR" | *Null
+    IndexState: "ACTIVE" | "CREATING" | "DELETING" | "DELETED" | "UPDATING" | *Null
+}

@@ -1,0 +1,18 @@
+/// Resource Type definition for AWS::AppStream::DirectoryConfig
+extends ".../AWS/Resource.pkl"
+Type = "AWS::AppStream::DirectoryConfig"
+Properties: Props?
+class Props {
+    OrganizationalUnitDistinguishedNames: Listing<String>?
+    ServiceAccountCredentials: ServiceAccountCredentials?
+    DirectoryName: String?
+    CertificateBasedAuthProperties: CertificateBasedAuthProperties?
+}
+class ServiceAccountCredentials {
+    AccountName: String
+    AccountPassword: String
+}
+class CertificateBasedAuthProperties {
+    Status: String?
+    CertificateAuthorityArn: String?
+}

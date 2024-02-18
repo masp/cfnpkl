@@ -1,0 +1,15 @@
+/// Resource Schema for
+/// AWS::ServiceCatalogAppRegistry::ResourceAssociation
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ServiceCatalogAppRegistry::ResourceAssociation"
+Properties: Props?
+class Props {
+    /// The name or the Id of the Application.
+    Application: String(length <= 256 && length >= 1 && matches(Regex(#"\w+|[a-z0-9]{12}"#)))?
+    /// The name or the Id of the Resource.
+    Resource: String(matches(Regex(#"\w+|arn:aws[-a-z]*:cloudformation:[a-z]{2}(-gov)?-[a-z]+-\d:\d{12}:stack/[a-zA-Z][-A-Za-z0-9]{0,127}/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}"#)))?
+    /// The type of the CFN Resource for now it's enum CFN_STACK.
+    ResourceType: "CFN_STACK" | *Null
+    ApplicationArn: String(matches(Regex(#"arn:aws[-a-z]*:servicecatalog:[a-z]{2}(-gov)?-[a-z]+-\d:\d{12}:/applications/[a-z0-9]+"#)))?
+    ResourceArn: String(matches(Regex(#"arn:aws[-a-z]*:cloudformation:[a-z]{2}(-gov)?-[a-z]+-\d:\d{12}:stack/[a-zA-Z][-A-Za-z0-9]{0,127}/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}"#)))?
+}

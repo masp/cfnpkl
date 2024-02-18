@@ -1,0 +1,58 @@
+/// The AWS::Amplify::App resource creates Apps in the Amplify Console. An
+/// App is a collection of branches.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::Amplify::App"
+Properties: Props?
+class Props {
+    AccessToken: String(length <= 255 && length >= 1)?
+    AppId: String(length <= 20 && length >= 1 && matches(Regex(#"d[a-z0-9]+"#)))?
+    AppName: String(length <= 255 && length >= 1 && matches(Regex(#"(?s).+"#)))?
+    Arn: String(length <= 1000 && matches(Regex(#"(?s).*"#)))?
+    AutoBranchCreationConfig: AutoBranchCreationConfig?
+    BasicAuthConfig: BasicAuthConfig?
+    BuildSpec: String(length <= 25000 && length >= 1 && matches(Regex(#"(?s).+"#)))?
+    CustomHeaders: String(length <= 25000 && length >= 0 && matches(Regex(#"(?s).*"#)))?
+    CustomRules: Listing<CustomRule>?
+    DefaultDomain: String(length <= 1000 && length >= 0)?
+    Description: String(length <= 1000 && matches(Regex(#"(?s).*"#)))?
+    EnableBranchAutoDeletion: Boolean?
+    EnvironmentVariables: Listing<EnvironmentVariable>?
+    IAMServiceRole: String(length <= 1000 && length >= 1 && matches(Regex(#"(?s).*"#)))?
+    Name: String(length <= 255 && length >= 1 && matches(Regex(#"(?s).+"#)))?
+    OauthToken: String(length <= 1000 && matches(Regex(#"(?s).*"#)))?
+    Platform: "WEB" | "WEB_DYNAMIC" | "WEB_COMPUTE" | *Null
+    Repository: String(matches(Regex(#"(?s).*"#)))?
+    Tags: Listing<Tag>?
+}
+class AutoBranchCreationConfig {
+    AutoBranchCreationPatterns: Listing<String(length <= 2048 && length >= 1)>?
+    BasicAuthConfig: BasicAuthConfig?
+    BuildSpec: String(length <= 25000 && length >= 1)?
+    EnableAutoBranchCreation: Boolean?
+    EnableAutoBuild: Boolean?
+    EnablePerformanceMode: Boolean?
+    EnablePullRequestPreview: Boolean?
+    EnvironmentVariables: Listing<EnvironmentVariable>?
+    Framework: String(length <= 255 && matches(Regex(#"(?s).*"#)))?
+    PullRequestEnvironmentName: String(length <= 20 && matches(Regex(#"(?s).*"#)))?
+    Stage: "EXPERIMENTAL" | "BETA" | "PULL_REQUEST" | "PRODUCTION" | "DEVELOPMENT" | *Null
+}
+class BasicAuthConfig {
+    EnableBasicAuth: Boolean?
+    Username: String(length <= 255 && length >= 1)?
+    Password: String(length <= 255 && length >= 1)?
+}
+class EnvironmentVariable {
+    Name: String(length <= 255 && matches(Regex(#"(?s).*"#)))
+    Value: String(length <= 5500 && matches(Regex(#"(?s).*"#)))
+}
+class CustomRule {
+    Condition: String(length <= 2048 && length >= 0 && matches(Regex(#"(?s).*"#)))?
+    Status: String(length <= 7 && length >= 3 && matches(Regex(#".{3,7}"#)))?
+    Target: String(length <= 2048 && length >= 1 && matches(Regex(#"(?s).+"#)))
+    Source: String(length <= 2048 && length >= 1 && matches(Regex(#"(?s).+"#)))
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1 && matches(Regex(#"^(?!aws:)[a-zA-Z+-=._:/]+$"#)))
+    Value: String(length <= 256 && length >= 0)
+}

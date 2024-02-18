@@ -1,0 +1,32 @@
+/// Resource schema of AWS::EC2::PrefixList Type
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EC2::PrefixList"
+Properties: Props?
+class Props {
+    /// Name of Prefix List.
+    PrefixListName: String(length <= 255 && length >= 1)?
+    /// Id of Prefix List.
+    PrefixListId: String?
+    /// Owner Id of Prefix List.
+    OwnerId: String?
+    /// Ip Version of Prefix List.
+    AddressFamily: "IPv4" | "IPv6" | *Null
+    /// Max Entries of Prefix List.
+    MaxEntries: Int?
+    /// Version of Prefix List.
+    Version: Int?
+    /// Tags for Prefix List
+    Tags: Listing<Tag>?
+    /// Entries of Prefix List.
+    Entries: Listing<Entry>?
+    /// The Amazon Resource Name (ARN) of the Prefix List.
+    Arn: String?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 256)?
+}
+class Entry {
+    Cidr: String(length <= 46 && length >= 1)
+    Description: String(length <= 255 && length >= 0)?
+}

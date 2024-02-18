@@ -1,0 +1,28 @@
+/// Resource type definition for AWS::NetworkFirewall::Firewall
+extends ".../AWS/Resource.pkl"
+Type = "AWS::NetworkFirewall::Firewall"
+Properties: Props?
+class Props {
+    FirewallName: String(length <= 128 && length >= 1 && matches(Regex(#"^[a-zA-Z0-9-]+$"#)))?
+    FirewallArn: String(length <= 256 && length >= 1 && matches(Regex(#"^arn:aws.*$"#)))?
+    FirewallId: String(length <= 36 && length >= 36 && matches(Regex(#"^([0-9a-f]{8})-([0-9a-f]{4}-){3}([0-9a-f]{12})$"#)))?
+    FirewallPolicyArn: String(length <= 256 && length >= 1 && matches(Regex(#"^arn:aws.*$"#)))?
+    VpcId: String(length <= 128 && length >= 1 && matches(Regex(#"^vpc-[0-9a-f]+$"#)))?
+    SubnetMappings: Listing<SubnetMapping>?
+    DeleteProtection: Boolean?
+    SubnetChangeProtection: Boolean?
+    FirewallPolicyChangeProtection: Boolean?
+    Description: String(length <= 512 && matches(Regex(#"^.*$"#)))?
+    EndpointIds: Listing<String>?
+    Tags: Listing<Tag>?
+}
+class SubnetMapping {
+    /// A SubnetId.
+    SubnetId: String
+    /// A IPAddressType
+    IPAddressType: String?
+}
+class Tag {
+    Key: String(length <= 128 && length >= 1)
+    Value: String(length <= 255 && length >= 0)
+}

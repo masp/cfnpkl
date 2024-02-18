@@ -1,0 +1,60 @@
+/// Resource Type definition for AWS::SageMaker::Model
+extends ".../AWS/Resource.pkl"
+Type = "AWS::SageMaker::Model"
+Properties: Props?
+class Props {
+    ExecutionRoleArn: String?
+    EnableNetworkIsolation: Boolean?
+    PrimaryContainer: ContainerDefinition?
+    ModelName: String?
+    VpcConfig: VpcConfig?
+    Containers: Listing<ContainerDefinition>?
+    InferenceExecutionConfig: InferenceExecutionConfig?
+    Id: String?
+    Tags: Listing<Tag>?
+}
+class ContainerDefinition {
+    ImageConfig: ImageConfig?
+    InferenceSpecificationName: String?
+    ContainerHostname: String?
+    ModelPackageName: String?
+    Mode: String?
+    Environment: Mapping?
+    ModelDataUrl: String?
+    Image: String?
+    ModelDataSource: ModelDataSource?
+    MultiModelConfig: MultiModelConfig?
+}
+class ImageConfig {
+    RepositoryAuthConfig: RepositoryAuthConfig?
+    RepositoryAccessMode: String
+}
+class RepositoryAuthConfig {
+    RepositoryCredentialsProviderArn: String
+}
+class ModelDataSource {
+    S3DataSource: S3DataSource
+}
+class S3DataSource {
+    ModelAccessConfig: ModelAccessConfig?
+    S3DataType: String
+    CompressionType: String
+    S3Uri: String
+}
+class ModelAccessConfig {
+    AcceptEula: Boolean
+}
+class MultiModelConfig {
+    ModelCacheSetting: String?
+}
+class VpcConfig {
+    SecurityGroupIds: Listing<String>
+    Subnets: Listing<String>
+}
+class InferenceExecutionConfig {
+    Mode: String
+}
+class Tag {
+    Value: String
+    Key: String
+}

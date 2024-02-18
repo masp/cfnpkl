@@ -1,0 +1,39 @@
+/// The AWS::ECR::ReplicationConfiguration resource configures the
+/// replication destinations for an Amazon Elastic Container Registry
+/// (Amazon Private ECR). For more information, see https://docs.aws.amazo
+/// n.com/AmazonECR/latest/userguide/replication.html
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ECR::ReplicationConfiguration"
+Properties: Props?
+class Props {
+    ReplicationConfiguration: ReplicationConfiguration?
+    /// The RegistryId associated with the aws account.
+    RegistryId: String?
+}
+/// An object representing the replication configuration for a registry.
+class ReplicationConfiguration {
+    /// An array of objects representing the replication rules for a
+    /// replication configuration. A replication configuration may contain a
+    /// maximum of 10 rules.
+    Rules: Listing<ReplicationRule>
+}
+/// An array of objects representing the details of a replication
+/// destination.
+class ReplicationRule {
+    /// An array of objects representing the details of a repository filter.
+    RepositoryFilters: Listing<RepositoryFilter>?
+    /// An array of objects representing the details of a replication
+    /// destination.
+    Destinations: Listing<ReplicationDestination>
+}
+/// An array of objects representing the details of a repository filter.
+class RepositoryFilter {
+    Filter: String(matches(Regex(#"^(?:[a-z0-9]+(?:[._-][a-z0-9]*)*/)*[a-z0-9]*(?:[._-][a-z0-9]*)*$"#)))
+    FilterType: "PREFIX_MATCH"
+}
+/// An array of objects representing the details of a replication
+/// destination.
+class ReplicationDestination {
+    Region: String(matches(Regex(#"[0-9a-z-]{2,25}"#)))
+    RegistryId: String(matches(Regex(#"^[0-9]{12}$"#)))
+}

@@ -1,0 +1,23 @@
+/// The ``AWS::ApiGateway::GatewayResponse`` resource creates a gateway
+/// response for your API. For more information, see [API Gateway Response
+/// s](https://docs.aws.amazon.com/apigateway/latest/developerguide/custom
+/// ize-gateway-responses.html#api-gateway-gatewayResponse-definition) in
+/// the *API Gateway Developer Guide*.
+extends ".../AWS/Resource.pkl"
+Type = "AWS::ApiGateway::GatewayResponse"
+Properties: Props?
+class Props {
+    Id: String?
+    /// The string identifier of the associated RestApi.
+    RestApiId: String?
+    /// The response type of the associated GatewayResponse.
+    ResponseType: String?
+    /// The HTTP status code for this GatewayResponse.
+    StatusCode: String?
+    /// Response parameters (paths, query strings and headers) of the
+    /// GatewayResponse as a string-to-string map of key-value pairs.
+    ResponseParameters: Mapping?
+    /// Response templates of the GatewayResponse as a string-to-string map of
+    /// key-value pairs.
+    ResponseTemplates: Mapping?
+}

@@ -1,0 +1,55 @@
+/// Resource Type definition for AWS::EMR::InstanceFleetConfig
+extends ".../AWS/Resource.pkl"
+Type = "AWS::EMR::InstanceFleetConfig"
+Properties: Props?
+class Props {
+    InstanceFleetType: String?
+    TargetOnDemandCapacity: Int?
+    ClusterId: String?
+    TargetSpotCapacity: Int?
+    LaunchSpecifications: InstanceFleetProvisioningSpecifications?
+    Id: String?
+    InstanceTypeConfigs: Listing<InstanceTypeConfig>?
+    Name: String?
+}
+class InstanceFleetProvisioningSpecifications {
+    SpotSpecification: SpotProvisioningSpecification?
+    OnDemandSpecification: OnDemandProvisioningSpecification?
+}
+class SpotProvisioningSpecification {
+    AllocationStrategy: String?
+    TimeoutDurationMinutes: Int
+    TimeoutAction: String
+    BlockDurationMinutes: Int?
+}
+class OnDemandProvisioningSpecification {
+    AllocationStrategy: String
+}
+class InstanceTypeConfig {
+    BidPrice: String?
+    WeightedCapacity: Int?
+    EbsConfiguration: EbsConfiguration?
+    BidPriceAsPercentageOfOnDemandPrice: Float?
+    CustomAmiId: String?
+    Configurations: Listing<Configuration>?
+    InstanceType: String
+}
+class EbsConfiguration {
+    EbsBlockDeviceConfigs: Listing<EbsBlockDeviceConfig>?
+    EbsOptimized: Boolean?
+}
+class EbsBlockDeviceConfig {
+    VolumeSpecification: VolumeSpecification
+    VolumesPerInstance: Int?
+}
+class VolumeSpecification {
+    SizeInGB: Int
+    Throughput: Int?
+    VolumeType: String
+    Iops: Int?
+}
+class Configuration {
+    ConfigurationProperties: Mapping?
+    Configurations: Listing<Configuration>?
+    Classification: String?
+}
